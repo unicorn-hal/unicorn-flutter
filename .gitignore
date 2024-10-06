@@ -151,7 +151,9 @@ app.*.map.json
 doc/api/
 
 # dotenv environment variables file
-.env*
+.env
+.env.develop
+.env.release
 
 # Avoid committing generated Javascript files:
 *.dart.js
