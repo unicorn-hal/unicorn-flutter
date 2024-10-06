@@ -1,4 +1,4 @@
-package jp.ac.hal.unicorn_flutter
+package jp.ac.hal.unicorn
 
 import io.flutter.embedding.android.FlutterActivity
 
