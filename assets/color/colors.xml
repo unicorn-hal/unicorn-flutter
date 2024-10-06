@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- アプリ内で使用するカラーを管理するファイルです -->
+<resources>
+    <!-- テキスト系のカラー -->
+    <color name="text_black">#202124</color>
+</resources>
