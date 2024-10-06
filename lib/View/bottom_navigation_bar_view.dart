@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/bottom_navigation_bar_controller.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 
 class BottomNavigationBarView extends StatefulWidget {
   const BottomNavigationBarView({super.key});
@@ -31,7 +32,8 @@ class _BottomNavigationBarViewState extends State<BottomNavigationBarView>
   @override
   Widget build(BuildContext context) {
     BottomNavigationBarController controller = BottomNavigationBarController();
-    return Scaffold(
+    return CustomScaffold(
+      isAppbar: false,
       body: controller.navigationShell,
       bottomNavigationBar: Stack(
         alignment: Alignment.bottomCenter,
