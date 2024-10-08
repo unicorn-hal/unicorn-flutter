@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/View/Component/Parts/Profile/profile_detail_cell.dart';
+import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 
 class ProfileTopView extends StatelessWidget {
   const ProfileTopView({super.key});
@@ -11,6 +13,8 @@ class ProfileTopView extends StatelessWidget {
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
+    String lastName = 'のりた';
+    String firstName = 'しおき';
     return CustomScaffold(
       body: Center(
         child: Column(
@@ -19,39 +23,29 @@ class ProfileTopView extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                GestureDetector(
+                UserImageCircle(
+                  imageSize: 120,
+                  imagePath:
+                      'https://storage.googleapis.com/lab-mode-cms-production/images/message_contents_01__2/original_message_contents_01__2.jpg',
                   onTap: () {
                     print('のりたし!!!');
                   },
-                  child: Container(
-                    width: 120,
-                    height: 120,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(deviceWidth * 0.5),
-                      child: FittedBox(
-                        fit: BoxFit.cover,
-                        clipBehavior: Clip.antiAlias,
-                        child: Image.network(
-                            'https://storage.googleapis.com/lab-mode-cms-production/images/message_contents_01__2/original_message_contents_01__2.jpg'),
-                      ),
-                    ),
-                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomText(
-                      text: 'のりた',
+                      text: lastName,
                       fontSize: 32,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     CustomText(
-                      text: 'しおき',
+                      text: firstName,
                       fontSize: 32,
                     ),
                   ],
@@ -61,7 +55,7 @@ class ProfileTopView extends StatelessWidget {
             Container(
               width: deviceWidth,
               height: deviceHeight * 0.5,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 223, 223, 223),
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(30),
@@ -79,48 +73,12 @@ class ProfileTopView extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: const EdgeInsets.all(18),
-                      child: GestureDetector(
+                      child: ProfileDetailCell(
+                        icon: Icon(Icons.add_circle_outline),
+                        title: '項目${index}',
                         onTap: () {
                           print('👑ｵｻﾚﾀﾖｯ${index}');
                         },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(15),
-                            ),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.grey,
-                                spreadRadius: 1.0,
-                                blurRadius: 5,
-                              )
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  flex: 3,
-                                  child: FittedBox(
-                                    fit: BoxFit.fitHeight,
-                                    child: Icon(
-                                      Icons.add_circle_outline,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: CustomText(
-                                    text: '項目${index}',
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
                       ),
                     );
                   },
