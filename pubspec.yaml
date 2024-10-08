@@ -20,6 +20,8 @@ dependencies:
   fluttertoast: ^8.2.8
   build_runner: ^2.4.9
   go_router_builder: ^2.7.1
+  firebase_core: ^3.4.0
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
