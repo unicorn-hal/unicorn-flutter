@@ -27,57 +27,62 @@ class AiAnnounceBanner extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Container(
-        height: 88,
-        width: size.width,
-        decoration: BoxDecoration(
-          color: bannerColor,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                width: 70,
-                height: 70,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: imageBackgroundColor.withOpacity(0.5),
-                  image: DecorationImage(
-                    image: Assets.images.icons.aiIcon.provider(),
+      child: GestureDetector(
+        onTap: () {
+          onTap();
+        },
+        child: Container(
+          height: 88,
+          width: size.width,
+          decoration: BoxDecoration(
+            color: bannerColor,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: 70,
+                  height: 70,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: imageBackgroundColor.withOpacity(0.5),
+                    image: DecorationImage(
+                      image: Assets.images.icons.aiIcon.provider(),
+                    ),
                   ),
                 ),
               ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 250,
-                  height: 30,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: CustomText(
-                      text: title,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 250,
+                    height: 30,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: CustomText(
+                        text: title,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 250,
-                  height: 44,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: CustomText(
-                      text: description,
-                      fontSize: 12,
+                  SizedBox(
+                    width: 250,
+                    height: 44,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: CustomText(
+                        text: description,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
