@@ -3,4 +3,9 @@
 <resources>
     <!-- テキスト系のカラー -->
     <color name="text_black">#202124</color>
+
+
+    <!-- メッセージタイルに使用するカラー -->
+    <color name="message_color_own">#80D784</color>
+    <color name="message_color_other">#F5F5F5</color>
 </resources>
