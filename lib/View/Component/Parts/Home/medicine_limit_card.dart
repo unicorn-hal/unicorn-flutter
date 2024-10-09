@@ -64,14 +64,14 @@ class MedicineLimitCard extends StatelessWidget {
                       text: getProgressRate().toInt().toString(),
                       fontSize: 18,
                     ),
-                    CustomText(
+                    const CustomText(
                       text: '%',
                       fontSize: 14,
                     ),
                   ],
                 ),
                 circularStrokeCap: CircularStrokeCap.round,
-                progressColor: Colors.green,
+                progressColor: progressColor,
               ),
             ),
             SizedBox(
@@ -84,9 +84,14 @@ class MedicineLimitCard extends StatelessWidget {
                   const CustomText(
                     text: 'おくすり名',
                     fontSize: 12,
+                    color: ColorName.textGray,
                   ),
                   CustomText(text: medicineName),
-                  const CustomText(text: '残り日数/個数', fontSize: 12),
+                  const CustomText(
+                    text: '残り日数/個数',
+                    fontSize: 12,
+                    color: ColorName.textGray,
+                  ),
                   CustomText(text: '$remainingDays日分/残り$remainingCount個'),
                 ],
               ),
