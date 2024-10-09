@@ -21,6 +21,7 @@ dependencies:
   build_runner: ^2.4.9
   go_router_builder: ^2.7.1
   percent_indicator: ^4.2.3
+  cached_network_image: ^3.4.0
 
 dev_dependencies:
   flutter_test:
