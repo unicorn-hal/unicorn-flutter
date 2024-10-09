@@ -3,4 +3,8 @@
 <resources>
     <!-- テキスト系のカラー -->
     <color name="text_black">#202124</color>
+
+
+    <!-- 影に使うグレー -->
+    <color name="shadow_gray">#DEDEDE</color>
 </resources>
