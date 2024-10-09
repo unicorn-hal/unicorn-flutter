@@ -14,6 +14,8 @@ class MedicineLimitCard extends StatelessWidget {
     required this.totalNum,
   });
 
+  // todo: medicineクラスができたら引数を変更する
+
   final String medicineName;
   final int remainingDays;
   final int remainingCount;
