@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 
@@ -29,6 +28,7 @@ class ProfileDetailCell extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.grey,
+              // todo: assetsに専用色が追加され次第変更
               spreadRadius: 1.0,
               blurRadius: 5,
             )

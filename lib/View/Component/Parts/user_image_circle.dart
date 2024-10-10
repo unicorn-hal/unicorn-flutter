@@ -5,20 +5,19 @@ class UserImageCircle extends StatelessWidget {
     super.key,
     required this.imageSize,
     required this.imagePath,
-    required this.onTap,
+    this.onTap,
   });
 
   final double imageSize;
   final String imagePath;
-  final Function onTap;
+  final Function? onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        onTap();
-      },
-      child: Container(
+      onTap: () => onTap == null ? null : onTap!(),
+      // todo: 修正の余地あり
+      child: SizedBox(
         width: imageSize,
         height: imageSize,
         child: ClipRRect(
