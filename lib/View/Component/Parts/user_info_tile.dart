@@ -1,18 +1,23 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 
 class UserInfoTile extends StatelessWidget {
   const UserInfoTile({
     super.key,
     required this.onTap,
+    required this.userName,
+    required this.description,
+    this.imageUrl,
     this.tileColor = Colors.white,
   });
 
-  /// UserModelができたらここに引数を追加する
-
+  /// todo: UserModelができたらここに引数を追加する
+  ///
+  final String userName;
+  final String description;
   final Color tileColor;
+  final String? imageUrl;
   final Function onTap;
 
   @override
@@ -30,13 +35,12 @@ class UserInfoTile extends StatelessWidget {
           padding: const EdgeInsets.all(4.0),
           child: Row(
             children: [
-              /// れいくんの作業が終わったらここに挿入する。高さ・幅 > 50
-              Container(
+              SizedBox(
                 width: 50,
                 height: 50,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.blue,
+                child: UserImageCircle(
+                  imageSize: 50,
+                  imagePath: imageUrl,
                 ),
               ),
 
