@@ -10,7 +10,7 @@ abstract class ApiCore {
   String _baseUrl = dotenv.env['UNICORN_API_BASEURL']!;
   String _idToken = '';
   String endPoint = '';
-  late Map<String, String> headers;
+  late Map<String, String> _headers;
 
   /// コンストラクタ
   ApiCore(this.endPoint) {
@@ -20,7 +20,7 @@ abstract class ApiCore {
   /// ヘッダー作成
   Future<void> makeHeader() async {
     _idToken = await authService.getIdToken() ?? '';
-    headers = {
+    _headers = {
       'Content-type': 'application/json',
       'Authorization': 'Bearer $_idToken',
       'X-UID': authService.getUid() ?? '',
@@ -33,7 +33,7 @@ abstract class ApiCore {
       await makeHeader();
       http.Response response = await http.get(
         Uri.parse(_baseUrl),
-        headers: headers,
+        headers: _headers,
       );
       final String responseUtf8 = utf8.decode(response.bodyBytes);
       Map<String, dynamic> jsonResponse = json.decode(responseUtf8);
@@ -53,7 +53,7 @@ abstract class ApiCore {
       await makeHeader();
       http.Response response = await http.post(
         Uri.parse(_baseUrl),
-        headers: headers,
+        headers: _headers,
         body: json.encode(body),
       );
       final String responseUtf8 = utf8.decode(response.bodyBytes);
@@ -74,7 +74,7 @@ abstract class ApiCore {
       await makeHeader();
       http.Response response = await http.put(
         Uri.parse(_baseUrl),
-        headers: headers,
+        headers: _headers,
         body: json.encode(body),
       );
       final String responseUtf8 = utf8.decode(response.bodyBytes);
@@ -94,7 +94,7 @@ abstract class ApiCore {
       await makeHeader();
       http.Response response = await http.delete(
         Uri.parse(_baseUrl),
-        headers: headers,
+        headers: _headers,
       );
       final String responseUtf8 = utf8.decode(response.bodyBytes);
       Map<String, dynamic> jsonResponse = json.decode(responseUtf8);
