@@ -33,6 +33,7 @@ class BoardTile extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
+                color: Colors.white,
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -69,6 +70,7 @@ class BoardTile extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
+                color: Colors.white,
               ),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
