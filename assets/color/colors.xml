@@ -3,7 +3,10 @@
 <resources>
     <!-- テキスト系のカラー -->
     <color name="text_black">#202124</color>
+    <color name="text_gray">#6C6C6C</color>
 
+    <!-- 影に使うグレー -->
+    <color name="shadow_gray">#DEDEDE</color>
 
     <!-- メッセージタイルに使用するカラー -->
     <color name="message_color_own">#80D784</color>
