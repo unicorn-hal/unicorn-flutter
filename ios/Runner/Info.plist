@@ -51,6 +51,5 @@
 	<!-- Permission options for the `faceid` group -->
 	<key>NSFaceIDUsageDescription</key>
 	<string>ユーザーがプライバシーを保護するためにFace IDを使用することを許可します。</string>
-	<string>notification</string>
 </dict>
 </plist>
