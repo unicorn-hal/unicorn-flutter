@@ -9,7 +9,7 @@ enum LocalAuthStatus {
   face,
   fingerprint,
   passcode,
-  faild,
+  failed,
 }
 
 class LocalAuthService {
@@ -53,7 +53,7 @@ class LocalAuthService {
   /// ローカル認証の状態を取得
   Future<LocalAuthStatus> getLocalAuthStatus() async {
     if (!await _isDeviceSupported()) {
-      return LocalAuthStatus.faild;
+      return LocalAuthStatus.failed;
     }
     if (!await _isCanAuthenticateWithBiometrics()) {
       return LocalAuthStatus.passcode;
@@ -66,12 +66,12 @@ class LocalAuthService {
     } else if (availableBiometrics.contains(BiometricType.fingerprint)) {
       return LocalAuthStatus.fingerprint;
     }
-    return LocalAuthStatus.faild;
+    return LocalAuthStatus.failed;
   }
 
   /// ローカル認証を実行
   Future<void> authenticate() async {
-    if (await getLocalAuthStatus() == LocalAuthStatus.faild) {
+    if (await getLocalAuthStatus() == LocalAuthStatus.failed) {
       Log.toast('Device not supported');
       return;
     }
