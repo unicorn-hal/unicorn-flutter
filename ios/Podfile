@@ -46,8 +46,6 @@ post_install do |installer|
         '$(inherited)',
         # dart: PermissionGroup.contacts
         'PERMISSION_CONTACTS=1',
-        # dart: PermissionGroup.faceid
-        'PERMISSION_FACE_ID=1',
       ]
     end
   end
