@@ -44,7 +44,9 @@ flutter:
   assets:
     - .env.develop
     - .env.release
-    # - assets/images/
+    - assets/images/
+    - assets/images/icons/
+    
 
   fonts:
     - family: Noto_Sans_JP
