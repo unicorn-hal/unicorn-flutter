@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class ProfileDetailCell extends StatelessWidget {
   const ProfileDetailCell({
@@ -27,8 +28,7 @@ class ProfileDetailCell extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey,
-              // todo: assetsに専用色が追加され次第変更
+              color: ColorName.shadowGray,
               spreadRadius: 1.0,
               blurRadius: 5,
             )
