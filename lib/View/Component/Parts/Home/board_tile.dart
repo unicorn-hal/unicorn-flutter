@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -82,10 +81,7 @@ class BoardTile extends StatelessWidget {
                         imageUrl: imageUrl!,
                         fit: BoxFit.cover,
                         placeholder: (context, url) => const Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2.0,
-                            color: Colors.grey,
-                          ),
+                          child: CustomIndicator(),
                         ),
                         errorWidget: (context, url, error) => const Icon(
                           Icons.error,
