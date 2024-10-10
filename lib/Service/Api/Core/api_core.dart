@@ -23,6 +23,7 @@ abstract class ApiCore {
     headers = {
       'Content-type': 'application/json',
       'Authorization': 'Bearer $_idToken',
+      'X-UID': authService.getUid() ?? '',
     };
   }
 
