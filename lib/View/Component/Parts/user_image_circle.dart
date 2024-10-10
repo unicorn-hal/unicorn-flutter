@@ -1,4 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
 
 class UserImageCircle extends StatelessWidget {
   const UserImageCircle({
@@ -15,8 +17,7 @@ class UserImageCircle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTap == null ? null : onTap!(),
-      // todo: 修正の余地あり
+      onTap: () => onTap?.call(),
       child: SizedBox(
         width: imageSize,
         height: imageSize,
@@ -25,7 +26,16 @@ class UserImageCircle extends StatelessWidget {
           child: FittedBox(
             fit: BoxFit.cover,
             clipBehavior: Clip.antiAlias,
-            child: Image.network(imagePath),
+            child: CachedNetworkImage(
+              imageUrl: imagePath,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => const Center(
+                child: CustomIndicator(),
+              ),
+              errorWidget: (context, url, error) => const Icon(
+                Icons.error,
+              ),
+            ),
           ),
         ),
       ),
