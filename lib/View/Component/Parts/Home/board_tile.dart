@@ -22,7 +22,7 @@ class BoardTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: () => onTap,
+      onTap: () => onTap?.call(),
       child: imageUrl == null
 
           /// imageUrlがnullの場合はContainerを表示
