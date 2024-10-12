@@ -9,4 +9,8 @@ class Strings {
       '体の悩みをAIが分析して対処法や改善点などをアドバイスしてくれます。';
   static const String AIBANNER_DESCRIPTION_ASK =
       '持病の種類やおくすりの詳細情報がわからないときはAIに聞いて自動追加してもらおう。';
+
+  // 検診ボタンに使用するテキスト
+  static const String HEALTHCHECK_BUTTON_TEXT = '今日の検診を開始する';
+  static const String HEALTHCHECK_BUTTON_AI = 'AI音声検診を開始する';
 }
