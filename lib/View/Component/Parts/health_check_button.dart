@@ -47,8 +47,8 @@ class HealthCheckButton extends StatelessWidget {
                 ),
                 CustomText(
                   text: aiCheck
-                      ? Strings.HEALTHCHECK_BUTTON_AI
-                      : Strings.HEALTHCHECK_BUTTON_TEXT,
+                      ? Strings.HEALTH_CHECK_BUTTON_AI
+                      : Strings.HEALTH_CHECK_BUTTON_TEXT,
                   color: Colors.white,
                   fontSize: 20,
                 ),

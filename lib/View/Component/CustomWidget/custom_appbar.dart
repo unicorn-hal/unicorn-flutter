@@ -9,7 +9,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.title = '',
     this.backgroundColor = Colors.white,
     this.foregroundColor = ColorName.textBlack,
-    this.isBackButton = false,
     this.appBarHight = kToolbarHeight,
     this.leadingImage,
     this.actions,
@@ -17,7 +16,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final Color? foregroundColor;
   final Color? backgroundColor;
-  final bool? isBackButton;
   final ImageProvider? leadingImage;
   double? appBarHight;
   List<IconButton>? actions;
@@ -52,7 +50,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         ],
       ),
-      automaticallyImplyLeading: isBackButton!,
       backgroundColor: backgroundColor,
 
       // スクロール時に色が乗算されるのを防ぐ
