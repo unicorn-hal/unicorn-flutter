@@ -11,7 +11,7 @@ class HomeView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('HomeView'),
+            Text('Home View'),
           ],
         ),
       ),
