@@ -1,5 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -46,7 +46,9 @@ class HealthCheckButton extends StatelessWidget {
                   ),
                 ),
                 CustomText(
-                  text: '今日の検診を開始する',
+                  text: aiCheck
+                      ? Strings.HEALTHCHECK_BUTTON_AI
+                      : Strings.HEALTHCHECK_BUTTON_TEXT,
                   color: Colors.white,
                   fontSize: 20,
                 ),
