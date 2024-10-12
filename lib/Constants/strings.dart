@@ -3,10 +3,14 @@ class Strings {
   /// 例：static const String SAMPLE = 'sample';
 
   // AIアナウンスバナーに使用するテキスト
-  static const String AIBANNER_TITLE_HEALTHCHECK = 'AIチャットで簡単健康チェック！';
-  static const String AIBANNER_TITLE_ASK = 'AIに聞いてみよう！';
-  static const String AIBANNER_DESCRIPTION_HEALTHCHECK =
+  static const String AI_BANNER_TITLE_HEALTHCHECK = 'AIチャットで簡単健康チェック！';
+  static const String AI_BANNER_TITLE_ASK = 'AIに聞いてみよう！';
+  static const String AI_BANNER_DESCRIPTION_HEALTHCHECK =
       '体の悩みをAIが分析して対処法や改善点などをアドバイスしてくれます。';
-  static const String AIBANNER_DESCRIPTION_ASK =
+  static const String AI_BANNER_DESCRIPTION_ASK =
       '持病の種類やおくすりの詳細情報がわからないときはAIに聞いて自動追加してもらおう。';
+
+  // 検診ボタンに使用するテキスト
+  static const String HEALTH_CHECK_BUTTON_TEXT = '今日の検診を開始する';
+  static const String HEALTH_CHECK_BUTTON_AI = 'AI音声検診を開始する';
 }

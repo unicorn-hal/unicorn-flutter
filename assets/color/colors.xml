@@ -11,4 +11,8 @@
     <!-- メッセージタイルに使用するカラー -->
     <color name="message_color_own">#80D784</color>
     <color name="message_color_other">#F5F5F5</color>
+
+    <!-- 検診ボタンに使用するカラー -->
+    <color name="health_check_button_start">#96DBF9</color>
+    <color name="health_check_button_end">#4AA9F7</color>
 </resources>
