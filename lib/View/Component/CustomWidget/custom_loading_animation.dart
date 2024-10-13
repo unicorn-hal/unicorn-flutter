@@ -6,7 +6,7 @@ class CustomLoadingAnimation extends StatelessWidget {
   const CustomLoadingAnimation({
     super.key,
     required this.text,
-    this.iconSize = 40,
+    this.iconSize = 30,
     this.fontSize = 20,
     required this.iconColor,
     required this.textColor,
@@ -27,7 +27,7 @@ class CustomLoadingAnimation extends StatelessWidget {
           color: iconColor,
           size: iconSize,
         ),
-        SizedBox(
+        const SizedBox(
           width: 10,
         ),
         CustomText(
