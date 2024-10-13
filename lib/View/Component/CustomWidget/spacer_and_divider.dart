@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 class SpacerAndDivider extends StatelessWidget {
   const SpacerAndDivider({
     super.key,
-    required this.topHeight,
-    required this.bottomHeight,
+    this.topHeight = 20,
+    this.bottomHeight = 20,
   });
 
   final double topHeight;
