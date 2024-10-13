@@ -18,8 +18,8 @@ class NativeContactsService {
       Map<String, dynamic> contactMap = {
         'importFrom': ImportFrom.native,
         'displayName': nativeContact.displayName,
-        'givinName': '${nativeContact.middleName}${nativeContact.givenName}',
-        'familyName': nativeContact.familyName,
+        'firstName': '${nativeContact.middleName}${nativeContact.givenName}',
+        'lastName': nativeContact.familyName,
         'email': nativeContact.emails?.first ?? '',
         'phoneNumber': nativeContact.phones?.first ?? '',
       };

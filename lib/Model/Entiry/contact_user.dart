@@ -9,8 +9,8 @@ enum ImportFrom {
 class ContactUser {
   final ImportFrom importFrom;
   final String displayName;
-  final String givinName;
-  final String familyName;
+  final String firstName; // 名前
+  final String lastName; // 苗字
   final String email;
   final String phoneNumber;
   // todo: デフォルトavatarImageがAssetsに登録されたら、初期値として設定する
@@ -20,8 +20,8 @@ class ContactUser {
   ContactUser({
     required this.importFrom,
     required this.displayName,
-    required this.givinName,
-    required this.familyName,
+    required this.firstName,
+    required this.lastName,
     required this.email,
     required this.phoneNumber,
     this.avatar,
@@ -32,8 +32,8 @@ class ContactUser {
     return ContactUser(
       importFrom: json['importFrom'],
       displayName: json['displayName'],
-      givinName: json['givinName'],
-      familyName: json['familyName'],
+      firstName: json['firstName'],
+      lastName: json['lastName'],
       email: json['email'],
       phoneNumber: json['phoneNumber'],
       avatar: json['avatar'],
@@ -45,8 +45,8 @@ class ContactUser {
     return {
       'importFrom': importFrom,
       'displayName': displayName,
-      'givinName': givinName,
-      'familyName': familyName,
+      'firstName': firstName,
+      'lastName': lastName,
       'email': email,
       'phoneNumber': phoneNumber,
       'avatar': avatar,
