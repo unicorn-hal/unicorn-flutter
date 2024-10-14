@@ -23,7 +23,7 @@ class CustomLoadingAnimation extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        LoadingAnimationWidget.inkDrop(
+        LoadingAnimationWidget.hexagonDots(
           color: iconColor,
           size: iconSize,
         ),
