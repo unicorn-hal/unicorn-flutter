@@ -15,7 +15,6 @@ class ContactUser {
   final String phoneNumber;
   // todo: デフォルトavatarImageがAssetsに登録されたら、初期値として設定する
   final Image? avatar;
-  final String? imagePath;
 
   ContactUser({
     required this.importFrom,
@@ -25,7 +24,6 @@ class ContactUser {
     required this.email,
     required this.phoneNumber,
     this.avatar,
-    this.imagePath,
   });
 
   factory ContactUser.fromJson(Map<String, dynamic> json) {
@@ -37,7 +35,6 @@ class ContactUser {
       email: json['email'],
       phoneNumber: json['phoneNumber'],
       avatar: json['avatar'],
-      imagePath: json['imagePath'],
     );
   }
 
@@ -50,7 +47,6 @@ class ContactUser {
       'email': email,
       'phoneNumber': phoneNumber,
       'avatar': avatar,
-      'imagePath': imagePath,
     };
   }
 }
