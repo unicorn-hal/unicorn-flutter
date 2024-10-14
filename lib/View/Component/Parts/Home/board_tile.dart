@@ -1,6 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -10,22 +8,22 @@ class BoardTile extends StatelessWidget {
     required this.title,
     required this.content,
     this.onTap,
-    this.imageUrl,
+    this.image,
   });
 
   final String title;
   final String content;
   final Function? onTap;
-  final String? imageUrl;
+  final Image? image;
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () => onTap?.call(),
-      child: imageUrl == null
+      child: image == null
 
-          /// imageUrlがnullの場合はContainerを表示
+          /// imageがnullの場合はContainerを表示
           ? Container(
               width: size.width * 0.9,
               constraints: const BoxConstraints(
@@ -62,7 +60,7 @@ class BoardTile extends StatelessWidget {
               ),
             )
 
-          /// imageUrlがある場合は画像付きContainerを表示
+          /// imageがある場合は画像付きContainerを表示
           : Container(
               width: size.width * 0.9,
               constraints: const BoxConstraints(
@@ -79,15 +77,10 @@ class BoardTile extends StatelessWidget {
                     SizedBox(
                       height: 90,
                       width: 90,
-                      child: CachedNetworkImage(
-                        imageUrl: imageUrl!,
+                      child: FittedBox(
+                        clipBehavior: Clip.antiAlias,
                         fit: BoxFit.cover,
-                        placeholder: (context, url) => const Center(
-                          child: CustomIndicator(),
-                        ),
-                        errorWidget: (context, url, error) => const Icon(
-                          Icons.error,
-                        ),
+                        child: image,
                       ),
                     ),
                     Padding(

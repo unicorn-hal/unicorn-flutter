@@ -1,18 +1,15 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
-import 'package:unicorn_flutter/gen/assets.gen.dart';
 
 class UserImageCircle extends StatelessWidget {
   const UserImageCircle({
     super.key,
     required this.imageSize,
-    this.imagePath,
+    required this.image,
     this.onTap,
   });
 
   final double imageSize;
-  final String? imagePath;
+  final Image image;
   final Function? onTap;
 
   @override
@@ -27,20 +24,7 @@ class UserImageCircle extends StatelessWidget {
           child: FittedBox(
             fit: BoxFit.cover,
             clipBehavior: Clip.antiAlias,
-            child: imagePath != null
-                ? CachedNetworkImage(
-                    imageUrl: imagePath!,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => const Center(
-                      child: CustomIndicator(),
-                    ),
-                    errorWidget: (context, url, error) => const Icon(
-                      Icons.error,
-                    ),
-                  )
-                : Assets.images.icons.defaultUserIcon.image(
-                    fit: BoxFit.cover,
-                  ),
+            child: image,
           ),
         ),
       ),

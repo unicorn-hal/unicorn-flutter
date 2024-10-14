@@ -8,7 +8,7 @@ class UserInfoTile extends StatelessWidget {
     required this.onTap,
     required this.userName,
     required this.description,
-    this.imageUrl,
+    required this.image,
     this.tileColor = Colors.white,
   });
 
@@ -17,7 +17,7 @@ class UserInfoTile extends StatelessWidget {
   final String userName;
   final String description;
   final Color tileColor;
-  final String? imageUrl;
+  final Image image;
   final Function onTap;
 
   @override
@@ -40,7 +40,7 @@ class UserInfoTile extends StatelessWidget {
                 height: 50,
                 child: UserImageCircle(
                   imageSize: 50,
-                  imagePath: imageUrl,
+                  image: image,
                 ),
               ),
 
