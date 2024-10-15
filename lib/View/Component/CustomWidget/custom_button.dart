@@ -5,7 +5,8 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
     this.isFilledColor = false,
-    this.primaryColor = Colors.white,
+    this.primaryColor = Colors.blue,
+    // todo: mainColor決定したら変更する
     required this.text,
     required this.onTap,
   });
