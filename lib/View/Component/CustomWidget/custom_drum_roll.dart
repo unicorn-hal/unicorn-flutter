@@ -3,19 +3,16 @@ import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 
-// todo: 一旦表示日時更新+initStateを使いたいのでStatefulWidget。もっといいやり方あったら変えます
 class CustomDrumRoll extends StatefulWidget {
   const CustomDrumRoll({
     super.key,
     required this.showTime,
-    required this.minTime,
-    required this.maxTime,
+    this.maxTime,
     this.reservation,
   });
 
   final bool showTime;
-  final DateTime minTime;
-  final DateTime maxTime;
+  final DateTime? maxTime;
   final DateTime? reservation;
 
   @override
@@ -54,8 +51,8 @@ class _CustomDrumRollState extends State<CustomDrumRoll> {
             : DatePicker.showDatePicker(
                 context,
                 showTitleActions: true,
-                minTime: widget.minTime,
-                maxTime: widget.maxTime,
+                minTime: DateTime(1900, 1, 1),
+                maxTime: widget.maxTime ?? DateTime.now(),
                 onChanged: (date) {},
                 onConfirm: (date) {
                   // todo: Controllerにdateを渡す処理追記予定
