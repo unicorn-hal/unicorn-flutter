@@ -11,6 +11,7 @@ class CustomDialog extends StatelessWidget {
     this.image,
     this.titleColor = Colors.black,
     // todo: 決まり次第色変更
+    this.onTap,
   });
 
   final String title;
@@ -18,6 +19,7 @@ class CustomDialog extends StatelessWidget {
   final bool decision;
   final Image? image;
   final Color titleColor;
+  final Function? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -86,15 +88,20 @@ class CustomDialog extends StatelessWidget {
                     child: CustomButton(
                       text: 'キャンセル',
                       onTap: () {
-                        Navigator.pop(context);
+                        Navigator.of(
+                          context,
+                          rootNavigator: true,
+                        ).pop();
                       },
                       primaryColor: Colors.black,
                       // todo: 決まり次第色変更
                     ),
                   ),
-                  SizedBox(
-                    width: decision ? 20 : 0,
-                  ),
+                  decision
+                      ? const SizedBox(
+                          width: 20,
+                        )
+                      : Container(),
                   Visibility(
                     visible: decision,
                     child: Expanded(
@@ -102,9 +109,7 @@ class CustomDialog extends StatelessWidget {
                       child: CustomButton(
                         text: '決定',
                         isFilledColor: true,
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
+                        onTap: onTap ?? () {},
                         primaryColor: Colors.black,
                         // todo: 決まり次第色変更
                       ),
