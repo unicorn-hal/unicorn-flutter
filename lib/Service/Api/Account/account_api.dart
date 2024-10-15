@@ -3,8 +3,8 @@ import 'package:unicorn_flutter/Model/Entiry/Account/account_request.dart';
 import 'package:unicorn_flutter/Model/Entiry/api_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
 
-class ApiAccount extends ApiCore {
-  ApiAccount() : super('accounts');
+class AccountApi extends ApiCore {
+  AccountApi() : super('accounts');
 
   /// GET
   Future<Account?> getAccount() async {
