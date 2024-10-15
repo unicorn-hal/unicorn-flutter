@@ -1,26 +1,28 @@
+import 'package:unicorn_flutter/Constants/Enum/user_role_enum.dart';
+
 class Account {
-  final String? id;
-  final String? role;
-  final String? fcmTokenId;
+  final String uid;
+  final UserRoleEnum role;
+  final String fcmTokenId;
 
   Account({
-    required this.id,
+    required this.uid,
     required this.role,
     required this.fcmTokenId,
   });
 
   factory Account.fromJson(Map<String, dynamic> json) {
     return Account(
-      id: json['id'],
-      role: json['role'],
+      uid: json['uid'],
+      role: UserRoleType.fromString(json['role']),
       fcmTokenId: json['fcmTokenId'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'role': role,
+      'uid': uid,
+      'role': UserRoleType.toStringValue(role),
       'fcmTokenId': fcmTokenId,
     };
   }

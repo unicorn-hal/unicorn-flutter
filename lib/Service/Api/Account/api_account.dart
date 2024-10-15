@@ -1,38 +1,39 @@
 import 'package:unicorn_flutter/Model/Entiry/Account/account.dart';
 import 'package:unicorn_flutter/Model/Entiry/Account/account_request.dart';
+import 'package:unicorn_flutter/Model/Entiry/api_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
-import 'package:unicorn_flutter/Service/Log/log_service.dart';
 
 class ApiAccount extends ApiCore {
   ApiAccount() : super('accounts');
 
+  /// GET
   Future<Account?> getAccount() async {
-    final Map<String, dynamic> response = await get();
-    if (response.containsKey('statusCode')) {
-      Log.echo(
-          'GETACCOUNT statusCode: ${response['statusCode']} message: ${response['message']}');
+    try {
+      final ApiResponse response = await get();
+      return Account.fromJson(response.data);
+    } catch (e) {
       return null;
     }
-    return Account.fromJson(response);
   }
 
-  Future<int?> postAccount(AccountRequest body) async {
-    final Map<String, dynamic> response = await post(body.toJson());
-    if (response.containsKey('statusCode')) {
-      Log.echo(
-          'POSTACCOUNT statusCode: ${response['statusCode']} message: ${response['message']}');
-      return null;
+  /// POST
+  /// [body] AccountRequest
+  Future<int> postAccount(AccountRequest body) async {
+    try {
+      final ApiResponse response = await post(body.toJson());
+      return response.statusCode;
+    } catch (e) {
+      return 500;
     }
-    return null;
   }
 
-  Future<int?> deleteAccount() async {
-    final Map<String, dynamic> response = await delete();
-    if (response.containsKey('statusCode')) {
-      Log.echo(
-          'DELETEACCOUNT statusCode: ${response['statusCode']} message: ${response['message']}');
-      return null;
+  /// DELETE
+  Future<int> deleteAccount() async {
+    try {
+      final ApiResponse response = await delete();
+      return response.statusCode;
+    } catch (e) {
+      return 500;
     }
-    return null;
   }
 }
