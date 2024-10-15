@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:unicorn_flutter/Model/Entiry/api_response.dart';
@@ -29,6 +30,7 @@ abstract class ApiCore {
   }
 
   /// GET
+  @protected
   Future<ApiResponse> get() async {
     try {
       await makeHeader();
@@ -63,6 +65,7 @@ abstract class ApiCore {
 
   /// POST
   /// [body] 送信データ
+  @protected
   Future<ApiResponse> post(Map<String, dynamic> body) async {
     try {
       await makeHeader();
@@ -98,6 +101,7 @@ abstract class ApiCore {
 
   /// PUT
   /// [body] 送信データ
+  @protected
   Future<ApiResponse> put(Map<String, dynamic> body) async {
     try {
       await makeHeader();
@@ -132,6 +136,7 @@ abstract class ApiCore {
   }
 
   /// DELETE
+  @protected
   Future<ApiResponse> delete() async {
     try {
       await makeHeader();
