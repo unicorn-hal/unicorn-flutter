@@ -9,4 +9,10 @@ class Strings {
       '体の悩みをAIが分析して対処法や改善点などをアドバイスしてくれます。';
   static const String AIBANNER_DESCRIPTION_ASK =
       '持病の種類やおくすりの詳細情報がわからないときはAIに聞いて自動追加してもらおう。';
+
+  // CustomLoadingAnimationに表示するテキスト
+  static const String LOADING_TEXT_INSPECTION = '検査中です';
+  static const String LOADING_TEXT_TREATMENT = '治療中です';
+  static const String LOADING_TEXT_BODY_TEMPERATURE = '体温を測定中です';
+  static const String LOADING_TEXT_BLOOD_PRESSURE = '血圧を測定中です';
 }
