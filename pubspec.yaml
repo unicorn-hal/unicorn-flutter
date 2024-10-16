@@ -28,7 +28,7 @@ dependencies:
   contacts_service: ^0.6.3
   device_info_plus: ^10.1.2
   package_info_plus: ^8.0.2
-  geolocator: ^12.0.0 # オフライン追加のため後日pub upgrade
+  geolocator: ^12.0.0
 
 dev_dependencies:
   flutter_test:
