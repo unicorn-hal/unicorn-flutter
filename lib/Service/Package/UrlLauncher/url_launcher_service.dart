@@ -6,7 +6,7 @@ class UrlLauncherService {
   /// [url] String URL文字列
   Future<void> launchUrl(String url) async {
     Uri uri = Uri.parse(url);
-    if (!(await package.canLaunchUrl(url))) {
+    if (!(await package.canLaunchUrl(uri))) {
       Log.echo('URLを開けませんでした。', symbol: '❌');
       return;
     }
