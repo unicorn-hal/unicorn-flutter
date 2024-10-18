@@ -45,5 +45,17 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Permission options for the `contacts` group -->
+    <key>NSContactsUsageDescription</key>
+    <string>ユーザーが連絡先にアクセスするために使用されます。</string>
+	<!-- Permission options for the `faceid` group -->
+	<key>NSFaceIDUsageDescription</key>
+	<string>ユーザーがプライバシーを保護するためにFace IDを使用することを許可します。</string>
+	<!-- Permission options for the `camera` group -->
+	<key>NSCameraUsageDescription</key>
+	<string>ユーザーがカメラを使用することを許可します。</string>
+	<!-- Permission options for the `photoLibrary` group -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>ユーザーが写真にアクセスするために使用されます。</string>
 </dict>
 </plist>
