@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class CustomDialog extends StatelessWidget {
   const CustomDialog({
     super.key,
     required this.title,
-    required this.text,
+    required this.bodyText,
     this.decision = true,
     this.image,
-    this.titleColor = Colors.black,
-    // todo: 決まり次第色変更
+    this.titleColor = ColorName.mainColor,
     this.onTap,
   });
 
   final String title;
-  final String text;
+  final String bodyText;
   final bool decision;
   final Image? image;
   final Color titleColor;
@@ -70,7 +70,7 @@ class CustomDialog extends StatelessWidget {
               ),
               width: 180,
               child: CustomText(
-                text: text,
+                text: bodyText,
               ),
             ),
             Container(
@@ -93,8 +93,7 @@ class CustomDialog extends StatelessWidget {
                           rootNavigator: true,
                         ).pop();
                       },
-                      primaryColor: Colors.black,
-                      // todo: 決まり次第色変更
+                      primaryColor: ColorName.mainColor,
                     ),
                   ),
                   decision
@@ -110,8 +109,7 @@ class CustomDialog extends StatelessWidget {
                         text: '決定',
                         isFilledColor: true,
                         onTap: onTap ?? () {},
-                        primaryColor: Colors.black,
-                        // todo: 決まり次第色変更
+                        primaryColor: ColorName.mainColor,
                       ),
                     ),
                   ),

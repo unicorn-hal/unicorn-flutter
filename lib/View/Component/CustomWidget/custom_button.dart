@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
     this.isFilledColor = false,
-    this.primaryColor = Colors.blue,
-    // todo: mainColor決定したら変更する
+    this.primaryColor = ColorName.mainColor,
     required this.text,
     required this.onTap,
   });

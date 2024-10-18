@@ -18,4 +18,7 @@
     <!-- 検診ボタンに使用するカラー -->
     <color name="health_check_button_start">#96DBF9</color>
     <color name="health_check_button_end">#4AA9F7</color>
+
+    <!-- ドラムロールボタンに使用するカラー -->
+    <color name="drum_roll_button_color">#EEEEEE</color>
 </resources>

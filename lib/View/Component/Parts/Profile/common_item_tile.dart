@@ -31,7 +31,6 @@ class CommonItemTile extends StatelessWidget {
             bottom: BorderSide(
               width: 1,
               color: Colors.grey,
-              // todo: 他のpartsと色を合わせる可能性あり
             ),
           ),
         ),

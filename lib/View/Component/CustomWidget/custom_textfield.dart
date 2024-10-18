@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class CustomTextfield extends StatefulWidget {
   const CustomTextfield({
@@ -28,8 +29,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
       },
       textAlignVertical: TextAlignVertical.center,
       style: const TextStyle(
-        decorationColor: Colors.grey,
-        // todo: テーマカラー決まり次第変更(入力文字の下線)
+        decorationColor: ColorName.mainColor,
       ),
       decoration: InputDecoration(
         prefixIcon: widget.prefixIcon,
@@ -62,7 +62,6 @@ class _CustomTextfieldState extends State<CustomTextfield> {
           borderSide: const BorderSide(
             width: 1,
             color: Colors.grey,
-            // todo: 専用色決まったら変更
           ),
         ),
         focusedBorder: OutlineInputBorder(
@@ -70,7 +69,6 @@ class _CustomTextfieldState extends State<CustomTextfield> {
           borderSide: const BorderSide(
             width: 1,
             color: Colors.grey,
-            // todo: 専用色決まったら変更
           ),
         ),
         isDense: true,
@@ -79,8 +77,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
           horizontal: widget.prefixIcon != null ? 5 : 30,
         ),
       ),
-      cursorColor: Colors.grey,
-      // todo: テーマカラー決まり次第変更
+      cursorColor: ColorName.mainColor,
       cursorWidth: 2,
       cursorRadius: const Radius.circular(10),
     );

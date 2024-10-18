@@ -18,7 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color? backgroundColor;
   final ImageProvider? leadingImage;
   double? appBarHight;
-  List<IconButton>? actions;
+  List<Widget>? actions;
 
   @override
   Size get preferredSize => Size.fromHeight(appBarHight!); // ここでAppBarの高さを指定
@@ -44,7 +44,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                 )
               : const SizedBox(),
           CustomText(
-            text: title!,
+            text: title ?? '',
             color: foregroundColor,
             fontWeight: FontWeight.bold,
           ),

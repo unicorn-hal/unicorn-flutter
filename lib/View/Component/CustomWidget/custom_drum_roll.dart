@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class CustomDrumRoll extends StatefulWidget {
   const CustomDrumRoll({
@@ -66,8 +67,7 @@ class _CustomDrumRollState extends State<CustomDrumRoll> {
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 212, 212, 212),
-          // todo: 専用色決まったら変更
+          color: ColorName.drumRollButtonColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: CustomText(
@@ -75,7 +75,6 @@ class _CustomDrumRollState extends State<CustomDrumRoll> {
               ? DateFormat('hh:mm a').format(scheduledTime)
               : DateFormat('yyyy MM/dd').format(scheduledTime),
           color: Colors.blue,
-          // todo: ここの色も変えるかも
         ),
       ),
     );
