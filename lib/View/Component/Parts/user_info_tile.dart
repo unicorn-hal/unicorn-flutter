@@ -56,7 +56,7 @@ class UserInfoTile extends StatelessWidget {
                   SizedBox(
                     width: size.width * 0.5,
                     height: 30,
-                    child: Align(
+                    child: const Align(
                       alignment: Alignment.centerLeft,
                       child: CustomText(text: 'のりたしおき'),
                     ),
@@ -64,7 +64,7 @@ class UserInfoTile extends StatelessWidget {
                   SizedBox(
                     width: size.width * 0.8,
                     height: 20,
-                    child: Align(
+                    child: const Align(
                       alignment: Alignment.centerLeft,
                       child: CustomText(
                         text:

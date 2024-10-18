@@ -38,7 +38,7 @@ class HealthCheckButton extends StatelessWidget {
             Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Icon(
                     aiCheck ? Icons.mic : Icons.monitor_heart,
                     color: Colors.white,

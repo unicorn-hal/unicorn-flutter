@@ -3,7 +3,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class CheckboxTile extends StatelessWidget {
-  CheckboxTile({
+  const CheckboxTile({
     super.key,
     required this.checkboxText,
     required this.value,
@@ -12,7 +12,7 @@ class CheckboxTile extends StatelessWidget {
   });
   final String checkboxText;
   final Function onChanged;
-  bool value = false;
+  final bool value;
   final Color tileColor;
 
   @override
@@ -30,17 +30,14 @@ class CheckboxTile extends StatelessWidget {
           decoration: BoxDecoration(
             color: value ? tileColor : Colors.white,
             borderRadius: BorderRadius.circular(5),
-            border: Border.all(
-              width: 1,
-              color: Colors.grey
-            ),
+            border: Border.all(width: 1, color: Colors.grey),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Checkbox(
                 value: value,
-                onChanged: (value){
+                onChanged: (value) {
                   onChanged.call();
                 },
               ),
