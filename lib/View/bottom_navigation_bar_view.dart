@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/bottom_navigation_bar_controller.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class BottomNavigationBarView extends StatefulWidget {
   const BottomNavigationBarView({super.key});
@@ -41,8 +42,7 @@ class _BottomNavigationBarViewState extends State<BottomNavigationBarView>
         children: [
           NavigationBar(
             selectedIndex: controller.navigationShell.currentIndex,
-            // todo: カラーアセット確定後に修正する
-            // indicatorColor: Colors.green.withOpacity(0.2),
+            indicatorColor: ColorName.mainColor.withOpacity(0.2),
             destinations: const [
               NavigationDestination(icon: Icon(Icons.home), label: 'ホーム'),
               NavigationDestination(
