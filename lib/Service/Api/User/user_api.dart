@@ -9,7 +9,7 @@ class UserApi extends ApiCore {
   /// パラメーター設定
   /// [userId] ユーザーID
   void setUserId(String userId) {
-    parameter = userId;
+    firstParameter = userId;
   }
 
   /// GET
