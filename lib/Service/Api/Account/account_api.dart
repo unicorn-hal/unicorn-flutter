@@ -1,6 +1,6 @@
-import 'package:unicorn_flutter/Model/Entiry/Account/account.dart';
-import 'package:unicorn_flutter/Model/Entiry/Account/account_request.dart';
-import 'package:unicorn_flutter/Model/Entiry/api_response.dart';
+import 'package:unicorn_flutter/Model/Entity/Account/account.dart';
+import 'package:unicorn_flutter/Model/Entity/Account/account_request.dart';
+import 'package:unicorn_flutter/Model/Entity/api_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
 
 class AccountApi extends ApiCore {
