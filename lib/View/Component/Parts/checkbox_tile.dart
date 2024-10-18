@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class CheckboxTile extends StatelessWidget {
   CheckboxTile({
@@ -44,7 +45,7 @@ class CheckboxTile extends StatelessWidget {
                 },
               ),
               CustomText(
-                color: value ? Colors.white : Colors.black,
+                color: value ? Colors.white : ColorName.textBlack,
                 fontSize: 18,
                 text: checkboxText,
               ),
