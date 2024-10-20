@@ -20,7 +20,6 @@ abstract class ApiCore {
   ApiCore(this.endPoint);
 
   /// URL作成
-  /// [firstParameter] パラメータ
   String get _url => '$_baseUrl/$endPoint/$parameter';
 
   /// ヘッダー作成
