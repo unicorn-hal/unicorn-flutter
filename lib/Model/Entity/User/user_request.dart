@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
-import 'package:unicorn_flutter/Service/Package/ImageUtils/image_utils_service.dart';
 
 class UserRequest {
   final String userId;
@@ -12,7 +10,7 @@ class UserRequest {
   final String address;
   final String postalCode;
   final String phoneNumber;
-  final Uint8List iconImage;
+  final String? iconImageUrl;
   final double bodyHeight;
   final double bodyWeight;
   final String occupation;
@@ -27,7 +25,7 @@ class UserRequest {
     required this.address,
     required this.postalCode,
     required this.phoneNumber,
-    required this.iconImage,
+    required this.iconImageUrl,
     required this.bodyHeight,
     required this.bodyWeight,
     required this.occupation,
@@ -44,7 +42,7 @@ class UserRequest {
       address: json['address'],
       postalCode: json['postalCode'],
       phoneNumber: json['phoneNumber'],
-      iconImage: ImageUtilsService().b64ToUint8List(json['iconImage']),
+      iconImageUrl: json['iconImage'],
       bodyHeight: json['bodyHeight'],
       bodyWeight: json['bodyWeight'],
       occupation: json['occupation'],
@@ -62,7 +60,7 @@ class UserRequest {
       'address': address,
       'postalCode': postalCode,
       'phoneNumber': phoneNumber,
-      'iconImage': ImageUtilsService().uint8ListTob64(iconImage),
+      'iconImageUrl': iconImageUrl,
       'bodyHeight': bodyHeight,
       'bodyWeight': bodyWeight,
       'occupation': occupation,

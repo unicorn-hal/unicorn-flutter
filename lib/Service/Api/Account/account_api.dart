@@ -2,9 +2,10 @@ import 'package:unicorn_flutter/Model/Entity/Account/account.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account_request.dart';
 import 'package:unicorn_flutter/Model/Entity/api_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
+import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 
-class AccountApi extends ApiCore {
-  AccountApi() : super('accounts');
+class AccountApi extends ApiCore with Endpoint {
+  AccountApi() : super(Endpoint.accounts);
 
   /// GET
   Future<Account?> getAccount() async {
@@ -18,7 +19,7 @@ class AccountApi extends ApiCore {
 
   /// POST
   /// [body] AccountRequest
-  Future<int> postAccount(AccountRequest body) async {
+  Future<int> postAccount({required AccountRequest body}) async {
     try {
       final ApiResponse response = await post(body.toJson());
       return response.statusCode;

@@ -20,7 +20,13 @@ abstract class ApiCore {
   ApiCore(this.endPoint);
 
   /// URL作成
-  String get _url => '$_baseUrl/$endPoint/$parameter';
+  String get _url => '$_baseUrl$endPoint/$parameter';
+
+  /// パラメータセット
+  /// [parameter] パラメータ
+  void setParameter({required String parameter}) {
+    this.parameter = parameter;
+  }
 
   /// ヘッダー作成
   Future<void> makeHeader() async {
@@ -84,7 +90,6 @@ abstract class ApiCore {
           data: {},
         );
       }
-
       final String responseUtf8 = utf8.decode(response.bodyBytes);
       Map<String, dynamic> jsonResponse = json.decode(responseUtf8);
 
