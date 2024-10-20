@@ -1,6 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
+
+import '../../CustomWidget/custom_indicator.dart';
 
 class BoardTile extends StatelessWidget {
   const BoardTile({
@@ -8,20 +11,20 @@ class BoardTile extends StatelessWidget {
     required this.title,
     required this.content,
     this.onTap,
-    this.image,
+    this.imageUrl,
   });
 
   final String title;
   final String content;
   final Function? onTap;
-  final Image? image;
+  final String? imageUrl;
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: () => onTap?.call(),
-      child: image == null
+      child: imageUrl == null
 
           /// imageがnullの場合はContainerを表示
           ? Container(
@@ -80,7 +83,11 @@ class BoardTile extends StatelessWidget {
                       child: FittedBox(
                         clipBehavior: Clip.antiAlias,
                         fit: BoxFit.cover,
-                        child: image,
+                        child: CachedNetworkImage(
+                          imageUrl: imageUrl!,
+                          placeholder: (context, url) =>
+                              const CustomIndicator(),
+                        ),
                       ),
                     ),
                     Padding(
