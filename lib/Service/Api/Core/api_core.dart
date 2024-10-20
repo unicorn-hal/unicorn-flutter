@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:unicorn_flutter/Model/Entiry/api_response.dart';
 import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_service.dart';
 
 abstract class ApiCore {
@@ -28,27 +30,43 @@ abstract class ApiCore {
   }
 
   /// GET
-  Future<Map<String, dynamic>> get() async {
+  @protected
+  Future<ApiResponse> get() async {
     try {
       await makeHeader();
       http.Response response = await http.get(
         Uri.parse(_baseUrl),
         headers: _headers,
       );
+      if (response.statusCode != 200) {
+        return ApiResponse(
+          statusCode: response.statusCode,
+          message: 'GET Failed',
+          data: {},
+        );
+      }
+
       final String responseUtf8 = utf8.decode(response.bodyBytes);
       Map<String, dynamic> jsonResponse = json.decode(responseUtf8);
-      return jsonResponse;
+
+      return ApiResponse.fromJson({
+        'statusCode': response.statusCode,
+        'message': 'Success',
+        'data': jsonResponse,
+      });
     } catch (e) {
-      return {
-        'statusCode': 500,
-        'message': e.toString(),
-      };
+      return ApiResponse(
+        statusCode: 500,
+        message: e.toString(),
+        data: {},
+      );
     }
   }
 
   /// POST
   /// [body] 送信データ
-  Future<Map<String, dynamic>> post(Map<String, dynamic> body) async {
+  @protected
+  Future<ApiResponse> post(Map<String, dynamic> body) async {
     try {
       await makeHeader();
       http.Response response = await http.post(
@@ -56,20 +74,35 @@ abstract class ApiCore {
         headers: _headers,
         body: json.encode(body),
       );
+      if (response.statusCode != 200) {
+        return ApiResponse(
+          statusCode: response.statusCode,
+          message: 'POST Failed',
+          data: {},
+        );
+      }
+
       final String responseUtf8 = utf8.decode(response.bodyBytes);
       Map<String, dynamic> jsonResponse = json.decode(responseUtf8);
-      return jsonResponse;
+
+      return ApiResponse.fromJson({
+        'statusCode': response.statusCode,
+        'message': 'Success',
+        'data': jsonResponse,
+      });
     } catch (e) {
-      return {
-        'statusCode': 500,
-        'message': e.toString(),
-      };
+      return ApiResponse(
+        statusCode: 500,
+        message: e.toString(),
+        data: {},
+      );
     }
   }
 
   /// PUT
   /// [body] 送信データ
-  Future<Map<String, dynamic>> put(Map<String, dynamic> body) async {
+  @protected
+  Future<ApiResponse> put(Map<String, dynamic> body) async {
     try {
       await makeHeader();
       http.Response response = await http.put(
@@ -77,33 +110,58 @@ abstract class ApiCore {
         headers: _headers,
         body: json.encode(body),
       );
+      if (response.statusCode != 200) {
+        return ApiResponse(
+          statusCode: response.statusCode,
+          message: 'PUT Failed',
+          data: {},
+        );
+      }
+
       final String responseUtf8 = utf8.decode(response.bodyBytes);
       Map<String, dynamic> jsonResponse = json.decode(responseUtf8);
-      return jsonResponse;
+
+      return ApiResponse.fromJson({
+        'statusCode': response.statusCode,
+        'message': 'Success',
+        'data': jsonResponse,
+      });
     } catch (e) {
-      return {
-        'statusCode': 500,
-        'message': e.toString(),
-      };
+      return ApiResponse(
+        statusCode: 500,
+        message: e.toString(),
+        data: {},
+      );
     }
   }
 
   /// DELETE
-  Future<Map<String, dynamic>> delete() async {
+  @protected
+  Future<ApiResponse> delete() async {
     try {
       await makeHeader();
       http.Response response = await http.delete(
         Uri.parse(_baseUrl),
         headers: _headers,
       );
-      final String responseUtf8 = utf8.decode(response.bodyBytes);
-      Map<String, dynamic> jsonResponse = json.decode(responseUtf8);
-      return jsonResponse;
+      if (response.statusCode != 204) {
+        return ApiResponse(
+          statusCode: response.statusCode,
+          message: 'DELETE Failed',
+          data: {},
+        );
+      }
+
+      return ApiResponse.fromJson({
+        'statusCode': response.statusCode,
+        'message': 'Success',
+      });
     } catch (e) {
-      return {
-        'statusCode': 500,
-        'message': e.toString(),
-      };
+      return ApiResponse(
+        statusCode: 500,
+        message: e.toString(),
+        data: {},
+      );
     }
   }
 }

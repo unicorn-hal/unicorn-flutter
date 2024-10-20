@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class CustomScaffold extends StatelessWidget {
   final Widget? body;
@@ -29,11 +31,10 @@ class CustomScaffold extends StatelessWidget {
     return Scaffold(
       appBar: isAppbar
           ? appBar ??
-              // todo: CustomAppBar確定後に修正する
-              AppBar(
-                title: Text(title ?? ''),
+              CustomAppBar(
+                title: title,
                 actions: actions,
-                backgroundColor: Colors.red,
+                backgroundColor: ColorName.mainColor,
               )
           : null,
       body: isScrollable
