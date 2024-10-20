@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:unicorn_flutter/Model/Entity/address_info.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/Service/Package/PermissionHandler/permission_handler_service.dart';
 
@@ -47,13 +48,12 @@ class LocationService {
   }
 
   /// 現在位置から住所を取得するサービス
-  Future<String?> getAddressFromPosition() async {
+  Future<AddressInfo?> getAddressFromPosition() async {
     try {
       String? postalCode = await _getCurrentPostalCode();
       if (postalCode == null) {
         throw Exception('Postal Code Not Found');
       }
-      postalCode = postalCode.replaceAll('-', '');
 
       return await getAddressFromPostalCode(postalCode);
     } catch (e) {
@@ -63,8 +63,9 @@ class LocationService {
   }
 
   /// 郵便番号からApiを利用して住所を取得するサービス
-  Future<String?> getAddressFromPostalCode(String postalCode) async {
+  Future<AddressInfo?> getAddressFromPostalCode(String postalCode) async {
     try {
+      postalCode = postalCode.replaceAll('-', '');
       if (postalCode.length != 7) {
         throw Exception('Invalid Postal Code');
       }
@@ -78,9 +79,15 @@ class LocationService {
         throw Exception('Address Not Found');
       }
 
-      return jsonResponse['results'][0]['address1'] +
-          jsonResponse['results'][0]['address2'] +
-          jsonResponse['results'][0]['address3'];
+      Map<String, dynamic> address = jsonResponse['results'][0];
+      AddressInfo addressInfo = AddressInfo(
+        postalCode: postalCode,
+        prefecture: address['address1'],
+        city: address['address2'],
+        town: address['address3'],
+      );
+
+      return addressInfo;
     } catch (e) {
       Log.echo('Error: $e');
       return null;
