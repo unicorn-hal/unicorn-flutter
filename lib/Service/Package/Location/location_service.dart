@@ -4,7 +4,7 @@ import 'package:unicorn_flutter/Model/Entiry/location.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/Service/Package/PermissionHandler/permission_handler_service.dart';
 
-class GeolocatorService {
+class LocationService {
   PermissionHandlerService get permissionHandlerService =>
       PermissionHandlerService();
 
@@ -27,7 +27,7 @@ class GeolocatorService {
 
   /// 現在地情報をカスタムクラスで返却する
   Future<Location?> getLocation() async {
-    Position position = await _getPosition();
+    Position? position = await _getPosition();
     if (position == null) {
       return null;
     }
