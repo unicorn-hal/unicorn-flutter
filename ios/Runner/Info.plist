@@ -52,7 +52,9 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>ユーザーがプライバシーを保護するためにFace IDを使用することを許可します。</string>
 	<!-- Permission options for the `location` group -->
-	<key>NSLocationUsegeDescription</key>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>アプリがバックグラウンドで実行中でも、ユーザーがパーソナライズされた情報を取得するために位置情報を使用することを許可します。</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>ユーザーがパーソナライズされた情報を取得するために位置情報を使用することを許可します。</string>
 </dict>
 </plist>
