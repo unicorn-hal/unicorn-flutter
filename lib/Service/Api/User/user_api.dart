@@ -7,18 +7,11 @@ import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 class UserApi extends ApiCore with Endpoint {
   UserApi() : super(Endpoint.users);
 
-  /// ユーザーIDをセット
-  /// [userId] ユーザーID
-  @override
-  void setParameter({required String parameter}) {
-    this.parameter = parameter;
-  }
-
   /// GET
   /// [userId] ユーザーID
   Future<User?> getUser({required String userId}) async {
     try {
-      setParameter(parameter: userId);
+      setParameter(useParameter: userId);
       final ApiResponse response = await get();
       return User.fromJson(response.data);
     } catch (e) {
@@ -45,7 +38,7 @@ class UserApi extends ApiCore with Endpoint {
     required UserRequest body,
   }) async {
     try {
-      setParameter(parameter: userId);
+      setParameter(useParameter: userId);
       final ApiResponse response = await put(body.toJson());
       return response.statusCode;
     } catch (e) {
@@ -57,7 +50,7 @@ class UserApi extends ApiCore with Endpoint {
   /// [userId] ユーザーID
   Future<int> deleteUser({required String userId}) async {
     try {
-      setParameter(parameter: userId);
+      setParameter(useParameter: userId);
       final ApiResponse response = await delete();
       return response.statusCode;
     } catch (e) {

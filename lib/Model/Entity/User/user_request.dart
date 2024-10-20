@@ -33,7 +33,7 @@ class UserRequest {
 
   factory UserRequest.fromJson(Map<String, dynamic> json) {
     return UserRequest(
-      userId: json['userId'],
+      userId: json['userID'],
       firstName: json['firstName'],
       lastName: json['lastName'],
       email: json['email'],
@@ -51,7 +51,7 @@ class UserRequest {
 
   Map<String, dynamic> toJson() {
     return {
-      'userId': userId,
+      'userID': userId,
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
