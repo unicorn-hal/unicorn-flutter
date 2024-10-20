@@ -3,20 +3,29 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:unicorn_flutter/Model/Entiry/api_response.dart';
+import 'package:unicorn_flutter/Model/Entity/api_response.dart';
 import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_service.dart';
 
 abstract class ApiCore {
   FirebaseAuthenticationService get authService =>
       FirebaseAuthenticationService();
-  String _baseUrl = dotenv.env['UNICORN_API_BASEURL']!;
+
+  final String _baseUrl = dotenv.env['UNICORN_API_BASEURL']!;
   String _idToken = '';
   String endPoint = '';
+  String parameter = '';
   late Map<String, String> _headers;
 
   /// コンストラクタ
-  ApiCore(this.endPoint) {
-    _baseUrl += endPoint;
+  ApiCore(this.endPoint);
+
+  /// URL作成
+  String get _url => '$_baseUrl$endPoint/$parameter';
+
+  /// パラメータセット
+  /// [parameter] パラメータ
+  void useParameter({required String parameter}) {
+    parameter = parameter;
   }
 
   /// ヘッダー作成
@@ -35,7 +44,7 @@ abstract class ApiCore {
     try {
       await makeHeader();
       http.Response response = await http.get(
-        Uri.parse(_baseUrl),
+        Uri.parse(_url),
         headers: _headers,
       );
       if (response.statusCode != 200) {
@@ -70,7 +79,7 @@ abstract class ApiCore {
     try {
       await makeHeader();
       http.Response response = await http.post(
-        Uri.parse(_baseUrl),
+        Uri.parse(_url),
         headers: _headers,
         body: json.encode(body),
       );
@@ -81,7 +90,6 @@ abstract class ApiCore {
           data: {},
         );
       }
-
       final String responseUtf8 = utf8.decode(response.bodyBytes);
       Map<String, dynamic> jsonResponse = json.decode(responseUtf8);
 
@@ -106,7 +114,7 @@ abstract class ApiCore {
     try {
       await makeHeader();
       http.Response response = await http.put(
-        Uri.parse(_baseUrl),
+        Uri.parse(_url),
         headers: _headers,
         body: json.encode(body),
       );
@@ -141,7 +149,7 @@ abstract class ApiCore {
     try {
       await makeHeader();
       http.Response response = await http.delete(
-        Uri.parse(_baseUrl),
+        Uri.parse(_url),
         headers: _headers,
       );
       if (response.statusCode != 204) {
