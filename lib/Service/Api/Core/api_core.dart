@@ -23,9 +23,9 @@ abstract class ApiCore {
   String get _url => '$_baseUrl$endPoint/$parameter';
 
   /// パラメータセット
-  /// [useParameter] パラメータ
-  void setParameter({required String useParameter}) {
-    parameter = useParameter;
+  /// [parameter] パラメータ
+  void useParameter({required String parameter}) {
+    parameter = parameter;
   }
 
   /// ヘッダー作成
