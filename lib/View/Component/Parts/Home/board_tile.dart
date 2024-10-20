@@ -26,7 +26,7 @@ class BoardTile extends StatelessWidget {
       onTap: () => onTap?.call(),
       child: imageUrl == null
 
-          /// imageがnullの場合はContainerを表示
+          /// imageUrlがnullの場合はContainerを表示
           ? Container(
               width: size.width * 0.9,
               constraints: const BoxConstraints(
@@ -63,7 +63,7 @@ class BoardTile extends StatelessWidget {
               ),
             )
 
-          /// imageがある場合は画像付きContainerを表示
+          /// imageUrlがある場合は画像付きContainerを表示
           : Container(
               width: size.width * 0.9,
               constraints: const BoxConstraints(
