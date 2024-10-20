@@ -9,7 +9,7 @@ class UserApi extends ApiCore with Endpoint {
 
   /// パラメーター設定
   /// [userId] ユーザーID
-  void setUserId(String userId) {
+  void setUserId({required String userId}) {
     parameter = userId;
   }
 
@@ -17,7 +17,7 @@ class UserApi extends ApiCore with Endpoint {
   /// [userId] ユーザーID
   Future<User?> getUser({required String userId}) async {
     try {
-      setUserId(userId);
+      setUserId(userId: userId);
       final ApiResponse response = await get();
       return User.fromJson(response.data);
     } catch (e) {
@@ -44,7 +44,7 @@ class UserApi extends ApiCore with Endpoint {
     required UserRequest body,
   }) async {
     try {
-      setUserId(userId);
+      setUserId(userId: userId);
       final ApiResponse response = await put(body.toJson());
       return response.statusCode;
     } catch (e) {
@@ -56,7 +56,7 @@ class UserApi extends ApiCore with Endpoint {
   /// [userId] ユーザーID
   Future<int> deleteUser({required String userId}) async {
     try {
-      setUserId(userId);
+      setUserId(userId: userId);
       final ApiResponse response = await delete();
       return response.statusCode;
     } catch (e) {
