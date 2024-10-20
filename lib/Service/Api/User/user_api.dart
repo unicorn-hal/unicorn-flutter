@@ -2,19 +2,20 @@ import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Model/Entity/api_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
+import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 
-class UserApi extends ApiCore {
-  UserApi() : super('users');
+class UserApi extends ApiCore with Endpoint {
+  UserApi() : super(Endpoint.users);
 
   /// パラメーター設定
   /// [userId] ユーザーID
   void setUserId(String userId) {
-    firstParameter = userId;
+    parameter = userId;
   }
 
   /// GET
   /// [userId] ユーザーID
-  Future<User?> getUser(String userId) async {
+  Future<User?> getUser({required String userId}) async {
     try {
       setUserId(userId);
       final ApiResponse response = await get();
@@ -26,7 +27,7 @@ class UserApi extends ApiCore {
 
   /// POST
   /// [body] UserRequest
-  Future<int> postUser(UserRequest body) async {
+  Future<int> postUser({required UserRequest body}) async {
     try {
       final ApiResponse response = await post(body.toJson());
       return response.statusCode;
@@ -38,7 +39,10 @@ class UserApi extends ApiCore {
   /// PUT
   /// [userId] ユーザーID
   /// [body] UserRequest
-  Future<int> putUser(String userId, UserRequest body) async {
+  Future<int> putUser({
+    required String userId,
+    required UserRequest body,
+  }) async {
     try {
       setUserId(userId);
       final ApiResponse response = await put(body.toJson());
@@ -50,7 +54,7 @@ class UserApi extends ApiCore {
 
   /// DELETE
   /// [userId] ユーザーID
-  Future<int> deleteUser(String userId) async {
+  Future<int> deleteUser({required String userId}) async {
     try {
       setUserId(userId);
       final ApiResponse response = await delete();

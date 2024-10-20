@@ -13,8 +13,7 @@ abstract class ApiCore {
   final String _baseUrl = dotenv.env['UNICORN_API_BASEURL']!;
   String _idToken = '';
   String endPoint = '';
-  String firstParameter = '';
-  String? secondParameter;
+  String parameter = '';
   late Map<String, String> _headers;
 
   /// コンストラクタ
@@ -22,14 +21,7 @@ abstract class ApiCore {
 
   /// URL作成
   /// [firstParameter] パラメータ
-  /// [secondParameter] 2つ目のパラメータ
-  String get _url {
-    if (secondParameter == null || secondParameter!.isEmpty) {
-      return '$_baseUrl/$endPoint/$firstParameter'; // secondParameter がない場合
-    } else {
-      return '$_baseUrl/$endPoint/$firstParameter/$secondParameter'; // ある場合
-    }
-  }
+  String get _url => '$_baseUrl/$endPoint/$parameter';
 
   /// ヘッダー作成
   Future<void> makeHeader() async {
