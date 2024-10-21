@@ -21,4 +21,7 @@
 
     <!-- ドラムロールボタンに使用するカラー -->
     <color name="drum_roll_button_color">#EEEEEE</color>
+
+    <!-- プロフィールタブの背景に使用するカラー -->
+    <color name="profile_background_color">#DFDFDF</color>
 </resources>
