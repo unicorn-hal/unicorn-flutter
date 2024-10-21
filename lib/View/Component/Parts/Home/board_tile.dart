@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 import '../../CustomWidget/custom_indicator.dart';
@@ -87,6 +88,10 @@ class BoardTile extends StatelessWidget {
                           imageUrl: imageUrl!,
                           placeholder: (context, url) =>
                               const CustomIndicator(),
+                          errorWidget: (context, url, error) =>
+                              Assets.images.icons.defaultImageIcon.image(
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     ),

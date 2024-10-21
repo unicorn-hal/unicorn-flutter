@@ -31,6 +31,10 @@ class UserImageCircle extends StatelessWidget {
                 ? CachedNetworkImage(
                     imageUrl: imageUrl!,
                     placeholder: (context, url) => const CustomIndicator(),
+                    errorWidget: (context, url, error) =>
+                        Assets.images.icons.defaultUserIcon.image(
+                      fit: BoxFit.cover,
+                    ),
                   )
                 : Assets.images.icons.defaultUserIcon.image(
                     fit: BoxFit.cover,
