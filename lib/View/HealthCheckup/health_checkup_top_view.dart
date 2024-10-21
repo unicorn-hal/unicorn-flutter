@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class HealthCheckupTopView extends StatelessWidget {
@@ -17,17 +16,11 @@ class HealthCheckupTopView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// 今日の検診結果・ボタン表示部
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: SizedBox(
-              width: size.width * 0.5,
-              height: size.width * 0.1,
-              child: const FittedBox(
-                fit: BoxFit.contain,
-                child: CustomText(
-                  text: '今日の検診',
-                ),
-              ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: CustomText(
+              text: '今日の検診',
+              fontSize: 20,
             ),
           ),
           Padding(
@@ -165,10 +158,15 @@ class HealthCheckupTopView extends StatelessWidget {
                               text: '検診結果',
                               fontSize: 12,
                             ),
-                            CustomText(
-                              text: '正常',
-                              fontSize: 20,
-                              color: Colors.green,
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 4.0,
+                              ),
+                              child: CustomText(
+                                text: '正常',
+                                fontSize: 26,
+                                color: Colors.green,
+                              ),
                             ),
                             CustomText(
                               text:
@@ -182,6 +180,17 @@ class HealthCheckupTopView extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+          ),
+
+          const SpacerAndDivider(),
+
+          ///過去の検診結果表示部
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: CustomText(
+              text: '過去の検診',
+              fontSize: 20,
             ),
           ),
         ],
