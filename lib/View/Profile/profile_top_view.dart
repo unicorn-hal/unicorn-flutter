@@ -19,83 +19,81 @@ class ProfileTopView extends StatelessWidget {
     return CustomScaffold(
       isScrollable: true,
       appBar: CustomAppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 15,
-                  ),
-                  child: UserImageCircle(
-                    imageSize: 120,
-                  ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(
+                  vertical: 15,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 20,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomText(
-                        text: lastName,
-                        fontSize: 30,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      CustomText(
-                        text: firstName,
-                        fontSize: 30,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              width: deviceWidth,
-              height: deviceHeight * 0.7,
-              decoration: const BoxDecoration(
-                color: ColorName.profileBackgroundColor,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(30),
+                child: UserImageCircle(
+                  imageSize: 120,
                 ),
               ),
-              child: Padding(
+              Padding(
                 padding: const EdgeInsets.only(
-                  top: 15,
-                  left: 40,
-                  right: 40,
+                  bottom: 20,
                 ),
-                child: GridView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    childAspectRatio: (1 / 1),
-                  ),
-                  itemCount: 10,
-                  // todo: controller出来たら変更
-                  itemBuilder: (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ProfileDetailCell(
-                        icon: Icon(Icons.add_circle_outline),
-                        title: '項目${index}',
-                        // todo: controller出来たら変更
-                        onTap: () {},
-                      ),
-                    );
-                  },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomText(
+                      text: lastName,
+                      fontSize: 30,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    CustomText(
+                      text: firstName,
+                      fontSize: 30,
+                    ),
+                  ],
                 ),
               ),
+            ],
+          ),
+          Container(
+            width: deviceWidth,
+            height: deviceHeight * 0.7,
+            decoration: const BoxDecoration(
+              color: ColorName.profileBackgroundColor,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(30),
+              ),
             ),
-          ],
-        ),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 15,
+                left: 40,
+                right: 40,
+              ),
+              child: GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: (1 / 1),
+                ),
+                itemCount: 10,
+                // todo: controller出来たら変更
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: ProfileDetailCell(
+                      icon: Icon(Icons.add_circle_outline),
+                      title: '項目${index}',
+                      // todo: controller出来たら変更
+                      onTap: () {},
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
