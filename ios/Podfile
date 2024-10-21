@@ -46,6 +46,8 @@ post_install do |installer|
         '$(inherited)',
         # dart: PermissionGroup.contacts
         'PERMISSION_CONTACTS=1',
+        # dart: PermissionGroup.location
+        'PERMISSION_LOCATION=1',
       ]
     end
   end
