@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- アプリ内で使用するカラーを管理するファイルです -->
 <resources>
+    <!-- メインカラー -->
+    <color name="main_color">#3D5F92</color>
+
     <!-- テキスト系のカラー -->
     <color name="text_black">#202124</color>
+    <color name="text_gray">#6C6C6C</color>
+
+    <!-- 影に使うグレー -->
+    <color name="shadow_gray">#DEDEDE</color>
+
+    <!-- メッセージタイルに使用するカラー -->
+    <color name="message_color_own">#80D784</color>
+    <color name="message_color_other">#F5F5F5</color>
+
+    <!-- 検診ボタンに使用するカラー -->
+    <color name="health_check_button_start">#96DBF9</color>
+    <color name="health_check_button_end">#4AA9F7</color>
+
+    <!-- ドラムロールボタンに使用するカラー -->
+    <color name="drum_roll_button_color">#EEEEEE</color>
 </resources>

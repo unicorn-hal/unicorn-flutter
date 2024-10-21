@@ -56,5 +56,11 @@
 	<string>アプリがバックグラウンドで実行中でも、ユーザーがパーソナライズされた情報を取得するために位置情報を使用することを許可します。</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>ユーザーがパーソナライズされた情報を取得するために位置情報を使用することを許可します。</string>
+	<!-- Permission options for the `camera` group -->
+	<key>NSCameraUsageDescription</key>
+	<string>ユーザーがカメラを使用することを許可します。</string>
+	<!-- Permission options for the `photoLibrary` group -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>ユーザーが写真にアクセスするために使用されます。</string>
 </dict>
 </plist>

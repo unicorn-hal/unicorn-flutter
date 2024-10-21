@@ -1,6 +1,6 @@
 import 'package:contacts_service/contacts_service.dart' as package;
 import 'package:flutter/widgets.dart';
-import 'package:unicorn_flutter/Model/Entiry/contact_user.dart';
+import 'package:unicorn_flutter/Model/Entity/contact_user.dart';
 
 class NativeContactsService {
   /// iOSのみ考慮: Nativeの連絡先を取得
