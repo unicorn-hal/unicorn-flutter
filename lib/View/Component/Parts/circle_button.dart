@@ -24,15 +24,14 @@ class CircleButton extends StatelessWidget {
       onTap: onTap(),
       child: Container(
         decoration: BoxDecoration(
-          color: buttonColor,
-          shape: BoxShape.circle,
-          border: borderColor == null
-              ? null
-              : Border.all(
-                  color: borderColor!,
-                  width: borderWidth,
-                ),
-        ),
+            color: buttonColor,
+            shape: BoxShape.circle,
+            border: borderColor != null
+                ? Border.all(
+                    color: borderColor!,
+                    width: borderWidth,
+                  )
+                : null),
         width: buttonSize,
         height: buttonSize,
         child: FractionallySizedBox(
