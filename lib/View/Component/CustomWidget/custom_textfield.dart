@@ -6,7 +6,7 @@ class CustomTextfield extends StatefulWidget {
   const CustomTextfield({
     super.key,
     required this.hintText,
-    required this.backgroundcolor,
+    this.backgroundcolor = Colors.white,
     required this.controller,
     this.prefixIcon,
     this.height = 60,
@@ -80,7 +80,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         isDense: true,
         contentPadding: EdgeInsets.symmetric(
           vertical: (widget.height - 20) / 2,
-          horizontal: widget.prefixIcon != null ? 5 : 30,
+          horizontal: widget.prefixIcon != null ? 5 : 20,
         ),
       ),
       cursorColor: ColorName.mainColor,
