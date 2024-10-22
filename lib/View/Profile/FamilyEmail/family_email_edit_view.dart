@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
+import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 
 class FamilyEmailEditView extends StatefulWidget {
@@ -37,9 +36,23 @@ class _FamilyEmailEditViewState extends State<FamilyEmailEditView> {
               padding: const EdgeInsets.symmetric(
                 vertical: 30,
               ),
-              child: UserImageCircle(
-                imageSize: 150,
-                imageUrl: imageUrl,
+              child: Stack(
+                children: [
+                  UserImageCircle(
+                    imageSize: 150,
+                    imageUrl: imageUrl,
+                  ),
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: CircleButton(
+                      buttonSize: 35,
+                      buttonColor: Colors.white,
+                      onTap: () {},
+                      icon: const Icon(Icons.edit),
+                    ),
+                  ),
+                ],
               ),
             ),
             SizedBox(
