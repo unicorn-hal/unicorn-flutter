@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class CustomTextfield extends StatefulWidget {
@@ -11,6 +12,7 @@ class CustomTextfield extends StatefulWidget {
     this.prefixIcon,
     this.height = 60,
     this.maxLines = 3,
+    this.number = false,
   });
 
   final String hintText;
@@ -19,6 +21,7 @@ class CustomTextfield extends StatefulWidget {
   final Icon? prefixIcon;
   final double height;
   final int maxLines;
+  final bool number;
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -28,6 +31,9 @@ class _CustomTextfieldState extends State<CustomTextfield> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      keyboardType: widget.number ? TextInputType.number : null,
+      inputFormatters:
+          widget.number ? [FilteringTextInputFormatter.digitsOnly] : null,
       controller: widget.controller,
       onChanged: (value) {
         setState(() {});
