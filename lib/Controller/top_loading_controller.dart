@@ -22,6 +22,9 @@ class TopLoadingController {
 
     /// Firebase: Cloud Messagingの初期化
     await _messagingService.initialize();
+    final String? token = await _messagingService.getToken();
+    Log.echo('FirebaseCloudMessaging: $token');
+    // todo: トークンをサーバーに送信
 
     /// todo: UserEntityが配置されてから、ユーザー固有情報をAPIから取得する
     /// ユーザー情報を取得
