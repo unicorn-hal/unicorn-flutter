@@ -1,10 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/View/Component/Parts/HealthCheck/health_past_tile.dart';
 import 'package:unicorn_flutter/View/Component/Parts/health_check_button.dart';
+import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class HealthCheckupTopView extends StatelessWidget {
@@ -15,6 +17,8 @@ class HealthCheckupTopView extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     // todo: 本来は当日に検診記録があるかどうかで判定する
+    // todo: 検診データのモデルをnull許容で引数に持つ
+
     final bool enableHealthCheck = true;
 
     return CustomScaffold(
@@ -48,7 +52,7 @@ class HealthCheckupTopView extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
+                          SizedBox(
                             width: size.width,
                             height: 120,
                             child: Column(
@@ -169,6 +173,7 @@ class HealthCheckupTopView extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
+                                    // todo: 検診結果を反映する
                                     CustomText(
                                       text: '検診結果',
                                       fontSize: 12,
@@ -199,39 +204,72 @@ class HealthCheckupTopView extends StatelessWidget {
                   )
                 :
 
-                /// 本日の検診記録がない場合
-                Center(
-                    child: SizedBox(
-                      height: 250,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          //CustomText(text: '今日の検診記録がありません\n今日の検診を始めましょう！'),
-                          CarouselSlider(
-                            items: [
-                              HealthCheckButton(
-                                onTap: () {},
-                              ),
-                              HealthCheckButton(
-                                onTap: () {},
-                                aiCheck: true,
-                              ),
-                            ],
-                            options: CarouselOptions(
-                              height: 100,
-                              initialPage: 0,
-                              autoPlay: false,
-                              viewportFraction: 1.0,
-                              enableInfiniteScroll: true,
-                              autoPlayInterval: const Duration(seconds: 1),
-                              autoPlayAnimationDuration:
-                                  const Duration(milliseconds: 800),
-                            ),
-                          ),
-                        ],
+                /// 本日の検診記録がない場合はへッダー画像を表示
+                Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: AspectRatio(
+                      aspectRatio: 3 / 2,
+                      child: Assets.images.healthCheckupHeader.image(
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
+
+            /// 検診を開始するボタン(通常検診&AI音声検診)
+            Center(
+              child: SizedBox(
+                height: 150,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(4.0),
+                      child: CustomText(text: '↓さあ、検診を開始しましょう↓'),
+                    ),
+                    CarouselSlider(
+                      // todo: 検診の処理を後から追加
+                      items: [
+                        HealthCheckButton(
+                          onTap: () {},
+                        ),
+                        Stack(
+                          children: [
+                            SizedBox(
+                              height: 100,
+                              child: HealthCheckButton(
+                                onTap: () {},
+                                aiCheck: true,
+                              ),
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: SizedBox(
+                                width: 100,
+                                height: 60,
+                                child: Assets.images.healthCheckupMark.image(
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      options: CarouselOptions(
+                        height: 100,
+                        initialPage: 0,
+                        autoPlay: false,
+                        viewportFraction: 1.0,
+                        enableInfiniteScroll: true,
+                        autoPlayInterval: const Duration(seconds: 1),
+                        autoPlayAnimationDuration:
+                            const Duration(milliseconds: 800),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
 
             const SpacerAndDivider(),
 
@@ -243,20 +281,18 @@ class HealthCheckupTopView extends StatelessWidget {
                 fontSize: 20,
               ),
             ),
-            SizedBox(
-              height: 240,
-              width: size.width,
-              child: ListView.builder(
-                // todo: controllerから値を取得する
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return HealthPastTile(
-                    timeDate: DateTime.now(),
-                    bodyTemperature: 36.5,
-                    bloodPressure: '90/110',
-                  );
-                },
-              ),
+            ListView.builder(
+              // todo: controllerから値を取得する
+              itemCount: 7,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemBuilder: (context, index) {
+                return HealthPastTile(
+                  timeDate: DateTime.now(),
+                  bodyTemperature: 36.5,
+                  bloodPressure: '90/110',
+                );
+              },
             )
           ],
         ),
