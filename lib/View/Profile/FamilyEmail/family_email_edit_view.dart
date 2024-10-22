@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
@@ -156,11 +157,24 @@ class _FamilyEmailEditViewState extends State<FamilyEmailEditView> {
                       controller: telephoneNumberController,
                       height: 50,
                       maxLines: 1,
+                      number: true,
                     ),
                   ),
                 ],
               ),
             ),
+            Container(
+              padding: const EdgeInsets.only(
+                top: 50,
+              ),
+              width: deviceWidth * 0.9,
+              height: 100,
+              child: CustomButton(
+                text: '登録する',
+                onTap: () {},
+                isFilledColor: true,
+              ),
+            )
           ],
         ),
       ),
