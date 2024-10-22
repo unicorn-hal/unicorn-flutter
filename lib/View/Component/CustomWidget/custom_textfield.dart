@@ -2,18 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class CustomTextfield extends StatefulWidget {
+  /// heightの最小値は44
   const CustomTextfield({
     super.key,
     required this.hintText,
     required this.backgroundcolor,
     required this.controller,
     this.prefixIcon,
+    this.height = 60,
+    this.maxLines = 3,
   });
 
   final String hintText;
   final Color backgroundcolor;
   final TextEditingController controller;
   final Icon? prefixIcon;
+  final double height;
+  final int maxLines;
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -22,7 +27,7 @@ class CustomTextfield extends StatefulWidget {
 class _CustomTextfieldState extends State<CustomTextfield> {
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: widget.controller,
       onChanged: (value) {
         setState(() {});
@@ -32,6 +37,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         decorationColor: ColorName.mainColor,
       ),
       decoration: InputDecoration(
+        counterText: '',
         prefixIcon: widget.prefixIcon,
         suffixIcon: Visibility(
           visible: widget.controller.text.isNotEmpty,
@@ -73,13 +79,16 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         ),
         isDense: true,
         contentPadding: EdgeInsets.symmetric(
-          vertical: 20,
+          vertical: (widget.height - 20) / 2,
           horizontal: widget.prefixIcon != null ? 5 : 30,
         ),
       ),
       cursorColor: ColorName.mainColor,
       cursorWidth: 2,
       cursorRadius: const Radius.circular(10),
+      maxLines: widget.maxLines,
+      minLines: 1,
+      maxLength: 300,
     );
   }
 }
