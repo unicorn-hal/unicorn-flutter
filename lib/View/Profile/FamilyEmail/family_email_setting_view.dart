@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -43,12 +44,17 @@ class FamilyEmailSettingView extends StatelessWidget {
                     Visibility(
                       visible: isAddButton,
                       child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.add,
-                          size: 30,
-                          color: Colors.blue,
-                        ),
+                        onPressed: () {
+                          ProfileFamilyEmailRegisterRoute().push(context);
+                          // todo: controller出来たら引数もらってくる
+                        },
+                        icon: isImportContact
+                            ? const Icon(
+                                Icons.add,
+                                size: 30,
+                                color: Colors.blue,
+                              )
+                            : Container(),
                       ),
                     ),
                   ],
@@ -96,7 +102,10 @@ class FamilyEmailSettingView extends StatelessWidget {
                 child: CustomButton(
                   isFilledColor: true,
                   text: '連絡先から追加',
-                  onTap: () {},
+                  onTap: () {
+                    ProfileFamilyEmailSyncContactRoute().push(context);
+                    // todo: controller出来たら引数もらってくる
+                  },
                 ),
               )
             : Container(),

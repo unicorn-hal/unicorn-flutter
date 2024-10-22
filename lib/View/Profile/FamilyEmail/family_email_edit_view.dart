@@ -171,7 +171,9 @@ class _FamilyEmailEditViewState extends State<FamilyEmailEditView> {
               height: 100,
               child: CustomButton(
                 text: '登録する',
-                onTap: () {},
+                onTap: () {
+                  Navigator.pop(context);
+                },
                 isFilledColor: true,
               ),
             )
