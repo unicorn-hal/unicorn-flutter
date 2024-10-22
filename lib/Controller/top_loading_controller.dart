@@ -3,12 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_service.dart';
+import 'package:unicorn_flutter/Service/Firebase/CloudMessaging/cloud_messaging_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 class TopLoadingController {
   FirebaseAuthenticationService get _authService =>
       FirebaseAuthenticationService();
+  FirebaseCloudMessagingService get _messagingService =>
+      FirebaseCloudMessagingService();
 
   final BuildContext context;
 
@@ -16,6 +19,9 @@ class TopLoadingController {
 
   void firstLoad() async {
     /// todo: 初回起動時の処理を記述
+
+    /// Firebase: Cloud Messagingの初期化
+    await _messagingService.initialize();
 
     /// todo: UserEntityが配置されてから、ユーザー固有情報をAPIから取得する
     /// ユーザー情報を取得
