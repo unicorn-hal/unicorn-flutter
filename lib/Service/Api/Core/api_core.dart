@@ -43,7 +43,6 @@ abstract class ApiCore {
   Future<ApiResponse> get() async {
     try {
       await makeHeader();
-      print(_url);
       http.Response response = await http.get(
         Uri.parse(_url),
         headers: _headers,
