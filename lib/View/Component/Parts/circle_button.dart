@@ -7,12 +7,16 @@ class CircleButton extends StatelessWidget {
     required this.buttonColor,
     required this.onTap,
     required this.icon,
+    this.borderColor,
+    this.borderWidth = 2.0,
   });
 
   final double buttonSize;
   final Color buttonColor;
   final Icon icon;
   final Function onTap;
+  final Color? borderColor;
+  final double borderWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,13 @@ class CircleButton extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: buttonColor,
-          shape: BoxShape.circle
+          shape: BoxShape.circle,
+          border: borderColor == null
+              ? null
+              : Border.all(
+                  color: borderColor!,
+                  width: borderWidth,
+                ),
         ),
         width: buttonSize,
         height: buttonSize,
