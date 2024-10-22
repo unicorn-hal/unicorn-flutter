@@ -1,16 +1,16 @@
 class Hospital {
   final String hospitalId;
   final String hospitalName;
-  final String address;
-  final String postalCode;
-  final String phoneNumber;
+  final String? address;
+  final String? postalCode;
+  final String? phoneNumber;
 
   Hospital({
     required this.hospitalId,
     required this.hospitalName,
-    required this.address,
-    required this.postalCode,
-    required this.phoneNumber,
+    this.address,
+    this.postalCode,
+    this.phoneNumber,
   });
 
   factory Hospital.fromJson(Map<String, dynamic> json) {
