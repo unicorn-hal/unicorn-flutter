@@ -5,6 +5,8 @@ import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/chat_top_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart';
 import 'package:unicorn_flutter/View/Home/home_view.dart';
+import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_edit_view.dart';
+import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/profile_top_view.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/View/top_loading_view.dart';
@@ -57,6 +59,15 @@ final routerProvider = Provider(
       routes: [
         TypedGoRoute<ProfileRoute>(
           path: Routes.profile,
+        ),
+        TypedGoRoute<ProfileFamilyEmailRoute>(
+          path: Routes.profileFamilyEmail,
+        ),
+        TypedGoRoute<ProfileFamilyEmailRegisterRoute>(
+          path: Routes.profileFamilyEmailRegister,
+        ),
+        TypedGoRoute<ProfileFamilyEmailSyncContactRoute>(
+          path: Routes.profileFamilyEmailSyncContact,
         ),
       ],
     ),
@@ -162,5 +173,29 @@ class ProfileRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const ProfileTopView();
+}
+
+class ProfileFamilyEmailRoute extends GoRouteData {
+  const ProfileFamilyEmailRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const FamilyEmailSettingView();
+}
+
+class ProfileFamilyEmailRegisterRoute extends GoRouteData {
+  const ProfileFamilyEmailRegisterRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const FamilyEmailEditView();
+}
+
+class ProfileFamilyEmailSyncContactRoute extends GoRouteData {
+  const ProfileFamilyEmailSyncContactRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const FamilyEmailSettingView();
 }
 //////////////////////////////  profile  //////////////////////////////
