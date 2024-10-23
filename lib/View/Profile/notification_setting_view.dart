@@ -54,6 +54,11 @@ class _NotificationSettingViewState extends State<NotificationSettingView> {
                       onChanged: (value) => setState(() => _value = value),
                       // todo: Statelessでやるやり方あったかも
                     ),
+                    onTap: () {
+                      _value = !_value;
+                      print(_value);
+                      setState(() {});
+                    },
                   );
                 },
               ),
