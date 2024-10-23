@@ -12,7 +12,7 @@ class LocalAuthView extends StatefulWidget {
 }
 
 class _LocalAuthViewState extends State<LocalAuthView> {
-  bool useFaceId = true;
+  bool isBiometrics = true;
   // todo: controller出来たら移動
   @override
   Widget build(BuildContext context) {
@@ -38,15 +38,14 @@ class _LocalAuthViewState extends State<LocalAuthView> {
             ),
             CommonItemTile(
               title: 'Face IDを使う',
-              action: Visibility(
-                visible: useFaceId,
-                child: const Icon(
-                  Icons.check,
-                  color: Colors.blue,
-                ),
-              ),
+              action: isBiometrics
+                  ? const Icon(
+                      Icons.check,
+                      color: Colors.blue,
+                    )
+                  : null,
               onTap: () {
-                useFaceId == !useFaceId;
+                isBiometrics = true;
                 // todo: controller出来たら変更
                 setState(() {});
               },
@@ -54,15 +53,14 @@ class _LocalAuthViewState extends State<LocalAuthView> {
             const SpacerAndDivider(),
             CommonItemTile(
               title: '設定しない',
-              action: Visibility(
-                visible: !useFaceId,
-                child: const Icon(
-                  Icons.check,
-                  color: Colors.blue,
-                ),
-              ),
+              action: !isBiometrics
+                  ? const Icon(
+                      Icons.check,
+                      color: Colors.blue,
+                    )
+                  : null,
               onTap: () {
-                useFaceId == !useFaceId;
+                isBiometrics = false;
                 // todo: controller出来たら変更
                 setState(() {});
               },
