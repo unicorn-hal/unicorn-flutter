@@ -8,7 +8,7 @@ import 'package:unicorn_flutter/View/Home/home_view.dart';
 import 'package:unicorn_flutter/View/Profile/app_information_view.dart';
 import 'package:unicorn_flutter/View/Profile/notification_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/profile_top_view.dart';
-import 'package:unicorn_flutter/View/Profile/security_view.dart';
+import 'package:unicorn_flutter/View/Profile/local_auth_view.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/View/top_loading_view.dart';
 import 'routes.dart';
@@ -61,8 +61,8 @@ final routerProvider = Provider(
         TypedGoRoute<ProfileRoute>(
           path: Routes.profile,
         ),
-        TypedGoRoute<ProfileSecurityRoute>(
-          path: Routes.profileSecurity,
+        TypedGoRoute<ProfileLocalAuthRoute>(
+          path: Routes.profileLocalAuth,
         ),
         TypedGoRoute<ProfileAppInformationRoute>(
           path: Routes.profileAppInformation,
@@ -176,12 +176,12 @@ class ProfileRoute extends GoRouteData {
       const ProfileTopView();
 }
 
-class ProfileSecurityRoute extends GoRouteData {
-  const ProfileSecurityRoute();
+class ProfileLocalAuthRoute extends GoRouteData {
+  const ProfileLocalAuthRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const SecurityView();
+      const LocalAuthView();
 }
 
 class ProfileAppInformationRoute extends GoRouteData {

@@ -4,14 +4,20 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
 
-class SecurityView extends StatelessWidget {
-  const SecurityView({super.key});
+class LocalAuthView extends StatefulWidget {
+  const LocalAuthView({super.key});
 
+  @override
+  State<LocalAuthView> createState() => _LocalAuthViewState();
+}
+
+class _LocalAuthViewState extends State<LocalAuthView> {
+  bool useFaceId = true;
+  // todo: controller出来たら移動
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
-    bool useFaceId = true;
-    // todo: controller出来たら移動
+
     return CustomScaffold(
       body: SizedBox(
         width: deviceWidth,
@@ -42,6 +48,7 @@ class SecurityView extends StatelessWidget {
               onTap: () {
                 useFaceId == !useFaceId;
                 // todo: controller出来たら変更
+                setState(() {});
               },
             ),
             const SpacerAndDivider(),
@@ -57,6 +64,7 @@ class SecurityView extends StatelessWidget {
               onTap: () {
                 useFaceId == !useFaceId;
                 // todo: controller出来たら変更
+                setState(() {});
               },
             ),
             const SpacerAndDivider(),
