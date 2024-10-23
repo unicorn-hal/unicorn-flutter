@@ -3,8 +3,8 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
 
-class AppInformation extends StatelessWidget {
-  const AppInformation({super.key});
+class AppInformationView extends StatelessWidget {
+  const AppInformationView({super.key});
 
   @override
   Widget build(BuildContext context) {
