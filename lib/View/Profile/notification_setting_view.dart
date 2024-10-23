@@ -13,15 +13,16 @@ class NotificationSettingView extends StatefulWidget {
 
 class _NotificationSettingViewState extends State<NotificationSettingView> {
   bool _value = false;
+  bool _value1 = false;
+  bool _value2 = false;
+
   // todo: controller出来たら消す
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
-    List<String> settings = [
-      'おくすり通知',
-      '定時検診',
-      '新着病院お知らせ',
-    ];
+    String title1 = 'おくすり通知';
+    String title2 = '定時検診';
+    String title3 = '新着病院お知らせ';
     // todo: controller出来たら消す
     return CustomScaffold(
       body: SizedBox(
@@ -39,29 +40,44 @@ class _NotificationSettingViewState extends State<NotificationSettingView> {
               width: deviceWidth * 0.9,
               child: const CustomText(text: '通知設定'),
             ),
-            SizedBox(
-              width: deviceWidth * 0.9,
-              child: ListView.builder(
-                itemCount: 3,
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (BuildContext context, int index) {
-                  return CommonItemTile(
-                    title: settings[index],
-                    // todo: controller出来たら変更
-                    action: CupertinoSwitch(
-                      value: _value,
-                      onChanged: (value) => setState(() => _value = value),
-                      // todo: Statelessでやるやり方あったかも
-                    ),
-                    onTap: () {
-                      _value = !_value;
-                      print(_value);
-                      setState(() {});
-                    },
-                  );
-                },
+            CommonItemTile(
+              title: title1,
+              // todo: controller出来たら変更
+              action: CupertinoSwitch(
+                value: _value,
+                onChanged: (value) => setState(() => _value = value),
               ),
+              onTap: () {
+                _value = !_value;
+                setState(() {});
+              },
+              // todo: viewが全部出来たタイミングでvoidCallbackに変える
+            ),
+            CommonItemTile(
+              title: title2,
+              // todo: controller出来たら変更
+              action: CupertinoSwitch(
+                value: _value1,
+                onChanged: (value) => setState(() => _value1 = value),
+              ),
+              onTap: () {
+                _value1 = !_value1;
+                setState(() {});
+              },
+              // todo: viewが全部出来たタイミングでvoidCallbackに変える
+            ),
+            CommonItemTile(
+              title: title3,
+              // todo: controller出来たら変更
+              action: CupertinoSwitch(
+                value: _value2,
+                onChanged: (value) => setState(() => _value2 = value),
+              ),
+              onTap: () {
+                _value2 = !_value2;
+                setState(() {});
+              },
+              // todo: viewが全部出来たタイミングでvoidCallbackに変える
             ),
           ],
         ),
