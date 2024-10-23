@@ -95,7 +95,9 @@ class MyMedicineView extends StatelessWidget {
                       flex: 1,
                       child: GestureDetector(
                         // IconButtonにすると勝手に上下のスペースを持ちやがるので渋々GestureDetector(Icon)
-                        onTap: () {},
+                        onTap: () {
+                          // todo: リマインダー画面へ
+                        },
                         child: const Icon(
                           Icons.add,
                           color: Colors.blue,
