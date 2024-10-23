@@ -5,6 +5,7 @@ import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/chat_top_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart';
 import 'package:unicorn_flutter/View/Home/home_view.dart';
+import 'package:unicorn_flutter/View/Profile/physical_infomation_view.dart';
 import 'package:unicorn_flutter/View/Profile/profile_top_view.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/View/top_loading_view.dart';
@@ -57,6 +58,9 @@ final routerProvider = Provider(
       routes: [
         TypedGoRoute<ProfileRoute>(
           path: Routes.profile,
+        ),
+        TypedGoRoute<ProfilePhysicalInformationRoute>(
+          path: Routes.profilePhysicalInformation,
         ),
       ],
     ),
@@ -162,5 +166,13 @@ class ProfileRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const ProfileTopView();
+}
+
+class ProfilePhysicalInformationRoute extends GoRouteData {
+  const ProfilePhysicalInformationRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const PhysicalInfomationView();
 }
 //////////////////////////////  profile  //////////////////////////////
