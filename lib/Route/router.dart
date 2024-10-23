@@ -5,7 +5,10 @@ import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/chat_top_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart';
 import 'package:unicorn_flutter/View/Home/home_view.dart';
+import 'package:unicorn_flutter/View/Profile/app_information_view.dart';
+import 'package:unicorn_flutter/View/Profile/notification_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/profile_top_view.dart';
+import 'package:unicorn_flutter/View/Profile/security_view.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/View/top_loading_view.dart';
 import 'routes.dart';
@@ -57,6 +60,15 @@ final routerProvider = Provider(
       routes: [
         TypedGoRoute<ProfileRoute>(
           path: Routes.profile,
+        ),
+        TypedGoRoute<ProfileSecurityRoute>(
+          path: Routes.profileSecurity,
+        ),
+        TypedGoRoute<ProfileAppInformationRoute>(
+          path: Routes.profileAppInformation,
+        ),
+        TypedGoRoute<ProfileNotificationSettingRoute>(
+          path: Routes.profileNotificationSetting,
         ),
       ],
     ),
@@ -162,5 +174,29 @@ class ProfileRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const ProfileTopView();
+}
+
+class ProfileSecurityRoute extends GoRouteData {
+  const ProfileSecurityRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const SecurityView();
+}
+
+class ProfileAppInformationRoute extends GoRouteData {
+  const ProfileAppInformationRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const AppInformationView();
+}
+
+class ProfileNotificationSettingRoute extends GoRouteData {
+  const ProfileNotificationSettingRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const NotificationSettingView();
 }
 //////////////////////////////  profile  //////////////////////////////
