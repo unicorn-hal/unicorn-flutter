@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
@@ -19,6 +21,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
   final TextEditingController datetime = TextEditingController();
   final TextEditingController taller = TextEditingController();
   final TextEditingController weight = TextEditingController();
+  int checkInt = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -102,8 +105,12 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                     children: [
                       CircleButton(
                         buttonSize: deviceWidth * 0.25,
-                        buttonColor:ColorName.menCirclebuttonColor,
-                        onTap: () {},
+                        buttonColor: checkInt == 1 ? ColorName.menCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
+                        onTap: () {
+                          setState(() {
+                            checkInt = 1;
+                          });
+                        },
                         icon: const Icon(
                           Icons.man,
                           color: Colors.white,
@@ -122,8 +129,12 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                     children: [
                       CircleButton(
                         buttonSize: deviceWidth * 0.25,
-                        buttonColor: ColorName.womenCirclebuttonColor,
-                        onTap: () {},
+                        buttonColor: checkInt == 2 ? ColorName.womenCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
+                        onTap: () {
+                          setState(() {
+                            checkInt = 2;
+                          });
+                        },
                         icon: const Icon(
                           Icons.woman,
                           color: Colors.white,
@@ -142,8 +153,12 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                     children: [
                       CircleButton(
                         buttonSize: deviceWidth * 0.25,
-                        buttonColor: ColorName.textGray,
-                        onTap: () {},
+                        buttonColor: checkInt == 3 ? ColorName.textGray : ColorName.nocheckedCirclebuttonColor, 
+                        onTap: () {
+                          setState(() {
+                            checkInt = 3;
+                          });
+                        },
                         icon: const Icon(
                           Icons.transgender,
                           color: Colors.white,
@@ -201,12 +216,13 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
             GestureDetector(
               child: Container(
                 color: ColorName.profileInputButtonColor,
-                child: CustomText(
+                child: const CustomText(
                   text: '次に進む',
-                  color: Colors.white,
+                  color: Colors.white,                  
                 )
               ),
               onTap: () {},
+              // 次のViewができ次第ルーティングします
             )
           ],
         ),
