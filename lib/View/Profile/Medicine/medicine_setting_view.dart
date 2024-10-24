@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
@@ -15,15 +17,19 @@ class MedicineSettingView extends StatefulWidget {
 }
 
 class _MedicineSettingViewState extends State<MedicineSettingView> {
-  TextEditingController controller = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController countController = TextEditingController();
   bool registration = true;
-  bool reminder = false;
+  bool repeat = false;
+  String repeatWeek = '月,火,水,木,金,土';
+  List<String> reminderList = [];
+  int? selectedItem = 1;
   // todo: controller出来たら削除
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
+    double deviceHeight = MediaQuery.of(context).size.height;
     return CustomScaffold(
-      isScrollable: true,
       appBar: CustomAppBar(
         title: '常備薬の登録',
         foregroundColor: Colors.white,
@@ -45,173 +51,268 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
       ),
       body: SizedBox(
         width: deviceWidth,
+        height: deviceHeight,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              width: deviceWidth * 0.9,
-              padding: const EdgeInsets.only(
-                top: 20,
-                bottom: 20,
-              ),
-              child: const Padding(
-                padding: EdgeInsets.only(
-                  left: 5,
-                ),
-                child: CustomText(text: 'おくすりの名称'),
-              ),
-            ),
             SizedBox(
+              height: deviceHeight * 0.7,
               width: deviceWidth * 0.9,
-              height: 70,
-              child: CustomTextfield(
-                hintText: '20文字以内で入力してください',
-                controller: controller,
-                height: 50,
-                maxLines: 1,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      width: deviceWidth * 0.45,
-                      padding: const EdgeInsets.only(
-                        top: 20,
-                        bottom: 20,
-                      ),
-                      child: const Padding(
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
                         padding: EdgeInsets.only(
-                          left: 5,
+                          top: 20,
+                          bottom: 20,
                         ),
-                        child: CustomText(text: 'おくすりの量'),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 30,
-                      ),
-                      child: SizedBox(
-                        width: deviceWidth * 0.4,
-                        height: 70,
-                        child: CustomTextfield(
-                          hintText: '100以下の実数',
-                          controller: controller,
-                          height: 50,
-                          maxLines: 1,
-                          number: true,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      width: deviceWidth * 0.45,
-                      padding: const EdgeInsets.only(
-                        top: 20,
-                        bottom: 20,
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.only(
-                          left: 5,
-                        ),
-                        child: CustomText(text: 'おくすりの量'),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        bottom: 30,
-                      ),
-                      child: SizedBox(
-                        width: deviceWidth * 0.4,
-                        height: 70,
-                        child: CustomTextfield(
-                          hintText: '100以下の実数',
-                          controller: controller,
-                          height: 50,
-                          maxLines: 1,
-                          number: true,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              width: deviceWidth * 0.9,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(
-                      left: 5,
-                    ),
-                    child: CustomText(text: 'リマインダーを設定'),
-                  ),
-                  reminder
-                      ? Padding(
-                          padding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 20,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: 5,
                           ),
-                          child: Row(
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  reminder = !reminder;
-                                  setState(() {});
-                                },
-                                icon: const Icon(Icons.remove_circle_outlined,
-                                    color: Colors.red),
+                          child: CustomText(text: 'おくすりの名称'),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 70,
+                      child: CustomTextfield(
+                        hintText: '20文字以内で入力してください',
+                        controller: nameController,
+                        height: 50,
+                        maxLines: 1,
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              width: deviceWidth * 0.4,
+                              padding: const EdgeInsets.only(
+                                top: 20,
+                                bottom: 20,
                               ),
-                              CustomDrumRoll(
-                                showTime: false,
-                                reservation: DateTime.now(),
-                                // todo: リマインダー設定がすでにある場合reservationに入れる
+                              child: const Padding(
+                                padding: EdgeInsets.only(
+                                  left: 5,
+                                ),
+                                child: CustomText(text: 'おくすりの量'),
                               ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              CustomDrumRoll(
-                                showTime: true,
-                                reservation: DateTime.now(),
-                                // todo: リマインダー設定がすでにある場合reservationに入れる
-                              ),
-                            ],
-                          ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 20,
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              reminder = !reminder;
-                              setState(() {});
-                            },
-                            icon: const Icon(
-                              Icons.add,
-                              color: Colors.blue,
                             ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 30,
+                              ),
+                              child: SizedBox(
+                                width: deviceWidth * 0.4,
+                                height: 70,
+                                child: CustomTextfield(
+                                  hintText: '1 ~ 100(錠)',
+                                  controller: countController,
+                                  height: 50,
+                                  maxLines: 1,
+                                  number: true,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: deviceWidth * 0.1,
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              width: deviceWidth * 0.4,
+                              padding: const EdgeInsets.only(
+                                top: 20,
+                                bottom: 20,
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.only(
+                                  left: 5,
+                                ),
+                                child: CustomText(text: '1回の服用量'),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 30,
+                              ),
+                              child: SizedBox(
+                                width: deviceWidth * 0.4,
+                                height: 70,
+                                child: DropdownButtonFormField(
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 15,
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                      borderSide: const BorderSide(
+                                        width: 1,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                  items: const [
+                                    DropdownMenuItem(
+                                      value: 1,
+                                      child: CustomText(text: '1'),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: 2,
+                                      child: CustomText(text: '2'),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: 3,
+                                      child: CustomText(text: '3'),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: 4,
+                                      child: CustomText(text: '4'),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: 5,
+                                      child: CustomText(text: '5'),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: 6,
+                                      child: CustomText(text: '6'),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: 7,
+                                      child: CustomText(text: '7'),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: 8,
+                                      child: CustomText(text: '8'),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: 9,
+                                      child: CustomText(text: '9'),
+                                    ),
+                                    DropdownMenuItem(
+                                      value: 10,
+                                      child: CustomText(text: '10'),
+                                    ),
+                                  ],
+                                  onChanged: (int? value) {
+                                    setState(() {
+                                      selectedItem = value;
+                                    });
+                                  },
+                                  value: selectedItem,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(
+                            left: 5,
+                          ),
+                          child: CustomText(text: 'リマインダーを設定'),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            if (reminderList.length < 5) {
+                              reminderList.add('a');
+                              setState(() {});
+                            }
+                          },
+                          icon: const Icon(
+                            Icons.add,
+                            color: Colors.blue,
                           ),
                         ),
-                  SizedBox(
-                    width: deviceWidth * 0.9,
-                    child: CustomButton(
-                      text: '保存',
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      isFilledColor: true,
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: reminderList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            if (reminderList.isEmpty) {
+                              return Container();
+                            }
+                            return Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    reminderList.removeAt(index);
+                                    setState(() {});
+                                  },
+                                  icon: const Icon(
+                                    Icons.remove_circle_outlined,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                CustomDrumRoll(
+                                  showTime: true,
+                                  reservation: DateTime.now(),
+                                  // todo: リマインダー設定がすでにある場合reservationに入れる
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    // todo: モーダル処理
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: ColorName.drumRollButtonColor,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: repeat
+                                        ? CustomText(
+                                            text: repeatWeek,
+                                            color: Colors.blue,
+                                          )
+                                        : const CustomText(
+                                            text: '繰り返し: 未設定',
+                                            color: Colors.blue,
+                                          ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              width: deviceWidth * 0.9,
+              child: CustomButton(
+                text: '保存',
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                isFilledColor: true,
               ),
             ),
           ],
