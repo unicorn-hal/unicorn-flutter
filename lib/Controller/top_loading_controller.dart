@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Constants/Enum/fcm_topic_enum.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_service.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudMessaging/cloud_messaging_service.dart';
@@ -25,6 +26,14 @@ class TopLoadingController {
     final String? token = await _messagingService.getToken();
     Log.echo('FirebaseCloudMessaging: $token');
     // todo: トークンをサーバーに送信
+
+    /// Firebase: Topicの購読
+    await _messagingService.subscribeToTopics(
+      <FCMTopicEnum>[
+        FCMTopicEnum.all,
+        FCMTopicEnum.user,
+      ],
+    );
 
     /// todo: UserEntityが配置されてから、ユーザー固有情報をAPIから取得する
     /// ユーザー情報を取得

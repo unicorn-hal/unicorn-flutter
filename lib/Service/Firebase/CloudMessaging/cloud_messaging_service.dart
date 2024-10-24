@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:unicorn_flutter/Constants/Enum/fcm_topic_enum.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
+import 'package:http/http.dart' as http;
 
 class FirebaseCloudMessagingService {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
@@ -16,6 +20,8 @@ class FirebaseCloudMessagingService {
       sound: true,
     );
 
+    await _firebaseMessaging.setAutoInitEnabled(true);
+
     if (premission.authorizationStatus == AuthorizationStatus.authorized) {
       Log.echo('User accepted permission');
     } else {
@@ -30,13 +36,25 @@ class FirebaseCloudMessagingService {
 
   /// Topicを購読
   Future<void> subscribeToTopics(List<FCMTopicEnum> topics) async {
+    final String messagingApiBaseUrl =
+        dotenv.env['MESSAGING_API_BASEURL'] ?? '';
     for (FCMTopicEnum topic in topics) {
       final String topicName = FCMTopicType.toStringValue(topic);
-      await _firebaseMessaging.subscribeToTopic(topicName).then((value) {
-        Log.echo('Subscribed to topic: $topicName');
-      }).catchError((error) {
-        Log.echo('Failed to subscribe to topic: $topicName');
-      });
+      http.Response response = await http.post(
+        Uri.parse('${messagingApiBaseUrl}subscribe'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'X-Firebase-Cloud-Messaging-Token': await getToken() ?? '',
+        },
+        body: jsonEncode(<String, String>{
+          'topic': topicName,
+        }),
+      );
+      if (response.statusCode == 200) {
+        Log.echo('Subscribed to $topicName');
+      } else {
+        Log.echo('Failed to subscribe to $topicName');
+      }
     }
   }
 }
