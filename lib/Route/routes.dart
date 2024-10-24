@@ -5,5 +5,4 @@ mixin Routes {
   static const String chat = '/chat';
   static const String profile = '/profile';
   static const String normalCheckup = '/health_checkup/normal';
-  static const String aiCheckup = '/health_checkup/ai';
 }
