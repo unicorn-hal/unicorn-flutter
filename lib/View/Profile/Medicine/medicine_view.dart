@@ -12,178 +12,231 @@ class MyMedicineView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
-    List<String> medicineNames = [
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
-      'カロナール',
+    double deviceHeight = MediaQuery.of(context).size.height;
+    List<Map<String, dynamic>> reminderList = [
+      {
+        'name': 'カロナール',
+        'week': '毎日曜日',
+        'reminder': [
+          '13:00',
+        ]
+      },
+      {
+        'name': 'ロキソニン',
+        'week': '毎月曜日',
+        'reminder': [
+          '09:00',
+          '12:00',
+          '19:00',
+        ]
+      },
+      {
+        'name': 'ボルタレン錠',
+        'week': '日,火,木',
+        'reminder': [
+          '06:00',
+          '11:00',
+          '15:00',
+          '19:00',
+          '23:00',
+        ]
+      },
+      {
+        'name': 'メキシチールカプセル50mg',
+        'week': '日,月,火,水,木,金',
+        'reminder': [
+          '19:00',
+        ]
+      },
+      {
+        'name': 'メインテート錠',
+        'week': '毎日',
+        'reminder': [
+          '09:00',
+          '12:00',
+          '19:00',
+        ]
+      },
+      {
+        'name': 'ファスティック錠30',
+        'week': '毎金曜日',
+        'reminder': [
+          '11:00',
+        ]
+      },
+      {
+        'name': 'サーティカン錠0.5mg',
+        'week': '火,水',
+        'reminder': [
+          '09:00',
+          '12:00',
+          '19:00',
+        ]
+      },
     ];
-    List<String> reminderTime = [
-      '午前12:00',
-      '毎日午前8時',
-      '木曜午後6時',
-      '金曜午後9時',
-      '火曜午前12時',
-      '毎日午前8時',
-      '木曜午後6時',
-      '金曜午後9時',
-      '火曜午前12時',
-      '毎日午前8時',
-      '木曜午後6時',
-      '金曜午後9時',
-      '火曜午前12時',
-      '毎日午前8時',
-      '木曜午後6時',
-      '金曜午後9時',
-      '火曜午前12時',
-      '毎日午前8時',
-      '木曜午後6時',
-      '金曜午後9時',
-      '火曜午前12時',
-      '毎日午前8時',
-      '木曜午後6時',
-      '金曜午後9時',
-    ];
-    // List<String> medicineNames = [];
-    // List<String> reminderTime = [];
-    bool notification = false;
+    List<String> reminderTimeList = [];
+    bool notification = true;
 
     // todo: controller出来たら移動
     return CustomScaffold(
-      isScrollable: true,
       body: SizedBox(
         width: deviceWidth,
+        height: deviceHeight,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
+            SizedBox(
+              height: deviceHeight * 0.5,
               width: deviceWidth * 0.9,
-              padding: const EdgeInsets.only(
-                top: 20,
-                bottom: 10,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Expanded(
-                    flex: 3,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: 5,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: deviceWidth * 0.9,
+                      padding: const EdgeInsets.only(
+                        top: 20,
+                        bottom: 10,
                       ),
-                      child: CustomText(text: 'Myおくすり'),
-                    ),
-                  ),
-                  Visibility(
-                    visible: medicineNames.isNotEmpty,
-                    child: Expanded(
-                      flex: 1,
-                      child: GestureDetector(
-                        // IconButtonにすると勝手に上下のスペースを持ちやがるので渋々GestureDetector(Icon)
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) {
-                              return MedicineSettingView();
-                            }),
-                          );
-                          // todo: リマインダー画面へ
-                        },
-                        child: const Icon(
-                          Icons.add,
-                          color: Colors.blue,
-                          size: 20,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Expanded(
+                            flex: 3,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: 5,
+                              ),
+                              child: CustomText(text: 'Myおくすり'),
+                            ),
+                          ),
+                          Visibility(
+                            visible: reminderList.isNotEmpty,
+                            child: Expanded(
+                              flex: 1,
+                              child: GestureDetector(
+                                // IconButtonにすると勝手に上下のスペースを持ちやがるので渋々GestureDetector(Icon)
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(builder: (context) {
+                                      return MedicineSettingView();
+                                    }),
+                                  );
+                                  // todo: リマインダー画面へ
+                                },
+                                child: const Icon(
+                                  Icons.add,
+                                  color: Colors.blue,
+                                  size: 20,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                ],
+                    reminderList.isNotEmpty
+                        ? SizedBox(
+                            width: deviceWidth * 0.9,
+                            child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: reminderList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                reminderTimeList =
+                                    reminderList[index]['reminder'];
+                                return CommonItemTile(
+                                  title: reminderList[index]['name'],
+                                  onTap: () {
+                                    // todo: リマインダー画面へ
+                                  },
+                                  tileHeight: 100,
+                                  action: notification
+                                      ? Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            CustomText(
+                                              text: reminderList[index]['week'],
+                                              color: ColorName.textGray,
+                                              fontSize: 10,
+                                            ),
+                                            ListView.builder(
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount:
+                                                  reminderTimeList.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return Align(
+                                                  alignment: Alignment.center,
+                                                  child: CustomText(
+                                                    text:
+                                                        reminderTimeList[index],
+                                                    color: ColorName.textGray,
+                                                    fontSize: 11,
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      : const Icon(
+                                          Icons.notifications_off_outlined,
+                                          color: Colors.grey,
+                                        ),
+                                );
+                              },
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (context) {
+                                    return MedicineSettingView();
+                                  }),
+                                );
+                                // todo: リマインダー画面へ
+                              },
+                              child: DottedBorder(
+                                dashPattern: const [15, 10],
+                                borderType: BorderType.RRect,
+                                radius: const Radius.circular(20),
+                                child: SizedBox(
+                                  width: deviceWidth * 0.9,
+                                  height: 200,
+                                  child: const Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.add,
+                                        color: Colors.grey,
+                                        size: 22,
+                                      ),
+                                      CustomText(
+                                        text: 'おくすりを登録する',
+                                        color: ColorName.textGray,
+                                        fontSize: 14,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
               ),
             ),
-            medicineNames.isNotEmpty
-                ? SizedBox(
-                    width: deviceWidth * 0.9,
-                    child: ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: medicineNames.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return CommonItemTile(
-                          title: medicineNames[index],
-                          onTap: () {
-                            // todo: リマインダー画面へ
-                          },
-                          tileHeight: 70,
-                          action: notification
-                              ? CustomText(
-                                  text: reminderTime[index],
-                                  color: ColorName.textGray,
-                                  fontSize: 11,
-                                )
-                              : const Icon(
-                                  Icons.notifications_none,
-                                  // todo: 斜線付きに変更
-                                  color: Colors.grey,
-                                ),
-                        );
-                      },
-                    ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) {
-                            return MedicineSettingView();
-                          }),
-                        );
-                        // todo: リマインダー画面へ
-                      },
-                      child: DottedBorder(
-                        dashPattern: const [15, 10],
-                        borderType: BorderType.RRect,
-                        radius: const Radius.circular(20),
-                        child: SizedBox(
-                          width: deviceWidth * 0.9,
-                          height: 200,
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.add,
-                                color: Colors.grey,
-                                size: 22,
-                              ),
-                              CustomText(
-                                text: 'おくすりを登録する',
-                                color: ColorName.textGray,
-                                fontSize: 14,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
             Padding(
               padding: const EdgeInsets.only(
-                top: 170,
+                top: 10,
                 bottom: 10,
               ),
               child: Container(
