@@ -15,7 +15,7 @@ class NormalCheckupView extends StatefulWidget {
 class _NormalCheckupViewState extends State<NormalCheckupView> {
   /// todo: 検診項目をListでもらう
   final String checkupName = '検診項目';
-  final bool checkupValue = false;
+  bool checkupValue = false;
   // 進捗バーの値　0.0~1.0
   final double progressValue = 0.2;
 
@@ -89,7 +89,12 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
                     return CheckboxTile(
                       checkboxText: checkupName,
                       value: checkupValue,
-                      onChanged: () {},
+                      onChanged: () {
+                        setState(() {
+                          // todo: controllerでindexに対応したvalueを変更する
+                          checkupValue = !checkupValue;
+                        });
+                      },
                     );
                   },
                 ),
@@ -100,6 +105,8 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
             ],
           ),
         ),
+
+        /// 次の項目へボタン
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
