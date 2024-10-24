@@ -20,7 +20,7 @@ abstract class ApiCore {
   ApiCore(this.endPoint);
 
   /// URL作成
-  String get _url => '$_baseUrl$endPoint/$_parameter';
+  String get _url => '$_baseUrl$endPoint$_parameter';
 
   /// パラメータセット
   /// [parameter] パラメータ
