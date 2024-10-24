@@ -85,8 +85,10 @@ class ProfileTopView extends StatelessWidget {
                     child: ProfileDetailCell(
                       icon: Icon(Icons.add_circle_outline),
                       title: '項目${index}',
-                      // todo: controller出来たら変更
-                      onTap: () {},
+                      onTap: () {
+                        // todo: controller出来たら変更
+                      },
+
                     ),
                   );
                 },
