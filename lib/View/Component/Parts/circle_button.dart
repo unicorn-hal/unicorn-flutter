@@ -21,8 +21,8 @@ class CircleButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        onTap();
+      onTap: () async {
+        await onTap();
       },
       child: Container(
         decoration: BoxDecoration(
