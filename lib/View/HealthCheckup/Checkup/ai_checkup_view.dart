@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class AiCheckupView extends StatelessWidget {
   const AiCheckupView({super.key});
@@ -19,14 +18,14 @@ class AiCheckupView extends StatelessWidget {
           children: [
             Expanded(
               flex: 2,
-              child: Container(
+              child: SizedBox(
                 width: size.width,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircleAvatar(
-                      radius: size.width * 0.1,
-                      backgroundColor: Colors.amber,
+                      radius: size.width * 0.15,
+                      backgroundColor: Colors.yellow,
                       child: Assets.images.icons.aiIcon.image(),
                     ),
                     const Padding(
@@ -39,10 +38,21 @@ class AiCheckupView extends StatelessWidget {
             ),
             Expanded(
               flex: 3,
-              child: Container(
-                color: Colors.blue,
-                width: size.width,
-                child: CustomText(text: 'ここにチャットが表示されます'),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
+                  width: size.width,
+                  child: Center(
+                    child: CustomText(
+                      text:
+                          'あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ',
+                      fontSize: 18,
+                      color: ColorName.textGray,
+                      textOverflow: TextOverflow.ellipsis,
+                      maxLine: 5,
+                    ),
+                  ),
+                ),
               ),
             ),
             Expanded(
@@ -50,26 +60,30 @@ class AiCheckupView extends StatelessWidget {
               child: Container(
                 width: size.width,
                 decoration: const BoxDecoration(
-                  color: Colors.green,
+                  color: const Color.fromARGB(255, 252, 140, 132),
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
+                    topLeft: Radius.circular(100),
+                    topRight: Radius.circular(100),
                   ),
                 ),
-                child: Center(
-                  child: SizedBox(
-                    width: 70,
-                    height: 70,
-                    child: CircleButton(
-                      buttonSize: 10,
-                      buttonColor: Colors.red,
-                      onTap: () {},
-                      icon: const Icon(
-                        Icons.mic,
-                        color: Colors.white,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 20,
+                      ),
+                      child: CircleButton(
+                        buttonSize: 80,
+                        buttonColor: Colors.red,
+                        onTap: () {},
+                        icon: const Icon(
+                          Icons.mic,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
