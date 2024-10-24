@@ -83,7 +83,7 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
               SizedBox(
                 width: size.width * 0.9,
                 child: ListView.builder(
-                  itemCount: 10,
+                  itemCount: 4,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
@@ -115,7 +115,6 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
               ),
               width: 250,
               height: 80,
