@@ -9,5 +9,5 @@ mixin Routes {
       '/profile/family_email/register';
   static const String profileFamilyEmailSyncContact =
       '/profile/family_email/sync_contact';
-  static const String aiCheckup = '/health_checkup/ai';
+  static const String healthCheckupAi = '/health_checkup/ai';
 }

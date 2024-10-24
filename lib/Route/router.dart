@@ -48,7 +48,7 @@ final routerProvider = Provider(
           path: Routes.healthCheckup,
         ),
         TypedGoRoute<AiCheckupRoute>(
-          path: Routes.aiCheckup,
+          path: Routes.healthCheckupAi,
         ),
       ],
     ),
