@@ -25,7 +25,7 @@ class HospitalApi extends ApiCore with Endpoint {
   /// [hospitalId] 病院ID
   Future<Hospital?> getHospital({required String hospitalId}) async {
     try {
-      useParameter(parameter: hospitalId);
+      useParameter(parameter: '/$hospitalId');
       final ApiResponse response = await get();
       return Hospital.fromJson(response.data);
     } catch (e) {
@@ -39,7 +39,7 @@ class HospitalApi extends ApiCore with Endpoint {
   Future<List<Doctor>?> getDoctorListByHospital(
       {required String hospitalId}) async {
     try {
-      useParameter(parameter: '$hospitalId/doctors');
+      useParameter(parameter: '/$hospitalId/doctors');
       final ApiResponse response = await get();
       return (response.data['data'] as List)
           .map((e) => Doctor.fromJson(e))
