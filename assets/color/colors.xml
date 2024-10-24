@@ -34,5 +34,6 @@
     <!-- 性別ボタンの背景に使用するカラー -->
     <color name="men_circlebutton_color">#5A82EB</color>
     <color name="women_circlebutton_color">#FF5555</color>
+    <color name="nochecked_circlebutton_color">#CACACA</color>
 
 </resources>
