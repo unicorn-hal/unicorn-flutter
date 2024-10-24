@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class AppInformationView extends StatelessWidget {
   const AppInformationView({super.key});
@@ -48,7 +49,7 @@ class AppInformationView extends StatelessWidget {
               title: 'アプリバージョン',
               action: CustomText(
                 text: version,
-                color: Colors.grey,
+                color: ColorName.textGray,
                 fontSize: 14,
               ),
               onTap: () {
