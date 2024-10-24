@@ -41,7 +41,6 @@ class DoctorApi extends ApiCore with Endpoint {
   Future<int> postDoctor({required DoctorRequest body}) async {
     try {
       final ApiResponse response = await post(body.toJson());
-      print(response.statusCode);
       return response.statusCode;
     } catch (e) {
       return 500;
@@ -50,9 +49,8 @@ class DoctorApi extends ApiCore with Endpoint {
 
   Future<Doctor?> getDoctor({required String doctorId}) async {
     try {
-      useParameter(parameter: doctorId);
+      useParameter(parameter: '/$doctorId');
       final ApiResponse response = await get();
-      print(response.data);
       return Doctor.fromJson(response.data);
     } catch (e) {
       return null;
@@ -64,9 +62,8 @@ class DoctorApi extends ApiCore with Endpoint {
     required DoctorRequest body,
   }) async {
     try {
-      useParameter(parameter: doctorId);
+      useParameter(parameter: '/$doctorId');
       final ApiResponse response = await put(body.toJson());
-      print(response.statusCode);
       return response.statusCode;
     } catch (e) {
       return 500;
@@ -75,9 +72,8 @@ class DoctorApi extends ApiCore with Endpoint {
 
   Future<int> deleteDoctor({required String doctorId}) async {
     try {
-      useParameter(parameter: doctorId);
+      useParameter(parameter: '/$doctorId');
       final ApiResponse response = await delete();
-      print(response.statusCode);
       return response.statusCode;
     } catch (e) {
       return 500;
