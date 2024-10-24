@@ -8,6 +8,10 @@ class DoctorApi extends ApiCore with Endpoint {
   DoctorApi() : super(Endpoint.doctors);
 
   /// GET
+  /// 医師一覧取得
+  /// [doctorName] 医師名
+  /// [departmentId] 科ID
+  /// [hospitalName] 病院名
   Future<List<Doctor>?> getDoctorList({
     String? doctorName,
     String? departmentId,
@@ -28,7 +32,9 @@ class DoctorApi extends ApiCore with Endpoint {
             ? '?hospitalName=$hospitalName'
             : '&hospitalName=$hospitalName';
       }
-      useParameter(parameter: parameter);
+      if (parameter.isNotEmpty) {
+        useParameter(parameter: parameter);
+      }
       final ApiResponse response = await get();
       return (response.data['data'] as List)
           .map((e) => Doctor.fromJson(e))
@@ -38,6 +44,8 @@ class DoctorApi extends ApiCore with Endpoint {
     }
   }
 
+  /// POST
+  /// [body] DoctorRequest
   Future<int> postDoctor({required DoctorRequest body}) async {
     try {
       final ApiResponse response = await post(body.toJson());
@@ -47,6 +55,9 @@ class DoctorApi extends ApiCore with Endpoint {
     }
   }
 
+  /// GET
+  /// 医師情報取得
+  /// [doctorId] 医師ID
   Future<Doctor?> getDoctor({required String doctorId}) async {
     try {
       useParameter(parameter: '/$doctorId');
@@ -57,6 +68,9 @@ class DoctorApi extends ApiCore with Endpoint {
     }
   }
 
+  /// PUT
+  /// [doctorId] 医師ID
+  /// [body] DoctorRequest
   Future<int> putDoctor({
     required String doctorId,
     required DoctorRequest body,
@@ -70,6 +84,8 @@ class DoctorApi extends ApiCore with Endpoint {
     }
   }
 
+  /// DELETE
+  /// [doctorId] 医師ID
   Future<int> deleteDoctor({required String doctorId}) async {
     try {
       useParameter(parameter: '/$doctorId');
