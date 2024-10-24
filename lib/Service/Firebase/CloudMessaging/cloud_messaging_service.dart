@@ -44,10 +44,10 @@ class FirebaseCloudMessagingService {
         Uri.parse('${messagingApiBaseUrl}subscribe'),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          'X-Firebase-Cloud-Messaging-Token': await getToken() ?? '',
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode(<String, dynamic>{
           'topic': topicName,
+          'tokens': [await getToken()],
         }),
       );
       if (response.statusCode == 200) {
