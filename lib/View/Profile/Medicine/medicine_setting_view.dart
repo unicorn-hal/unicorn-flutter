@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
+import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class MedicineSettingView extends StatefulWidget {
@@ -24,6 +23,16 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
   String repeatWeek = '月,火,水,木,金,土';
   List<String> reminderList = [];
   int? selectedItem = 1;
+
+  List<Map<String, dynamic>> repeatWeekList = [
+    {'name': '毎日曜日', 'check': false},
+    {'name': '毎月曜日', 'check': false},
+    {'name': '毎火曜日', 'check': false},
+    {'name': '毎水曜日', 'check': false},
+    {'name': '毎木曜日', 'check': false},
+    {'name': '毎金曜日', 'check': false},
+    {'name': '毎土曜日', 'check': false},
+  ];
   // todo: controller出来たら削除
   @override
   Widget build(BuildContext context) {
@@ -273,7 +282,122 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    // todo: モーダル処理
+                                    showModalBottomSheet(
+                                      // todo: ここだけ別State持ちたい
+                                      backgroundColor: Colors.transparent,
+                                      isScrollControlled: true,
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Container(
+                                          width: deviceWidth,
+                                          margin:
+                                              const EdgeInsets.only(top: 64),
+                                          decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(20),
+                                              topRight: Radius.circular(20),
+                                            ),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Stack(
+                                                children: [
+                                                  Container(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      top: 10,
+                                                    ),
+                                                    width: deviceWidth * 0.9,
+                                                    child: const Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: CustomText(
+                                                        text: '繰り返し',
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Positioned(
+                                                    bottom: -13,
+                                                    left: -16,
+                                                    child: TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: const CustomText(
+                                                        text: '戻る',
+                                                        color: Colors.blue,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: 40,
+                                              ),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                  border: Border.all(
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                                width: deviceWidth * 0.9,
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                    horizontal: 15,
+                                                  ),
+                                                  child: ListView.builder(
+                                                    physics:
+                                                        const NeverScrollableScrollPhysics(),
+                                                    shrinkWrap: true,
+                                                    itemCount:
+                                                        repeatWeekList.length,
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                            int index) {
+                                                      return SizedBox(
+                                                        width:
+                                                            deviceWidth * 0.9,
+                                                        child: CommonItemTile(
+                                                          title: repeatWeekList[
+                                                              index]['name'],
+                                                          action:
+                                                              repeatWeekList[
+                                                                          index]
+                                                                      ['check']!
+                                                                  ? const Icon(
+                                                                      Icons
+                                                                          .check,
+                                                                      color: Colors
+                                                                          .blue,
+                                                                    )
+                                                                  : null,
+                                                          onTap: () {
+                                                            repeatWeekList[
+                                                                        index]
+                                                                    ['check'] =
+                                                                !repeatWeekList[
+                                                                        index]
+                                                                    ['check'];
+                                                            // todo: controller出来たら変更
+                                                            setState(() {});
+                                                          },
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.all(8),
