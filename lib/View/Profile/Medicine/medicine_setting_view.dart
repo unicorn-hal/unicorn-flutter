@@ -83,7 +83,7 @@ class _RegularMedicineSettingViewState
                 padding: EdgeInsets.only(
                   left: 5,
                 ),
-                child: CustomText(text: 'おくすりの錠数'),
+                child: CustomText(text: 'おくすりの量'),
               ),
             ),
             Padding(

@@ -3,6 +3,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:unicorn_flutter/View/Profile/Medicine/medicine_setting_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class MyMedicineView extends StatelessWidget {
@@ -11,57 +12,57 @@ class MyMedicineView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
-    // List<String> medicineNames = [
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    //   'カロナール',
-    // ];
-    // List<String> reminderTime = [
-    //   '火曜午前12時',
-    //   '毎日午前8時',
-    //   '木曜午後6時',
-    //   '金曜午後9時',
-    //   '火曜午前12時',
-    //   '毎日午前8時',
-    //   '木曜午後6時',
-    //   '金曜午後9時',
-    //   '火曜午前12時',
-    //   '毎日午前8時',
-    //   '木曜午後6時',
-    //   '金曜午後9時',
-    //   '火曜午前12時',
-    //   '毎日午前8時',
-    //   '木曜午後6時',
-    //   '金曜午後9時',
-    //   '火曜午前12時',
-    //   '毎日午前8時',
-    //   '木曜午後6時',
-    //   '金曜午後9時',
-    //   '火曜午前12時',
-    //   '毎日午前8時',
-    //   '木曜午後6時',
-    //   '金曜午後9時',
-    // ];
-    List<String> medicineNames = [];
-    List<String> reminderTime = [];
-    bool notification = true;
+    List<String> medicineNames = [
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+      'カロナール',
+    ];
+    List<String> reminderTime = [
+      '午前12:00',
+      '毎日午前8時',
+      '木曜午後6時',
+      '金曜午後9時',
+      '火曜午前12時',
+      '毎日午前8時',
+      '木曜午後6時',
+      '金曜午後9時',
+      '火曜午前12時',
+      '毎日午前8時',
+      '木曜午後6時',
+      '金曜午後9時',
+      '火曜午前12時',
+      '毎日午前8時',
+      '木曜午後6時',
+      '金曜午後9時',
+      '火曜午前12時',
+      '毎日午前8時',
+      '木曜午後6時',
+      '金曜午後9時',
+      '火曜午前12時',
+      '毎日午前8時',
+      '木曜午後6時',
+      '金曜午後9時',
+    ];
+    // List<String> medicineNames = [];
+    // List<String> reminderTime = [];
+    bool notification = false;
 
     // todo: controller出来たら移動
     return CustomScaffold(
@@ -96,6 +97,11 @@ class MyMedicineView extends StatelessWidget {
                       child: GestureDetector(
                         // IconButtonにすると勝手に上下のスペースを持ちやがるので渋々GestureDetector(Icon)
                         onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) {
+                              return RegularMedicineSettingView();
+                            }),
+                          );
                           // todo: リマインダー画面へ
                         },
                         child: const Icon(
@@ -122,6 +128,7 @@ class MyMedicineView extends StatelessWidget {
                           onTap: () {
                             // todo: リマインダー画面へ
                           },
+                          tileHeight: 70,
                           action: notification
                               ? CustomText(
                                   text: reminderTime[index],
@@ -130,6 +137,7 @@ class MyMedicineView extends StatelessWidget {
                                 )
                               : const Icon(
                                   Icons.notifications_none,
+                                  // todo: 斜線付きに変更
                                   color: Colors.grey,
                                 ),
                         );
@@ -140,6 +148,11 @@ class MyMedicineView extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 20),
                     child: GestureDetector(
                       onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) {
+                            return RegularMedicineSettingView();
+                          }),
+                        );
                         // todo: リマインダー画面へ
                       },
                       child: DottedBorder(
@@ -159,7 +172,7 @@ class MyMedicineView extends StatelessWidget {
                               ),
                               CustomText(
                                 text: 'おくすりを登録する',
-                                color: Colors.grey,
+                                color: ColorName.textGray,
                                 fontSize: 14,
                               )
                             ],
