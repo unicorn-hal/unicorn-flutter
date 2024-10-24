@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
@@ -116,11 +114,11 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                           color: Colors.white,
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: CustomText(
                           text: '男性',
-                          color: ColorName.menCirclebuttonColor,
+                          color: checkInt == 1 ? ColorName.menCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
                         ),
                       ),
                     ],
@@ -140,11 +138,11 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                           color: Colors.white,
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: CustomText(
                           text: '女性',
-                          color: ColorName.womenCirclebuttonColor,
+                          color: checkInt == 2 ? ColorName.womenCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
                         ),
                       ),
                     ],
@@ -164,11 +162,11 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                           color: Colors.white,
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: CustomText(
                           text: 'その他',
-                          color: ColorName.textGray,
+                          color: checkInt == 3 ? ColorName.textGray : ColorName.nocheckedCirclebuttonColor, 
                         ),
                       ),
                     ],
@@ -214,12 +212,23 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
               ],
             ),
             GestureDetector(
-              child: Container(
-                color: ColorName.profileInputButtonColor,
-                child: const CustomText(
-                  text: '次に進む',
-                  color: Colors.white,                  
-                )
+              child: Align(
+                alignment: Alignment.center,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: Container(
+                    width: deviceWidth * 0.5,
+                    height: 60,
+                    color: ColorName.profileInputButtonColor,
+                    child: const Center(
+                      child: CustomText(
+                        text: '次に進む',
+                        fontSize: 22,
+                        color: Colors.white,                  
+                      ),
+                    )
+                  ),
+                ),
               ),
               onTap: () {},
               // 次のViewができ次第ルーティングします
