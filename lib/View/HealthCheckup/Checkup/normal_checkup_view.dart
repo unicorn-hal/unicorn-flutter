@@ -14,6 +14,7 @@ class NormalCheckupView extends StatefulWidget {
 
 class _NormalCheckupViewState extends State<NormalCheckupView> {
   /// todo: 検診項目をListでもらう
+  final String checkupTitle = 'Q.1 体の調子について';
   final String checkupName = '検診項目';
   bool checkupValue = false;
   // 進捗バーの値　0.0~1.0
@@ -66,11 +67,11 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
 
               /// 検診項目の表示部
               /// todo: 検診項部分を動的に変更したい
-              const Align(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: CustomText(text: 'Q.1 体の調子について', fontSize: 20),
+                  padding: const EdgeInsets.all(16.0),
+                  child: CustomText(text: checkupTitle, fontSize: 20),
                 ),
               ),
               const Padding(
