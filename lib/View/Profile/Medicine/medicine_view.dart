@@ -99,7 +99,7 @@ class MyMedicineView extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(builder: (context) {
-                              return RegularMedicineSettingView();
+                              return MedicineSettingView();
                             }),
                           );
                           // todo: リマインダー画面へ
@@ -150,7 +150,7 @@ class MyMedicineView extends StatelessWidget {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(builder: (context) {
-                            return RegularMedicineSettingView();
+                            return MedicineSettingView();
                           }),
                         );
                         // todo: リマインダー画面へ

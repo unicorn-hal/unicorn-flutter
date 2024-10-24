@@ -7,16 +7,14 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-class RegularMedicineSettingView extends StatefulWidget {
-  const RegularMedicineSettingView({super.key});
+class MedicineSettingView extends StatefulWidget {
+  const MedicineSettingView({super.key});
 
   @override
-  State<RegularMedicineSettingView> createState() =>
-      _RegularMedicineSettingViewState();
+  State<MedicineSettingView> createState() => _MedicineSettingViewState();
 }
 
-class _RegularMedicineSettingViewState
-    extends State<RegularMedicineSettingView> {
+class _MedicineSettingViewState extends State<MedicineSettingView> {
   TextEditingController controller = TextEditingController();
   bool registration = true;
   bool reminder = false;
@@ -73,34 +71,76 @@ class _RegularMedicineSettingViewState
                 maxLines: 1,
               ),
             ),
-            Container(
-              width: deviceWidth * 0.9,
-              padding: const EdgeInsets.only(
-                top: 20,
-                bottom: 20,
-              ),
-              child: const Padding(
-                padding: EdgeInsets.only(
-                  left: 5,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      width: deviceWidth * 0.45,
+                      padding: const EdgeInsets.only(
+                        top: 20,
+                        bottom: 20,
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.only(
+                          left: 5,
+                        ),
+                        child: CustomText(text: 'おくすりの量'),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 30,
+                      ),
+                      child: SizedBox(
+                        width: deviceWidth * 0.4,
+                        height: 70,
+                        child: CustomTextfield(
+                          hintText: '100以下の実数',
+                          controller: controller,
+                          height: 50,
+                          maxLines: 1,
+                          number: true,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                child: CustomText(text: 'おくすりの量'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 30,
-              ),
-              child: SizedBox(
-                width: deviceWidth * 0.9,
-                height: 70,
-                child: CustomTextfield(
-                  hintText: 'おくすりの名称',
-                  controller: controller,
-                  height: 50,
-                  maxLines: 1,
-                  number: true,
+                Column(
+                  children: [
+                    Container(
+                      width: deviceWidth * 0.45,
+                      padding: const EdgeInsets.only(
+                        top: 20,
+                        bottom: 20,
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.only(
+                          left: 5,
+                        ),
+                        child: CustomText(text: 'おくすりの量'),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 30,
+                      ),
+                      child: SizedBox(
+                        width: deviceWidth * 0.4,
+                        height: 70,
+                        child: CustomTextfield(
+                          hintText: '100以下の実数',
+                          controller: controller,
+                          height: 50,
+                          maxLines: 1,
+                          number: true,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
+              ],
             ),
             SizedBox(
               width: deviceWidth * 0.9,
