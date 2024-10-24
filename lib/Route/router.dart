@@ -46,7 +46,7 @@ final routerProvider = Provider(
           path: Routes.healthCheckup,
         ),
         TypedGoRoute<NormalCheckupRoute>(
-          path: Routes.normal,
+          path: Routes.healthCheckupNormal,
         ),
       ],
     ),
