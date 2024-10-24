@@ -14,6 +14,7 @@ class CommonItemTile extends StatelessWidget {
   final String title;
   final Widget? action;
   final Function? onTap;
+  // todo: viewが全部出来たタイミングでvoidCallbackに変える
   final double verticalPadding;
   final double tileHeight;
   final double fontSize;
