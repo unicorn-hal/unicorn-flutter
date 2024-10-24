@@ -7,6 +7,8 @@ import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 class HealthCheckupApi extends ApiCore with Endpoint {
   HealthCheckupApi() : super(Endpoint.healthCheckups);
 
+  /// GET
+  /// 健康結果一覧取得
   Future<List<HealthCheckup>?> getHealthCheckupList() async {
     try {
       final ApiResponse response = await get();
@@ -18,6 +20,9 @@ class HealthCheckupApi extends ApiCore with Endpoint {
     }
   }
 
+  /// POST
+  /// 健康結果登録
+  /// [body] HealthCheckupRequest
   Future<int> postHealthCheckup({required HealthCheckupRequest body}) async {
     try {
       final ApiResponse response = await post(body.toJson());
@@ -27,6 +32,9 @@ class HealthCheckupApi extends ApiCore with Endpoint {
     }
   }
 
+  /// GET
+  /// 健康結果取得
+  /// [healthCheckupId] 健康診断ID
   Future<HealthCheckup?> getHealthCheckupById(
       {required String healthCheckupId}) async {
     try {
@@ -38,6 +46,10 @@ class HealthCheckupApi extends ApiCore with Endpoint {
     }
   }
 
+  /// PUT
+  /// 健康結果更新
+  /// [healthCheckupId] 健康診断ID
+  /// [body] HealthCheckupRequest
   Future<int> putHealthCheckup(
       {required String healthCheckupId,
       required HealthCheckupRequest body}) async {
@@ -50,6 +62,9 @@ class HealthCheckupApi extends ApiCore with Endpoint {
     }
   }
 
+  /// DELETE
+  /// 健康結果削除
+  /// [healthCheckupId] 健康診断ID
   Future<int> deleteHealthCheckup({required String healthCheckupId}) async {
     try {
       useParameter(parameter: '/$healthCheckupId');
