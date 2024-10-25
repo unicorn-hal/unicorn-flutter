@@ -6,8 +6,8 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:unicorn_flutter/View/Profile/Medicine/medicine_setting_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-class MyMedicineView extends StatelessWidget {
-  const MyMedicineView({super.key});
+class MedicineView extends StatelessWidget {
+  const MedicineView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class MyMedicineView extends StatelessWidget {
       },
     ];
     List<String> reminderTimeList = [];
-    bool notification = true;
+    bool notification = false;
 
     // todo: controller出来たら移動
     return CustomScaffold(
