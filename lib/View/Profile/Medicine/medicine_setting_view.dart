@@ -284,119 +284,124 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                 GestureDetector(
                                   onTap: () {
                                     showModalBottomSheet(
-                                      // todo: ここだけ別State持ちたい
                                       backgroundColor: Colors.transparent,
                                       isScrollControlled: true,
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return Container(
-                                          width: deviceWidth,
-                                          margin:
-                                              const EdgeInsets.only(top: 64),
-                                          decoration: const BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20),
-                                              topRight: Radius.circular(20),
+                                        return StatefulBuilder(builder:
+                                            (context, StateSetter setState) {
+                                          return Container(
+                                            width: deviceWidth,
+                                            margin:
+                                                const EdgeInsets.only(top: 64),
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(20),
+                                                topRight: Radius.circular(20),
+                                              ),
                                             ),
-                                          ),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              Stack(
-                                                children: [
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                      top: 10,
-                                                    ),
-                                                    width: deviceWidth * 0.9,
-                                                    child: const Align(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: CustomText(
-                                                        text: '繰り返し',
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Stack(
+                                                  children: [
+                                                    Container(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                        top: 10,
+                                                      ),
+                                                      width: deviceWidth * 0.9,
+                                                      child: const Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: CustomText(
+                                                          text: '繰り返し',
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Positioned(
-                                                    bottom: -13,
-                                                    left: -16,
-                                                    child: TextButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: const CustomText(
-                                                        text: '戻る',
-                                                        color: Colors.blue,
+                                                    Positioned(
+                                                      bottom: -13,
+                                                      left: -16,
+                                                      child: TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        child: const CustomText(
+                                                          text: '戻る',
+                                                          color: Colors.blue,
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                              const SizedBox(
-                                                height: 40,
-                                              ),
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  border: Border.all(
-                                                    color: Colors.grey,
-                                                  ),
+                                                  ],
                                                 ),
-                                                width: deviceWidth * 0.9,
-                                                child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                    horizontal: 15,
+                                                const SizedBox(
+                                                  height: 40,
+                                                ),
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    border: Border.all(
+                                                      color: Colors.grey,
+                                                    ),
                                                   ),
-                                                  child: ListView.builder(
-                                                    physics:
-                                                        const NeverScrollableScrollPhysics(),
-                                                    shrinkWrap: true,
-                                                    itemCount:
-                                                        repeatWeekList.length,
-                                                    itemBuilder:
-                                                        (BuildContext context,
-                                                            int index) {
-                                                      return SizedBox(
-                                                        width:
-                                                            deviceWidth * 0.9,
-                                                        child: CommonItemTile(
-                                                          title: repeatWeekList[
-                                                              index]['name'],
-                                                          action:
+                                                  width: deviceWidth * 0.9,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: 15,
+                                                    ),
+                                                    child: ListView.builder(
+                                                      physics:
+                                                          const NeverScrollableScrollPhysics(),
+                                                      shrinkWrap: true,
+                                                      itemCount:
+                                                          repeatWeekList.length,
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        return SizedBox(
+                                                          width:
+                                                              deviceWidth * 0.9,
+                                                          child: CommonItemTile(
+                                                            title:
+                                                                repeatWeekList[
+                                                                        index]
+                                                                    ['name'],
+                                                            action: repeatWeekList[
+                                                                        index]
+                                                                    ['check']!
+                                                                ? const Icon(
+                                                                    Icons.check,
+                                                                    color: Colors
+                                                                        .blue,
+                                                                  )
+                                                                : null,
+                                                            onTap: () {
                                                               repeatWeekList[
                                                                           index]
-                                                                      ['check']!
-                                                                  ? const Icon(
-                                                                      Icons
-                                                                          .check,
-                                                                      color: Colors
-                                                                          .blue,
-                                                                    )
-                                                                  : null,
-                                                          onTap: () {
-                                                            repeatWeekList[
-                                                                        index]
-                                                                    ['check'] =
-                                                                !repeatWeekList[
-                                                                        index]
-                                                                    ['check'];
-                                                            // todo: controller出来たら変更
-                                                            setState(() {});
-                                                          },
-                                                        ),
-                                                      );
-                                                    },
+                                                                      [
+                                                                      'check'] =
+                                                                  !repeatWeekList[
+                                                                          index]
+                                                                      ['check'];
+                                                              // todo: controller出来たら変更
+                                                              setState(() {});
+                                                            },
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
+                                              ],
+                                            ),
+                                          );
+                                        });
                                       },
                                     );
                                   },
