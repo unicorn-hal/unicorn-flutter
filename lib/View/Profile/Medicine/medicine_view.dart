@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:unicorn_flutter/View/Profile/Medicine/medicine_setting_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class MedicineView extends StatelessWidget {
@@ -74,6 +74,7 @@ class MedicineView extends StatelessWidget {
         ]
       },
     ];
+    // List<Map<String, dynamic>> reminderList = [];
     List<String> reminderTimeList = [];
     bool notification = false;
 
@@ -117,11 +118,8 @@ class MedicineView extends StatelessWidget {
                               child: GestureDetector(
                                 // IconButtonにすると勝手に上下のスペースを持ちやがるので渋々GestureDetector(Icon)
                                 onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(builder: (context) {
-                                      return MedicineSettingView();
-                                    }),
-                                  );
+                                  const ProfileMedicineSettingRoute()
+                                      .push(context);
                                   // todo: リマインダー画面へ
                                 },
                                 child: const Icon(
@@ -148,6 +146,8 @@ class MedicineView extends StatelessWidget {
                                 return CommonItemTile(
                                   title: reminderList[index]['name'],
                                   onTap: () {
+                                    const ProfileMedicineSettingRoute()
+                                        .push(context);
                                     // todo: リマインダー画面へ
                                   },
                                   tileHeight: 100,
@@ -197,11 +197,8 @@ class MedicineView extends StatelessWidget {
                             padding: const EdgeInsets.only(top: 20),
                             child: GestureDetector(
                               onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context) {
-                                    return MedicineSettingView();
-                                  }),
-                                );
+                                const ProfileMedicineSettingRoute()
+                                    .push(context);
                                 // todo: リマインダー画面へ
                               },
                               child: DottedBorder(
