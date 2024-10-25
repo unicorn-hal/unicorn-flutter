@@ -5,6 +5,12 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <meta-data
+    android:name="firebase_messaging_auto_init_enabled"
+    android:value="false" />
+    <meta-data
+    android:name="firebase_analytics_collection_enabled"
+    android:value="false" />
     
     <application
         android:label="unicorn_flutter"
