@@ -191,7 +191,7 @@ class MedicineView extends StatelessWidget {
               child: Container(
                 width: deviceWidth * 0.9,
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 149, 207, 255),
+                  color: Color.fromARGB(255, 176, 220, 255),
                 ),
                 child: const Padding(
                   padding: EdgeInsets.all(10),
