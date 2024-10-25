@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
