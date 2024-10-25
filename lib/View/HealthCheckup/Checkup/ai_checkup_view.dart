@@ -47,7 +47,7 @@ class AiCheckupView extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: SizedBox(
                   width: size.width,
-                  child: Center(
+                  child: const Center(
                     child: CustomText(
                       // todo: 音声認識したテキストを表示する
                       text:
@@ -66,6 +66,7 @@ class AiCheckupView extends StatelessWidget {
               child: Container(
                 width: size.width,
                 decoration: const BoxDecoration(
+                  // todo: できれば音声波形で大きさを変化させたい、無理なら没
                   color: ColorName.shadowGray,
                   shape: BoxShape.circle,
                 ),
