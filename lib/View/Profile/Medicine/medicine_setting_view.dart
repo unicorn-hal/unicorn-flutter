@@ -77,7 +77,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
-              height: deviceHeight * 0.7,
+              height: deviceHeight * 0.65,
               width: deviceWidth * 0.9,
               child: SingleChildScrollView(
                 child: Column(
