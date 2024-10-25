@@ -62,6 +62,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
         width: deviceWidth,
         height: deviceHeight,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             SizedBox(
               height: deviceHeight * 0.7,
@@ -429,7 +430,10 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                 ),
               ),
             ),
-            SizedBox(
+            Container(
+              padding: const EdgeInsets.only(
+                bottom: 10,
+              ),
               width: deviceWidth * 0.9,
               child: CustomButton(
                 text: '保存',
