@@ -23,7 +23,6 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
   String repeatWeek = '月,火,水,木,金,土';
   List<String> reminderList = [];
   int? selectedItem = 1;
-
   List<Map<String, dynamic>> repeatWeekList = [
     {'name': '毎日曜日', 'check': false},
     {'name': '毎月曜日', 'check': false},
@@ -177,47 +176,13 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                       ),
                                     ),
                                   ),
-                                  items: const [
-                                    DropdownMenuItem(
-                                      value: 1,
-                                      child: CustomText(text: '1'),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: 2,
-                                      child: CustomText(text: '2'),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: 3,
-                                      child: CustomText(text: '3'),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: 4,
-                                      child: CustomText(text: '4'),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: 5,
-                                      child: CustomText(text: '5'),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: 6,
-                                      child: CustomText(text: '6'),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: 7,
-                                      child: CustomText(text: '7'),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: 8,
-                                      child: CustomText(text: '8'),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: 9,
-                                      child: CustomText(text: '9'),
-                                    ),
-                                    DropdownMenuItem(
-                                      value: 10,
-                                      child: CustomText(text: '10'),
-                                    ),
+                                  items: [
+                                    for (int i = 0; i < 10; i++) ...{
+                                      DropdownMenuItem(
+                                        value: i + 1,
+                                        child: CustomText(text: '${i + 1}'),
+                                      ),
+                                    },
                                   ],
                                   onChanged: (int? value) {
                                     setState(() {
