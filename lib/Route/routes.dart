@@ -9,4 +9,6 @@ mixin Routes {
       '/profile/family_email/register';
   static const String profileFamilyEmailSyncContact =
       '/profile/family_email/sync_contact';
+  static const String profileMedicine = '/profile/medicine';
+  static const String profileMedicineSetting = '/profile/medicine/setting';
 }

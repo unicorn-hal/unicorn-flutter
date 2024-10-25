@@ -7,6 +7,8 @@ import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart'
 import 'package:unicorn_flutter/View/Home/home_view.dart';
 import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_edit_view.dart';
 import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_setting_view.dart';
+import 'package:unicorn_flutter/View/Profile/Medicine/medicine_setting_view.dart';
+import 'package:unicorn_flutter/View/Profile/Medicine/medicine_view.dart';
 import 'package:unicorn_flutter/View/Profile/profile_top_view.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/View/top_loading_view.dart';
@@ -68,6 +70,12 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<ProfileFamilyEmailSyncContactRoute>(
           path: Routes.profileFamilyEmailSyncContact,
+        ),
+        TypedGoRoute<ProfileMedicineRoute>(
+          path: Routes.profileMedicine,
+        ),
+        TypedGoRoute<ProfileMedicineSettingRoute>(
+          path: Routes.profileMedicineSetting,
         ),
       ],
     ),
@@ -197,5 +205,21 @@ class ProfileFamilyEmailSyncContactRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const FamilyEmailSettingView();
+}
+
+class ProfileMedicineRoute extends GoRouteData {
+  const ProfileMedicineRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const MedicineView();
+}
+
+class ProfileMedicineSettingRoute extends GoRouteData {
+  const ProfileMedicineSettingRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const MedicineSettingView();
 }
 //////////////////////////////  profile  //////////////////////////////
