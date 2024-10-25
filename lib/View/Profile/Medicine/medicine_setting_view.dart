@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -46,8 +48,19 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
             ? [
                 IconButton(
                   onPressed: () {
-                    Navigator.pop(context);
-                    // todo: controller出来たら削除処理追加
+                    showDialog<void>(
+                      context: context,
+                      builder: (_) {
+                        return CustomDialog(
+                          title: '警告',
+                          bodyText: '本当に削除しますか？',
+                          onTap: () {
+                            Navigator.pop(context);
+                            // todo: controller出来たら削除処理追加
+                          },
+                        );
+                      },
+                    );
                   },
                   icon: const Icon(
                     Icons.delete_outline,
