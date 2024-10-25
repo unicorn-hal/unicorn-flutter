@@ -15,7 +15,7 @@ class HealthCheckupRequest {
 
   factory HealthCheckupRequest.fromJson(Map<String, dynamic> json) {
     return HealthCheckupRequest(
-      date: DateTime.parse(json['date']),
+      date: DateFormat('yyyy-MM-dd').parse(json['date']),
       bodyTemperature: json['bodyTemperature'],
       bloodPressure: json['bloodPressure'],
       medicalRecord: json['medicalRecord'],
