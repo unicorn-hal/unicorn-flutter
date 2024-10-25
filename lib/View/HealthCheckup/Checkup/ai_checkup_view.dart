@@ -18,14 +18,19 @@ class AiCheckupView extends StatelessWidget {
           children: [
             Expanded(
               flex: 2,
-              child: SizedBox(
+              child: Container(
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(color: Colors.black, width: 1),
+                  ),
+                ),
                 width: size.width,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircleAvatar(
                       radius: size.width * 0.15,
-                      backgroundColor: Colors.yellow,
+                      backgroundColor: Colors.white,
                       child: Assets.images.icons.aiIcon.image(),
                     ),
                     const Padding(
@@ -40,10 +45,11 @@ class AiCheckupView extends StatelessWidget {
               flex: 3,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Container(
+                child: SizedBox(
                   width: size.width,
                   child: Center(
                     child: CustomText(
+                      // todo: 音声認識したテキストを表示する
                       text:
                           'あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ',
                       fontSize: 18,
@@ -60,30 +66,26 @@ class AiCheckupView extends StatelessWidget {
               child: Container(
                 width: size.width,
                 decoration: const BoxDecoration(
-                  color: const Color.fromARGB(255, 252, 140, 132),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(100),
-                    topRight: Radius.circular(100),
-                  ),
+                  color: ColorName.shadowGray,
+                  shape: BoxShape.circle,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 20,
-                      ),
-                      child: CircleButton(
-                        buttonSize: 80,
-                        buttonColor: Colors.red,
-                        onTap: () {},
-                        icon: const Icon(
-                          Icons.mic,
-                          color: Colors.white,
-                        ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 20,
+                  ),
+                  child: Center(
+                    child: CircleButton(
+                      buttonSize: 80,
+                      buttonColor: Colors.red,
+                      onTap: () {
+                        // todo: 音声認識を開始する処理
+                      },
+                      icon: const Icon(
+                        Icons.mic,
+                        color: Colors.white,
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
