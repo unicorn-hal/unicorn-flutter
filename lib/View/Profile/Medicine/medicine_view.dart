@@ -25,15 +25,6 @@ class MedicineView extends StatelessWidget {
         'name': 'ロキソニン',
         'week': '毎月曜日',
         'reminder': [
-          '09:00',
-          '12:00',
-          '19:00',
-        ]
-      },
-      {
-        'name': 'ボルタレン錠',
-        'week': '日,火,木',
-        'reminder': [
           '06:00',
           '11:00',
           '15:00',
@@ -41,6 +32,7 @@ class MedicineView extends StatelessWidget {
           '23:00',
         ]
       },
+      {'name': 'ボルタレン錠', 'week': '', 'reminder': []},
       {
         'name': 'メキシチールカプセル50mg',
         'week': '日,月,火,水,木,金',
@@ -48,15 +40,7 @@ class MedicineView extends StatelessWidget {
           '19:00',
         ]
       },
-      {
-        'name': 'メインテート錠',
-        'week': '毎日',
-        'reminder': [
-          '09:00',
-          '12:00',
-          '19:00',
-        ]
-      },
+      {'name': 'メインテート錠', 'week': '', 'reminder': []},
       {
         'name': 'ファスティック錠30',
         'week': '毎金曜日',
@@ -74,9 +58,8 @@ class MedicineView extends StatelessWidget {
         ]
       },
     ];
+    // todo: ↑形全然違うけどcontroller出来たら変えるので気にしないで
     // List<Map<String, dynamic>> reminderList = [];
-    List<String> reminderTimeList = [];
-    bool notification = false;
 
     // todo: controller出来たら移動
     return CustomScaffold(
@@ -141,8 +124,6 @@ class MedicineView extends StatelessWidget {
                               shrinkWrap: true,
                               itemCount: reminderList.length,
                               itemBuilder: (BuildContext context, int index) {
-                                reminderTimeList =
-                                    reminderList[index]['reminder'];
                                 return CommonItemTile(
                                   title: reminderList[index]['name'],
                                   onTap: () {
@@ -150,45 +131,16 @@ class MedicineView extends StatelessWidget {
                                         .push(context);
                                     // todo: リマインダー画面へ
                                   },
-                                  tileHeight: 100,
-                                  action: notification
-                                      ? Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            CustomText(
-                                              text: reminderList[index]['week'],
-                                              color: ColorName.textGray,
-                                              fontSize: 10,
+                                  action:
+                                      reminderList[index]['reminder'].isNotEmpty
+                                          ? const Icon(
+                                              Icons.notifications,
+                                              color: Colors.blue,
+                                            )
+                                          : const Icon(
+                                              Icons.notifications_off_outlined,
+                                              color: Colors.grey,
                                             ),
-                                            ListView.builder(
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(),
-                                              shrinkWrap: true,
-                                              itemCount:
-                                                  reminderTimeList.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                return Align(
-                                                  alignment: Alignment.center,
-                                                  child: CustomText(
-                                                    text:
-                                                        reminderTimeList[index],
-                                                    color: ColorName.textGray,
-                                                    fontSize: 11,
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ],
-                                        )
-                                      : const Icon(
-                                          Icons.notifications_off_outlined,
-                                          color: Colors.grey,
-                                        ),
                                 );
                               },
                             ),
