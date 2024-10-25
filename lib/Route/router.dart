@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/chat_top_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/Checkup/normal_checkup_view.dart';
+import 'package:unicorn_flutter/View/HealthCheckup/Results/health_checkup_results_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart';
 import 'package:unicorn_flutter/View/Home/home_view.dart';
 import 'package:unicorn_flutter/View/Profile/AppInformation/app_information_view.dart';
@@ -50,6 +51,9 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<NormalCheckupRoute>(
           path: Routes.healthCheckupNormal,
+        ),
+        TypedGoRoute<CheckupResultRoute>(
+          path: Routes.healthCheckupResults,
         ),
       ],
     ),
@@ -166,6 +170,14 @@ class NormalCheckupRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const NormalCheckupView();
+}
+
+class CheckupResultRoute extends GoRouteData {
+  const CheckupResultRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const HealthCheckupResultsView();
 }
 //////////////////////////////  healthCheckup  //////////////////////////////
 
