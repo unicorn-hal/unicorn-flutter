@@ -1,5 +1,7 @@
+import 'package:intl/intl.dart';
+
 class HealthCheckupRequest {
-  final String date;
+  final DateTime date;
   final double bodyTemperature;
   final String bloodPressure;
   final String medicalRecord;
@@ -13,7 +15,7 @@ class HealthCheckupRequest {
 
   factory HealthCheckupRequest.fromJson(Map<String, dynamic> json) {
     return HealthCheckupRequest(
-      date: json['date'],
+      date: DateFormat('yyyy-MM-dd').parse(json['date']),
       bodyTemperature: json['bodyTemperature'],
       bloodPressure: json['bloodPressure'],
       medicalRecord: json['medicalRecord'],
@@ -22,7 +24,7 @@ class HealthCheckupRequest {
 
   Map<String, dynamic> toJson() {
     return {
-      'date': date,
+      'date': DateFormat('yyyy-MM-dd').format(date),
       'bodyTemperature': bodyTemperature,
       'bloodPressure': bloodPressure,
       'medicalRecord': medicalRecord,
