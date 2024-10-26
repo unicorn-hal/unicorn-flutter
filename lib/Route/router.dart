@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/chat_top_view.dart';
+import 'package:unicorn_flutter/View/HealthCheckup/Checkup/ai_checkup_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/Checkup/normal_checkup_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart';
 import 'package:unicorn_flutter/View/Home/home_view.dart';
@@ -47,6 +48,9 @@ final routerProvider = Provider(
       routes: [
         TypedGoRoute<HealthCheckupRoute>(
           path: Routes.healthCheckup,
+        ),
+        TypedGoRoute<AiCheckupRoute>(
+          path: Routes.healthCheckupAi,
         ),
         TypedGoRoute<NormalCheckupRoute>(
           path: Routes.healthCheckupNormal,
@@ -158,6 +162,15 @@ class HealthCheckupRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const HealthCheckupTopView();
+}
+
+
+class AiCheckupRoute extends GoRouteData {
+  const AiCheckupRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const AiCheckupView();
 }
 
 class NormalCheckupRoute extends GoRouteData {
