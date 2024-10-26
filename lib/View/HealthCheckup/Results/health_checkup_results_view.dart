@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
@@ -129,7 +128,11 @@ class HealthCheckupResultsView extends StatelessWidget {
                           ),
                           SizedBox(
                             height: 70,
+
+                            ///　最大でも3つくらいまでにする→多すぎると見づらい
                             child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
                               itemCount: sicks.length,
                               itemBuilder: (context, index) {
                                 return CustomText(
