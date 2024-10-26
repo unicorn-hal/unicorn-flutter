@@ -190,10 +190,13 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                     fontSize: 20,
                   ),
                 ),
-                SizedBox(
-                  width: deviceWidth * 0.4,
-                  child: const CustomDrumRoll(
-                    showTime: false,
+                const SizedBox(
+                  width: 120,
+                  child: FittedBox(
+                    fit: BoxFit.cover,
+                    child: CustomDrumRoll(
+                      showTime: false,
+                    ),
                   ),
                 ),
                 const Padding(
