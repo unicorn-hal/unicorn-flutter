@@ -31,211 +31,213 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
     return CustomScaffold(
       isAppbar: false,
       isScrollable: true,
-      body: SizedBox(
-        width: deviceWidth,
-        height: deviceHeight,
-        child: FractionallySizedBox(
-          widthFactor: 0.85,
-          heightFactor: 0.95,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      color: ColorName.textGray
+      body: SafeArea(
+        child: SizedBox(
+          width: deviceWidth,
+          height: deviceHeight,
+          child: FractionallySizedBox(
+            widthFactor: 0.85,
+            heightFactor: 0.95,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: ColorName.textGray
+                      ),
                     ),
                   ),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.only(bottom: 10),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Column(
-                      children: [
-                        CustomText(
-                          text: 'Profile',
-                          color: ColorName.profileInputBackgroundColor,
-                          fontSize: 24,
-                        ),
-                        CustomText(
-                          text: '身体情報を入力してください',
-                          color: ColorName.textBlack,
-                          fontSize: 24,
-                        ),
-                      ],
-                    )
-                  ),
-                ),
-              ),
-              const CustomText(
-                text: 'お名前',
-                fontSize: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: deviceWidth * 0.4,
-                    child: CustomTextfield(
-                      hintText: '山田',
-                      height: 44,
-                      controller: firstname,
-                    ),
-                  ),
-                  SizedBox(
-                    width: deviceWidth * 0.4,
-                    child: CustomTextfield(
-                      hintText: '太郎',
-                      height: 44,
-                      controller: secondname,
-                    ),
-                  ),
-                ],
-              ),
-              const CustomText(
-                text: '性別',
-                fontSize: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    children: [
-                      CircleButton(
-                        buttonSize: deviceWidth * 0.25,
-                        buttonColor: checkInt == 1 ? ColorName.menCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
-                        onTap: () {
-                          setState(() {
-                            checkInt = 1;
-                          });
-                        },
-                        icon: const Icon(
-                          Icons.person_outlined,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CustomText(
-                          text: '男性',
-                          color: checkInt == 1 ? ColorName.menCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      CircleButton(
-                        buttonSize: deviceWidth * 0.25,
-                        buttonColor: checkInt == 2 ? ColorName.womenCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
-                        onTap: () {
-                          setState(() {
-                            checkInt = 2;
-                          });
-                        },
-                        icon: const Icon(
-                          Icons.person_outline,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CustomText(
-                          text: '女性',
-                          color: checkInt == 2 ? ColorName.womenCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      CircleButton(
-                        buttonSize: deviceWidth * 0.25,
-                        buttonColor: checkInt == 3 ? ColorName.textGray : ColorName.nocheckedCirclebuttonColor, 
-                        onTap: () {
-                          setState(() {
-                            checkInt = 3;
-                          });
-                        },
-                        icon: const Icon(
-                          Icons.person_outline,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: CustomText(
-                          text: 'その他',
-                          color: checkInt == 3 ? ColorName.textGray : ColorName.nocheckedCirclebuttonColor, 
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const CustomText(
-                text: '生年月日',
-                fontSize: 20,
-              ),
-              SizedBox(
-                width: deviceWidth * 0.4,
-                child: const CustomDrumRoll(
-                  showTime: false,
-                ),
-              ),
-              const CustomText(
-                text: '身長・体重',
-                fontSize: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: deviceWidth * 0.4,
-                    child: CustomTextfield(
-                      hintText: '身長(cm)',
-                      height: 44,
-                      maxLines: 3,
-                      controller: taller,
-                    ),
-                  ),
-                  SizedBox(
-                    width: deviceWidth * 0.4,
-                    child: CustomTextfield(
-                      hintText: '体重(kg)',
-                      height: 44,
-                      maxLines: 3,
-                      controller: weight,
-                    ),
-                  ),
-                ],
-              ),
-              GestureDetector(
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 15),
-                    child: Container(
-                      width: deviceWidth * 0.5,
-                      height: 60,
-                      color: ColorName.profileInputButtonColor,
-                      child: const Center(
-                        child: CustomText(
-                          text: '次に進む',
-                          fontSize: 22,
-                          color: Colors.white,                  
-                        ),
+                  child: const Padding(
+                    padding: EdgeInsets.only(bottom: 10),
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Column(
+                        children: [
+                          CustomText(
+                            text: 'Profile',
+                            color: ColorName.profileInputBackgroundColor,
+                            fontSize: 24,
+                          ),
+                          CustomText(
+                            text: '身体情報を入力してください',
+                            color: ColorName.textBlack,
+                            fontSize: 24,
+                          ),
+                        ],
                       )
                     ),
                   ),
                 ),
-                onTap: () {},
-                // todo: 次のViewができ次第ルーティングします。
-              )
-            ],
+                const CustomText(
+                  text: 'お名前',
+                  fontSize: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: deviceWidth * 0.4,
+                      child: CustomTextfield(
+                        hintText: '山田',
+                        height: 44,
+                        controller: firstname,
+                      ),
+                    ),
+                    SizedBox(
+                      width: deviceWidth * 0.4,
+                      child: CustomTextfield(
+                        hintText: '太郎',
+                        height: 44,
+                        controller: secondname,
+                      ),
+                    ),
+                  ],
+                ),
+                const CustomText(
+                  text: '性別',
+                  fontSize: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        CircleButton(
+                          buttonSize: deviceWidth * 0.25,
+                          buttonColor: checkInt == 1 ? ColorName.menCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
+                          onTap: () {
+                            setState(() {
+                              checkInt = 1;
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.person_outlined,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CustomText(
+                            text: '男性',
+                            color: checkInt == 1 ? ColorName.menCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        CircleButton(
+                          buttonSize: deviceWidth * 0.25,
+                          buttonColor: checkInt == 2 ? ColorName.womenCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
+                          onTap: () {
+                            setState(() {
+                              checkInt = 2;
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.person_outline,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CustomText(
+                            text: '女性',
+                            color: checkInt == 2 ? ColorName.womenCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        CircleButton(
+                          buttonSize: deviceWidth * 0.25,
+                          buttonColor: checkInt == 3 ? ColorName.textGray : ColorName.nocheckedCirclebuttonColor, 
+                          onTap: () {
+                            setState(() {
+                              checkInt = 3;
+                            });
+                          },
+                          icon: const Icon(
+                            Icons.person_outline,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CustomText(
+                            text: 'その他',
+                            color: checkInt == 3 ? ColorName.textGray : ColorName.nocheckedCirclebuttonColor, 
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const CustomText(
+                  text: '生年月日',
+                  fontSize: 20,
+                ),
+                SizedBox(
+                  width: deviceWidth * 0.4,
+                  child: const CustomDrumRoll(
+                    showTime: false,
+                  ),
+                ),
+                const CustomText(
+                  text: '身長・体重',
+                  fontSize: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: deviceWidth * 0.4,
+                      child: CustomTextfield(
+                        hintText: '身長(cm)',
+                        height: 44,
+                        maxLines: 3,
+                        controller: taller,
+                      ),
+                    ),
+                    SizedBox(
+                      width: deviceWidth * 0.4,
+                      child: CustomTextfield(
+                        hintText: '体重(kg)',
+                        height: 44,
+                        maxLines: 3,
+                        controller: weight,
+                      ),
+                    ),
+                  ],
+                ),
+                GestureDetector(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: Container(
+                        width: deviceWidth * 0.5,
+                        height: 60,
+                        color: ColorName.profileInputButtonColor,
+                        child: const Center(
+                          child: CustomText(
+                            text: '次に進む',
+                            fontSize: 22,
+                            color: Colors.white,                  
+                          ),
+                        )
+                      ),
+                    ),
+                  ),
+                  onTap: () {},
+                  // todo: 次のViewができ次第ルーティングします。
+                )
+              ],
+            ),
           ),
         ),
       ),
