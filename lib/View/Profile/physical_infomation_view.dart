@@ -27,17 +27,14 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
-    final deviceHeight = MediaQuery.of(context).size.height;
     return CustomScaffold(
       isAppbar: false,
       isScrollable: true,
       body: SafeArea(
         child: SizedBox(
           width: deviceWidth,
-          height: deviceHeight,
           child: FractionallySizedBox(
             widthFactor: 0.85,
-            heightFactor: 0.95,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
