@@ -39,7 +39,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
             widthFactor: 0.85,
             heightFactor: 0.95,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
@@ -71,9 +71,12 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                     ),
                   ),
                 ),
-                const CustomText(
-                  text: 'お名前',
-                  fontSize: 20,
+                const Padding(
+                  padding: EdgeInsets.only(top: 30, bottom: 10),
+                  child: CustomText(
+                    text: 'お名前',
+                    fontSize: 20,
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -96,9 +99,12 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                     ),
                   ],
                 ),
-                const CustomText(
-                  text: '性別',
-                  fontSize: 20,
+                const Padding(
+                  padding: EdgeInsets.only(top: 30, bottom: 10),
+                  child: CustomText(
+                    text: '性別',
+                    fontSize: 20,
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -177,9 +183,12 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                     ),
                   ],
                 ),
-                const CustomText(
-                  text: '生年月日',
-                  fontSize: 20,
+                const Padding(
+                  padding: EdgeInsets.only(top: 20, bottom: 10),
+                  child: CustomText(
+                    text: '生年月日',
+                    fontSize: 20,
+                  ),
                 ),
                 SizedBox(
                   width: deviceWidth * 0.4,
@@ -187,9 +196,12 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                     showTime: false,
                   ),
                 ),
-                const CustomText(
-                  text: '身長・体重',
-                  fontSize: 20,
+                const Padding(
+                  padding: EdgeInsets.only(top: 30, bottom: 10),
+                  child: CustomText(
+                    text: '身長・体重',
+                    fontSize: 20,
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -218,7 +230,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                   child: Align(
                     alignment: Alignment.center,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 15),
+                      padding: const EdgeInsets.only(top: 40),
                       child: Container(
                         width: deviceWidth * 0.5,
                         height: 60,
