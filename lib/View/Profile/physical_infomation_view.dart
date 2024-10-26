@@ -112,7 +112,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                     Column(
                       children: [
                         CircleButton(
-                          buttonSize: deviceWidth * 0.25,
+                          buttonSize: 90,
                           buttonColor: checkInt == 1 ? ColorName.menCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
                           onTap: () {
                             setState(() {
@@ -136,7 +136,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                     Column(
                       children: [
                         CircleButton(
-                          buttonSize: deviceWidth * 0.25,
+                          buttonSize: 90,
                           buttonColor: checkInt == 2 ? ColorName.womenCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
                           onTap: () {
                             setState(() {
@@ -160,7 +160,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                     Column(
                       children: [
                         CircleButton(
-                          buttonSize: deviceWidth * 0.25,
+                          buttonSize: 90,
                           buttonColor: checkInt == 3 ? ColorName.textGray : ColorName.nocheckedCirclebuttonColor, 
                           onTap: () {
                             setState(() {
