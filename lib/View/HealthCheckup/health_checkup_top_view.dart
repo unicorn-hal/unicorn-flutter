@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
@@ -237,7 +238,9 @@ class HealthCheckupTopView extends StatelessWidget {
                     // todo: 検診の処理を後から追加
                     items: [
                       HealthCheckButton(
-                        onTap: () {},
+                        onTap: () {
+                          CheckupResultRoute().push(context);
+                        },
                       ),
                       Stack(
                         children: [

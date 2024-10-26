@@ -177,7 +177,7 @@ class CheckupResultRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const HealthCheckupResultsView();
+      HealthCheckupResultsView();
 }
 //////////////////////////////  healthCheckup  //////////////////////////////
 

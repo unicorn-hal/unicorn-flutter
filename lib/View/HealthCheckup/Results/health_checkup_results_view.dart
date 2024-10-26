@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
-import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 import '../../Component/CustomWidget/custom_scaffold.dart';
 
@@ -150,7 +151,10 @@ class HealthCheckupResultsView extends StatelessWidget {
             const Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
                 child: CustomText(text: '回答に関連する病気'),
               ),
             ),
@@ -160,25 +164,48 @@ class HealthCheckupResultsView extends StatelessWidget {
                 minHeight: 100,
               ),
               child: ListView.builder(
-                itemCount: 5,
+                itemCount: diseases.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return Center(
-                    child: Container(
-                      width: size.width * 0.9,
-                      height: 40,
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            width: 1,
-                            color: Colors.grey,
+                  return GestureDetector(
+                    onTap: () {
+                      //todo: ここは簡単に病気名を検索するみたいな遷移(外部)
+                      //例) https://ja.wikipedia.org/wiki/病気名
+                    },
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: size.width * 0.9,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: ColorName.shadowGray,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        ),
-                      ),
-                      child: Center(
-                        child: CustomText(
-                          text: diseases[index],
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16.0,
+                                ),
+                                child: CustomText(
+                                  text: diseases[index],
+                                ),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.all(2.0),
+                                child: Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.blue,
+                                  size: 40,
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
