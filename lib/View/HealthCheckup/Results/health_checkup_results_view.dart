@@ -204,7 +204,7 @@ class HealthCheckupResultsView extends StatelessWidget {
                                 child: Icon(
                                   Icons.arrow_drop_down,
                                   color: Colors.blue,
-                                  size: 40,
+                                  size: 36,
                                 ),
                               )
                             ],
