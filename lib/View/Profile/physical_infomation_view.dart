@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
@@ -20,83 +22,84 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
   final TextEditingController taller = TextEditingController();
   final TextEditingController weight = TextEditingController();
   int checkInt = 0;
+  // todo: Controllerが完成次第、ここに追記していきます。
 
   @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
-    // Controllerが完成次第、ここに追記していきます。
-    return SizedBox(
-      width: deviceWidth,
-      height: deviceHeight,
-      child: FractionallySizedBox(
-        widthFactor: 0.85,
-        heightFactor: 0.9,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: ColorName.textGray
+    return CustomScaffold(
+      isAppbar: false,
+      isScrollable: true,
+      body: SizedBox(
+        width: deviceWidth,
+        height: deviceHeight,
+        child: FractionallySizedBox(
+          widthFactor: 0.85,
+          heightFactor: 0.95,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      color: ColorName.textGray
+                    ),
+                  ),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Column(
+                      children: [
+                        CustomText(
+                          text: 'Profile',
+                          color: ColorName.profileInputBackgroundColor,
+                          fontSize: 24,
+                        ),
+                        CustomText(
+                          text: '身体情報を入力してください',
+                          color: ColorName.textBlack,
+                          fontSize: 24,
+                        ),
+                      ],
+                    )
                   ),
                 ),
               ),
-              child: const Padding(
-                padding: EdgeInsets.only(bottom: 20),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Column(
-                    children: [
-                      CustomText(
-                        text: 'Profile',
-                        color: ColorName.profileInputBackgroundColor,
-                        fontSize: 24,
-                      ),
-                      CustomText(
-                        text: '身体情報を入力してください',
-                        color: ColorName.textBlack,
-                        fontSize: 24,
-                      ),
-                    ],
-                  )
-                ),
+              const CustomText(
+                text: 'お名前',
+                fontSize: 20,
               ),
-            ),
-            
-            const CustomText(
-              text: 'お名前',
-              fontSize: 19,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: deviceWidth * 0.4,
-                  child: CustomTextfield(
-                    hintText: '山田',
-                    height: 44,
-                    controller: firstname,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: deviceWidth * 0.4,
+                    child: CustomTextfield(
+                      hintText: '山田',
+                      height: 44,
+                      controller: firstname,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: deviceWidth * 0.4,
-                  child: CustomTextfield(
-                    hintText: '太郎',
-                    height: 44,
-                    controller: secondname,
+                  SizedBox(
+                    width: deviceWidth * 0.4,
+                    child: CustomTextfield(
+                      hintText: '太郎',
+                      height: 44,
+                      controller: secondname,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const CustomText(
-              text: '性別',
-              fontSize: 19,
-            ),
-            SizedBox(
-              child: Row(
+                ],
+              ),
+              const CustomText(
+                text: '性別',
+                fontSize: 20,
+              ),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
@@ -110,7 +113,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                           });
                         },
                         icon: const Icon(
-                          Icons.man,
+                          Icons.person_outlined,
                           color: Colors.white,
                         ),
                       ),
@@ -134,7 +137,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                           });
                         },
                         icon: const Icon(
-                          Icons.woman,
+                          Icons.person_outline,
                           color: Colors.white,
                         ),
                       ),
@@ -158,7 +161,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                           });
                         },
                         icon: const Icon(
-                          Icons.transgender,
+                          Icons.person_outline,
                           color: Colors.white,
                         ),
                       ),
@@ -173,67 +176,67 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                   ),
                 ],
               ),
-            ),
-            const CustomText(
-              text: '生年月日',
-              fontSize: 19,
-            ),
-            SizedBox(
-              width: deviceWidth * 0.4,
-              child: CustomTextfield(
-                hintText: '1991/02/02',
-                height: 44,
-                controller: datetime,
+              const CustomText(
+                text: '生年月日',
+                fontSize: 20,
               ),
-            ),
-            const CustomText(
-              text: '身長・体重',
-              fontSize: 19,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: deviceWidth * 0.4,
-                  child: CustomTextfield(
-                    hintText: '身長',
-                    height: 44,
-                    controller: taller,
-                  ),
-                ),
-                SizedBox(
-                  width: deviceWidth * 0.4,
-                  child: CustomTextfield(
-                    hintText: '体重',
-                    height: 44,
-                    controller: weight,
-                  ),
-                ),
-              ],
-            ),
-            GestureDetector(
-              child: Align(
-                alignment: Alignment.center,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 15),
-                  child: Container(
-                    width: deviceWidth * 0.5,
-                    height: 60,
-                    color: ColorName.profileInputButtonColor,
-                    child: const Center(
-                      child: CustomText(
-                        text: '次に進む',
-                        fontSize: 22,
-                        color: Colors.white,                  
-                      ),
-                    )
-                  ),
+              SizedBox(
+                width: deviceWidth * 0.4,
+                child: const CustomDrumRoll(
+                  showTime: false,
                 ),
               ),
-              onTap: () {},
-              // 次のViewができ次第ルーティングします
-            )
-          ],
+              const CustomText(
+                text: '身長・体重',
+                fontSize: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: deviceWidth * 0.4,
+                    child: CustomTextfield(
+                      hintText: '身長(cm)',
+                      height: 44,
+                      maxLines: 3,
+                      controller: taller,
+                    ),
+                  ),
+                  SizedBox(
+                    width: deviceWidth * 0.4,
+                    child: CustomTextfield(
+                      hintText: '体重(kg)',
+                      height: 44,
+                      maxLines: 3,
+                      controller: weight,
+                    ),
+                  ),
+                ],
+              ),
+              GestureDetector(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: Container(
+                      width: deviceWidth * 0.5,
+                      height: 60,
+                      color: ColorName.profileInputButtonColor,
+                      child: const Center(
+                        child: CustomText(
+                          text: '次に進む',
+                          fontSize: 22,
+                          color: Colors.white,                  
+                        ),
+                      )
+                    ),
+                  ),
+                ),
+                onTap: () {},
+                // todo: 次のViewができ次第ルーティングします。
+              )
+            ],
+          ),
         ),
       ),
     );
