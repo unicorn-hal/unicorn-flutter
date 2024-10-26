@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
+import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
 
 import '../../Component/CustomWidget/custom_scaffold.dart';
 
@@ -15,14 +16,24 @@ class HealthCheckupResultsView extends StatelessWidget {
     '頭痛の出現時期',
     '頭痛の程度(日常生活に支障が出るレベル)',
   ];
+  // todo: 病気のリストを取得する
+  final List<String> diseases = [
+    '脳腫瘍',
+    '脳梗塞',
+    '脳出血',
+    '脳炎',
+    '脳脊髄液減少症',
+  ];
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return CustomScaffold(
+      isScrollable: true,
       body: Center(
         child: Column(
           children: [
+            /// 検診結果を表示する部分
             Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 20,
@@ -134,6 +145,47 @@ class HealthCheckupResultsView extends StatelessWidget {
                 ),
               ),
             ),
+
+            /// 関連する病気を表示する部分
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.all(8.0),
+                child: CustomText(text: '回答に関連する病気'),
+              ),
+            ),
+            Container(
+              width: size.width,
+              constraints: const BoxConstraints(
+                minHeight: 100,
+              ),
+              child: ListView.builder(
+                itemCount: 5,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return Center(
+                    child: Container(
+                      width: size.width * 0.9,
+                      height: 40,
+                      decoration: const BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 1,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                      child: Center(
+                        child: CustomText(
+                          text: diseases[index],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            )
           ],
         ),
       ),
