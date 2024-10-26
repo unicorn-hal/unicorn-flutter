@@ -6,6 +6,8 @@ import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 class ChatApi extends ApiCore with Endpoint {
   ChatApi() : super(Endpoint.chats);
 
+  /// GET
+  /// チャット一覧取得
   Future<List<Chat>?> getChatList() async {
     try {
       final response = await get();
@@ -17,6 +19,10 @@ class ChatApi extends ApiCore with Endpoint {
     }
   }
 
+  /// GET
+  /// チャット情報取得
+  /// [doctorId] 医師ID
+  /// [userId] ユーザID
   Future<int> postChat({
     required String doctorId,
     required String userId,
@@ -32,6 +38,9 @@ class ChatApi extends ApiCore with Endpoint {
     }
   }
 
+  /// GET
+  /// チャットメッセージ一覧取得
+  /// [chatId] チャットID
   Future<List<Message>?> getMessageList({required String chatId}) async {
     try {
       useParameter(parameter: '/$chatId/messages');
@@ -44,6 +53,11 @@ class ChatApi extends ApiCore with Endpoint {
     }
   }
 
+  /// POST
+  /// チャットメッセージ送信
+  /// [chatId] チャットID
+  /// [senderId] 送信者ID
+  /// [content] メッセージ内容
   Future<int> postMessage({
     required String chatId,
     required String senderId,
@@ -61,6 +75,10 @@ class ChatApi extends ApiCore with Endpoint {
     }
   }
 
+  /// DELETE
+  /// チャットメッセージ削除
+  /// [chatId] チャットID
+  /// [messageId] メッセージID
   Future<int> deleteMessage({
     required String chatId,
     required String messageId,
