@@ -5,19 +5,23 @@ import 'package:unicorn_flutter/Model/custom_picker.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
+enum DrumRollType { date, time }
+
+// DrumRollType.dateの場合は日付を、DrumRollType.timeの場合は時間を選択できる
+// maxTime、reservation、minuteはDrumRollType.timeの場合のみ引数で要求する
 class CustomDrumRoll extends StatefulWidget {
   const CustomDrumRoll({
     super.key,
-    required this.customPicker,
+    required this.drumRollType,
     this.maxTime,
     this.reservation,
-    this.minute,
+    this.splitMinute,
   });
 
-  final bool customPicker;
+  final DrumRollType drumRollType;
   final DateTime? maxTime;
   final DateTime? reservation;
-  final int? minute;
+  final int? splitMinute;
 
   /// minuteに入れるのは5,10,15,30のみにしてください
 
@@ -26,15 +30,29 @@ class CustomDrumRoll extends StatefulWidget {
 }
 
 class _CustomDrumRollState extends State<CustomDrumRoll> {
-  late DateTime scheduledTime;
+  CustomPicker get customPicker {
+    switch (widget.drumRollType) {
+      case DrumRollType.date:
+        return CustomPicker(
+          drumRollType: widget.drumRollType,
+        );
+      case DrumRollType.time:
+        return CustomPicker(
+          drumRollType: widget.drumRollType,
+          splitMinute: widget.splitMinute ?? 1,
+        );
+    }
+  }
+
+  DateTime reservation = DateTime.now();
   @override
   void initState() {
     super.initState();
     if (widget.reservation != null) {
-      scheduledTime = widget.reservation!;
+      reservation = widget.reservation!;
     } else {
       DateTime now = DateTime.now();
-      scheduledTime = widget.minute != null
+      reservation = widget.splitMinute != null
           ? DateTime(now.year, now.month, now.day, now.hour, 0)
           : now;
     }
@@ -44,36 +62,48 @@ class _CustomDrumRollState extends State<CustomDrumRoll> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.customPicker
-            ? DatePicker.showPicker(
-                context,
-                locale: LocaleType.jp,
-                onChanged: (date) {},
-                onConfirm: (date) {
-                  // todo: Controllerにdateを渡す処理追記予定
-                  scheduledTime = date;
-                  setState(() {});
-                },
-                pickerModel: CustomPicker(
-                  currentTime: DateTime.now(),
-                  locale: LocaleType.jp,
-                  minute: widget.minute ?? 1,
-                ),
-              )
-            : DatePicker.showDatePicker(
-                context,
-                showTitleActions: true,
-                minTime: DateTime(1900, 1, 1),
-                maxTime: widget.maxTime ?? DateTime.now(),
-                onChanged: (date) {},
-                onConfirm: (date) {
-                  // todo: Controllerにdateを渡す処理追記予定
-                  scheduledTime = date;
-                  setState(() {});
-                },
-                currentTime: DateTime.now(),
-                locale: LocaleType.jp,
-              );
+        DatePicker.showPicker(
+          context,
+          locale: LocaleType.jp,
+          onChanged: (date) {},
+          onConfirm: (date) {
+            reservation = date;
+            print(reservation);
+            setState(() {});
+          },
+          pickerModel: customPicker,
+        );
+
+        // widget.customPicker
+        //     ? DatePicker.showPicker(
+        //         context,
+        //         locale: LocaleType.jp,
+        //         onChanged: (date) {},
+        //         onConfirm: (date) {
+        //           // todo: Controllerにdateを渡す処理追記予定
+        //           scheduledTime = date;
+        //           setState(() {});
+        //         },
+        //         pickerModel: CustomPicker(
+        //           currentTime: DateTime.now(),
+        //           locale: LocaleType.jp,
+        //           minute: widget.minute ?? 1,
+        //         ),
+        //       )
+        //     : DatePicker.showDatePicker(
+        //         context,
+        //         showTitleActions: true,
+        //         minTime: DateTime(1900, 1, 1),
+        //         maxTime: widget.maxTime ?? DateTime.now(),
+        //         onChanged: (date) {},
+        //         onConfirm: (date) {
+        //           // todo: Controllerにdateを渡す処理追記予定
+        //           scheduledTime = date;
+        //           setState(() {});
+        //         },
+        //         currentTime: DateTime.now(),
+        //         locale: LocaleType.jp,
+        //       );
       },
       child: Container(
         padding: const EdgeInsets.all(8),
@@ -82,9 +112,12 @@ class _CustomDrumRollState extends State<CustomDrumRoll> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: CustomText(
-          text: widget.customPicker
-              ? DateFormat('HH:mm').format(scheduledTime)
-              : DateFormat('yyyy MM/dd').format(scheduledTime),
+          // text: widget.customPicker
+          //     ? DateFormat('HH:mm').format(scheduledTime)
+          //     : DateFormat('yyyy MM/dd').format(scheduledTime),
+          text: widget.drumRollType == DrumRollType.time
+              ? DateFormat('HH:mm').format(reservation)
+              : DateFormat('yyyy MM/dd').format(reservation),
           color: Colors.blue,
         ),
       ),
