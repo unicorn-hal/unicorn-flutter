@@ -3,10 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/chat_top_view.dart';
+import 'package:unicorn_flutter/View/HealthCheckup/Checkup/ai_checkup_view.dart';
+import 'package:unicorn_flutter/View/HealthCheckup/Checkup/normal_checkup_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart';
 import 'package:unicorn_flutter/View/Home/home_view.dart';
 import 'package:unicorn_flutter/View/Profile/physical_infomation_view.dart';
+import 'package:unicorn_flutter/View/Profile/AppInformation/app_information_view.dart';
+import 'package:unicorn_flutter/View/Profile/NotificationSetting/notification_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/profile_top_view.dart';
+import 'package:unicorn_flutter/View/Profile/LocalAuth/local_auth_view.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/View/top_loading_view.dart';
 import 'routes.dart';
@@ -45,6 +50,12 @@ final routerProvider = Provider(
         TypedGoRoute<HealthCheckupRoute>(
           path: Routes.healthCheckup,
         ),
+        TypedGoRoute<AiCheckupRoute>(
+          path: Routes.healthCheckupAi,
+        ),
+        TypedGoRoute<NormalCheckupRoute>(
+          path: Routes.healthCheckupNormal,
+        ),
       ],
     ),
     TypedStatefulShellBranch<ChatBranch>(
@@ -61,6 +72,15 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<ProfilePhysicalInformationRoute>(
           path: Routes.profilePhysicalInformation,
+        ),
+        TypedGoRoute<ProfileLocalAuthRoute>(
+          path: Routes.profileLocalAuth,
+        ),
+        TypedGoRoute<ProfileAppInformationRoute>(
+          path: Routes.profileAppInformation,
+        ),
+        TypedGoRoute<ProfileNotificationSettingRoute>(
+          path: Routes.profileNotificationSetting,
         ),
       ],
     ),
@@ -147,6 +167,23 @@ class HealthCheckupRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) =>
       const HealthCheckupTopView();
 }
+
+
+class AiCheckupRoute extends GoRouteData {
+  const AiCheckupRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const AiCheckupView();
+}
+
+class NormalCheckupRoute extends GoRouteData {
+  const NormalCheckupRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const NormalCheckupView();
+}
 //////////////////////////////  healthCheckup  //////////////////////////////
 
 //////////////////////////////  chat  //////////////////////////////
@@ -168,11 +205,36 @@ class ProfileRoute extends GoRouteData {
       const ProfileTopView();
 }
 
+
 class ProfilePhysicalInformationRoute extends GoRouteData {
   const ProfilePhysicalInformationRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const PhysicalInfomationView();
+}
+
+class ProfileLocalAuthRoute extends GoRouteData {
+  const ProfileLocalAuthRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const LocalAuthView();
+}
+
+class ProfileAppInformationRoute extends GoRouteData {
+  const ProfileAppInformationRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const AppInformationView();
+}
+
+class ProfileNotificationSettingRoute extends GoRouteData {
+  const ProfileNotificationSettingRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const NotificationSettingView();
 }
 //////////////////////////////  profile  //////////////////////////////
