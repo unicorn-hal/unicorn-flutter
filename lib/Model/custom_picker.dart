@@ -4,24 +4,29 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dar
 class CustomPicker extends CommonPickerModel {
   final DrumRollType drumRollType;
   final int splitMinute;
+  DateTime? maxDate;
+  DateTime minDate = DateTime(1900, 1, 1, 0, 0, 0);
 
   CustomPicker({
     super.locale = LocaleType.jp,
     required this.drumRollType,
     this.splitMinute = 1,
+    this.maxDate,
     DateTime? currentTime,
   }) {
-    this.currentTime = currentTime ?? DateTime.now();
+    DateTime now = DateTime.now();
+    this.currentTime = currentTime ?? now;
+    maxDate ??= DateTime(2099, 12, 31, 23, 59, 59);
 
     switch (drumRollType) {
       case DrumRollType.date:
-        setLeftIndex(DateTime.now().year - 1900);
-        setMiddleIndex(DateTime.now().month - 1);
-        setRightIndex(DateTime.now().day - 1);
+        setLeftIndex(this.currentTime.year);
+        setMiddleIndex(this.currentTime.month);
+        setRightIndex(this.currentTime.day);
         break;
       case DrumRollType.time:
-        setLeftIndex(DateTime.now().hour);
-        setMiddleIndex(DateTime.now().minute ~/ splitMinute);
+        setLeftIndex(this.currentTime.hour);
+        setMiddleIndex(this.currentTime.minute ~/ splitMinute);
         setRightIndex(0);
         break;
     }
@@ -33,8 +38,8 @@ class CustomPicker extends CommonPickerModel {
   String? leftStringAtIndex(int index) {
     switch (drumRollType) {
       case DrumRollType.date:
-        if (index >= 0 && index < 200) {
-          return '${index + 1900}';
+        if (index >= minDate.year && index <= maxDate!.year) {
+          return '$index';
         } else {
           return null;
         }
@@ -51,8 +56,8 @@ class CustomPicker extends CommonPickerModel {
   String? middleStringAtIndex(int index) {
     switch (drumRollType) {
       case DrumRollType.date:
-        if (index >= 0 && index < 12) {
-          return '${index + 1}';
+        if (index >= minDate.month && index <= maxDate!.month) {
+          return '$index';
         } else {
           return null;
         }
@@ -69,8 +74,8 @@ class CustomPicker extends CommonPickerModel {
   String? rightStringAtIndex(int index) {
     switch (drumRollType) {
       case DrumRollType.date:
-        if (index >= 0 && index < 31) {
-          return '${index + 1}';
+        if (index >= minDate.day && index <= maxDate!.day) {
+          return '$index';
         } else {
           return null;
         }
@@ -114,9 +119,9 @@ class CustomPicker extends CommonPickerModel {
     switch (drumRollType) {
       case DrumRollType.date:
         return DateTime(
-          currentLeftIndex() + 1900,
-          currentMiddleIndex() + 1,
-          currentRightIndex() + 1,
+          currentLeftIndex(),
+          currentMiddleIndex(),
+          currentRightIndex(),
         );
       case DrumRollType.time:
         return DateTime(

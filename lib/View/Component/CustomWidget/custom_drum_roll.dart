@@ -13,13 +13,13 @@ class CustomDrumRoll extends StatefulWidget {
   const CustomDrumRoll({
     super.key,
     required this.drumRollType,
-    this.maxTime,
+    this.maxDate,
     this.reservation,
     this.splitMinute,
   });
 
   final DrumRollType drumRollType;
-  final DateTime? maxTime;
+  final DateTime? maxDate;
   final DateTime? reservation;
   final int? splitMinute;
 
@@ -30,21 +30,25 @@ class CustomDrumRoll extends StatefulWidget {
 }
 
 class _CustomDrumRollState extends State<CustomDrumRoll> {
+  DateTime? reservation;
+
   CustomPicker get customPicker {
     switch (widget.drumRollType) {
       case DrumRollType.date:
         return CustomPicker(
           drumRollType: widget.drumRollType,
+          maxDate: widget.maxDate,
+          currentTime: reservation ?? DateTime.now(),
         );
       case DrumRollType.time:
         return CustomPicker(
           drumRollType: widget.drumRollType,
           splitMinute: widget.splitMinute ?? 1,
+          currentTime: reservation ?? DateTime.now(),
         );
     }
   }
 
-  DateTime reservation = DateTime.now();
   @override
   void initState() {
     super.initState();
@@ -68,7 +72,6 @@ class _CustomDrumRollState extends State<CustomDrumRoll> {
           onChanged: (date) {},
           onConfirm: (date) {
             reservation = date;
-            print(reservation);
             setState(() {});
           },
           pickerModel: customPicker,
@@ -116,8 +119,8 @@ class _CustomDrumRollState extends State<CustomDrumRoll> {
           //     ? DateFormat('HH:mm').format(scheduledTime)
           //     : DateFormat('yyyy MM/dd').format(scheduledTime),
           text: widget.drumRollType == DrumRollType.time
-              ? DateFormat('HH:mm').format(reservation)
-              : DateFormat('yyyy MM/dd').format(reservation),
+              ? DateFormat('HH:mm').format(reservation ?? DateTime.now())
+              : DateFormat('yyyy MM/dd').format(reservation ?? DateTime.now()),
           color: Colors.blue,
         ),
       ),
