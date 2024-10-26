@@ -120,11 +120,11 @@ class CustomPicker extends CommonPickerModel {
         );
       case DrumRollType.time:
         return DateTime(
-          0,
-          0,
-          0,
+          currentTime.year,
+          currentTime.month,
+          currentTime.day,
           currentLeftIndex(),
-          currentMiddleIndex(),
+          currentMiddleIndex() * splitMinute,
           currentRightIndex(),
         );
     }
