@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -89,6 +88,7 @@ class ProfileTopView extends StatelessWidget {
                       onTap: () {
                         // todo: controller出来たら変更
                       },
+
                     ),
                   );
                 },
