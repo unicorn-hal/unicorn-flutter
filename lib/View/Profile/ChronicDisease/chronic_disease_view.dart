@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/ai_announce_banner.dart';
@@ -41,7 +42,9 @@ class ChronicDiseaseView extends StatelessWidget {
                   children: [
                     const CustomText(text: '体のお悩み'),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        const ProfileChronicDiseaseSearchRoute().push(context);
+                      },
                       icon: const Icon(
                         Icons.add,
                         color: Colors.blue,
@@ -95,7 +98,9 @@ class ChronicDiseaseView extends StatelessWidget {
                             Expanded(
                               flex: 1,
                               child: IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  // todo: お悩み削除処理
+                                },
                                 icon: const Icon(
                                   Icons.delete_outline,
                                 ),
