@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
@@ -136,7 +137,11 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                   controller: countController,
                                   height: 50,
                                   maxLines: 1,
-                                  number: true,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                  maxLength: 3,
                                 ),
                               ),
                             ),
@@ -251,9 +256,9 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                   ),
                                 ),
                                 CustomDrumRoll(
-                                  showTime: true,
-                                  reservation: DateTime.now(),
-                                  // todo: リマインダー設定がすでにある場合reservationに入れる
+                                  drumRollType: DrumRollType.time,
+                                  initValue: DateTime.now(),
+                                  // todo: リマインダー設定がすでにある場合initValueに入れる
                                 ),
                                 const SizedBox(
                                   width: 10,
