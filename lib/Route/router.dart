@@ -8,6 +8,8 @@ import 'package:unicorn_flutter/View/HealthCheckup/Checkup/normal_checkup_view.d
 import 'package:unicorn_flutter/View/HealthCheckup/Results/health_checkup_results_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart';
 import 'package:unicorn_flutter/View/Home/home_view.dart';
+import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_edit_view.dart';
+import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/physical_infomation_view.dart';
 import 'package:unicorn_flutter/View/Profile/AppInformation/app_information_view.dart';
 import 'package:unicorn_flutter/View/Profile/NotificationSetting/notification_setting_view.dart';
@@ -85,6 +87,15 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<ProfileNotificationSettingRoute>(
           path: Routes.profileNotificationSetting,
+        ),
+        TypedGoRoute<ProfileFamilyEmailRoute>(
+          path: Routes.profileFamilyEmail,
+        ),
+        TypedGoRoute<ProfileFamilyEmailRegisterRoute>(
+          path: Routes.profileFamilyEmailRegister,
+        ),
+        TypedGoRoute<ProfileFamilyEmailSyncContactRoute>(
+          path: Routes.profileFamilyEmailSyncContact,
         ),
       ],
     ),
@@ -172,7 +183,6 @@ class HealthCheckupRoute extends GoRouteData {
       const HealthCheckupTopView();
 }
 
-
 class AiCheckupRoute extends GoRouteData {
   const AiCheckupRoute();
 
@@ -217,7 +227,6 @@ class ProfileRoute extends GoRouteData {
       const ProfileTopView();
 }
 
-
 class ProfilePhysicalInformationRoute extends GoRouteData {
   const ProfilePhysicalInformationRoute();
 
@@ -248,5 +257,29 @@ class ProfileNotificationSettingRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const NotificationSettingView();
+}
+
+class ProfileFamilyEmailRoute extends GoRouteData {
+  const ProfileFamilyEmailRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const FamilyEmailSettingView();
+}
+
+class ProfileFamilyEmailRegisterRoute extends GoRouteData {
+  const ProfileFamilyEmailRegisterRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const FamilyEmailEditView();
+}
+
+class ProfileFamilyEmailSyncContactRoute extends GoRouteData {
+  const ProfileFamilyEmailSyncContactRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const FamilyEmailSettingView();
 }
 //////////////////////////////  profile  //////////////////////////////
