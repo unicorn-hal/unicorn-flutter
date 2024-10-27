@@ -4,6 +4,8 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_anima
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
+import '../../../Constants/strings.dart';
+
 class ProgressView extends StatelessWidget {
   const ProgressView({
     super.key,
@@ -12,12 +14,29 @@ class ProgressView extends StatelessWidget {
 
   final ProgressViewEnum progressType;
 
+  // todo: controllerに移植する
+  // enumからテキストに変換
+  String typeToText(ProgressViewEnum type) {
+    switch (type) {
+      case ProgressViewEnum.inspection:
+        return Strings.LOADING_TEXT_INSPECTION;
+      case ProgressViewEnum.treatment:
+        return Strings.LOADING_TEXT_TREATMENT;
+      case ProgressViewEnum.bodyTemperature:
+        return Strings.LOADING_TEXT_BODY_TEMPERATURE;
+      case ProgressViewEnum.bloodPressure:
+        return Strings.LOADING_TEXT_BLOOD_PRESSURE;
+      default:
+        return '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
       body: Center(
         child: CustomLoadingAnimation(
-          text: ProgressViewType.typeToText(progressType),
+          text: typeToText(progressType),
           iconColor: ColorName.textGray,
           textColor: ColorName.textGray,
         ),
