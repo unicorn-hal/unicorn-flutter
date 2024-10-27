@@ -43,6 +43,8 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
       body: Container(
         constraints: BoxConstraints(
           minHeight: deviceHeight - appBarHeight - topPaddingHeight - 80,
+
+          /// 画面の高さ - appBarの高さ - topPaddの高さ -　NavigationBarのデフォルト高さ = Viewで使用できる高さびたびた
         ),
         width: deviceWidth,
         child: Column(
@@ -68,6 +70,8 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                     hintText: '病名を入力してください',
                     controller: controller,
                     height: 50,
+                    maxLines: 1,
+                    maxLength: 40,
                   ),
                   Visibility(
                     visible: items.isNotEmpty,
@@ -88,6 +92,8 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                   ),
                   SizedBox(
                     height: items.isEmpty ? 0 : 350,
+
+                    /// タイル1枚分 = 70
                     child: ListView.builder(
                       itemCount: items.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -121,7 +127,11 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                   Expanded(
                                     flex: 1,
                                     child: IconButton(
-                                      onPressed: items[index] ? () {} : () {},
+                                      onPressed: items[index]
+                                          ? () {}
+                                          : () {
+                                              // todo: お悩み追加処理
+                                            },
                                       icon: items[index]
                                           ? const Icon(
                                               Icons.check,
@@ -205,8 +215,11 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                     Expanded(
                                       flex: 1,
                                       child: IconButton(
-                                        onPressed:
-                                            regularItems[index] ? () {} : () {},
+                                        onPressed: regularItems[index]
+                                            ? () {}
+                                            : () {
+                                                // todo: お悩み追加処理
+                                              },
                                         icon: regularItems[index]
                                             ? const Icon(
                                                 Icons.check,
