@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/ai_announce_banner.dart';
@@ -99,7 +100,18 @@ class ChronicDiseaseView extends StatelessWidget {
                               flex: 1,
                               child: IconButton(
                                 onPressed: () {
-                                  // todo: お悩み削除処理
+                                  showDialog<void>(
+                                    context: context,
+                                    builder: (_) {
+                                      return CustomDialog(
+                                        title: '警告',
+                                        bodyText: '本当に削除しますか？',
+                                        onTap: () {
+                                          // todo: お悩み削除処理
+                                        },
+                                      );
+                                    },
+                                  );
                                 },
                                 icon: const Icon(
                                   Icons.delete_outline,
