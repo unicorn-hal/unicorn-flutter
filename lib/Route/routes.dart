@@ -21,4 +21,7 @@ mixin Routes {
   static const String profileAppInformation = '/profile/app_information';
   static const String profileNotificationSetting =
       '/profile/notification_setting';
+  static const String profileChronicDisease = '/profile/chronic_disease';
+  static const String profileChronicDiseaseSearch =
+      '/profile/chronic_disease/search';
 }
