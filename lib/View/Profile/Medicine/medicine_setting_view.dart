@@ -105,6 +105,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                         controller: nameController,
                         height: 50,
                         maxLines: 1,
+                        maxLength: 20,
                       ),
                     ),
                     Row(
