@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -86,10 +85,10 @@ class ProfileTopView extends StatelessWidget {
                     child: ProfileDetailCell(
                       icon: Icon(Icons.add_circle_outline),
                       title: '項目${index}',
-                      // todo: controller出来たら変更
                       onTap: () {
-                        const ProfileFamilyEmailRoute().push(context);
+                        // todo: controller出来たら変更
                       },
+
                     ),
                   );
                 },
