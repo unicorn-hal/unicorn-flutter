@@ -36,6 +36,15 @@ class _CustomDrumRollState extends State<CustomDrumRoll> {
   void initState() {
     super.initState();
     _currentValue = widget.initValue ?? DateTime.now();
+    if (widget.splitMinute != null) {
+      _currentValue = DateTime(
+        _currentValue.year,
+        _currentValue.month,
+        _currentValue.day,
+        _currentValue.hour,
+        _currentValue.minute - _currentValue.minute % widget.splitMinute!,
+      );
+    }
   }
 
   @override
