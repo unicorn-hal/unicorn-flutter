@@ -128,7 +128,9 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                     flex: 1,
                                     child: IconButton(
                                       onPressed: items[index]
-                                          ? () {}
+                                          ? () {
+                                              // todo: お悩み削除処理をつけるか、そもそも登録済み病気を表示しないか、見えるけど処理なしか悩み
+                                            }
                                           : () {
                                               // todo: お悩み追加処理
                                             },
@@ -216,7 +218,9 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                       flex: 1,
                                       child: IconButton(
                                         onPressed: regularItems[index]
-                                            ? () {}
+                                            ? () {
+                                                // todo: お悩み削除処理をつけるか、見えるけど処理なしか悩み。ここは常に決まった数表示したい
+                                              }
                                             : () {
                                                 // todo: お悩み追加処理
                                               },
