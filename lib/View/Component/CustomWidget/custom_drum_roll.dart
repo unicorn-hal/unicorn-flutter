@@ -5,38 +5,45 @@ import 'package:unicorn_flutter/Model/custom_picker.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
+enum DrumRollType { date, time }
+
 class CustomDrumRoll extends StatefulWidget {
+  /// [drumRollType] : 日付または時間を選択する
+  /// [initValue] : 初期値
+  /// [maxDate] : [日付のみ] 選択可能な最大日時
+  /// [splitMinute] : [時間のみ] 指定分で分割する (5,10,15,30)
   const CustomDrumRoll({
     super.key,
-    required this.customPicker,
-    this.maxTime,
-    this.reservation,
-    this.minute,
+    required this.drumRollType,
+    this.initValue,
+    this.maxDate,
+    this.splitMinute,
   });
 
-  final bool customPicker;
-  final DateTime? maxTime;
-  final DateTime? reservation;
-  final int? minute;
-
-  /// minuteに入れるのは5,10,15,30のみにしてください
+  final DrumRollType drumRollType;
+  final DateTime? initValue;
+  final DateTime? maxDate;
+  final int? splitMinute;
 
   @override
   State<CustomDrumRoll> createState() => _CustomDrumRollState();
 }
 
 class _CustomDrumRollState extends State<CustomDrumRoll> {
-  late DateTime scheduledTime;
+  late DateTime _currentValue;
+
   @override
   void initState() {
     super.initState();
-    if (widget.reservation != null) {
-      scheduledTime = widget.reservation!;
-    } else {
-      DateTime now = DateTime.now();
-      scheduledTime = widget.minute != null
-          ? DateTime(now.year, now.month, now.day, now.hour, 0)
-          : now;
+    _currentValue = widget.initValue ?? DateTime.now();
+    if (widget.splitMinute != null) {
+      _currentValue = DateTime(
+        _currentValue.year,
+        _currentValue.month,
+        _currentValue.day,
+        _currentValue.hour,
+        _currentValue.minute - _currentValue.minute % widget.splitMinute!,
+      );
     }
   }
 
@@ -44,36 +51,21 @@ class _CustomDrumRollState extends State<CustomDrumRoll> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        widget.customPicker
-            ? DatePicker.showPicker(
-                context,
-                locale: LocaleType.jp,
-                onChanged: (date) {},
-                onConfirm: (date) {
-                  // todo: Controllerにdateを渡す処理追記予定
-                  scheduledTime = date;
-                  setState(() {});
-                },
-                pickerModel: CustomPicker(
-                  currentTime: DateTime.now(),
-                  locale: LocaleType.jp,
-                  minute: widget.minute ?? 1,
-                ),
-              )
-            : DatePicker.showDatePicker(
-                context,
-                showTitleActions: true,
-                minTime: DateTime(1900, 1, 1),
-                maxTime: widget.maxTime ?? DateTime.now(),
-                onChanged: (date) {},
-                onConfirm: (date) {
-                  // todo: Controllerにdateを渡す処理追記予定
-                  scheduledTime = date;
-                  setState(() {});
-                },
-                currentTime: DateTime.now(),
-                locale: LocaleType.jp,
-              );
+        DatePicker.showPicker(
+          context,
+          locale: LocaleType.jp,
+          onChanged: (date) {},
+          onConfirm: (date) {
+            _currentValue = date;
+            setState(() {});
+          },
+          pickerModel: CustomPicker(
+            drumRollType: widget.drumRollType,
+            maxDate: widget.maxDate,
+            splitMinute: widget.splitMinute ?? 1,
+            currentTime: _currentValue,
+          ),
+        );
       },
       child: Container(
         padding: const EdgeInsets.all(8),
@@ -82,9 +74,9 @@ class _CustomDrumRollState extends State<CustomDrumRoll> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: CustomText(
-          text: widget.customPicker
-              ? DateFormat('HH:mm').format(scheduledTime)
-              : DateFormat('yyyy MM/dd').format(scheduledTime),
+          text: widget.drumRollType == DrumRollType.time
+              ? DateFormat('HH:mm').format(_currentValue)
+              : DateFormat('yyyy MM/dd').format(_currentValue),
           color: Colors.blue,
         ),
       ),
