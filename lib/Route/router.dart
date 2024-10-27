@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/chat_top_view.dart';
+import 'package:unicorn_flutter/View/HealthCheckup/Checkup/ai_checkup_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/Checkup/normal_checkup_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/Results/health_checkup_results_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart';
 import 'package:unicorn_flutter/View/Home/home_view.dart';
+import 'package:unicorn_flutter/View/Profile/physical_infomation_view.dart';
 import 'package:unicorn_flutter/View/Profile/AppInformation/app_information_view.dart';
 import 'package:unicorn_flutter/View/Profile/NotificationSetting/notification_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/profile_top_view.dart';
@@ -49,6 +51,9 @@ final routerProvider = Provider(
         TypedGoRoute<HealthCheckupRoute>(
           path: Routes.healthCheckup,
         ),
+        TypedGoRoute<AiCheckupRoute>(
+          path: Routes.healthCheckupAi,
+        ),
         TypedGoRoute<NormalCheckupRoute>(
           path: Routes.healthCheckupNormal,
         ),
@@ -68,6 +73,9 @@ final routerProvider = Provider(
       routes: [
         TypedGoRoute<ProfileRoute>(
           path: Routes.profile,
+        ),
+        TypedGoRoute<ProfilePhysicalInformationRoute>(
+          path: Routes.profilePhysicalInformation,
         ),
         TypedGoRoute<ProfileLocalAuthRoute>(
           path: Routes.profileLocalAuth,
@@ -164,6 +172,15 @@ class HealthCheckupRoute extends GoRouteData {
       const HealthCheckupTopView();
 }
 
+
+class AiCheckupRoute extends GoRouteData {
+  const AiCheckupRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const AiCheckupView();
+}
+
 class NormalCheckupRoute extends GoRouteData {
   const NormalCheckupRoute();
 
@@ -198,6 +215,15 @@ class ProfileRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const ProfileTopView();
+}
+
+
+class ProfilePhysicalInformationRoute extends GoRouteData {
+  const ProfilePhysicalInformationRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const PhysicalInfomationView();
 }
 
 class ProfileLocalAuthRoute extends GoRouteData {
