@@ -12,7 +12,8 @@ class CustomTextfield extends StatefulWidget {
     this.prefixIcon,
     this.height = 60,
     this.maxLines = 3,
-    this.number = false,
+    this.keyboardType,
+    this.inputFormatters,
   });
 
   final String hintText;
@@ -21,7 +22,8 @@ class CustomTextfield extends StatefulWidget {
   final Icon? prefixIcon;
   final double height;
   final int maxLines;
-  final bool number;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -31,9 +33,8 @@ class _CustomTextfieldState extends State<CustomTextfield> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      keyboardType: widget.number ? TextInputType.number : null,
-      inputFormatters:
-          widget.number ? [FilteringTextInputFormatter.digitsOnly] : null,
+      keyboardType: widget.keyboardType,
+      inputFormatters: widget.inputFormatters,
       controller: widget.controller,
       onChanged: (value) {
         setState(() {});
