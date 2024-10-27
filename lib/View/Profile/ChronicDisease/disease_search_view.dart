@@ -80,7 +80,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                       child: Padding(
                         padding: EdgeInsets.only(
                           top: 10,
-                          bottom: 10,
+                          bottom: 5,
                           left: 5,
                         ),
                         child: CustomText(
