@@ -21,4 +21,5 @@ mixin Routes {
   static const String profileAppInformation = '/profile/app_information';
   static const String profileNotificationSetting =
       '/profile/notification_setting';
+  static const String chatDoctorPage = '/chat/doctor_page';
 }
