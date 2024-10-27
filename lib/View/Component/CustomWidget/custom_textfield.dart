@@ -14,6 +14,7 @@ class CustomTextfield extends StatefulWidget {
     this.maxLines = 3,
     this.keyboardType,
     this.inputFormatters,
+    this.maxLength = 300,
   });
 
   final String hintText;
@@ -24,6 +25,7 @@ class CustomTextfield extends StatefulWidget {
   final int maxLines;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
+  final int maxLength;
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -95,7 +97,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
       cursorRadius: const Radius.circular(10),
       maxLines: widget.maxLines,
       minLines: 1,
-      maxLength: 300,
+      maxLength: widget.maxLength,
     );
   }
 }
