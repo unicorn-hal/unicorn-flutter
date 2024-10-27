@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/chat_top_view.dart';
+import 'package:unicorn_flutter/View/Component/Pages/progress_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/Checkup/ai_checkup_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/Checkup/normal_checkup_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/Results/health_checkup_results_view.dart';
@@ -61,6 +63,11 @@ final routerProvider = Provider(
         TypedGoRoute<NormalCheckupRoute>(
           path: Routes.healthCheckupNormal,
         ),
+
+        TypedGoRoute<CheckupProgressRoute>(
+          path: Routes.healthCheckupProgress,
+        ),
+
         TypedGoRoute<CheckupResultRoute>(
           path: Routes.healthCheckupResults,
         ),
@@ -205,6 +212,19 @@ class NormalCheckupRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const NormalCheckupView();
+}
+
+class CheckupProgressRoute extends GoRouteData {
+  CheckupProgressRoute({
+    required this.$extra,
+  });
+
+  final ProgressViewEnum $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => ProgressView(
+        progressType: $extra,
+      );
 }
 
 class CheckupResultRoute extends GoRouteData {
