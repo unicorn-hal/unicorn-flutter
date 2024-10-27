@@ -73,7 +73,6 @@ class ChronicDiseaseView extends StatelessWidget {
                         vertical: 5,
                       ),
                       child: Container(
-                        width: deviceWidth * 0.9,
                         height: 60,
                         decoration: BoxDecoration(
                           border: Border.all(
