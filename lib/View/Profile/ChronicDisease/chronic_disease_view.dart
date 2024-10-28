@@ -97,8 +97,8 @@ class ChronicDiseaseView extends StatelessWidget {
                               context: context,
                               builder: (_) {
                                 return CustomDialog(
-                                  title: '警告',
-                                  bodyText: '本当に削除しますか？',
+                                  title: Strings.DIALOG_TITLE_CAVEAT,
+                                  bodyText: Strings.DIALOG_BODY_TEXT_DELETE,
                                   onTap: () {
                                     // todo: お悩み削除処理
                                   },
