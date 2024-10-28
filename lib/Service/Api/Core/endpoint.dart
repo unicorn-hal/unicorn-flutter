@@ -5,5 +5,6 @@ mixin Endpoint {
   static const String departments = 'departments';
   static const String doctors = 'doctors';
   static const String healthCheckups = 'health_checkups';
+  static const String chats = 'chats';
   static const String medicines = 'medicines';
 }
