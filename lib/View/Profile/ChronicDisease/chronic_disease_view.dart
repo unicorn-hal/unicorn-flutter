@@ -5,6 +5,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/ai_announce_banner.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class ChronicDiseaseView extends StatelessWidget {
   const ChronicDiseaseView({super.key});
@@ -58,8 +59,8 @@ class ChronicDiseaseView extends StatelessWidget {
             AiAnnounceBanner(
               title: Strings.AI_BANNER_TITLE_ASK,
               description: Strings.AI_BANNER_DESCRIPTION_ASK,
-              bannerColor: Colors.grey,
-              imageBackgroundColor: Colors.grey,
+              bannerColor: ColorName.shadowGray,
+              imageBackgroundColor: ColorName.mainColor,
               onTap: () {},
             ),
             SizedBox(
