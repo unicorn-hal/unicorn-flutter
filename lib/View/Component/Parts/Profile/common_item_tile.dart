@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+// todo: Comment/Parts/ProfileからComment/Partsに引っ越し
 
 class CommonItemTile extends StatelessWidget {
   const CommonItemTile({
@@ -10,6 +11,14 @@ class CommonItemTile extends StatelessWidget {
     this.verticalPadding = 0,
     this.tileHeight = 50,
     this.fontSize = 14,
+    this.boxDecoration = const BoxDecoration(
+      border: BorderDirectional(
+        bottom: BorderSide(
+          width: 1,
+          color: Colors.grey,
+        ),
+      ),
+    ),
   });
   final String title;
   final Widget? action;
@@ -18,6 +27,7 @@ class CommonItemTile extends StatelessWidget {
   final double verticalPadding;
   final double tileHeight;
   final double fontSize;
+  final Decoration boxDecoration;
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +39,7 @@ class CommonItemTile extends StatelessWidget {
         child: Container(
           width: deviceWidth * 0.9,
           height: tileHeight,
-          decoration: const BoxDecoration(
-            border: BorderDirectional(
-              bottom: BorderSide(
-                width: 1,
-                color: Colors.grey,
-              ),
-            ),
-          ),
+          decoration: boxDecoration,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
