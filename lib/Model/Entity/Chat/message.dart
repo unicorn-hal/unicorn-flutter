@@ -1,10 +1,12 @@
+import 'package:intl/intl.dart';
+
 class Message {
   final String messageId;
   final String chatId;
   final String senderId;
   final String firstName;
   final String lastName;
-  final String iconImageUrl;
+  final String? iconImageUrl;
   final String content;
   final DateTime sentAt;
 
@@ -14,7 +16,7 @@ class Message {
     required this.senderId,
     required this.firstName,
     required this.lastName,
-    required this.iconImageUrl,
+    this.iconImageUrl,
     required this.content,
     required this.sentAt,
   });
@@ -41,7 +43,7 @@ class Message {
       'lastName': lastName,
       'iconImageUrl': iconImageUrl,
       'content': content,
-      'sentAt': sentAt.toIso8601String(),
+      'sentAt': DateFormat('yyyy-MM-dd').format(sentAt),
     };
   }
 }

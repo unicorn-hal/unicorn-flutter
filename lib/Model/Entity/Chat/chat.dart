@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat_doctor.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat_user.dart';
 
@@ -32,7 +33,8 @@ class Chat {
       'doctor': doctor.toJson(),
       'user': user.toJson(),
       'latestMessageText': latestMessageText,
-      'latestMessageSentAt': latestMessageSentAt.toIso8601String(),
+      'latestMessageSentAt':
+          DateFormat('yyyy-MM-dd').format(latestMessageSentAt),
     };
   }
 }
