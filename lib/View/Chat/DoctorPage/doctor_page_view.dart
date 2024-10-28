@@ -9,7 +9,7 @@ import 'package:unicorn_flutter/gen/colors.gen.dart';
 class DoctorPageView extends StatelessWidget {
   DoctorPageView({super.key});
 
-  final iamgeUrl = 'https://picsum.photos/200/300';
+  final imageUrl = 'https://picsum.photos/200/300';
   final String doctorName = '長谷川';
   final List<String> depermentList = [
     '内科',
@@ -22,8 +22,8 @@ class DoctorPageView extends StatelessWidget {
     // '皮膚科',
   ];
 
-  final String chatAble = '平日9:00~12:00';
-  final String callAble = '平日14:00~22:00';
+  final String chatSupportHours = '平日9:00~12:00';
+  final String callSupportHours = '平日14:00~22:00';
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class DoctorPageView extends StatelessWidget {
                 height: 200,
                 child: UserImageCircle(
                   imageSize: 200,
-                  imageUrl: iamgeUrl,
+                  imageUrl: imageUrl,
                 ),
               ),
             ),
@@ -224,7 +224,7 @@ class DoctorPageView extends StatelessWidget {
                       vertical: 8.0,
                       horizontal: 16.0,
                     ),
-                    child: CustomText(text: 'チャット: $chatAble'),
+                    child: CustomText(text: 'チャット: $chatSupportHours'),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -232,7 +232,7 @@ class DoctorPageView extends StatelessWidget {
                       horizontal: 16.0,
                     ),
                     child: CustomText(
-                      text: '通話: $callAble',
+                      text: '通話: $callSupportHours',
                     ),
                   ),
                 ],
