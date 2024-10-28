@@ -7,6 +7,7 @@ import 'package:unicorn_flutter/View/HealthCheckup/Checkup/ai_checkup_view.dart'
 import 'package:unicorn_flutter/View/HealthCheckup/Checkup/normal_checkup_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart';
 import 'package:unicorn_flutter/View/Home/home_view.dart';
+import 'package:unicorn_flutter/View/Profile/address_information.dart';
 import 'package:unicorn_flutter/View/Profile/physical_infomation_view.dart';
 import 'package:unicorn_flutter/View/Profile/AppInformation/app_information_view.dart';
 import 'package:unicorn_flutter/View/Profile/NotificationSetting/notification_setting_view.dart';
@@ -72,6 +73,9 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<ProfilePhysicalInformationRoute>(
           path: Routes.profilePhysicalInformation,
+        ),
+        TypedGoRoute<ProfileAddressInformationRoute>(
+          path: Routes.profileAddressInformation,
         ),
         TypedGoRoute<ProfileLocalAuthRoute>(
           path: Routes.profileLocalAuth,
@@ -212,6 +216,14 @@ class ProfilePhysicalInformationRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const PhysicalInfomationView();
+}
+
+class ProfileAddressInformationRoute extends GoRouteData {
+  const ProfileAddressInformationRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const AddressInfomationView();
 }
 
 class ProfileLocalAuthRoute extends GoRouteData {

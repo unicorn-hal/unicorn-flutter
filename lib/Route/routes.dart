@@ -6,6 +6,7 @@ mixin Routes {
   static const String chat = '/chat';
   static const String profile = '/profile';
   static const String profilePhysicalInformation = '/profile/physical_information';
+  static const String profileAddressInformation = '/profile/address_information';
   static const String profileFamilyEmail = '/profile/family_email';
   static const String profileFamilyEmailRegister =
       '/profile/family_email/register';
