@@ -32,6 +32,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
     true,
     false,
   ];
+  // todo: controller出来たら消す
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;

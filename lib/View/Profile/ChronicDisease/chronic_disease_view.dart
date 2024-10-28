@@ -28,6 +28,7 @@ class ChronicDiseaseView extends StatelessWidget {
       'a',
       'a',
     ];
+    // todo: controller出来たら消す
     return CustomScaffold(
       isScrollable: true,
       body: SizedBox(
