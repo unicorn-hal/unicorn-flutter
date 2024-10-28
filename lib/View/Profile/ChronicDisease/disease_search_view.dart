@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
+import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class DiseaseSearchView extends StatefulWidget {
@@ -43,8 +44,6 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
       body: Container(
         constraints: BoxConstraints(
           minHeight: deviceHeight - appBarHeight - topPaddingHeight - 80,
-
-          /// 画面の高さ - appBarの高さ - topPaddの高さ -　NavigationBarのデフォルト高さ = Viewで使用できる高さびたびた
         ),
         width: deviceWidth,
         child: Column(
@@ -104,48 +103,33 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                             padding: const EdgeInsets.symmetric(
                               vertical: 5,
                             ),
-                            child: Container(
-                              height: 60,
-                              decoration: BoxDecoration(
+                            child: CommonItemTile(
+                              title: disease,
+                              tileHeight: 60,
+                              boxDecoration: BoxDecoration(
                                 border: Border.all(
                                   width: 1,
                                   color: Colors.grey,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
                               ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    flex: 4,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 10,
+                              action: IconButton(
+                                onPressed: items[index]
+                                    ? () {
+                                        // todo: お悩み削除処理をつけるか、そもそも登録済み病気を表示しないか、見えるけど処理なしか悩み
+                                      }
+                                    : () {
+                                        // todo: お悩み追加処理
+                                      },
+                                icon: items[index]
+                                    ? const Icon(
+                                        Icons.check,
+                                        color: Colors.green,
+                                      )
+                                    : const Icon(
+                                        Icons.add,
+                                        color: Colors.blue,
                                       ),
-                                      child: CustomText(text: disease),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: IconButton(
-                                      onPressed: items[index]
-                                          ? () {
-                                              // todo: お悩み削除処理をつけるか、そもそも登録済み病気を表示しないか、見えるけど処理なしか悩み
-                                            }
-                                          : () {
-                                              // todo: お悩み追加処理
-                                            },
-                                      icon: items[index]
-                                          ? const Icon(
-                                              Icons.check,
-                                              color: Colors.green,
-                                            )
-                                          : const Icon(
-                                              Icons.add,
-                                              color: Colors.blue,
-                                            ),
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
                           );
@@ -193,9 +177,10 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                               padding: const EdgeInsets.symmetric(
                                 vertical: 5,
                               ),
-                              child: Container(
-                                height: 60,
-                                decoration: BoxDecoration(
+                              child: CommonItemTile(
+                                title: regularDisease,
+                                tileHeight: 60,
+                                boxDecoration: BoxDecoration(
                                   color: Colors.white,
                                   border: Border.all(
                                     width: 1,
@@ -203,39 +188,23 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                   ),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 4,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 10,
+                                action: IconButton(
+                                  onPressed: regularItems[index]
+                                      ? () {
+                                          // todo: お悩み削除処理をつけるか、見えるけど処理なしか悩み。ここは常に決まった数表示したい
+                                        }
+                                      : () {
+                                          // todo: お悩み追加処理
+                                        },
+                                  icon: regularItems[index]
+                                      ? const Icon(
+                                          Icons.check,
+                                          color: Colors.green,
+                                        )
+                                      : const Icon(
+                                          Icons.add,
+                                          color: Colors.blue,
                                         ),
-                                        child: CustomText(text: regularDisease),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: IconButton(
-                                        onPressed: regularItems[index]
-                                            ? () {
-                                                // todo: お悩み削除処理をつけるか、見えるけど処理なしか悩み。ここは常に決まった数表示したい
-                                              }
-                                            : () {
-                                                // todo: お悩み追加処理
-                                              },
-                                        icon: regularItems[index]
-                                            ? const Icon(
-                                                Icons.check,
-                                                color: Colors.green,
-                                              )
-                                            : const Icon(
-                                                Icons.add,
-                                                color: Colors.blue,
-                                              ),
-                                      ),
-                                    ),
-                                  ],
                                 ),
                               ),
                             );
