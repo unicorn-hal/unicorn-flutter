@@ -62,7 +62,9 @@ class ChronicDiseaseView extends StatelessWidget {
               description: Strings.AI_BANNER_DESCRIPTION_ASK,
               bannerColor: ColorName.shadowGray,
               imageBackgroundColor: ColorName.mainColor,
-              onTap: () {},
+              onTap: () {
+                // todo: AIチャット画面へ遷移
+              },
             ),
             SizedBox(
               width: deviceWidth * 0.9,
@@ -81,13 +83,13 @@ class ChronicDiseaseView extends StatelessWidget {
                       child: CommonItemTile(
                         title: disease,
                         tileHeight: 60,
-                        // boxDecoration: BoxDecoration(
-                        //   border: Border.all(
-                        //     width: 1,
-                        //     color: Colors.grey,
-                        //   ),
-                        //   borderRadius: BorderRadius.circular(8),
-                        // ),
+                        boxDecoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.grey,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                         action: IconButton(
                           onPressed: () {
                             showDialog<void>(
