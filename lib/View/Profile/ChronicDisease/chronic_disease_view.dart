@@ -10,7 +10,7 @@ import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class ChronicDiseaseView extends StatelessWidget {
   const ChronicDiseaseView({super.key});
-
+// todo: 処理によってはあとでStatefulWidgetに変更
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
