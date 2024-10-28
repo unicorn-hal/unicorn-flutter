@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
@@ -138,7 +139,8 @@ class DoctorPageView extends StatelessWidget {
                   padding: const EdgeInsets.all(4.0),
                   child: GestureDetector(
                     onTap: () {
-                      // todo: チャット画面へ遷移
+                      // todo: 通話予約画面へ遷移
+                      ChatDoctorPageReserveRoute().push(context);
                     },
                     child: Container(
                       width: 160,
