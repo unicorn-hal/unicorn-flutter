@@ -103,7 +103,7 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
                 const Padding(
                   padding: EdgeInsets.only(top: 30, bottom: 10),
                   child: CustomText(
-                    text: '郵便番号',
+                    text: '郵便番号（ハイフンなし）',
                     fontSize: 20,
                   ),
                 ),
@@ -113,7 +113,7 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
                     SizedBox(
                       width: deviceWidth * 0.5,
                       child: CustomTextfield(
-                        hintText: 'ハイフンなし',
+                        hintText: '数字7桁',
                         height: 44,
                         controller: addressNumber,
                       ),
@@ -157,14 +157,14 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
                 const Padding(
                   padding: EdgeInsets.only(top: 20, bottom: 10),
                   child: CustomText(
-                    text: '住所',
+                    text: '市区町村',
                     fontSize: 20,
                   ),
                 ),
                 SizedBox(
                   width: deviceWidth,
                   child: CustomTextfield(
-                    hintText: '東京都新宿区XXXX',
+                    hintText: '静岡市葵区追手町５－１',
                     height: 44,
                     controller: address,                    
                   ),
@@ -172,14 +172,14 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
                 const Padding(
                   padding: EdgeInsets.only(top: 30, bottom: 10),
                   child: CustomText(
-                    text: 'ビル名/階/部屋番号など',
+                    text: '部屋番号など',
                     fontSize: 20,
                   ),
                 ),
                 SizedBox(
                   width: deviceWidth,
                   child: CustomTextfield(
-                    hintText: '例）　ユニコーンビル3F',
+                    hintText: 'ユニコーンビル１０３号',
                     height: 44,
                     controller: addressDetail,
                   ),
