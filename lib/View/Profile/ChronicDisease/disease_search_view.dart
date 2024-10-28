@@ -17,16 +17,17 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
   String disease = '偏頭痛';
   String regularDisease = '糖尿病';
   List<bool> items = [
-    false,
-    true,
-    false,
-    false,
-    true,
-    false,
-    false,
-    true,
-    false,
+    // false,
+    // true,
+    // false,
+    // false,
+    // true,
+    // false,
+    // false,
+    // true,
+    // false,
   ];
+
   List<bool> regularItems = [
     false,
     true,
@@ -91,52 +92,71 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                     ),
                   ),
                   SizedBox(
-                    height: items.isEmpty ? 0 : 350,
-
-                    /// タイル1枚分 = 70
-                    child: ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        if (items.isEmpty) {
-                          return Container();
-                        } else {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 5,
-                            ),
-                            child: CommonItemTile(
-                              title: disease,
-                              tileHeight: 60,
-                              boxDecoration: BoxDecoration(
-                                border: Border.all(
-                                  width: 1,
-                                  color: Colors.grey,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
+                    height: items.isEmpty ? 180 : 350,
+                    child: items.isEmpty
+                        ? Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: Container(
+                              width: deviceWidth * 0.9,
+                              decoration: const BoxDecoration(
+                                color: ColorName.profileBackgroundColor,
                               ),
-                              action: IconButton(
-                                onPressed: items[index]
-                                    ? () {
-                                        // todo: お悩み削除処理をつけるか、そもそも登録済み病気を表示しないか、見えるけど処理なしか悩み
-                                      }
-                                    : () {
-                                        // todo: お悩み追加処理
-                                      },
-                                icon: items[index]
-                                    ? const Icon(
-                                        Icons.check,
-                                        color: Colors.green,
-                                      )
-                                    : const Icon(
-                                        Icons.add,
-                                        color: Colors.blue,
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.search,
+                                  ),
+                                  CustomText(
+                                    text: 'お悩みを探す',
+                                  )
+                                ],
+                              ),
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: items.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              if (items.isEmpty) {
+                                return Container();
+                              } else {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 5,
+                                  ),
+                                  child: CommonItemTile(
+                                    title: disease,
+                                    tileHeight: 60,
+                                    boxDecoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 1,
+                                        color: Colors.grey,
                                       ),
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    action: IconButton(
+                                      onPressed: items[index]
+                                          ? () {
+                                              // todo: お悩み削除処理をつけるか、そもそも登録済み病気を表示しないか、見えるけど処理なしか悩み
+                                            }
+                                          : () {
+                                              // todo: お悩み追加処理
+                                            },
+                                      icon: items[index]
+                                          ? const Icon(
+                                              Icons.check,
+                                              color: Colors.green,
+                                            )
+                                          : const Icon(
+                                              Icons.add,
+                                              color: Colors.blue,
+                                            ),
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
                   ),
                 ],
               ),
