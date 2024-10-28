@@ -4,6 +4,7 @@ import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
 import 'package:unicorn_flutter/View/Component/Parts/ai_announce_banner.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -77,49 +78,34 @@ class ChronicDiseaseView extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                         vertical: 5,
                       ),
-                      child: Container(
-                        height: 60,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: Colors.grey,
+                      child: CommonItemTile(
+                        title: disease,
+                        tileHeight: 60,
+                        // boxDecoration: BoxDecoration(
+                        //   border: Border.all(
+                        //     width: 1,
+                        //     color: Colors.grey,
+                        //   ),
+                        //   borderRadius: BorderRadius.circular(8),
+                        // ),
+                        action: IconButton(
+                          onPressed: () {
+                            showDialog<void>(
+                              context: context,
+                              builder: (_) {
+                                return CustomDialog(
+                                  title: '警告',
+                                  bodyText: '本当に削除しますか？',
+                                  onTap: () {
+                                    // todo: お悩み削除処理
+                                  },
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.delete_outline,
                           ),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 4,
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  left: 10,
-                                ),
-                                child: CustomText(text: disease),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: IconButton(
-                                onPressed: () {
-                                  showDialog<void>(
-                                    context: context,
-                                    builder: (_) {
-                                      return CustomDialog(
-                                        title: '警告',
-                                        bodyText: '本当に削除しますか？',
-                                        onTap: () {
-                                          // todo: お悩み削除処理
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                                icon: const Icon(
-                                  Icons.delete_outline,
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                       ),
                     );
