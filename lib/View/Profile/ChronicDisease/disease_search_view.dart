@@ -17,15 +17,15 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
   String disease = '偏頭痛';
   String regularDisease = '糖尿病';
   List<bool> items = [
-    // false,
-    // true,
-    // false,
-    // false,
-    // true,
-    // false,
-    // false,
-    // true,
-    // false,
+    false,
+    true,
+    false,
+    false,
+    true,
+    false,
+    false,
+    true,
+    false,
   ];
 
   List<bool> regularItems = [
@@ -46,6 +46,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
       body: Container(
         constraints: BoxConstraints(
           minHeight: deviceHeight - appBarHeight - topPaddingHeight - 80,
+          // todo: NavigationBarの高さをもらってくる予定
         ),
         width: deviceWidth,
         child: Column(
@@ -72,7 +73,6 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                     controller: controller,
                     height: 50,
                     maxLines: 1,
-                    maxLength: 40,
                   ),
                   Visibility(
                     visible: items.isNotEmpty,
@@ -92,7 +92,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                     ),
                   ),
                   SizedBox(
-                    height: items.isEmpty ? 180 : 350,
+                    height: items.isEmpty ? 180 : null,
                     child: items.isEmpty
                         ? Padding(
                             padding: const EdgeInsets.all(5),
@@ -115,6 +115,8 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                             ),
                           )
                         : ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
                             itemCount: items.length,
                             itemBuilder: (BuildContext context, int index) {
                               if (items.isEmpty) {
