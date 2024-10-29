@@ -19,6 +19,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
   final TextEditingController datetime = TextEditingController();
   final TextEditingController taller = TextEditingController();
   final TextEditingController weight = TextEditingController();
+  final FocusNode focusnode = FocusNode();
   int checkInt = 0;
   // todo: Controllerが完成次第、ここに追記していきます。
 
@@ -26,6 +27,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     return CustomScaffold(
+      focusNode: focusnode,
       isAppbar: false,
       isScrollable: true,
       body: SafeArea(
