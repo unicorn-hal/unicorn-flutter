@@ -21,7 +21,11 @@ class Strings {
   // 検診ボタンに使用するテキスト
   static const String HEALTH_CHECK_BUTTON_TEXT = '今日の検診を開始する';
   static const String HEALTH_CHECK_BUTTON_AI = 'AI音声検診を開始する';
-  
+
   // 生体認証に使用するテキスト
   static const String LOCAL_AUTH_REASON_TEXT = 'お客様のプライバシーを保護するために生体認証を利用します。';
+
+  // ダイアログに使用するテキスト
+  static const String DIALOG_TITLE_CAVEAT = '警告';
+  static const String DIALOG_BODY_TEXT_DELETE = '本当に削除しますか？';
 }
