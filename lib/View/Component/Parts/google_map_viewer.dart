@@ -5,7 +5,13 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class GoogleMapViewer extends StatefulWidget {
-  const GoogleMapViewer({super.key});
+  const GoogleMapViewer({
+    super.key,
+    required this.point,
+    this.destination,
+  });
+  final LatLng point;
+  final LatLng? destination;
 
   @override
   State<GoogleMapViewer> createState() => _GoogleMapViewerState();
@@ -14,41 +20,84 @@ class GoogleMapViewer extends StatefulWidget {
 class _GoogleMapViewerState extends State<GoogleMapViewer> {
   late GoogleMapController mapController;
 
-  final LatLng _startPoint =
-      const LatLng(35.681236, 139.767125); // Example: Tokyo Station
-  final LatLng _endPoint =
-      const LatLng(35.689487, 139.691711); // Example: Shinjuku Station
+  late LatLng _point;
+  late LatLng? _destination;
 
   final Set<Polyline> _polylines = {};
 
   @override
   void initState() {
     super.initState();
-    _fetchRoute();
+    _point = widget.point;
+    _destination = widget.destination;
+
+    if (_destination != null) {
+      _fetchRoute();
+    }
+  }
+
+  @override
+  void didUpdateWidget(GoogleMapViewer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.point != oldWidget.point ||
+        widget.destination != oldWidget.destination) {
+      setState(() {
+        _point = widget.point;
+        _destination = widget.destination;
+        _polylines.clear();
+      });
+      if (_destination != null) {
+        _fetchRoute();
+        LatLngBounds bounds = LatLngBounds(
+          southwest: LatLng(
+            _point.latitude < _destination!.latitude
+                ? _point.latitude
+                : _destination!.latitude,
+            _point.longitude < _destination!.longitude
+                ? _point.longitude
+                : _destination!.longitude,
+          ),
+          northeast: LatLng(
+            _point.latitude > _destination!.latitude
+                ? _point.latitude
+                : _destination!.latitude,
+            _point.longitude > _destination!.longitude
+                ? _point.longitude
+                : _destination!.longitude,
+          ),
+        );
+        mapController.animateCamera(
+          CameraUpdate.newLatLngBounds(bounds, 50),
+        );
+      } else {
+        mapController.animateCamera(
+          CameraUpdate.newLatLng(_point),
+        );
+      }
+    }
   }
 
   Future<void> _fetchRoute() async {
     String apiKey = dotenv.env['GOOGLE_MAP_API_KEY']!;
     final response = await http.get(Uri.parse(
-        'https://maps.googleapis.com/maps/api/directions/json?origin=${_startPoint.latitude},${_startPoint.longitude}&destination=${_endPoint.latitude},${_endPoint.longitude}&key=$apiKey'));
+        'https://maps.googleapis.com/maps/api/directions/json?origin=${_point.latitude},${_point.longitude}&destination=${_destination!.latitude},${_destination!.longitude}&key=$apiKey'));
 
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final points =
-          _decodePolyline(data['routes'][0]['overview_polyline']['points']);
-      setState(() {
-        _polylines.add(
-          Polyline(
-            polylineId: PolylineId('route'),
-            points: points,
-            color: Colors.blue,
-            width: 5,
-          ),
-        );
-      });
-    } else {
+    if (response.statusCode != 200) {
       throw Exception('Failed to load directions');
     }
+    final data = json.decode(response.body);
+    final points =
+        _decodePolyline(data['routes'][0]['overview_polyline']['points']);
+
+    _polylines.add(
+      Polyline(
+        polylineId: PolylineId('route'),
+        points: points,
+        color: Colors.blue,
+        width: 5,
+      ),
+    );
+    setState(() {});
   }
 
   List<LatLng> _decodePolyline(String encoded) {
@@ -88,28 +137,61 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Map Viewer'),
-      ),
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
+    return AbsorbPointer(
+      absorbing: true,
+      child: GoogleMap(
+        myLocationButtonEnabled: false,
+        zoomControlsEnabled: false,
+        onMapCreated: (GoogleMapController controller) {
+          _onMapCreated(controller);
+          if (_destination != null) {
+            // Move the camera to fit the bounds of the route
+            LatLngBounds bounds = LatLngBounds(
+              southwest: LatLng(
+                _point.latitude < _destination!.latitude
+                    ? _point.latitude
+                    : _destination!.latitude,
+                _point.longitude < _destination!.longitude
+                    ? _point.longitude
+                    : _destination!.longitude,
+              ),
+              northeast: LatLng(
+                _point.latitude > _destination!.latitude
+                    ? _point.latitude
+                    : _destination!.latitude,
+                _point.longitude > _destination!.longitude
+                    ? _point.longitude
+                    : _destination!.longitude,
+              ),
+            );
+            controller.animateCamera(
+              CameraUpdate.newLatLngBounds(bounds, 50),
+            );
+          } else {
+            controller.animateCamera(
+              CameraUpdate.newLatLng(_point),
+            );
+          }
+        },
         initialCameraPosition: CameraPosition(
-          target: _startPoint,
-          zoom: 11,
+          target: _point,
+          zoom: _destination == null ? 13 : 11,
         ),
         polylines: _polylines,
         markers: {
           Marker(
-            markerId: MarkerId('start'),
-            position: _startPoint,
-            infoWindow: InfoWindow(title: 'Start Point'),
+            markerId: const MarkerId('point'),
+            position: _point,
+            infoWindow: const InfoWindow(title: 'Start Point'),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueGreen),
           ),
-          Marker(
-            markerId: MarkerId('end'),
-            position: _endPoint,
-            infoWindow: InfoWindow(title: 'End Point'),
-          ),
+          if (_destination != null)
+            Marker(
+              markerId: const MarkerId('destination'),
+              position: _destination!,
+              infoWindow: const InfoWindow(title: 'Destination'),
+            ),
         },
       ),
     );
