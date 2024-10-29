@@ -98,30 +98,74 @@ class CallReserveView extends StatelessWidget {
               child: SpacerAndDivider(),
             ),
             SizedBox(
-              height: 60,
+              height: 90,
               width: size.width * 0.9,
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: CustomText(text: '予約日時 :'),
-                  ),
                   SizedBox(
                     width: 150,
-                    height: 60,
-                    child: FittedBox(
-                      child: CustomDrumRoll(
-                        drumRollType: DrumRollType.date,
-                      ),
+                    height: 90,
+                    child: Column(
+                      children: [
+                        const Align(
+                          alignment: Alignment.centerLeft,
+                          child: CustomText(
+                            text: '日付',
+                            fontSize: 20,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 150,
+                          height: 60,
+                          child: FittedBox(
+                            child: CustomDrumRoll(
+                              drumRollType: DrumRollType.date,
+                              maxDate: DateTime.now().add(
+                                const Duration(days: 365),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 150,
+                    height: 90,
+                    child: Column(
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: CustomText(
+                            text: '時間',
+                            fontSize: 20,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 150,
+                          height: 60,
+                          child: FittedBox(
+                            fit: BoxFit.contain,
+                            alignment: Alignment.centerLeft,
+                            child: CustomDrumRoll(
+                              drumRollType: DrumRollType.time,
+                              splitMinute: 5,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
+            const SizedBox(
+              height: 10,
+            ),
             SizedBox(
               width: size.width * 0.9,
-              height: 240,
+              height: 200,
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: GestureDetector(
