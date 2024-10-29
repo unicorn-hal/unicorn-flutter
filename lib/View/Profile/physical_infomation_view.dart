@@ -7,9 +7,7 @@ import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class PhysicalInfomationView extends StatefulWidget {
-  const PhysicalInfomationView({
-    super.key
-  });
+  const PhysicalInfomationView({super.key});
 
   @override
   State<PhysicalInfomationView> createState() => _PhysicalInfomationViewState();
@@ -42,30 +40,27 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                 Container(
                   decoration: const BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(
-                        color: ColorName.textGray
-                      ),
+                      bottom: BorderSide(color: ColorName.textGray),
                     ),
                   ),
                   child: const Padding(
                     padding: EdgeInsets.only(bottom: 10),
                     child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Column(
-                        children: [
-                          CustomText(
-                            text: 'Profile',
-                            color: ColorName.profileInputBackgroundColor,
-                            fontSize: 24,
-                          ),
-                          CustomText(
-                            text: '身体情報を入力してください',
-                            color: ColorName.textBlack,
-                            fontSize: 24,
-                          ),
-                        ],
-                      )
-                    ),
+                        alignment: Alignment.topCenter,
+                        child: Column(
+                          children: [
+                            CustomText(
+                              text: 'Profile',
+                              color: ColorName.profileInputBackgroundColor,
+                              fontSize: 24,
+                            ),
+                            CustomText(
+                              text: '身体情報を入力してください',
+                              color: ColorName.textBlack,
+                              fontSize: 24,
+                            ),
+                          ],
+                        )),
                   ),
                 ),
                 const Padding(
@@ -110,7 +105,9 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                       children: [
                         CircleButton(
                           buttonSize: 90,
-                          buttonColor: checkInt == 1 ? ColorName.menCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
+                          buttonColor: checkInt == 1
+                              ? ColorName.menCirclebuttonColor
+                              : ColorName.nocheckedCirclebuttonColor,
                           onTap: () {
                             setState(() {
                               checkInt = 1;
@@ -125,7 +122,9 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                           padding: const EdgeInsets.all(8.0),
                           child: CustomText(
                             text: '男性',
-                            color: checkInt == 1 ? ColorName.menCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
+                            color: checkInt == 1
+                                ? ColorName.menCirclebuttonColor
+                                : ColorName.nocheckedCirclebuttonColor,
                           ),
                         ),
                       ],
@@ -134,7 +133,9 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                       children: [
                         CircleButton(
                           buttonSize: 90,
-                          buttonColor: checkInt == 2 ? ColorName.womenCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
+                          buttonColor: checkInt == 2
+                              ? ColorName.womenCirclebuttonColor
+                              : ColorName.nocheckedCirclebuttonColor,
                           onTap: () {
                             setState(() {
                               checkInt = 2;
@@ -149,7 +150,9 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                           padding: const EdgeInsets.all(8.0),
                           child: CustomText(
                             text: '女性',
-                            color: checkInt == 2 ? ColorName.womenCirclebuttonColor : ColorName.nocheckedCirclebuttonColor,
+                            color: checkInt == 2
+                                ? ColorName.womenCirclebuttonColor
+                                : ColorName.nocheckedCirclebuttonColor,
                           ),
                         ),
                       ],
@@ -158,7 +161,9 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                       children: [
                         CircleButton(
                           buttonSize: 90,
-                          buttonColor: checkInt == 3 ? ColorName.textGray : ColorName.nocheckedCirclebuttonColor, 
+                          buttonColor: checkInt == 3
+                              ? ColorName.textGray
+                              : ColorName.nocheckedCirclebuttonColor,
                           onTap: () {
                             setState(() {
                               checkInt = 3;
@@ -173,7 +178,9 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                           padding: const EdgeInsets.all(8.0),
                           child: CustomText(
                             text: 'その他',
-                            color: checkInt == 3 ? ColorName.textGray : ColorName.nocheckedCirclebuttonColor, 
+                            color: checkInt == 3
+                                ? ColorName.textGray
+                                : ColorName.nocheckedCirclebuttonColor,
                           ),
                         ),
                       ],
@@ -192,7 +199,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                   child: FittedBox(
                     fit: BoxFit.cover,
                     child: CustomDrumRoll(
-                      showTime: false,
+                      drumRollType: DrumRollType.date,
                     ),
                   ),
                 ),
@@ -232,17 +239,16 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 40),
                       child: Container(
-                        width: deviceWidth * 0.5,
-                        height: 60,
-                        color: ColorName.profileInputButtonColor,
-                        child: const Center(
-                          child: CustomText(
-                            text: '次に進む',
-                            fontSize: 22,
-                            color: Colors.white,                  
-                          ),
-                        )
-                      ),
+                          width: deviceWidth * 0.5,
+                          height: 60,
+                          color: ColorName.profileInputButtonColor,
+                          child: const Center(
+                            child: CustomText(
+                              text: '次に進む',
+                              fontSize: 22,
+                              color: Colors.white,
+                            ),
+                          )),
                     ),
                   ),
                   onTap: () {},
