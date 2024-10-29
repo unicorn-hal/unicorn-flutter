@@ -5,6 +5,7 @@ import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -26,7 +27,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
   bool repeat = false;
   String repeatWeek = '月,火,水,木,金,土';
   List<String> reminderList = [];
-  int? selectedItem = 1;
+  int? selectIndex = 0;
   List<Map<String, dynamic>> repeatWeekList = [
     {'name': '毎日曜日', 'check': false},
     {'name': '毎月曜日', 'check': false},
@@ -179,41 +180,21 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                               child: SizedBox(
                                 width: deviceWidth * 0.4,
                                 height: 70,
-                                child: DropdownButtonFormField(
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20,
-                                      vertical: 15,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                  items: [
+                                child: CustomDropdown(
+                                  dropdownItems: [
                                     for (int i = 0; i < 10; i++) ...{
                                       DropdownMenuItem(
-                                        value: i + 1,
+                                        value: i,
                                         child: CustomText(text: '${i + 1}'),
                                       ),
                                     },
                                   ],
+                                  height: 50,
+                                  selectIndex: selectIndex,
                                   onChanged: (int? value) {
-                                    setState(() {
-                                      selectedItem = value;
-                                    });
+                                    selectIndex = value!;
+                                    setState(() {});
                                   },
-                                  value: selectedItem,
                                 ),
                               ),
                             ),
