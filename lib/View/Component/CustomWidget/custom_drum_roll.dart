@@ -15,12 +15,16 @@ class CustomDrumRoll extends StatefulWidget {
   const CustomDrumRoll({
     super.key,
     required this.drumRollType,
+    required this.onConfirm,
+    this.onChanged,
     this.initValue,
     this.maxDate,
     this.splitMinute,
   });
 
   final DrumRollType drumRollType;
+  final Function(DateTime) onConfirm;
+  final Function(DateTime)? onChanged;
   final DateTime? initValue;
   final DateTime? maxDate;
   final int? splitMinute;
@@ -54,8 +58,11 @@ class _CustomDrumRollState extends State<CustomDrumRoll> {
         DatePicker.showPicker(
           context,
           locale: LocaleType.jp,
-          onChanged: (date) {},
+          onChanged: (date) {
+            widget.onChanged?.call(date);
+          },
           onConfirm: (date) {
+            widget.onConfirm(date);
             _currentValue = date;
             setState(() {});
           },
