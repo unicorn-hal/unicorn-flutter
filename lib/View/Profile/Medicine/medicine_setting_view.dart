@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
@@ -260,6 +261,10 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                 ),
                                 CustomDrumRoll(
                                   drumRollType: DrumRollType.time,
+                                  onConfirm: (DateTime date) {
+                                    // todo: 設定した日付をControllerに渡す
+                                    Log.echo('date: $date');
+                                  },
                                   initValue: DateTime.now(),
                                   // todo: リマインダー設定がすでにある場合initValueに入れる
                                 ),

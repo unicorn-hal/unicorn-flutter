@@ -15,14 +15,20 @@ class CustomDrumRoll extends StatefulWidget {
   const CustomDrumRoll({
     super.key,
     required this.drumRollType,
+    required this.onConfirm,
+    this.onChanged,
     this.initValue,
     this.maxDate,
+    this.minDate,
     this.splitMinute,
   });
 
   final DrumRollType drumRollType;
+  final Function(DateTime) onConfirm;
+  final Function(DateTime)? onChanged;
   final DateTime? initValue;
   final DateTime? maxDate;
+  final DateTime? minDate;
   final int? splitMinute;
 
   @override
@@ -51,21 +57,43 @@ class _CustomDrumRollState extends State<CustomDrumRoll> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        DatePicker.showPicker(
-          context,
-          locale: LocaleType.jp,
-          onChanged: (date) {},
-          onConfirm: (date) {
-            _currentValue = date;
-            setState(() {});
-          },
-          pickerModel: CustomPicker(
-            drumRollType: widget.drumRollType,
-            maxDate: widget.maxDate,
-            splitMinute: widget.splitMinute ?? 1,
-            currentTime: _currentValue,
-          ),
-        );
+        switch (widget.drumRollType) {
+          case DrumRollType.date:
+            DatePicker.showDatePicker(
+              context,
+              locale: LocaleType.jp,
+              onChanged: (date) {
+                widget.onChanged?.call(date);
+              },
+              onConfirm: (date) {
+                widget.onConfirm(date);
+                _currentValue = date;
+                setState(() {});
+              },
+              minTime: widget.minDate,
+              maxTime: widget.maxDate,
+              currentTime: _currentValue,
+            );
+            break;
+          case DrumRollType.time:
+            DatePicker.showPicker(
+              context,
+              locale: LocaleType.jp,
+              onChanged: (date) {
+                widget.onChanged?.call(date);
+              },
+              onConfirm: (date) {
+                widget.onConfirm(date);
+                _currentValue = date;
+                setState(() {});
+              },
+              pickerModel: CustomPicker(
+                splitMinute: widget.splitMinute ?? 1,
+                currentTime: _currentValue,
+              ),
+            );
+            break;
+        }
       },
       child: Container(
         padding: const EdgeInsets.all(8),
