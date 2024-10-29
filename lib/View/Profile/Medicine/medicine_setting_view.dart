@@ -36,11 +36,13 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
     {'name': '毎土曜日', 'check': false},
   ];
   // todo: controller出来たら削除
+  final focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     return CustomScaffold(
+      focusNode: focusNode,
       appBar: CustomAppBar(
         title: '常備薬の登録',
         foregroundColor: Colors.white,

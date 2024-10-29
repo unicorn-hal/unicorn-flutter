@@ -20,6 +20,7 @@ class _FamilyEmailEditViewState extends State<FamilyEmailEditView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController telephoneNumberController = TextEditingController();
   // todo: todo: controller出来たらcontrollerに移動
+  final focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -28,6 +29,7 @@ class _FamilyEmailEditViewState extends State<FamilyEmailEditView> {
     // todo: todo: controller出来たら削除
     return CustomScaffold(
       isScrollable: true,
+      focusNode: focusNode,
       body: SizedBox(
         width: deviceWidth,
         height: deviceHeight,
