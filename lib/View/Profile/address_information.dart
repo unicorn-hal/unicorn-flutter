@@ -18,6 +18,7 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
   final TextEditingController address = TextEditingController();
   final TextEditingController addressDetail = TextEditingController();
   final List<String> entryItemStrings = ['未設定'] + Prefectures.list;
+  final FocusNode focusnode = FocusNode();
   // todo: Controllerが完成次第、ここに追記または変更していきます。
 
   @override
@@ -32,6 +33,7 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
         .toList();
     final deviceWidth = MediaQuery.of(context).size.width;
     return CustomScaffold(
+      focusNode: focusnode,
       isAppbar: false,
       isScrollable: true,
       body: SafeArea(
