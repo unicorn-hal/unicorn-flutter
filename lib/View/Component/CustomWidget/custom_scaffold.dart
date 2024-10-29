@@ -48,6 +48,7 @@ class CustomScaffold extends StatelessWidget {
       drawer: drawer,
       floatingActionButton: floatingActionButton,
       bottomNavigationBar: bottomNavigationBar,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
     );
   }
 }
