@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -79,6 +80,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                         hintText: '山田',
                         height: 44,
                         controller: firstname,
+                        width: deviceWidth * 0.4,
                       ),
                     ),
                     SizedBox(
@@ -87,6 +89,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                         hintText: '太郎',
                         height: 44,
                         controller: secondname,
+                        width: deviceWidth * 0.4,
                       ),
                     ),
                   ],
@@ -194,12 +197,16 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                     fontSize: 20,
                   ),
                 ),
-                const SizedBox(
+                SizedBox(
                   width: 120,
                   child: FittedBox(
                     fit: BoxFit.cover,
                     child: CustomDrumRoll(
                       drumRollType: DrumRollType.date,
+                      onConfirm: (DateTime date) {
+                        // todo: 設定した日付をControllerに渡す
+                        Log.echo('date: $date');
+                      },
                     ),
                   ),
                 ),
@@ -220,6 +227,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                         height: 44,
                         maxLines: 3,
                         controller: taller,
+                        width: deviceWidth * 0.4,
                       ),
                     ),
                     SizedBox(
@@ -229,6 +237,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                         height: 44,
                         maxLines: 3,
                         controller: weight,
+                        width: deviceWidth * 0.4,
                       ),
                     ),
                   ],
