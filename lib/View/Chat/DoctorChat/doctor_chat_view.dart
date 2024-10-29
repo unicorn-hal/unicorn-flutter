@@ -203,18 +203,17 @@ class _DoctorChatViewState extends State<DoctorChatView> {
                     minHeight: 60,
                   ),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        width: size.width * 0.9,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 4.0,
-                          ),
-                          child: CustomTextfield(
-                            hintText: 'メッセージを入力',
-                            controller: controller,
-                            height: 44,
-                          ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4.0,
+                        ),
+                        child: CustomTextfield(
+                          hintText: 'メッセージを入力',
+                          controller: controller,
+                          width: size.width * 0.85,
+                          height: 44,
                         ),
                       ),
                       GestureDetector(
