@@ -1,13 +1,21 @@
+import 'dart:isolate';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Chat/message_tile.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-class DoctorChatView extends StatelessWidget {
+class DoctorChatView extends StatefulWidget {
   DoctorChatView({super.key});
 
+  @override
+  State<DoctorChatView> createState() => _DoctorChatViewState();
+}
+
+class _DoctorChatViewState extends State<DoctorChatView> {
   // todo: controllerを使ってチャット型のリストを作る
   final List<Map<String, bool>> chatList = [
     {
@@ -81,6 +89,33 @@ class DoctorChatView extends StatelessWidget {
   // スクロール用のコントローラー
   final ScrollController scrollController = ScrollController();
 
+  // スクロール位置が最下部になるかどうかを判定するための変数
+  bool isScrollEnd = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    //画面が表示された時にスクロール位置が最下部になるようにする
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      scrollController.jumpTo(scrollController.position.maxScrollExtent);
+    });
+
+    scrollController.addListener(() {
+      if (scrollController.position.maxScrollExtent ==
+          scrollController.position.pixels) {
+        setState(() {
+          isScrollEnd = false;
+        });
+      } else {
+        setState(() {
+          isScrollEnd = true;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -105,26 +140,54 @@ class DoctorChatView extends StatelessWidget {
               ),
 
               ///チャット表示部
-              Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: chatList.length,
-                      shrinkWrap: true,
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        // todo: モデルに変更して当てはめる
-                        return MessageTile(
-                            messageBody: chatList[index].keys.first,
-                            myMessage: chatList[index].values.first,
-                            postAt: '12:00');
-                      },
+              SizedBox(
+                child: Stack(
+                  children: [
+                    Column(
+                      children: [
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: chatList.length,
+                            controller: scrollController,
+                            shrinkWrap: true,
+                            physics: const AlwaysScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              // todo: モデルに変更して当てはめる
+                              return MessageTile(
+                                  messageBody: chatList[index].keys.first,
+                                  myMessage: chatList[index].values.first,
+                                  postAt: '12:00');
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 60,
+                        ),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: 60,
-                  ),
-                ],
+                    Positioned(
+                      bottom: 80,
+                      right: 20,
+                      child: Visibility(
+                        visible: isScrollEnd,
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: ColorName.shadowGray,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.arrow_downward,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
 
               ///チャット入力部,
@@ -132,7 +195,6 @@ class DoctorChatView extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   width: size.width,
-                  height: 60,
                   color: Colors.white,
                   constraints: const BoxConstraints(
                     minHeight: 60,
