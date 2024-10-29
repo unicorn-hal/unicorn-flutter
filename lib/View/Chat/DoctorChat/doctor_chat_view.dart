@@ -1,8 +1,4 @@
-import 'dart:isolate';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Chat/message_tile.dart';
@@ -49,12 +45,6 @@ class _DoctorChatViewState extends State<DoctorChatView> {
       'あああああああ': false,
     },
     {
-      '何してんですか': true,
-    },
-    {
-      '何もしてないよ': false,
-    },
-    {
       '昨日のテレビ見ましたか？': true,
     },
     {
@@ -77,7 +67,7 @@ class _DoctorChatViewState extends State<DoctorChatView> {
     },
     {
       'あああああああ': false,
-    }
+    },
   ];
 
   //　チャット用のコントローラー
@@ -90,11 +80,10 @@ class _DoctorChatViewState extends State<DoctorChatView> {
   final ScrollController scrollController = ScrollController();
 
   // スクロール位置が最下部になるかどうかを判定するための変数
-  bool isScrollEnd = false;
+  bool scrollButton = false;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     //画面が表示された時にスクロール位置が最下部になるようにする
@@ -102,17 +91,21 @@ class _DoctorChatViewState extends State<DoctorChatView> {
       scrollController.jumpTo(scrollController.position.maxScrollExtent);
     });
 
-    //スクロール位置が最下部になかったら
+    //スクロール位置が最下部になかったらscrollButtonを表示する
     scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent ==
+      if (scrollController.position.maxScrollExtent !=
           scrollController.position.pixels) {
-        setState(() {
-          isScrollEnd = false;
-        });
+        scrollButton = true;
+        setState(() {});
       } else {
-        setState(() {
-          isScrollEnd = true;
-        });
+        scrollButton = false;
+        setState(() {});
+      }
+
+      // 最上部までスクロールしたらデータを追加する
+      if (scrollController.position.minScrollExtent ==
+          scrollController.position.pixels) {
+        // chatListをcontrollerで更新する
       }
     });
   }
@@ -170,18 +163,27 @@ class _DoctorChatViewState extends State<DoctorChatView> {
                       bottom: 80,
                       right: 20,
                       child: Visibility(
-                        visible: isScrollEnd,
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: ColorName.shadowGray,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.arrow_downward,
-                              color: Colors.black,
+                        visible: scrollButton,
+                        child: GestureDetector(
+                          //アニメーションをつけてスクロール位置を最下部にする
+                          onTap: () {
+                            scrollController.animateTo(
+                                scrollController.position.maxScrollExtent,
+                                duration: const Duration(milliseconds: 100),
+                                curve: Curves.bounceIn);
+                          },
+                          child: Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: ColorName.shadowGray,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Center(
+                              child: Icon(
+                                Icons.arrow_downward,
+                                color: Colors.black,
+                              ),
                             ),
                           ),
                         ),
@@ -215,12 +217,17 @@ class _DoctorChatViewState extends State<DoctorChatView> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        width: size.width * 0.1,
-                        height: 44,
-                        child: const Icon(
-                          Icons.send,
-                          color: Colors.blue,
+                      GestureDetector(
+                        onTap: () {
+                          // todo: チャットを送信するAPIを叩く
+                        },
+                        child: SizedBox(
+                          width: size.width * 0.1,
+                          height: 44,
+                          child: const Icon(
+                            Icons.send,
+                            color: Colors.blue,
+                          ),
                         ),
                       )
                     ],
