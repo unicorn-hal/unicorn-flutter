@@ -48,27 +48,7 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
       });
       if (_destination != null) {
         _fetchRoute();
-        LatLngBounds bounds = LatLngBounds(
-          southwest: LatLng(
-            _point.latitude < _destination!.latitude
-                ? _point.latitude
-                : _destination!.latitude,
-            _point.longitude < _destination!.longitude
-                ? _point.longitude
-                : _destination!.longitude,
-          ),
-          northeast: LatLng(
-            _point.latitude > _destination!.latitude
-                ? _point.latitude
-                : _destination!.latitude,
-            _point.longitude > _destination!.longitude
-                ? _point.longitude
-                : _destination!.longitude,
-          ),
-        );
-        mapController.animateCamera(
-          CameraUpdate.newLatLngBounds(bounds, 50),
-        );
+        _animateCameraToBounds();
       } else {
         mapController.animateCamera(
           CameraUpdate.newLatLng(_point),
@@ -133,6 +113,37 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+    if (_destination != null) {
+      _animateCameraToBounds();
+    } else {
+      controller.animateCamera(
+        CameraUpdate.newLatLng(_point),
+      );
+    }
+  }
+
+  void _animateCameraToBounds() {
+    LatLngBounds bounds = LatLngBounds(
+      southwest: LatLng(
+        _point.latitude < _destination!.latitude
+            ? _point.latitude
+            : _destination!.latitude,
+        _point.longitude < _destination!.longitude
+            ? _point.longitude
+            : _destination!.longitude,
+      ),
+      northeast: LatLng(
+        _point.latitude > _destination!.latitude
+            ? _point.latitude
+            : _destination!.latitude,
+        _point.longitude > _destination!.longitude
+            ? _point.longitude
+            : _destination!.longitude,
+      ),
+    );
+    mapController.animateCamera(
+      CameraUpdate.newLatLngBounds(bounds, 50),
+    );
   }
 
   @override
@@ -142,40 +153,10 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
       child: GoogleMap(
         myLocationButtonEnabled: false,
         zoomControlsEnabled: false,
-        onMapCreated: (GoogleMapController controller) {
-          _onMapCreated(controller);
-          if (_destination != null) {
-            // Move the camera to fit the bounds of the route
-            LatLngBounds bounds = LatLngBounds(
-              southwest: LatLng(
-                _point.latitude < _destination!.latitude
-                    ? _point.latitude
-                    : _destination!.latitude,
-                _point.longitude < _destination!.longitude
-                    ? _point.longitude
-                    : _destination!.longitude,
-              ),
-              northeast: LatLng(
-                _point.latitude > _destination!.latitude
-                    ? _point.latitude
-                    : _destination!.latitude,
-                _point.longitude > _destination!.longitude
-                    ? _point.longitude
-                    : _destination!.longitude,
-              ),
-            );
-            controller.animateCamera(
-              CameraUpdate.newLatLngBounds(bounds, 50),
-            );
-          } else {
-            controller.animateCamera(
-              CameraUpdate.newLatLng(_point),
-            );
-          }
-        },
+        onMapCreated: _onMapCreated,
         initialCameraPosition: CameraPosition(
           target: _point,
-          zoom: _destination == null ? 13 : 11,
+          zoom: _destination == null ? 14 : 11,
         ),
         polylines: _polylines,
         markers: {
