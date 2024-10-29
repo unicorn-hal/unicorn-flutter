@@ -11,6 +11,8 @@ import 'package:unicorn_flutter/View/HealthCheckup/Checkup/normal_checkup_view.d
 import 'package:unicorn_flutter/View/HealthCheckup/Results/health_checkup_results_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart';
 import 'package:unicorn_flutter/View/Home/home_view.dart';
+import 'package:unicorn_flutter/View/Profile/ChronicDisease/chronic_disease_view.dart';
+import 'package:unicorn_flutter/View/Profile/ChronicDisease/disease_search_view.dart';
 import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_edit_view.dart';
 import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/Medicine/medicine_setting_view.dart';
@@ -64,11 +66,9 @@ final routerProvider = Provider(
         TypedGoRoute<NormalCheckupRoute>(
           path: Routes.healthCheckupNormal,
         ),
-
         TypedGoRoute<CheckupProgressRoute>(
           path: Routes.healthCheckupProgress,
         ),
-
         TypedGoRoute<CheckupResultRoute>(
           path: Routes.healthCheckupResults,
         ),
@@ -115,6 +115,12 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<ProfileMedicineSettingRoute>(
           path: Routes.profileMedicineSetting,
+        ),
+        TypedGoRoute<ProfileChronicDiseaseRoute>(
+          path: Routes.profileChronicDisease,
+        ),
+        TypedGoRoute<ProfileChronicDiseaseSearchRoute>(
+          path: Routes.profileChronicDiseaseSearch,
         ),
       ],
     ),
@@ -335,5 +341,21 @@ class ProfileMedicineSettingRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const MedicineSettingView();
+}
+
+class ProfileChronicDiseaseRoute extends GoRouteData {
+  const ProfileChronicDiseaseRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const ChronicDiseaseView();
+}
+
+class ProfileChronicDiseaseSearchRoute extends GoRouteData {
+  const ProfileChronicDiseaseSearchRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const DiseaseSearchView();
 }
 //////////////////////////////  profile  //////////////////////////////
