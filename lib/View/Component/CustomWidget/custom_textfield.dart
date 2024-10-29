@@ -33,7 +33,6 @@ class CustomTextfield extends StatefulWidget {
   final int maxLength;
   final double width;
   final bool useSearchButton;
-  // trueのときmaxLinesが1でないとサイズがずれる
   final Function? buttonOnTap;
 
   @override
