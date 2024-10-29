@@ -6,6 +6,8 @@ import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 class PrimaryDoctorApi extends ApiCore with Endpoint {
   PrimaryDoctorApi() : super(Endpoint.primaryDoctors);
 
+  /// GET
+  /// 主治医一覧取得
   Future<List<Doctor>?> getPrimaryDoctorList() async {
     try {
       final response = await get();
@@ -17,6 +19,8 @@ class PrimaryDoctorApi extends ApiCore with Endpoint {
     }
   }
 
+  /// POST
+  /// [body] PrimaryDoctorsRequest
   Future<int> postPrimaryDoctor({required PrimaryDoctorsRequest body}) async {
     try {
       final response = await post(body.toJson());
@@ -26,6 +30,8 @@ class PrimaryDoctorApi extends ApiCore with Endpoint {
     }
   }
 
+  /// PUT
+  /// [body] PrimaryDoctorsRequest
   Future<int> putPrimaryDoctor({
     required PrimaryDoctorsRequest body,
   }) async {
