@@ -8,6 +8,7 @@ class CustomTextfield extends StatefulWidget {
     super.key,
     required this.hintText,
     this.backgroundcolor = Colors.white,
+    this.textColor = ColorName.textBlack,
     required this.controller,
     this.prefixIcon,
     this.height = 60,
@@ -17,11 +18,12 @@ class CustomTextfield extends StatefulWidget {
     this.maxLength = 300,
     required this.width,
     this.useSearchButton = false,
-    this.onTap,
+    this.buttonOnTap,
   });
 
   final String hintText;
   final Color backgroundcolor;
+  final Color textColor;
   final TextEditingController controller;
   final Icon? prefixIcon;
   final double height;
@@ -32,7 +34,7 @@ class CustomTextfield extends StatefulWidget {
   final double width;
   final bool useSearchButton;
   // trueのときmaxLinesが1でないとサイズがずれる
-  final Function? onTap;
+  final Function? buttonOnTap;
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -131,7 +133,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
             visible: widget.useSearchButton,
             child: GestureDetector(
               onTap: () {
-                widget.onTap!();
+                widget.buttonOnTap!();
               },
               child: Container(
                 height: widget.height + 4,
