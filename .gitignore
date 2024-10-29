@@ -862,3 +862,7 @@ lib/Route/router.g.dart
 # lock files
 pubspec.lock
 ios/Podfile.lock
+
+# secret files
+secret.properties
+Environment.swift
