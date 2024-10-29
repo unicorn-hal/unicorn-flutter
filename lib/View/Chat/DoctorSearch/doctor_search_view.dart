@@ -36,7 +36,7 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
   ];
 
   //todo: controllerに移植
-  int? selectedItem = 1;
+  int? selectedItem = 0;
   // 仮で診療科リストをStringで作成
   final List<String> departments = [
     '診療科1',
