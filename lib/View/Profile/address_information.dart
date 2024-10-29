@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Constants/prefectures.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
@@ -15,10 +17,19 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
   final TextEditingController addressNumber = TextEditingController();
   final TextEditingController address = TextEditingController();
   final TextEditingController addressDetail = TextEditingController();
+  final List<String> entryItemStrings = ['未設定'] + Prefectures.list;
   // todo: Controllerが完成次第、ここに追記または変更していきます。
 
   @override
   Widget build(BuildContext context) {
+    final List<DropdownMenuItem<int>> dropdownItems = entryItemStrings
+        .map((e) => DropdownMenuItem(
+              value: entryItemStrings.indexOf(e),
+              child: CustomText(
+                text: e,
+              ),
+            ))
+        .toList();
     final deviceWidth = MediaQuery.of(context).size.width;
     return CustomScaffold(
       isAppbar: false,
@@ -120,7 +131,7 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
                         alignment: Alignment.center,
                         child: Container(
                             width: deviceWidth * 0.3,
-                            height: 60,
+                            height: 48,
                             decoration: BoxDecoration(
                                 color: ColorName.profileInputButtonColor,
                                 borderRadius: BorderRadius.circular(20)),
@@ -149,6 +160,18 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
                 const Padding(
                   padding: EdgeInsets.only(top: 20, bottom: 10),
                   child: CustomText(
+                    text: '都道府県',
+                    fontSize: 20,
+                  ),
+                ),
+                CustomDropdown(
+                  dropdownItems: dropdownItems,
+                  height: 44,
+                  onChanged: (int? index) {},
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 20, bottom: 10),
+                  child: CustomText(
                     text: '市区町村',
                     fontSize: 20,
                   ),
@@ -162,7 +185,7 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
                   ),
                 ),
                 const Padding(
-                  padding: EdgeInsets.only(top: 30, bottom: 10),
+                  padding: EdgeInsets.only(top: 20, bottom: 10),
                   child: CustomText(
                     text: '部屋番号など',
                     fontSize: 20,
