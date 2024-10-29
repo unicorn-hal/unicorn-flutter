@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/DoctorPage/doctor_page_view.dart';
+import 'package:unicorn_flutter/View/Chat/DoctorSearch/doctor_search_view.dart';
 import 'package:unicorn_flutter/View/Chat/chat_top_view.dart';
 import 'package:unicorn_flutter/View/Component/Pages/progress_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/Checkup/ai_checkup_view.dart';
@@ -81,6 +82,9 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<ChatDoctorPageRoute>(
           path: Routes.chatDoctorPage,
+        ),
+        TypedGoRoute<ChatDoctorSearchRoute>(
+          path: Routes.chatDoctorSearch,
         ),
       ],
     ),
@@ -259,6 +263,13 @@ class ChatDoctorPageRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) => DoctorPageView();
+}
+
+class ChatDoctorSearchRoute extends GoRouteData {
+  const ChatDoctorSearchRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => DoctorSearchView();
 }
 //////////////////////////////  chat  //////////////////////////////
 
