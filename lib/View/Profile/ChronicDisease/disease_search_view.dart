@@ -73,6 +73,10 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                     controller: controller,
                     height: 50,
                     maxLines: 1,
+                    maxLength: 40,
+                    width: deviceWidth * 0.9,
+                    useSearchButton: true,
+                    buttonOnTap: () {},
                   ),
                   Visibility(
                     visible: items.isNotEmpty,
