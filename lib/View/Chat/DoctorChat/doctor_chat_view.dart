@@ -102,6 +102,7 @@ class _DoctorChatViewState extends State<DoctorChatView> {
       scrollController.jumpTo(scrollController.position.maxScrollExtent);
     });
 
+    //スクロール位置が最下部になかったら
     scrollController.addListener(() {
       if (scrollController.position.maxScrollExtent ==
           scrollController.position.pixels) {
