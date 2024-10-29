@@ -3,7 +3,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class CustomScaffold extends StatelessWidget {
-  final Widget? body;
+  final Widget body;
   final String? title;
   final PreferredSizeWidget? appBar;
   final Widget? floatingActionButton;
@@ -16,7 +16,7 @@ class CustomScaffold extends StatelessWidget {
 
   const CustomScaffold({
     super.key,
-    this.body,
+    required this.body,
     this.title,
     this.appBar,
     this.floatingActionButton,
