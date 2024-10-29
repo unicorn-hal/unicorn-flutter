@@ -71,7 +71,7 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
 
     _polylines.add(
       Polyline(
-        polylineId: PolylineId('route'),
+        polylineId: const PolylineId('route'),
         points: points,
         color: Colors.blue,
         width: 5,
