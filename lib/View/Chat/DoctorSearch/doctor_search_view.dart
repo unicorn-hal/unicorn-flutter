@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
@@ -35,7 +36,7 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
     // '医師10',
   ];
 
-  //todo: controllerに移植
+  //todo: depertmentsのindex
   int? selectedItem = 0;
   // 仮で診療科リストをStringで作成
   final List<String> departments = [
@@ -133,29 +134,9 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 4.0),
-                        child: DropdownButtonFormField(
-                          dropdownColor: Colors.white,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 15,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: const BorderSide(
-                                width: 1,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: const BorderSide(
-                                width: 1,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ),
-                          items: [
+                        child: CustomDropdown(
+                          height: 44,
+                          dropdownItems: [
                             // todo: controllerからforの個数決める
                             for (String department in departments)
                               DropdownMenuItem(
@@ -171,7 +152,6 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                               selectedItem = value;
                             });
                           },
-                          value: selectedItem,
                         ),
                       ),
                     ),
