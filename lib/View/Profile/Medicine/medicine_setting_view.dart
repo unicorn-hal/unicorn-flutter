@@ -106,6 +106,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                         height: 50,
                         maxLines: 1,
                         maxLength: 20,
+                        width: deviceWidth * 0.9,
                       ),
                     ),
                     Row(
@@ -143,6 +144,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                     FilteringTextInputFormatter.digitsOnly
                                   ],
                                   maxLength: 3,
+                                  width: deviceWidth * 0.4,
                                 ),
                               ),
                             ),
