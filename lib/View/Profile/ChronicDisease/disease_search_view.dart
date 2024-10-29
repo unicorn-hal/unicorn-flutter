@@ -34,6 +34,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
     false,
   ];
   // todo: controller出来たら消す
+  final focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -43,6 +44,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
 
     return CustomScaffold(
       isScrollable: true,
+      focusNode: focusNode,
       body: Container(
         constraints: BoxConstraints(
           minHeight: deviceHeight - appBarHeight - topPaddingHeight - 80,
