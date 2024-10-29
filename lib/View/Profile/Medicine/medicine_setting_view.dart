@@ -292,31 +292,61 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                               children: [
                                                 Stack(
                                                   children: [
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                        top: 10,
-                                                      ),
-                                                      width: deviceWidth * 0.9,
-                                                      child: const Align(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: CustomText(
-                                                          text: '繰り返し',
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: const Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                              left: 10,
+                                                            ),
+                                                            child: CustomText(
+                                                              text: '戻る',
+                                                              color:
+                                                                  Colors.blue,
+                                                            ),
+                                                          ),
                                                         ),
-                                                      ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                            // todo: Controllerに渡す処理
+                                                          },
+                                                          child: const Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                              right: 10,
+                                                            ),
+                                                            child: CustomText(
+                                                              text: '決定',
+                                                              color:
+                                                                  Colors.blue,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                     Positioned(
-                                                      bottom: -13,
-                                                      left: -16,
-                                                      child: TextButton(
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        child: const CustomText(
-                                                          text: '戻る',
-                                                          color: Colors.blue,
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                          top: 12,
+                                                        ),
+                                                        child: const Align(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: CustomText(
+                                                            text: '繰り返し',
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
