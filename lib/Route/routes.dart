@@ -7,6 +7,8 @@ mixin Routes {
   static const String healthCheckupResults = '/health_checkup/results';
   static const String chat = '/chat';
   static const String profile = '/profile';
+  static const String profileAddressInformation =
+      '/profile/address_information';
   static const String profilePhysicalInformation =
       '/profile/physical_information';
   static const String profileFamilyEmail = '/profile/family_email';
