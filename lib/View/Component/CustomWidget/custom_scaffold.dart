@@ -35,7 +35,7 @@ class CustomScaffold extends StatelessWidget {
     return Focus(
       focusNode: focusNode,
       child: GestureDetector(
-        onTap: () => focusNode?.requestFocus(),
+        onTap: focusNode?.requestFocus,
         child: Scaffold(
           backgroundColor: Colors.white,
           appBar: isAppbar
