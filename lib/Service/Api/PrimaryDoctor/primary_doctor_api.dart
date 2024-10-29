@@ -21,7 +21,7 @@ class PrimaryDoctorApi extends ApiCore with Endpoint {
 
   /// POST
   /// [body] PrimaryDoctorsRequest
-  Future<int> postPrimaryDoctor({required PrimaryDoctorsRequest body}) async {
+  Future<int> postPrimaryDoctors({required PrimaryDoctorsRequest body}) async {
     try {
       final response = await post(body.toJson());
       return response.statusCode;
@@ -32,7 +32,7 @@ class PrimaryDoctorApi extends ApiCore with Endpoint {
 
   /// PUT
   /// [body] PrimaryDoctorsRequest
-  Future<int> putPrimaryDoctor({
+  Future<int> putPrimaryDoctors({
     required PrimaryDoctorsRequest body,
   }) async {
     try {
