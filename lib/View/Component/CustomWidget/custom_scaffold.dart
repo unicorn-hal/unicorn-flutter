@@ -13,6 +13,7 @@ class CustomScaffold extends StatelessWidget {
   final bool isScrollable;
   final bool isAppbar;
   final bool resizeToAvoidBottomInset;
+  final FocusNode? focusNode;
 
   const CustomScaffold({
     super.key,
@@ -26,29 +27,36 @@ class CustomScaffold extends StatelessWidget {
     this.isScrollable = false,
     this.isAppbar = true,
     this.resizeToAvoidBottomInset = false,
+    this.focusNode,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: isAppbar
-          ? appBar ??
-              CustomAppBar(
-                title: title,
-                actions: actions,
-                backgroundColor: ColorName.mainColor,
-              )
-          : null,
-      body: isScrollable
-          ? SingleChildScrollView(
-              child: body,
-            )
-          : body,
-      drawer: drawer,
-      floatingActionButton: floatingActionButton,
-      bottomNavigationBar: bottomNavigationBar,
-      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+    return Focus(
+      focusNode: focusNode,
+      child: GestureDetector(
+        onTap: focusNode?.requestFocus,
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: isAppbar
+              ? appBar ??
+                  CustomAppBar(
+                    title: title,
+                    actions: actions,
+                    backgroundColor: ColorName.mainColor,
+                  )
+              : null,
+          body: isScrollable
+              ? SingleChildScrollView(
+                  child: body,
+                )
+              : body,
+          drawer: drawer,
+          floatingActionButton: floatingActionButton,
+          bottomNavigationBar: bottomNavigationBar,
+          resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+        ),
+      ),
     );
   }
 }
