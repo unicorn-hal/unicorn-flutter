@@ -114,14 +114,13 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
+                    CustomTextfield(
+                      hintText: '数字7桁',
                       width: deviceWidth * 0.5,
-                      child: CustomTextfield(
-                        hintText: '数字7桁',
-                        height: 44,
-                        maxLines: 7,
-                        controller: addressNumber,
-                      ),
+                      height: 44,
+                      maxLines: 7,
+                      maxLength: 7,
+                      controller: addressNumber,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -176,13 +175,12 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
                     fontSize: 20,
                   ),
                 ),
-                SizedBox(
-                  width: deviceWidth,
-                  child: CustomTextfield(
-                    hintText: '静岡市葵区追手町５－１',
-                    height: 44,
-                    controller: address,
-                  ),
+                CustomTextfield(
+                  hintText: '静岡市葵区追手町５－１',
+                  width: deviceWidth * 0.85,
+                  height: 44,
+                  controller: address,
+                  maxLength: 25,
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 20, bottom: 10),
@@ -191,13 +189,12 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
                     fontSize: 20,
                   ),
                 ),
-                SizedBox(
-                  width: deviceWidth,
-                  child: CustomTextfield(
-                    hintText: 'ユニコーンビル１０３号',
-                    height: 44,
-                    controller: addressDetail,
-                  ),
+                CustomTextfield(
+                  hintText: 'ユニコーンビル１０３号',
+                  width: deviceWidth * 0.85,
+                  height: 44,
+                  controller: addressDetail,
+                  maxLength: 25,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
