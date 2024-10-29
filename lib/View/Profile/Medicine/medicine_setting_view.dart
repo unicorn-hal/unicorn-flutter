@@ -273,150 +273,161 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                       isScrollControlled: true,
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return StatefulBuilder(builder:
-                                            (context, StateSetter setState) {
-                                          return Container(
-                                            width: deviceWidth,
-                                            margin:
-                                                const EdgeInsets.only(top: 64),
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(20),
-                                                topRight: Radius.circular(20),
+                                        return StatefulBuilder(
+                                          builder:
+                                              (context, StateSetter setState) {
+                                            return Container(
+                                              width: deviceWidth,
+                                              margin: const EdgeInsets.only(
+                                                  top: 64),
+                                              decoration: const BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(20),
+                                                  topRight: Radius.circular(20),
+                                                ),
                                               ),
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Stack(
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: const Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                              left: 10,
-                                                            ),
-                                                            child: CustomText(
-                                                              text: '戻る',
-                                                              color:
-                                                                  Colors.blue,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            Navigator.pop(
-                                                                context);
-                                                            // todo: Controllerに渡す処理
-                                                          },
-                                                          child: const Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                              right: 10,
-                                                            ),
-                                                            child: CustomText(
-                                                              text: '決定',
-                                                              color:
-                                                                  Colors.blue,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Stack(
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            child:
+                                                                const Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .only(
+                                                                left: 10,
+                                                              ),
+                                                              child: CustomText(
+                                                                text: '戻る',
+                                                                color:
+                                                                    Colors.blue,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Positioned(
-                                                      child: Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                          top: 12,
-                                                        ),
-                                                        child: const Align(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: CustomText(
-                                                            text: '繰り返し',
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              // todo: Controllerに渡す処理
+                                                            },
+                                                            child:
+                                                                const Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .only(
+                                                                right: 10,
+                                                              ),
+                                                              child: CustomText(
+                                                                text: '決定',
+                                                                color:
+                                                                    Colors.blue,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Positioned(
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                            top: 12,
+                                                          ),
+                                                          child: const Align(
+                                                            alignment: Alignment
+                                                                .center,
+                                                            child: CustomText(
+                                                              text: '繰り返し',
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  height: 40,
-                                                ),
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    border: Border.all(
-                                                      color: Colors.grey,
-                                                    ),
+                                                    ],
                                                   ),
-                                                  width: deviceWidth * 0.9,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      horizontal: 15,
+                                                  const SizedBox(
+                                                    height: 40,
+                                                  ),
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      border: Border.all(
+                                                        color: Colors.grey,
+                                                      ),
                                                     ),
-                                                    child: ListView.builder(
-                                                      physics:
-                                                          const NeverScrollableScrollPhysics(),
-                                                      shrinkWrap: true,
-                                                      itemCount:
-                                                          repeatWeekList.length,
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        return SizedBox(
-                                                          width:
-                                                              deviceWidth * 0.9,
-                                                          child: CommonItemTile(
-                                                            title:
+                                                    width: deviceWidth * 0.9,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 15,
+                                                      ),
+                                                      child: ListView.builder(
+                                                        physics:
+                                                            const NeverScrollableScrollPhysics(),
+                                                        shrinkWrap: true,
+                                                        itemCount:
+                                                            repeatWeekList
+                                                                .length,
+                                                        itemBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          return SizedBox(
+                                                            width: deviceWidth *
+                                                                0.9,
+                                                            child:
+                                                                CommonItemTile(
+                                                              title:
+                                                                  repeatWeekList[
+                                                                          index]
+                                                                      ['name'],
+                                                              action: repeatWeekList[
+                                                                          index]
+                                                                      ['check']!
+                                                                  ? const Icon(
+                                                                      Icons
+                                                                          .check,
+                                                                      color: Colors
+                                                                          .blue,
+                                                                    )
+                                                                  : null,
+                                                              onTap: () {
                                                                 repeatWeekList[
-                                                                        index]
-                                                                    ['name'],
-                                                            action: repeatWeekList[
-                                                                        index]
-                                                                    ['check']!
-                                                                ? const Icon(
-                                                                    Icons.check,
-                                                                    color: Colors
-                                                                        .blue,
-                                                                  )
-                                                                : null,
-                                                            onTap: () {
-                                                              repeatWeekList[
-                                                                          index]
-                                                                      [
-                                                                      'check'] =
-                                                                  !repeatWeekList[
-                                                                          index]
-                                                                      ['check'];
-                                                              // todo: controller出来たら変更
-                                                              setState(() {});
-                                                            },
-                                                          ),
-                                                        );
-                                                      },
+                                                                            index]
+                                                                        [
+                                                                        'check'] =
+                                                                    !repeatWeekList[
+                                                                            index]
+                                                                        [
+                                                                        'check'];
+                                                                // todo: controller出来たら変更
+                                                                setState(() {});
+                                                              },
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        });
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
                                       },
                                     );
                                   },
