@@ -25,6 +25,16 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
   TextEditingController countController = TextEditingController();
   bool registration = true;
   bool repeat = false;
+  List<String> weekdays = [
+    '毎月曜日',
+    '毎火曜日',
+    '毎水曜日',
+    '毎木曜日',
+    '毎金曜日',
+    '毎土曜日',
+    '毎日曜日',
+  ];
+  DateTime now = DateTime.now();
   String repeatWeek = '月,火,水,木,金,土';
   List<String> reminderList = [];
   int? selectIndex = 0;
@@ -245,6 +255,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                 ),
                                 CustomDrumRoll(
                                   drumRollType: DrumRollType.time,
+                                  splitMinute: 15,
                                   onConfirm: (DateTime date) {
                                     // todo: 設定した日付をControllerに渡す
                                     Log.echo('date: $date');
@@ -390,8 +401,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                             text: repeatWeek,
                                             color: Colors.blue,
                                           )
-                                        : const CustomText(
-                                            text: '繰り返し: 未設定',
+                                        : CustomText(
+                                            text: weekdays[now.weekday - 1],
                                             color: Colors.blue,
                                           ),
                                   ),
