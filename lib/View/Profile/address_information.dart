@@ -118,8 +118,9 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
                       hintText: '数字7桁',
                       width: deviceWidth * 0.5,
                       height: 44,
-                      maxLines: 7,
+                      maxLines: 1,
                       maxLength: 7,
+                      keyboardType: TextInputType.number,
                       controller: addressNumber,
                     ),
                     GestureDetector(
@@ -180,6 +181,7 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
                   width: deviceWidth * 0.85,
                   height: 44,
                   controller: address,
+                  maxLines: 1,
                   maxLength: 25,
                 ),
                 const Padding(
@@ -194,6 +196,7 @@ class _AddressInfomationViewState extends State<AddressInfomationView> {
                   width: deviceWidth * 0.85,
                   height: 44,
                   controller: addressDetail,
+                  maxLines: 1,
                   maxLength: 25,
                 ),
                 Padding(
