@@ -79,6 +79,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                         hintText: '山田',
                         height: 44,
                         controller: firstname,
+                        width: deviceWidth * 0.4,
                       ),
                     ),
                     SizedBox(
@@ -87,6 +88,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                         hintText: '太郎',
                         height: 44,
                         controller: secondname,
+                        width: deviceWidth * 0.4,
                       ),
                     ),
                   ],
@@ -220,6 +222,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                         height: 44,
                         maxLines: 3,
                         controller: taller,
+                        width: deviceWidth * 0.4,
                       ),
                     ),
                     SizedBox(
@@ -229,6 +232,7 @@ class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
                         height: 44,
                         maxLines: 3,
                         controller: weight,
+                        width: deviceWidth * 0.4,
                       ),
                     ),
                   ],
