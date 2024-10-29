@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -6,13 +8,23 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-class CallReserveView extends StatelessWidget {
-  const CallReserveView({super.key});
+class CallReserveView extends StatefulWidget {
+  CallReserveView({super.key});
 
+  @override
+  State<CallReserveView> createState() => _CallReserveViewState();
+}
+
+class _CallReserveViewState extends State<CallReserveView> {
   // todo: controllerへ移植する
   final String doctorName = '長谷川';
+
   final String chatSupportHours = '平日9:00~12:00';
+
   final String callSupportHours = '平日14:00~22:00';
+
+  DateTime selectedDate = DateTime.now();
+  DateTime selectedTime = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -121,6 +133,11 @@ class CallReserveView extends StatelessWidget {
                           child: FittedBox(
                             child: CustomDrumRoll(
                               drumRollType: DrumRollType.date,
+                              onConfirm: (p0) {
+                                selectedDate = p0;
+                                setState(() {});
+                              },
+                              minDate: DateTime.now(),
                               maxDate: DateTime.now().add(
                                 const Duration(days: 365),
                               ),
@@ -130,12 +147,12 @@ class CallReserveView extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(
+                  SizedBox(
                     width: 150,
                     height: 90,
                     child: Column(
                       children: [
-                        Align(
+                        const Align(
                           alignment: Alignment.centerLeft,
                           child: CustomText(
                             text: '時間',
@@ -150,6 +167,10 @@ class CallReserveView extends StatelessWidget {
                             alignment: Alignment.centerLeft,
                             child: CustomDrumRoll(
                               drumRollType: DrumRollType.time,
+                              onConfirm: (p0) {
+                                selectedTime = p0;
+                                setState(() {});
+                              },
                               splitMinute: 5,
                             ),
                           ),
