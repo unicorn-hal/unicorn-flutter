@@ -56,7 +56,8 @@ class _CustomTextfieldState extends State<CustomTextfield> {
               setState(() {});
             },
             textAlignVertical: TextAlignVertical.center,
-            style: const TextStyle(
+            style: TextStyle(
+              color: widget.textColor,
               fontSize: 16,
               height: 1.5,
               decorationColor: ColorName.mainColor,
