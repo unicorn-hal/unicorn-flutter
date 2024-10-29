@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
@@ -55,8 +56,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                       context: context,
                       builder: (_) {
                         return CustomDialog(
-                          title: '警告',
-                          bodyText: '本当に削除しますか？',
+                          title: Strings.DIALOG_TITLE_CAVEAT,
+                          bodyText: Strings.DIALOG_BODY_TEXT_DELETE,
                           onTap: () {
                             Navigator.pop(context);
                             // todo: controller出来たら削除処理追加
