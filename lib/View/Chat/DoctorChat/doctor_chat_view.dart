@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Chat/message_tile.dart';
@@ -70,6 +71,9 @@ class _DoctorChatViewState extends State<DoctorChatView> {
     },
   ];
 
+  // 医師名
+  final String doctorName = '長谷川';
+
   //　チャット用のコントローラー
   final TextEditingController controller = TextEditingController();
 
@@ -118,6 +122,11 @@ class _DoctorChatViewState extends State<DoctorChatView> {
       child: GestureDetector(
         onTap: focusNode.requestFocus,
         child: CustomScaffold(
+          appBar: CustomAppBar(
+            backgroundColor: ColorName.mainColor,
+            title: '$doctorName先生',
+            foregroundColor: Colors.white,
+          ),
           body: Stack(
             children: [
               ///背景画像を表示する

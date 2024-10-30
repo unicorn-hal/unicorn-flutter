@@ -62,7 +62,6 @@ class ChatTopView extends StatelessWidget {
                     imageBackgroundColor: ColorName.mainColor,
                     onTap: () {
                       // todo: AIチャット画面へ遷移
-                      ChatDoctorPageChatRoute().push(context);
                     },
                   ),
                 ),
