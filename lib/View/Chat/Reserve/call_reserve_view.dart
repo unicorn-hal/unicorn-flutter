@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
@@ -133,8 +134,8 @@ class _CallReserveViewState extends State<CallReserveView> {
                           child: FittedBox(
                             child: CustomDrumRoll(
                               drumRollType: DrumRollType.date,
-                              onConfirm: (p0) {
-                                selectedDate = p0;
+                              onConfirm: (DateTime date) {
+                                selectedDate = date;
                                 setState(() {});
                               },
                               minDate: DateTime.now(),
@@ -163,12 +164,11 @@ class _CallReserveViewState extends State<CallReserveView> {
                           width: 150,
                           height: 60,
                           child: FittedBox(
-                            fit: BoxFit.contain,
                             alignment: Alignment.centerLeft,
                             child: CustomDrumRoll(
                               drumRollType: DrumRollType.time,
-                              onConfirm: (p0) {
-                                selectedTime = p0;
+                              onConfirm: (DateTime time) {
+                                selectedTime = time;
                                 setState(() {});
                               },
                               splitMinute: 5,
@@ -187,12 +187,19 @@ class _CallReserveViewState extends State<CallReserveView> {
             SizedBox(
               width: size.width * 0.9,
               height: 200,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: GestureDetector(
-                  onTap: () {
-                    // todo: 予約処理
-                  },
+              child: GestureDetector(
+                onTap: () {
+                  // todo: 予約処理 > controllerへ移植する
+                  DateTime reserveDateTime = DateTime(
+                    selectedDate.year,
+                    selectedDate.month,
+                    selectedDate.day,
+                    selectedTime.hour,
+                    selectedTime.minute,
+                  );
+                  Log.echo('reserveDateTime: $reserveDateTime');
+                },
+                child: Center(
                   child: Container(
                     width: size.width * 0.9,
                     height: 80,
