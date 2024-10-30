@@ -28,4 +28,5 @@ mixin Routes {
       '/profile/chronic_disease/search';
   static const String chatDoctorPage = '/chat/doctor_page';
   static const String chatDoctorSearch = '/chat/doctor_search';
+  static const String chatAi = '/chat/ai';
 }
