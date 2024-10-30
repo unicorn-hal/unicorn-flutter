@@ -8,9 +8,7 @@ class AiChatView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const CustomScaffold(
-      body: Center(
-        child: CustomText(text: 'こんにちは、AIです。'),
-      ),
+      body: CustomText(text: 'こんにちは、AIです。'),
     );
   }
 }
