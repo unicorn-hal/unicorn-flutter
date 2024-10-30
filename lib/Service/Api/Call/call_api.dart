@@ -6,6 +6,10 @@ import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 class CallApi extends ApiCore with Endpoint {
   CallApi() : super(Endpoint.calls);
 
+  /// GET
+  /// 通話情報取得
+  /// [doctorId] 医師ID
+  /// [userId] ユーザID
   Future<Call?> getCall({
     required String doctorId,
     required String userId,
@@ -19,9 +23,42 @@ class CallApi extends ApiCore with Endpoint {
     }
   }
 
+  /// POST
+  /// 通話予約
+  /// [body] CallRequest
   Future<int> postCall({required CallRequest body}) async {
     try {
       final response = await post(body.toJson());
+      return response.statusCode;
+    } catch (e) {
+      return 500;
+    }
+  }
+
+  /// PUT
+  /// 通話情報更新
+  /// [body] CallRequest
+  /// [callReservationId] 通話予約ID
+  Future<int> putCall({
+    required CallRequest body,
+    required String callReservationId,
+  }) async {
+    try {
+      useParameter(parameter: '/$callReservationId');
+      final response = await put(body.toJson());
+      return response.statusCode;
+    } catch (e) {
+      return 500;
+    }
+  }
+
+  /// DELETE
+  /// 通話情報削除
+  /// [callReservationId] 通話予約ID
+  Future<int> deleteCall({required String callReservationId}) async {
+    try {
+      useParameter(parameter: '/$callReservationId');
+      final response = await delete();
       return response.statusCode;
     } catch (e) {
       return 500;
