@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
@@ -20,7 +17,6 @@ class _UserInfomationViewState extends State<UserInfomationView> {
   final TextEditingController phoneNumber = TextEditingController();
   final TextEditingController mailAddress = TextEditingController();
   final TextEditingController occupation = TextEditingController();
-  final ImagePicker picker = ImagePicker();
   final FocusNode focusnode = FocusNode();
 
   // todo: Controllerが完成次第、ここに追記または変更していきます。
@@ -83,11 +79,9 @@ class _UserInfomationViewState extends State<UserInfomationView> {
                       height: 200,
                       child: Stack(
                         children: [
-                          UserImageCircle(
+                          const UserImageCircle(
                             imageSize: 200,
-                            localImage: Image.asset(
-                                "assets/images/icons/default_image_icon.png"),
-                            imageUrl: '',
+                            // todo: Controllerができ次第、処理分岐させます。
                           ),
                           Align(
                             alignment: Alignment.bottomRight,
@@ -108,7 +102,7 @@ class _UserInfomationViewState extends State<UserInfomationView> {
                 const Padding(
                   padding: EdgeInsets.only(bottom: 10),
                   child: CustomText(
-                    text: '電話番号',
+                    text: '電話番号（ハイフンあり）',
                     fontSize: 20,
                   ),
                 ),
