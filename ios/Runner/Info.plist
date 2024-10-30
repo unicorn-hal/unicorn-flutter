@@ -57,5 +57,6 @@
 	<!-- Permission options for the `photoLibrary` group -->
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>ユーザーが写真にアクセスするために使用されます。</string>
+	<key>FLTEnableImpeller</key><false />
 </dict>
 </plist>
