@@ -226,6 +226,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                             if (reminderList.length < 5) {
                               reminderList.add('a');
                               setState(() {});
+                            } else {
+                              Log.toast('リマインダーは5件以上登録できません');
                             }
                           },
                           icon: const Icon(
