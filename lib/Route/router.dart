@@ -26,6 +26,7 @@ import 'package:unicorn_flutter/View/Profile/NotificationSetting/notification_se
 import 'package:unicorn_flutter/View/Profile/profile_top_view.dart';
 import 'package:unicorn_flutter/View/Profile/LocalAuth/local_auth_view.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
+import 'package:unicorn_flutter/View/emergency_view.dart';
 import 'package:unicorn_flutter/View/top_loading_view.dart';
 import 'routes.dart';
 
@@ -200,6 +201,34 @@ class TopLoadingRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) =>
       const TopLoadingView();
 }
+
+@TypedGoRoute<EmergencyRoute>(
+  path: Routes.emergency,
+)
+class EmergencyRoute extends GoRouteData {
+  const EmergencyRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const EmergencyView();
+}
+
+@TypedGoRoute<EmergencyProgressRoute>(
+  path: Routes.emergencyProgress,
+)
+class EmergencyProgressRoute extends GoRouteData {
+  const EmergencyProgressRoute({
+    required this.$extra,
+  });
+
+  final ProgressViewEnum $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => ProgressView(
+        progressType: $extra,
+      );
+}
+
 /////////////////////////////////  Root  //////////////////////////////
 
 //////////////////////////////  Home  //////////////////////////////
