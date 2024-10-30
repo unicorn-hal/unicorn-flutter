@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
@@ -227,7 +228,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                               reminderList.add('a');
                               setState(() {});
                             } else {
-                              Log.toast('リマインダーは5件以上登録できません');
+                              Fluttertoast.showToast(msg: 'リマインダーは5件以上登録できません');
                             }
                           },
                           icon: const Icon(
