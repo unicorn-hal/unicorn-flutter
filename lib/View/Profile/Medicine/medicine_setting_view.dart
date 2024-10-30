@@ -339,19 +339,17 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                                           ),
                                                         ],
                                                       ),
-                                                      Positioned(
-                                                        child: Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                            top: 12,
-                                                          ),
-                                                          child: const Align(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            child: CustomText(
-                                                              text: '繰り返し',
-                                                            ),
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                          top: 12,
+                                                        ),
+                                                        child: const Align(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: CustomText(
+                                                            text: '繰り返し',
                                                           ),
                                                         ),
                                                       ),
