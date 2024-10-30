@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
@@ -10,7 +8,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.d
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class CallReserveView extends StatefulWidget {
-  CallReserveView({super.key});
+  const CallReserveView({super.key});
 
   @override
   State<CallReserveView> createState() => _CallReserveViewState();
