@@ -105,146 +105,136 @@ class _DoctorChatViewState extends State<DoctorChatView> {
         scrollButton = false;
         setState(() {});
       }
-
-      // 最上部までスクロールしたらデータを追加する
-      if (scrollController.position.minScrollExtent ==
-          scrollController.position.pixels) {
-        // chatListをcontrollerで更新する
-      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return Focus(
+    return CustomScaffold(
       focusNode: focusNode,
-      child: GestureDetector(
-        onTap: focusNode.requestFocus,
-        child: CustomScaffold(
-          appBar: CustomAppBar(
-            backgroundColor: ColorName.mainColor,
-            title: '$doctorName先生',
-            foregroundColor: Colors.white,
-          ),
-          body: Stack(
+      resizeToAvoidBottomInset: null,
+      appBar: CustomAppBar(
+        backgroundColor: ColorName.mainColor,
+        title: '$doctorName先生',
+        foregroundColor: Colors.white,
+      ),
+      body: Stack(
+        children: [
+          ///背景画像を表示する
+          Column(
             children: [
-              ///背景画像を表示する
-              Column(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      width: size.width,
-                      color: Colors.blueAccent.shade100,
-                    ),
-                  ),
-                ],
+              Expanded(
+                flex: 1,
+                child: Container(
+                  width: size.width,
+                  color: Colors.blueAccent.shade100,
+                ),
               ),
+            ],
+          ),
 
-              ///チャット表示部
-              SizedBox(
-                child: Stack(
+          ///チャット表示部
+          SizedBox(
+            child: Stack(
+              children: [
+                Column(
                   children: [
-                    Column(
-                      children: [
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: chatList.length,
-                            controller: scrollController,
-                            shrinkWrap: true,
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) {
-                              // todo: モデルに変更して当てはめる
-                              return MessageTile(
-                                  messageBody: chatList[index].keys.first,
-                                  myMessage: chatList[index].values.first,
-                                  postAt: '12:00');
-                            },
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 60,
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                      bottom: 80,
-                      right: 20,
-                      child: Visibility(
-                        visible: scrollButton,
-                        child: GestureDetector(
-                          //アニメーションをつけてスクロール位置を最下部にする
-                          onTap: () {
-                            scrollController.animateTo(
-                                scrollController.position.maxScrollExtent,
-                                duration: const Duration(milliseconds: 100),
-                                curve: Curves.bounceIn);
-                          },
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: ColorName.shadowGray,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Center(
-                              child: Icon(
-                                Icons.arrow_downward,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: chatList.length,
+                        controller: scrollController,
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          // todo: モデルに変更して当てはめる
+                          return MessageTile(
+                              messageBody: chatList[index].keys.first,
+                              myMessage: chatList[index].values.first,
+                              postAt: '12:00');
+                        },
                       ),
+                    ),
+                    const SizedBox(
+                      height: 60,
                     ),
                   ],
                 ),
-              ),
-
-              ///チャット入力部,
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                  width: size.width,
-                  color: Colors.white,
-                  constraints: const BoxConstraints(
-                    minHeight: 60,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 4.0,
+                Positioned(
+                  bottom: 80,
+                  right: 20,
+                  child: Visibility(
+                    visible: scrollButton,
+                    child: GestureDetector(
+                      //アニメーションをつけてスクロール位置を最下部にする
+                      onTap: () {
+                        scrollController.animateTo(
+                            scrollController.position.maxScrollExtent,
+                            duration: const Duration(milliseconds: 100),
+                            curve: Curves.bounceIn);
+                      },
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          color: ColorName.shadowGray,
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        child: CustomTextfield(
-                          hintText: 'メッセージを入力',
-                          controller: controller,
-                          width: size.width * 0.85,
-                          height: 44,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          // todo: チャットを送信するAPIを叩く
-                        },
-                        child: SizedBox(
-                          width: size.width * 0.1,
-                          height: 44,
-                          child: const Icon(
-                            Icons.send,
-                            color: Colors.blue,
+                        child: const Center(
+                          child: Icon(
+                            Icons.arrow_downward,
+                            color: Colors.black,
                           ),
                         ),
-                      )
-                    ],
+                      ),
+                    ),
                   ),
                 ),
-              )
-            ],
+              ],
+            ),
           ),
-        ),
+
+          ///チャット入力部,
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              width: size.width,
+              color: Colors.white,
+              constraints: const BoxConstraints(
+                minHeight: 60,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4.0,
+                    ),
+                    child: CustomTextfield(
+                      hintText: 'メッセージを入力',
+                      controller: controller,
+                      width: size.width * 0.85,
+                      height: 44,
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      // todo: チャットを送信するAPIを叩く
+                    },
+                    child: SizedBox(
+                      width: size.width * 0.1,
+                      height: 44,
+                      child: const Icon(
+                        Icons.send,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
