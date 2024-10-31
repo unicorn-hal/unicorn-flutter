@@ -12,6 +12,10 @@ class DiseaseApi extends ApiCore with Endpoint {
     required String diseaseName,
   }) async {
     try {
+      if (diseaseName == '' || diseaseName == ' ') {
+        return null;
+      }
+
       useParameter(parameter: '?diseaseName=$diseaseName');
       final response = await get();
       return (response.data['data'] as List)
