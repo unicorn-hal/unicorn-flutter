@@ -15,12 +15,12 @@ class AiChatView extends StatelessWidget {
 
   @override
   final List<Map<String, bool>> chatList = [
-    {
-      'ああああ': true,
-    },
-    {
-      'あああああああ': false,
-    },
+    // {
+    //   'ああああ': true,
+    // },
+    // {
+    //   'あああああああ': false,
+    // },
   ];
 
   //　チャット用のコントローラー
@@ -28,9 +28,6 @@ class AiChatView extends StatelessWidget {
 
   // フォーカス用のノード
   final focusNode = FocusNode();
-
-  // スクロール位置が最下部になるかどうかを判定するための変数
-  bool scrollButton = false;
 
   @override
   Widget build(BuildContext context) {
@@ -72,33 +69,32 @@ class AiChatView extends StatelessWidget {
                             ),
                           ),
                         )),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: chatList.isEmpty ? 1 : chatList.length,
-                        shrinkWrap: true,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) {
-                          // todo: モデルに変更して当てはめる
-                          // chatListが空のときはAIからのメッセージ
-                          if (chatList.isEmpty) {
-                            return SizedBox(
-                              height: size.width * 0.1,
-                              child: const Center(
-                                child: CustomText(
-                                  text: 'なんでも聞いてください！',
-                                  fontSize: 18,
-                                ),
+                    chatList.isNotEmpty
+                        // メッセージがあるときは表示
+                        ? Expanded(
+                            child: ListView.builder(
+                              itemCount: chatList.length,
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemBuilder: (BuildContext context, int index) {
+                                // todo: モデルに変更して当てはめる
+                                return MessageTile(
+                                    messageBody: chatList[index].keys.first,
+                                    myMessage: chatList[index].values.first,
+                                    postAt: '12:00');
+                              },
+                            ),
+                          )
+                        // メッセージがないときはAIからのメッセージを表示
+                        : SizedBox(
+                            width: size.width,
+                            height: 50,
+                            child: const Center(
+                              child: CustomText(
+                                text: '何でも聞いて下さい！',
                               ),
-                            );
-                          } else {
-                            return MessageTile(
-                                messageBody: chatList[index].keys.first,
-                                myMessage: chatList[index].values.first,
-                                postAt: '12:00');
-                          }
-                        },
-                      ),
-                    ),
+                            ),
+                          ),
                     const SizedBox(
                       height: 60,
                     ),
@@ -108,7 +104,7 @@ class AiChatView extends StatelessWidget {
             ),
           ),
 
-          ///チャット入力部,テンプレボタン
+          ///チャット入力部,クイックアクションボタン
           Align(
             alignment: Alignment.bottomCenter,
             child: Column(
@@ -122,7 +118,7 @@ class AiChatView extends StatelessWidget {
                       buttonSize: 60,
                       buttonColor: ColorName.mainColor,
                       onTap: () async {
-                        // todo: テンプレートボタンを押した時の処理
+                        // todo: クイックアクションの内容を変更する
                         final action = await showDialog(
                             context: context,
                             builder: (context) {
