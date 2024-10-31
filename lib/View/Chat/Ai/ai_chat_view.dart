@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
@@ -87,9 +88,10 @@ class _AiChatViewState extends State<AiChatView> {
                         physics: const AlwaysScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
                           // todo: モデルに変更して当てはめる
+                          // chatListが空のときはAIからのメッセージ
                           if (chatList.isEmpty) {
                             return SizedBox(
-                              height: size.width * 0.4,
+                              height: size.width * 0.1,
                               child: const Center(
                                 child: CustomText(
                                   text: 'なんでも聞いてください！',
@@ -130,6 +132,78 @@ class _AiChatViewState extends State<AiChatView> {
                       buttonColor: ColorName.mainColor,
                       onTap: () {
                         // todo: テンプレートボタンを押した時の処理
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                clipBehavior: Clip.antiAlias,
+                                insetPadding: EdgeInsets.zero,
+                                surfaceTintColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: SizedBox(
+                                  width: 250,
+                                  height: 300,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: 250,
+                                        height: 50,
+                                        decoration: const BoxDecoration(
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              color: Colors.black,
+                                              width: 1,
+                                            ),
+                                          ),
+                                        ),
+                                        child: const Center(
+                                          child: CustomText(text: 'クイックアクション'),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 250,
+                                        height: 250,
+                                        // todo: 最終的にクイックアクションの数と内容を変更する
+                                        child: ListView.builder(
+                                          itemCount: 5,
+                                          itemBuilder: (context, index) {
+                                            return ListTile(
+                                              contentPadding: EdgeInsets.zero,
+                                              title: Container(
+                                                width: 250,
+                                                height: 40,
+                                                decoration: const BoxDecoration(
+                                                  border: Border(
+                                                    bottom: BorderSide(
+                                                      color:
+                                                          ColorName.shadowGray,
+                                                      width: 1,
+                                                    ),
+                                                  ),
+                                                ),
+                                                child: Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: CustomText(
+                                                    text: 'クイックアクション$indexについて',
+                                                    fontSize: 14,
+                                                  ),
+                                                ),
+                                              ),
+                                              onTap: () {
+                                                // todo: タップしたときの処理
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
                       },
                       icon: const Icon(
                         Icons.chat,
