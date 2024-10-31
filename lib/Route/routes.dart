@@ -34,4 +34,5 @@ mixin Routes {
 
   static const String chatDoctorPageReserve = '/chat/doctor_page/reserve';
   static const String chatDoctorSearch = '/chat/doctor_search';
+  static const String chatAi = '/chat/ai';
 }
