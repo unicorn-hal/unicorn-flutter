@@ -10,4 +10,5 @@ mixin Endpoint {
   static const String primaryDoctors = 'primary_doctors';
   static const String familyEmails = 'family_emails';
   static const String calls = 'calls';
+  static const String diseases = 'diseases';
 }
