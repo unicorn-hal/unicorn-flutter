@@ -12,7 +12,6 @@ class CustomScaffold extends StatelessWidget {
   final List<Widget>? actions;
   final bool isScrollable;
   final bool isAppbar;
-  final bool resizeToAvoidBottomInset;
   final FocusNode? focusNode;
 
   const CustomScaffold({
@@ -26,7 +25,6 @@ class CustomScaffold extends StatelessWidget {
     this.actions,
     this.isScrollable = false,
     this.isAppbar = true,
-    this.resizeToAvoidBottomInset = false,
     this.focusNode,
   });
 
@@ -54,7 +52,6 @@ class CustomScaffold extends StatelessWidget {
           drawer: drawer,
           floatingActionButton: floatingActionButton,
           bottomNavigationBar: bottomNavigationBar,
-          resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         ),
       ),
     );

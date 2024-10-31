@@ -4,7 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/Ai/ai_chat_view.dart';
+import 'package:unicorn_flutter/View/Chat/DoctorChat/doctor_chat_view.dart';
 import 'package:unicorn_flutter/View/Chat/DoctorPage/doctor_page_view.dart';
+import 'package:unicorn_flutter/View/Chat/Reserve/call_reserve_view.dart';
 import 'package:unicorn_flutter/View/Chat/DoctorSearch/doctor_search_view.dart';
 import 'package:unicorn_flutter/View/Chat/chat_top_view.dart';
 import 'package:unicorn_flutter/View/Component/Pages/progress_view.dart';
@@ -25,7 +27,9 @@ import 'package:unicorn_flutter/View/Profile/AppInformation/app_information_view
 import 'package:unicorn_flutter/View/Profile/NotificationSetting/notification_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/profile_top_view.dart';
 import 'package:unicorn_flutter/View/Profile/LocalAuth/local_auth_view.dart';
+import 'package:unicorn_flutter/View/Profile/user_information.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
+import 'package:unicorn_flutter/View/emergency_view.dart';
 import 'package:unicorn_flutter/View/top_loading_view.dart';
 import 'routes.dart';
 
@@ -85,6 +89,12 @@ final routerProvider = Provider(
         TypedGoRoute<ChatDoctorPageRoute>(
           path: Routes.chatDoctorPage,
         ),
+        TypedGoRoute<ChatDoctorPageChatRoute>(
+          path: Routes.chatDoctorPageChat,
+        ),
+        TypedGoRoute<ChatDoctorPageReserveRoute>(
+          path: Routes.chatDoctorPageReserve,
+        ),
         TypedGoRoute<ChatDoctorSearchRoute>(
           path: Routes.chatDoctorSearch,
         ),
@@ -103,6 +113,9 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<ProfileAddressInformationRoute>(
           path: Routes.profileAddressInformation,
+        ),
+        TypedGoRoute<ProfileUserInformationRoute>(
+          path: Routes.profileUserInformation,
         ),
         TypedGoRoute<ProfileLocalAuthRoute>(
           path: Routes.profileLocalAuth,
@@ -200,6 +213,34 @@ class TopLoadingRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) =>
       const TopLoadingView();
 }
+
+@TypedGoRoute<EmergencyRoute>(
+  path: Routes.emergency,
+)
+class EmergencyRoute extends GoRouteData {
+  const EmergencyRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const EmergencyView();
+}
+
+@TypedGoRoute<EmergencyProgressRoute>(
+  path: Routes.emergencyProgress,
+)
+class EmergencyProgressRoute extends GoRouteData {
+  const EmergencyProgressRoute({
+    required this.$extra,
+  });
+
+  final ProgressViewEnum $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => ProgressView(
+        progressType: $extra,
+      );
+}
+
 /////////////////////////////////  Root  //////////////////////////////
 
 //////////////////////////////  Home  //////////////////////////////
@@ -273,6 +314,20 @@ class ChatDoctorPageRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => DoctorPageView();
 }
 
+class ChatDoctorPageChatRoute extends GoRouteData {
+  const ChatDoctorPageChatRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => DoctorChatView();
+}
+
+class ChatDoctorPageReserveRoute extends GoRouteData {
+  const ChatDoctorPageReserveRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => CallReserveView();
+}
+
 class ChatDoctorSearchRoute extends GoRouteData {
   const ChatDoctorSearchRoute();
 
@@ -311,6 +366,14 @@ class ProfileAddressInformationRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const AddressInfomationView();
+}
+
+class ProfileUserInformationRoute extends GoRouteData {
+  const ProfileUserInformationRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const UserInfomationView();
 }
 
 class ProfileLocalAuthRoute extends GoRouteData {

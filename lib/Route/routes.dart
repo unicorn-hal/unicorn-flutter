@@ -1,5 +1,7 @@
 mixin Routes {
   static const String root = '/';
+  static const String emergency = '/emergency';
+  static const String emergencyProgress = '/emergency/progress';
   static const String home = '/home';
   static const String healthCheckup = '/health_checkup';
   static const String healthCheckupNormal = '/health_checkup/normal';
@@ -11,6 +13,7 @@ mixin Routes {
       '/profile/address_information';
   static const String profilePhysicalInformation =
       '/profile/physical_information';
+  static const String profileUserInformation = '/profile/user_information';
   static const String profileFamilyEmail = '/profile/family_email';
   static const String profileFamilyEmailRegister =
       '/profile/family_email/register';
@@ -27,6 +30,9 @@ mixin Routes {
   static const String profileChronicDiseaseSearch =
       '/profile/chronic_disease/search';
   static const String chatDoctorPage = '/chat/doctor_page';
+  static const String chatDoctorPageChat = '/chat/doctor_page/chat';
+
+  static const String chatDoctorPageReserve = '/chat/doctor_page/reserve';
   static const String chatDoctorSearch = '/chat/doctor_search';
   static const String chatAi = '/chat/ai';
 }

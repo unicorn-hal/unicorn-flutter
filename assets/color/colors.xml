@@ -38,6 +38,9 @@
     <color name="women_circlebutton_color">#FF5555</color>
     <color name="nochecked_circlebutton_color">#CACACA</color>
 
+    <!-- 画像選択実行ボタンの外枠に使用するカラー -->
+    <color name="image_select_circlebutton_color">#D9D9D9</color>
+
     <!-- ユーザーインフォタイルに使用するカラー -->
     <color name="user_info_tile_background">#F3F3F3</color>
 
