@@ -25,6 +25,7 @@ import 'package:unicorn_flutter/View/Profile/AppInformation/app_information_view
 import 'package:unicorn_flutter/View/Profile/NotificationSetting/notification_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/profile_top_view.dart';
 import 'package:unicorn_flutter/View/Profile/LocalAuth/local_auth_view.dart';
+import 'package:unicorn_flutter/View/Profile/user_information.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/View/top_loading_view.dart';
 import 'routes.dart';
@@ -103,6 +104,9 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<ProfileAddressInformationRoute>(
           path: Routes.profileAddressInformation,
+        ),
+        TypedGoRoute<ProfileUserInformationRoute>(
+          path: Routes.profileUserInformation,
         ),
         TypedGoRoute<ProfileLocalAuthRoute>(
           path: Routes.profileLocalAuth,
@@ -311,6 +315,14 @@ class ProfileAddressInformationRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const AddressInfomationView();
+}
+
+class ProfileUserInformationRoute extends GoRouteData {
+  const ProfileUserInformationRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const UserInfomationView();
 }
 
 class ProfileLocalAuthRoute extends GoRouteData {
