@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 
@@ -15,12 +18,12 @@ class AiChatView extends StatelessWidget {
 
   @override
   final List<Map<String, bool>> chatList = [
-    // {
-    //   'ああああ': true,
-    // },
-    // {
-    //   'あああああああ': false,
-    // },
+    {
+      'ああああ': true,
+    },
+    {
+      'あああああああ': false,
+    },
   ];
 
   //　チャット用のコントローラー
@@ -57,18 +60,48 @@ class AiChatView extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    SizedBox(
-                        height: 140,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 80,
                         width: size.width,
                         child: Center(
                           child: CircleAvatar(
-                            radius: 60,
+                            radius: 40,
                             backgroundColor: ColorName.mainColor,
                             backgroundImage: AssetImage(
                               Assets.images.icons.aiIcon.path,
                             ),
                           ),
-                        )),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                      ),
+                      child: Container(
+                        height: 60,
+                        width: size.width * 0.9,
+                        decoration: const BoxDecoration(
+                          color: ColorName.shadowGray,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: const Center(
+                          child: CustomText(
+                            text:
+                                '『頭痛や腹痛に詳しい先生を紹介して』\n『おくすりのリマインダー登録をして』\nこのように気軽に話しかけてみましょう！',
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SpacerAndDivider(
+                      topHeight: 4,
+                      bottomHeight: 4,
+                    ),
                     chatList.isNotEmpty
                         // メッセージがあるときは表示
                         ? Expanded(
@@ -79,9 +112,10 @@ class AiChatView extends StatelessWidget {
                               itemBuilder: (BuildContext context, int index) {
                                 // todo: モデルに変更して当てはめる
                                 return MessageTile(
-                                    messageBody: chatList[index].keys.first,
-                                    myMessage: chatList[index].values.first,
-                                    postAt: '12:00');
+                                  messageBody: chatList[index].keys.first,
+                                  myMessage: chatList[index].values.first,
+                                  postAt: '12:00',
+                                );
                               },
                             ),
                           )
