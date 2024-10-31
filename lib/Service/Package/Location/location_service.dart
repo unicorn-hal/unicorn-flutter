@@ -93,4 +93,26 @@ class LocationService {
       return null;
     }
   }
+
+  /// 住所から緯度経度を取得するサービス
+  // todo: 返り値の型をGoogleMapのLatLngに変更
+  Future<Map<String, double>?> getPositionFromAddress(String address) async {
+    try {
+      List<Location> locations = await locationFromAddress(address);
+      if (locations.isEmpty) {
+        throw Exception('Location Not Found');
+      }
+
+      Location location = locations[0];
+      Map<String, double> position = {
+        'latitude': location.latitude,
+        'longitude': location.longitude,
+      };
+
+      return position;
+    } catch (e) {
+      Log.echo('Error: $e');
+      return null;
+    }
+  }
 }
