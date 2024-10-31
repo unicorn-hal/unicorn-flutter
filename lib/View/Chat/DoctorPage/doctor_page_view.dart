@@ -7,6 +7,8 @@ import 'package:unicorn_flutter/View/Component/Parts/Chat/department_badges.dart
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
+import '../../../Route/router.dart';
+
 class DoctorPageView extends StatelessWidget {
   DoctorPageView({super.key});
 
@@ -102,6 +104,7 @@ class DoctorPageView extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       // todo: チャット画面へ遷移
+                      ChatDoctorPageChatRoute().push(context);
                     },
                     child: Container(
                       width: 160,

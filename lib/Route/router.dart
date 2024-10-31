@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
+import 'package:unicorn_flutter/View/Chat/DoctorChat/doctor_chat_view.dart';
 import 'package:unicorn_flutter/View/Chat/DoctorPage/doctor_page_view.dart';
 import 'package:unicorn_flutter/View/Chat/Reserve/call_reserve_view.dart';
 import 'package:unicorn_flutter/View/Chat/DoctorSearch/doctor_search_view.dart';
@@ -86,6 +87,9 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<ChatDoctorPageRoute>(
           path: Routes.chatDoctorPage,
+        ),
+        TypedGoRoute<ChatDoctorPageChatRoute>(
+          path: Routes.chatDoctorPageChat,
         ),
         TypedGoRoute<ChatDoctorPageReserveRoute>(
           path: Routes.chatDoctorPageReserve,
@@ -304,6 +308,13 @@ class ChatDoctorPageRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) => DoctorPageView();
+}
+
+class ChatDoctorPageChatRoute extends GoRouteData {
+  const ChatDoctorPageChatRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => DoctorChatView();
 }
 
 class ChatDoctorPageReserveRoute extends GoRouteData {
