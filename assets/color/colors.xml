@@ -38,4 +38,7 @@
     <color name="women_circlebutton_color">#FF5555</color>
     <color name="nochecked_circlebutton_color">#CACACA</color>
 
+    <!-- ユーザーインフォタイルに使用するカラー -->
+    <color name="user_info_tile_background">#F3F3F3</color>
+
 </resources>

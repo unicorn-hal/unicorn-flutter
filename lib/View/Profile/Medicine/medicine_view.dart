@@ -78,9 +78,9 @@ class MedicineView extends StatelessWidget {
                   children: [
                     Container(
                       width: deviceWidth * 0.9,
+                      height: 48,
                       padding: const EdgeInsets.only(
-                        top: 20,
-                        bottom: 10,
+                        top: 10,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -98,17 +98,15 @@ class MedicineView extends StatelessWidget {
                             visible: reminderList.isNotEmpty,
                             child: Expanded(
                               flex: 1,
-                              child: GestureDetector(
-                                // IconButtonにすると勝手に上下のスペースを持ちやがるので渋々GestureDetector(Icon)
-                                onTap: () {
+                              child: IconButton(
+                                onPressed: () {
                                   const ProfileMedicineSettingRoute()
                                       .push(context);
                                   // todo: リマインダー画面へ
                                 },
-                                child: const Icon(
+                                icon: const Icon(
                                   Icons.add,
                                   color: Colors.blue,
-                                  size: 20,
                                 ),
                               ),
                             ),

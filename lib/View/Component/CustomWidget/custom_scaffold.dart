@@ -12,7 +12,7 @@ class CustomScaffold extends StatelessWidget {
   final List<Widget>? actions;
   final bool isScrollable;
   final bool isAppbar;
-  final bool resizeToAvoidBottomInset;
+  final bool? resizeToAvoidBottomInset;
   final FocusNode? focusNode;
 
   const CustomScaffold({

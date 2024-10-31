@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
+import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -22,9 +26,19 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
   TextEditingController countController = TextEditingController();
   bool registration = true;
   bool repeat = false;
+  List<String> weekdays = [
+    '毎月曜日',
+    '毎火曜日',
+    '毎水曜日',
+    '毎木曜日',
+    '毎金曜日',
+    '毎土曜日',
+    '毎日曜日',
+  ];
+  DateTime now = DateTime.now();
   String repeatWeek = '月,火,水,木,金,土';
   List<String> reminderList = [];
-  int? selectedItem = 1;
+  int? selectIndex = 0;
   List<Map<String, dynamic>> repeatWeekList = [
     {'name': '毎日曜日', 'check': false},
     {'name': '毎月曜日', 'check': false},
@@ -35,11 +49,13 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
     {'name': '毎土曜日', 'check': false},
   ];
   // todo: controller出来たら削除
+  final focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     return CustomScaffold(
+      focusNode: focusNode,
       appBar: CustomAppBar(
         title: '常備薬の登録',
         foregroundColor: Colors.white,
@@ -52,8 +68,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                       context: context,
                       builder: (_) {
                         return CustomDialog(
-                          title: '警告',
-                          bodyText: '本当に削除しますか？',
+                          title: Strings.DIALOG_TITLE_CAVEAT,
+                          bodyText: Strings.DIALOG_BODY_TEXT_DELETE,
                           onTap: () {
                             Navigator.pop(context);
                             // todo: controller出来たら削除処理追加
@@ -175,41 +191,21 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                               child: SizedBox(
                                 width: deviceWidth * 0.4,
                                 height: 70,
-                                child: DropdownButtonFormField(
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20,
-                                      vertical: 15,
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                      borderSide: const BorderSide(
-                                        width: 1,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                  items: [
+                                child: CustomDropdown(
+                                  dropdownItems: [
                                     for (int i = 0; i < 10; i++) ...{
                                       DropdownMenuItem(
-                                        value: i + 1,
+                                        value: i,
                                         child: CustomText(text: '${i + 1}'),
                                       ),
                                     },
                                   ],
+                                  height: 50,
+                                  selectIndex: selectIndex,
                                   onChanged: (int? value) {
-                                    setState(() {
-                                      selectedItem = value;
-                                    });
+                                    selectIndex = value!;
+                                    setState(() {});
                                   },
-                                  value: selectedItem,
                                 ),
                               ),
                             ),
@@ -231,6 +227,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                             if (reminderList.length < 5) {
                               reminderList.add('a');
                               setState(() {});
+                            } else {
+                              Fluttertoast.showToast(msg: 'リマインダーは5件以上登録できません');
                             }
                           },
                           icon: const Icon(
@@ -260,6 +258,11 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                 ),
                                 CustomDrumRoll(
                                   drumRollType: DrumRollType.time,
+                                  splitMinute: 15,
+                                  onConfirm: (DateTime date) {
+                                    // todo: 設定した日付をControllerに渡す
+                                    Log.echo('date: $date');
+                                  },
                                   initValue: DateTime.now(),
                                   // todo: リマインダー設定がすでにある場合initValueに入れる
                                 ),
@@ -273,120 +276,159 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                       isScrollControlled: true,
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return StatefulBuilder(builder:
-                                            (context, StateSetter setState) {
-                                          return Container(
-                                            width: deviceWidth,
-                                            margin:
-                                                const EdgeInsets.only(top: 64),
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(20),
-                                                topRight: Radius.circular(20),
+                                        return StatefulBuilder(
+                                          builder:
+                                              (context, StateSetter setState) {
+                                            return Container(
+                                              width: deviceWidth,
+                                              margin: const EdgeInsets.only(
+                                                  top: 64),
+                                              decoration: const BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(20),
+                                                  topRight: Radius.circular(20),
+                                                ),
                                               ),
-                                            ),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Stack(
-                                                  children: [
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                        top: 10,
-                                                      ),
-                                                      width: deviceWidth * 0.9,
-                                                      child: const Align(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: CustomText(
-                                                          text: '繰り返し',
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Positioned(
-                                                      bottom: -13,
-                                                      left: -16,
-                                                      child: TextButton(
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        child: const CustomText(
-                                                          text: '戻る',
-                                                          color: Colors.blue,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  height: 40,
-                                                ),
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    border: Border.all(
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                  width: deviceWidth * 0.9,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                      horizontal: 15,
-                                                    ),
-                                                    child: ListView.builder(
-                                                      physics:
-                                                          const NeverScrollableScrollPhysics(),
-                                                      shrinkWrap: true,
-                                                      itemCount:
-                                                          repeatWeekList.length,
-                                                      itemBuilder:
-                                                          (BuildContext context,
-                                                              int index) {
-                                                        return SizedBox(
-                                                          width:
-                                                              deviceWidth * 0.9,
-                                                          child: CommonItemTile(
-                                                            title:
-                                                                repeatWeekList[
-                                                                        index]
-                                                                    ['name'],
-                                                            action: repeatWeekList[
-                                                                        index]
-                                                                    ['check']!
-                                                                ? const Icon(
-                                                                    Icons.check,
-                                                                    color: Colors
-                                                                        .blue,
-                                                                  )
-                                                                : null,
-                                                            onTap: () {
-                                                              repeatWeekList[
-                                                                          index]
-                                                                      [
-                                                                      'check'] =
-                                                                  !repeatWeekList[
-                                                                          index]
-                                                                      ['check'];
-                                                              // todo: controller出来たら変更
-                                                              setState(() {});
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Stack(
+                                                    children: [
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
                                                             },
+                                                            child:
+                                                                const Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .only(
+                                                                left: 10,
+                                                              ),
+                                                              child: CustomText(
+                                                                text: '戻る',
+                                                                color:
+                                                                    Colors.blue,
+                                                              ),
+                                                            ),
                                                           ),
-                                                        );
-                                                      },
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                              // todo: Controllerに渡す処理
+                                                            },
+                                                            child:
+                                                                const Padding(
+                                                              padding:
+                                                                  EdgeInsets
+                                                                      .only(
+                                                                right: 10,
+                                                              ),
+                                                              child: CustomText(
+                                                                text: '決定',
+                                                                color:
+                                                                    Colors.blue,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                          top: 12,
+                                                        ),
+                                                        child: const Align(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: CustomText(
+                                                            text: '繰り返し',
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 40,
+                                                  ),
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      border: Border.all(
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                    width: deviceWidth * 0.9,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 15,
+                                                      ),
+                                                      child: ListView.builder(
+                                                        physics:
+                                                            const NeverScrollableScrollPhysics(),
+                                                        shrinkWrap: true,
+                                                        itemCount:
+                                                            repeatWeekList
+                                                                .length,
+                                                        itemBuilder:
+                                                            (BuildContext
+                                                                    context,
+                                                                int index) {
+                                                          return SizedBox(
+                                                            width: deviceWidth *
+                                                                0.9,
+                                                            child:
+                                                                CommonItemTile(
+                                                              title:
+                                                                  repeatWeekList[
+                                                                          index]
+                                                                      ['name'],
+                                                              action: repeatWeekList[
+                                                                          index]
+                                                                      ['check']!
+                                                                  ? const Icon(
+                                                                      Icons
+                                                                          .check,
+                                                                      color: Colors
+                                                                          .blue,
+                                                                    )
+                                                                  : null,
+                                                              onTap: () {
+                                                                repeatWeekList[
+                                                                            index]
+                                                                        [
+                                                                        'check'] =
+                                                                    !repeatWeekList[
+                                                                            index]
+                                                                        [
+                                                                        'check'];
+                                                                // todo: controller出来たら変更
+                                                                setState(() {});
+                                                              },
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        });
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
                                       },
                                     );
                                   },
@@ -401,8 +443,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                             text: repeatWeek,
                                             color: Colors.blue,
                                           )
-                                        : const CustomText(
-                                            text: '繰り返し: 未設定',
+                                        : CustomText(
+                                            text: weekdays[now.weekday - 1],
                                             color: Colors.blue,
                                           ),
                                   ),
