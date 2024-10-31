@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
@@ -120,9 +121,9 @@ class AiChatView extends StatelessWidget {
                     child: CircleButton(
                       buttonSize: 60,
                       buttonColor: ColorName.mainColor,
-                      onTap: () {
+                      onTap: () async {
                         // todo: テンプレートボタンを押した時の処理
-                        showDialog(
+                        final action = await showDialog(
                             context: context,
                             builder: (context) {
                               return Dialog(
@@ -184,6 +185,10 @@ class AiChatView extends StatelessWidget {
                                               ),
                                               onTap: () {
                                                 // todo: タップしたときの処理
+                                                Navigator.pop(
+                                                  context,
+                                                  'クイックアクション$index',
+                                                );
                                               },
                                             );
                                           },
@@ -194,6 +199,11 @@ class AiChatView extends StatelessWidget {
                                 ),
                               );
                             });
+
+                        // ダイアログの返り値を待って処理を行う
+                        if (action != null) {
+                          Log.echo(action);
+                        }
                       },
                       icon: const Icon(
                         Icons.chat,
