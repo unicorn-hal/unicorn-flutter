@@ -13,7 +13,7 @@ class ReminderRequest {
     return ReminderRequest(
       reminderTime: json['reminderTime'],
       reminderDayOfWeek: (json['reminderDayOfWeek'] as List)
-          .map((e) => DayOfWeekEnum.values[e])
+          .map((e) => DayOfWeekEnumType.fromString(e))
           .toList(),
     );
   }
@@ -21,7 +21,9 @@ class ReminderRequest {
   Map<String, dynamic> toJson() {
     return {
       'reminderTime': reminderTime,
-      'reminderDayOfWeek': reminderDayOfWeek.map((e) => e.index).toList(),
+      'reminderDayOfWeek': reminderDayOfWeek
+          .map((e) => DayOfWeekEnumType.toStringValue(e))
+          .toList(),
     };
   }
 }

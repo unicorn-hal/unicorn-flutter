@@ -12,7 +12,6 @@ class MedicineApi extends ApiCore with Endpoint {
   Future<List<Medicine>?> getMedicineList() async {
     try {
       final ApiResponse response = await get();
-      print(response.data['data']);
       return (response.data['data'] as List)
           .map((e) => Medicine.fromJson(e))
           .toList();
@@ -26,7 +25,6 @@ class MedicineApi extends ApiCore with Endpoint {
   Future<int> postMedicine({required MedicineRequest body}) async {
     try {
       final ApiResponse response = await post(body.toJson());
-      print(response.statusCode);
       return response.statusCode;
     } catch (e) {
       return 500;
