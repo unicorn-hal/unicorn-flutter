@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
@@ -10,14 +9,10 @@ import '../../Component/CustomWidget/custom_text.dart';
 import '../../Component/CustomWidget/custom_textfield.dart';
 import '../../Component/Parts/Chat/message_tile.dart';
 
-class AiChatView extends StatefulWidget {
-  const AiChatView({super.key});
+class AiChatView extends StatelessWidget {
+  AiChatView({super.key});
 
   @override
-  State<AiChatView> createState() => _AiChatViewState();
-}
-
-class _AiChatViewState extends State<AiChatView> {
   final List<Map<String, bool>> chatList = [
     {
       'ああああ': true,
@@ -35,11 +30,6 @@ class _AiChatViewState extends State<AiChatView> {
 
   // スクロール位置が最下部になるかどうかを判定するための変数
   bool scrollButton = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
