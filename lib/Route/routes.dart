@@ -27,11 +27,8 @@ mixin Routes {
   static const String profileChronicDiseaseSearch =
       '/profile/chronic_disease/search';
   static const String chatDoctorPage = '/chat/doctor_page';
-<<<<<<< HEAD
   static const String chatDoctorPageChat = '/chat/doctor_page/chat';
-=======
 
   static const String chatDoctorPageReserve = '/chat/doctor_page/reserve';
   static const String chatDoctorSearch = '/chat/doctor_search';
->>>>>>> hotfix/View/Component/custom_scaffold/20241031
 }

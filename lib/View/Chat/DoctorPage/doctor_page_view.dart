@@ -143,10 +143,7 @@ class DoctorPageView extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       // todo: 通話予約画面へ遷移
-<<<<<<< HEAD
-=======
                       ChatDoctorPageReserveRoute().push(context);
->>>>>>> hotfix/View/Component/custom_scaffold/20241031
                     },
                     child: Container(
                       width: 160,
