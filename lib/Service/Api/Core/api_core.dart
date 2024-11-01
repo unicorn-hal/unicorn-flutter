@@ -13,19 +13,19 @@ abstract class ApiCore {
   final String _baseUrl = dotenv.env['UNICORN_API_BASEURL']!;
   String _idToken = '';
   String endPoint = '';
-  String parameter = '';
+  String _parameter = '';
   late Map<String, String> _headers;
 
   /// コンストラクタ
   ApiCore(this.endPoint);
 
   /// URL作成
-  String get _url => '$_baseUrl$endPoint/$parameter';
+  String get _url => '$_baseUrl$endPoint$_parameter';
 
   /// パラメータセット
   /// [parameter] パラメータ
   void useParameter({required String parameter}) {
-    parameter = parameter;
+    _parameter = parameter;
   }
 
   /// ヘッダー作成

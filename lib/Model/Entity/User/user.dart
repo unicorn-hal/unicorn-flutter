@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
 
 class User {
@@ -6,7 +7,7 @@ class User {
   final String lastName;
   final String email;
   final UserGenderEnum gender;
-  final String birthDate;
+  final DateTime birthDate;
   final String address;
   final String postalCode;
   final String phoneNumber;
@@ -38,7 +39,7 @@ class User {
       lastName: json['lastName'],
       email: json['email'],
       gender: UserGenderType.fromString(json['gender']),
-      birthDate: json['birthDate'],
+      birthDate: DateFormat('yyyy-MM-dd').parse(json['birthDate']),
       address: json['address'],
       postalCode: json['postalCode'],
       phoneNumber: json['phoneNumber'],
@@ -56,7 +57,7 @@ class User {
       'lastName': lastName,
       'email': email,
       'gender': UserGenderType.toStringValue(gender),
-      'birthDate': birthDate,
+      'birthDate': DateFormat('yyyy-MM-dd').format(birthDate),
       'address': address,
       'postalCode': postalCode,
       'phoneNumber': phoneNumber,
