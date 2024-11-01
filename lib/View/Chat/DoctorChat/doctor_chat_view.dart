@@ -113,7 +113,6 @@ class _DoctorChatViewState extends State<DoctorChatView> {
     final Size size = MediaQuery.of(context).size;
     return CustomScaffold(
       focusNode: focusNode,
-      resizeToAvoidBottomInset: null,
       appBar: CustomAppBar(
         backgroundColor: ColorName.mainColor,
         title: '$doctorName先生',
