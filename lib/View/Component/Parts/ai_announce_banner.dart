@@ -26,9 +26,7 @@ class AiAnnounceBanner extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: () {
-          onTap();
-        },
+        onTap: () => onTap(),
         child: Container(
           height: 88,
           width: size.width,

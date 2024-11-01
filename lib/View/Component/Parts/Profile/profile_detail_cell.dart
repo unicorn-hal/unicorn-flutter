@@ -17,9 +17,7 @@ class ProfileDetailCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        onTap();
-      },
+      onTap: () => onTap(),
       child: Container(
         decoration: const BoxDecoration(
           color: Colors.white,

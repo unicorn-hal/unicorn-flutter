@@ -24,9 +24,7 @@ class UserInfoTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: () {
-        onTap();
-      },
+      onTap: () => onTap(),
       child: Container(
         width: size.width,
         height: 70,

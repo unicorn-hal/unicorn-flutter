@@ -131,9 +131,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
         Visibility(
           visible: widget.useSearchButton,
           child: GestureDetector(
-            onTap: () {
-              widget.buttonOnTap!();
-            },
+            onTap: () => widget.buttonOnTap!(),
             child: Container(
               height: widget.height + 4,
               // (widget.height + 4 - 24) + (24 * 行数)
