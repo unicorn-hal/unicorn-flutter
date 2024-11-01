@@ -108,7 +108,10 @@ class CustomDialog extends StatelessWidget {
                       child: CustomButton(
                         text: '決定',
                         isFilledColor: true,
-                        onTap: onTap ?? () {},
+                        onTap: () {
+                          onTap?.call();
+                          Navigator.pop(context);
+                        },
                         primaryColor: ColorName.mainColor,
                       ),
                     ),

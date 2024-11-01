@@ -24,9 +24,7 @@ class UserInfoTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: () {
-        onTap();
-      },
+      onTap: () => onTap(),
       child: Container(
         width: size.width,
         height: 70,
@@ -56,19 +54,18 @@ class UserInfoTile extends StatelessWidget {
                   SizedBox(
                     width: size.width * 0.5,
                     height: 30,
-                    child: const Align(
+                    child: Align(
                       alignment: Alignment.centerLeft,
-                      child: CustomText(text: 'のりたしおき'),
+                      child: CustomText(text: userName),
                     ),
                   ),
                   SizedBox(
                     width: size.width * 0.8,
                     height: 20,
-                    child: const Align(
+                    child: Align(
                       alignment: Alignment.centerLeft,
                       child: CustomText(
-                        text:
-                            'テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト',
+                        text: description,
                         color: Colors.grey,
                         fontSize: 12,
                         textOverflow: TextOverflow.ellipsis,

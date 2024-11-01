@@ -42,6 +42,7 @@ class _BottomNavigationBarViewState extends State<BottomNavigationBarView>
         children: [
           NavigationBar(
             selectedIndex: controller.navigationShell.currentIndex,
+            backgroundColor: Colors.white,
             indicatorColor: ColorName.mainColor.withOpacity(0.2),
             destinations: const [
               NavigationDestination(icon: Icon(Icons.home), label: 'ホーム'),
