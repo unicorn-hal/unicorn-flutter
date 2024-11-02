@@ -3,6 +3,9 @@ mixin Routes {
   static const String root = '/';
   static const String emergency = '/emergency';
   static const String emergencyProgress = '/emergency/progress';
+  static const String addressInformation = '/address_information';
+  static const String physicalInformation = '/physical_information';
+  static const String userInformation = '/user_information';
 
   // home
   static const String home = '/home';
