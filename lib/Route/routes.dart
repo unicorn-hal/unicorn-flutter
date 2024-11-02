@@ -1,13 +1,28 @@
 mixin Routes {
+  // root
   static const String root = '/';
   static const String emergency = '/emergency';
   static const String emergencyProgress = '/emergency/progress';
+
+  // home
   static const String home = '/home';
+
+  // health_checkup
   static const String healthCheckup = '/health_checkup';
   static const String healthCheckupNormal = '/health_checkup/normal';
   static const String healthCheckupProgress = '/health_checkup/progress';
   static const String healthCheckupResults = '/health_checkup/results';
+  static const String healthCheckupAi = '/health_checkup/ai';
+
+  // chat
   static const String chat = '/chat';
+  static const String chatDoctorPage = '/chat/doctor_page';
+  static const String chatDoctorPageChat = '/chat/doctor_page/chat';
+  static const String chatDoctorPageReserve = '/chat/doctor_page/reserve';
+  static const String chatDoctorSearch = '/chat/doctor_search';
+  static const String chatAi = '/chat/ai';
+
+  // profile
   static const String profile = '/profile';
   static const String profileAddressInformation =
       '/profile/address_information';
@@ -21,7 +36,6 @@ mixin Routes {
       '/profile/family_email/sync_contact';
   static const String profileMedicine = '/profile/medicine';
   static const String profileMedicineSetting = '/profile/medicine/setting';
-  static const String healthCheckupAi = '/health_checkup/ai';
   static const String profileLocalAuth = '/profile/local_auth';
   static const String profileAppInformation = '/profile/app_information';
   static const String profileNotificationSetting =
@@ -29,10 +43,4 @@ mixin Routes {
   static const String profileChronicDisease = '/profile/chronic_disease';
   static const String profileChronicDiseaseSearch =
       '/profile/chronic_disease/search';
-  static const String chatDoctorPage = '/chat/doctor_page';
-  static const String chatDoctorPageChat = '/chat/doctor_page/chat';
-
-  static const String chatDoctorPageReserve = '/chat/doctor_page/reserve';
-  static const String chatDoctorSearch = '/chat/doctor_search';
-  static const String chatAi = '/chat/ai';
 }
