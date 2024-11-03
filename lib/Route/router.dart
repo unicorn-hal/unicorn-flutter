@@ -15,19 +15,19 @@ import 'package:unicorn_flutter/View/HealthCheckup/Checkup/normal_checkup_view.d
 import 'package:unicorn_flutter/View/HealthCheckup/Results/health_checkup_results_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart';
 import 'package:unicorn_flutter/View/Home/home_view.dart';
-import 'package:unicorn_flutter/View/Profile/address_information.dart';
+import 'package:unicorn_flutter/View/Component/Pages/address_information.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/chronic_disease_view.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/disease_search_view.dart';
 import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_edit_view.dart';
 import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/Medicine/medicine_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/Medicine/medicine_view.dart';
-import 'package:unicorn_flutter/View/Profile/physical_infomation_view.dart';
+import 'package:unicorn_flutter/View/Component/Pages/physical_infomation_view.dart';
 import 'package:unicorn_flutter/View/Profile/AppInformation/app_information_view.dart';
 import 'package:unicorn_flutter/View/Profile/NotificationSetting/notification_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/profile_top_view.dart';
 import 'package:unicorn_flutter/View/Profile/LocalAuth/local_auth_view.dart';
-import 'package:unicorn_flutter/View/Profile/user_information.dart';
+import 'package:unicorn_flutter/View/Component/Pages/user_information.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/View/emergency_view.dart';
 import 'package:unicorn_flutter/View/top_loading_view.dart';
@@ -239,6 +239,39 @@ class EmergencyProgressRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => ProgressView(
         progressType: $extra,
       );
+}
+
+@TypedGoRoute<PhysicalInformationRoute>(
+  path: Routes.physicalInformation,
+)
+class PhysicalInformationRoute extends GoRouteData {
+  const PhysicalInformationRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const PhysicalInfomationView();
+}
+
+@TypedGoRoute<AddressInformationRoute>(
+  path: Routes.addressInformation,
+)
+class AddressInformationRoute extends GoRouteData {
+  const AddressInformationRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const AddressInfomationView();
+}
+
+@TypedGoRoute<UserInformationRoute>(
+  path: Routes.userInformation,
+)
+class UserInformationRoute extends GoRouteData {
+  const UserInformationRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const UserInfomationView();
 }
 
 /////////////////////////////////  Root  //////////////////////////////
