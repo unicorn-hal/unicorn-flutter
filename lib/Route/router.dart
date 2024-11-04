@@ -86,20 +86,20 @@ final routerProvider = Provider(
         TypedGoRoute<ChatRoute>(
           path: Routes.chat,
         ),
-        TypedGoRoute<ChatDoctorPageRoute>(
-          path: Routes.chatDoctorPage,
+        TypedGoRoute<ChatDoctorInformationRoute>(
+          path: Routes.chatDoctorInformation,
         ),
-        TypedGoRoute<ChatDoctorPageChatRoute>(
-          path: Routes.chatDoctorPageChat,
+        TypedGoRoute<ChatDoctorTextChatRoute>(
+          path: Routes.chatDoctorTextChat,
         ),
-        TypedGoRoute<ChatDoctorPageReserveRoute>(
-          path: Routes.chatDoctorPageReserve,
+        TypedGoRoute<ChatDoctorVoiceCallReserveRoute>(
+          path: Routes.chatVoiceCallReserve,
         ),
         TypedGoRoute<ChatDoctorSearchRoute>(
           path: Routes.chatDoctorSearch,
         ),
-        TypedGoRoute<ChatAiRoute>(
-          path: Routes.chatAi,
+        TypedGoRoute<ChatAiTextChatRoute>(
+          path: Routes.chatAiTextChat,
         ),
       ],
     ),
@@ -340,24 +340,24 @@ class ChatRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => ChatTopView();
 }
 
-class ChatDoctorPageRoute extends GoRouteData {
-  const ChatDoctorPageRoute();
+class ChatDoctorInformationRoute extends GoRouteData {
+  const ChatDoctorInformationRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       DoctorInformationView();
 }
 
-class ChatDoctorPageChatRoute extends GoRouteData {
-  const ChatDoctorPageChatRoute();
+class ChatDoctorTextChatRoute extends GoRouteData {
+  const ChatDoctorTextChatRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       DoctorTextChatView();
 }
 
-class ChatDoctorPageReserveRoute extends GoRouteData {
-  const ChatDoctorPageReserveRoute();
+class ChatDoctorVoiceCallReserveRoute extends GoRouteData {
+  const ChatDoctorVoiceCallReserveRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
@@ -371,8 +371,8 @@ class ChatDoctorSearchRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => DoctorSearchView();
 }
 
-class ChatAiRoute extends GoRouteData {
-  const ChatAiRoute();
+class ChatAiTextChatRoute extends GoRouteData {
+  const ChatAiTextChatRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) => AiTextChatView();

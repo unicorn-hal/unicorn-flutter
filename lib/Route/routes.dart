@@ -19,11 +19,12 @@ mixin Routes {
 
   // chat
   static const String chat = '/chat';
-  static const String chatDoctorPage = '/chat/doctor_page';
-  static const String chatDoctorPageChat = '/chat/doctor_page/chat';
-  static const String chatDoctorPageReserve = '/chat/doctor_page/reserve';
-  static const String chatDoctorSearch = '/chat/doctor_search';
-  static const String chatAi = '/chat/ai';
+  static const String chatDoctorInformation = '/chat/doctor/information';
+  static const String chatDoctorTextChat = '/chat/doctor/text_chat';
+  static const String chatDoctorSearch = '/chat/doctor/search';
+  static const String chatAiTextChat = '/chat/ai/text_chat';
+  static const String chatVoiceCall = '/chat/voice_call';
+  static const String chatVoiceCallReserve = '/chat/voice_call/reserve';
 
   // profile
   static const String profile = '/profile';

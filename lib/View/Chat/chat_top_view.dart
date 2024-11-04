@@ -62,7 +62,7 @@ class ChatTopView extends StatelessWidget {
                     imageBackgroundColor: ColorName.mainColor,
                     onTap: () {
                       // todo: AIチャット画面へ遷移
-                      ChatAiRoute().push(context);
+                      ChatAiTextChatRoute().push(context);
                     },
                   ),
                 ),
@@ -118,7 +118,7 @@ class ChatTopView extends StatelessWidget {
                           return UserInfoTile(
                             onTap: () {
                               // todo: それぞれのチャット画面へ遷移
-                              ChatDoctorPageRoute().push(context);
+                              ChatDoctorInformationRoute().push(context);
                             },
                             userName: chatList[index],
                             description: ('前回の検診についてですが・・・'),
