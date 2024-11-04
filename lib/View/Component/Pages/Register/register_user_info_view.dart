@@ -6,14 +6,14 @@ import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-class UserInfomationView extends StatefulWidget {
-  const UserInfomationView({super.key});
+class RegisterUserInfoView extends StatefulWidget {
+  const RegisterUserInfoView({super.key});
 
   @override
-  State<UserInfomationView> createState() => _UserInfomationViewState();
+  State<RegisterUserInfoView> createState() => _RegisterUserInfoViewState();
 }
 
-class _UserInfomationViewState extends State<UserInfomationView> {
+class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
   final TextEditingController phoneNumber = TextEditingController();
   final TextEditingController mailAddress = TextEditingController();
   final TextEditingController occupation = TextEditingController();

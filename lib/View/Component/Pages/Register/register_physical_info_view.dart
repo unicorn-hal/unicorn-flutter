@@ -7,14 +7,15 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dar
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-class PhysicalInfomationView extends StatefulWidget {
-  const PhysicalInfomationView({super.key});
+class RegisterPhysicalInfoView extends StatefulWidget {
+  const RegisterPhysicalInfoView({super.key});
 
   @override
-  State<PhysicalInfomationView> createState() => _PhysicalInfomationViewState();
+  State<RegisterPhysicalInfoView> createState() =>
+      _RegisterPhysicalInfoViewState();
 }
 
-class _PhysicalInfomationViewState extends State<PhysicalInfomationView> {
+class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
   final TextEditingController firstname = TextEditingController();
   final TextEditingController secondname = TextEditingController();
   final TextEditingController datetime = TextEditingController();

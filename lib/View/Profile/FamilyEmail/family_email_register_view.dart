@@ -7,14 +7,15 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dar
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 
-class FamilyEmailEditView extends StatefulWidget {
-  const FamilyEmailEditView({super.key});
+class FamilyEmailRegisterView extends StatefulWidget {
+  const FamilyEmailRegisterView({super.key});
 
   @override
-  State<FamilyEmailEditView> createState() => _FamilyEmailEditViewState();
+  State<FamilyEmailRegisterView> createState() =>
+      _FamilyEmailRegisterViewState();
 }
 
-class _FamilyEmailEditViewState extends State<FamilyEmailEditView> {
+class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
