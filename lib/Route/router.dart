@@ -108,14 +108,14 @@ final routerProvider = Provider(
         TypedGoRoute<ProfileRoute>(
           path: Routes.profile,
         ),
-        TypedGoRoute<ProfilePhysicalInformationRoute>(
-          path: Routes.profilePhysicalInformation,
+        TypedGoRoute<ProfileRegisterPhysicalInfoRoute>(
+          path: Routes.profileRegisterPhysicalInfo,
         ),
-        TypedGoRoute<ProfileAddressInformationRoute>(
-          path: Routes.profileAddressInformation,
+        TypedGoRoute<ProfileRegisterAddressInfoRoute>(
+          path: Routes.profileRegisterAddressInfo,
         ),
-        TypedGoRoute<ProfileUserInformationRoute>(
-          path: Routes.profileUserInformation,
+        TypedGoRoute<ProfileRegisterUserInfoRoute>(
+          path: Routes.profileRegisterUserInfo,
         ),
         TypedGoRoute<ProfileLocalAuthRoute>(
           path: Routes.profileLocalAuth,
@@ -241,33 +241,33 @@ class EmergencyProgressRoute extends GoRouteData {
       );
 }
 
-@TypedGoRoute<PhysicalInformationRoute>(
-  path: Routes.physicalInformation,
+@TypedGoRoute<RegisterPhysicalInfoRoute>(
+  path: Routes.registerPhysicalInfo,
 )
-class PhysicalInformationRoute extends GoRouteData {
-  const PhysicalInformationRoute();
+class RegisterPhysicalInfoRoute extends GoRouteData {
+  const RegisterPhysicalInfoRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const RegisterPhysicalInfoView();
 }
 
-@TypedGoRoute<AddressInformationRoute>(
-  path: Routes.addressInformation,
+@TypedGoRoute<RegisterAddressInfoRoute>(
+  path: Routes.registerAddressInfo,
 )
-class AddressInformationRoute extends GoRouteData {
-  const AddressInformationRoute();
+class RegisterAddressInfoRoute extends GoRouteData {
+  const RegisterAddressInfoRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const RegisterAddressInfoView();
 }
 
-@TypedGoRoute<UserInformationRoute>(
-  path: Routes.userInformation,
+@TypedGoRoute<RegisterUserInfoRoute>(
+  path: Routes.registerUserInfo,
 )
-class UserInformationRoute extends GoRouteData {
-  const UserInformationRoute();
+class RegisterUserInfoRoute extends GoRouteData {
+  const RegisterUserInfoRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
@@ -388,24 +388,24 @@ class ProfileRoute extends GoRouteData {
       const ProfileTopView();
 }
 
-class ProfilePhysicalInformationRoute extends GoRouteData {
-  const ProfilePhysicalInformationRoute();
+class ProfileRegisterPhysicalInfoRoute extends GoRouteData {
+  const ProfileRegisterPhysicalInfoRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const RegisterPhysicalInfoView();
 }
 
-class ProfileAddressInformationRoute extends GoRouteData {
-  const ProfileAddressInformationRoute();
+class ProfileRegisterAddressInfoRoute extends GoRouteData {
+  const ProfileRegisterAddressInfoRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const RegisterAddressInfoView();
 }
 
-class ProfileUserInformationRoute extends GoRouteData {
-  const ProfileUserInformationRoute();
+class ProfileRegisterUserInfoRoute extends GoRouteData {
+  const ProfileRegisterUserInfoRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
