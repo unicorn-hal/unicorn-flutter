@@ -1,6 +1,5 @@
 import 'package:contacts_service/contacts_service.dart' as package;
-import 'package:flutter/widgets.dart';
-import 'package:unicorn_flutter/Model/Entity/contact_user.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_request.dart';
 
 class NativeContactsService {
   /// iOSのみ考慮: Nativeの連絡先を取得
@@ -10,25 +9,32 @@ class NativeContactsService {
     return contacts.toList();
   }
 
-  /// iOSのみ考慮: Nativeの連絡先を取得し、ContactUserに変換
-  Future<List<ContactUser>> getContactUsers() async {
+  /// iOSのみ考慮: Nativeの連絡先を取得し、FamilyEmailRequestに変換
+  Future<List<FamilyEmailRequest>> getFamilyEmailRequests() async {
     final List<package.Contact> nativeContacts = await getNativeContacts();
-    final List<ContactUser> contactUsers = <ContactUser>[];
+    final List<FamilyEmailRequest> familyEmailRequests = <FamilyEmailRequest>[];
     for (final package.Contact nativeContact in nativeContacts) {
+      final firstName = '${nativeContact.middleName}${nativeContact.givenName}';
+      final lastName = nativeContact.familyName;
+      final email = nativeContact.emails!.isNotEmpty
+          ? nativeContact.emails!.first.value
+          : '';
+      final phoneNumber = nativeContact.phones!.isNotEmpty
+          ? nativeContact.phones!.first.value
+          : '';
       Map<String, dynamic> contactMap = {
-        'importFrom': ImportFrom.native,
-        'displayName': nativeContact.displayName,
-        'firstName': '${nativeContact.middleName}${nativeContact.givenName}',
-        'lastName': nativeContact.familyName,
-        'email': nativeContact.emails?.first ?? '',
-        'phoneNumber': nativeContact.phones?.first ?? '',
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+        'phoneNumber': phoneNumber,
       };
       if (nativeContact.avatar != null) {
-        contactMap['avatar'] = Image.memory(nativeContact.avatar!);
+        contactMap['avatar'] = nativeContact.avatar;
       }
-      final ContactUser contactUser = ContactUser.fromJson(contactMap);
-      contactUsers.add(contactUser);
+      final FamilyEmailRequest contactUser =
+          FamilyEmailRequest.fromJson(contactMap);
+      familyEmailRequests.add(contactUser);
     }
-    return contactUsers;
+    return familyEmailRequests;
   }
 }
