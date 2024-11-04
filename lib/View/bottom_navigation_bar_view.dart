@@ -13,6 +13,8 @@ class BottomNavigationBarView extends StatefulWidget {
 
 class _BottomNavigationBarViewState extends State<BottomNavigationBarView>
     with WidgetsBindingObserver {
+  late BottomNavigationBarController controller;
+
   @override
   void initState() {
     super.initState();
@@ -32,7 +34,7 @@ class _BottomNavigationBarViewState extends State<BottomNavigationBarView>
 
   @override
   Widget build(BuildContext context) {
-    BottomNavigationBarController controller = BottomNavigationBarController();
+    controller = BottomNavigationBarController();
     return CustomScaffold(
       isAppbar: false,
       body: controller.navigationShell,
