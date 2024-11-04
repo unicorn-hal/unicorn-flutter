@@ -5,14 +5,14 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dar
 import 'package:unicorn_flutter/View/Component/Parts/Chat/message_tile.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-class DoctorChatView extends StatefulWidget {
-  DoctorChatView({super.key});
+class DoctorTextChatView extends StatefulWidget {
+  DoctorTextChatView({super.key});
 
   @override
-  State<DoctorChatView> createState() => _DoctorChatViewState();
+  State<DoctorTextChatView> createState() => _DoctorTextChatViewState();
 }
 
-class _DoctorChatViewState extends State<DoctorChatView> {
+class _DoctorTextChatViewState extends State<DoctorTextChatView> {
   // todo: controllerを使ってチャット型のリストを作る
   final List<Map<String, bool>> chatList = [
     {

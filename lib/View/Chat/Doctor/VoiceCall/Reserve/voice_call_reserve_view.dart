@@ -7,14 +7,14 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-class CallReserveView extends StatefulWidget {
-  const CallReserveView({super.key});
+class VoiceCallReserveView extends StatefulWidget {
+  const VoiceCallReserveView({super.key});
 
   @override
-  State<CallReserveView> createState() => _CallReserveViewState();
+  State<VoiceCallReserveView> createState() => _VoiceCallReserveViewState();
 }
 
-class _CallReserveViewState extends State<CallReserveView> {
+class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
   // todo: controllerへ移植する
   final String doctorName = '長谷川';
 

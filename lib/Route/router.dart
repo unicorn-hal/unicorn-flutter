@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
-import 'package:unicorn_flutter/View/Chat/Ai/ai_chat_view.dart';
-import 'package:unicorn_flutter/View/Chat/DoctorChat/doctor_chat_view.dart';
-import 'package:unicorn_flutter/View/Chat/DoctorPage/doctor_page_view.dart';
-import 'package:unicorn_flutter/View/Chat/Reserve/call_reserve_view.dart';
-import 'package:unicorn_flutter/View/Chat/DoctorSearch/doctor_search_view.dart';
+import 'package:unicorn_flutter/View/Chat/Ai/TextChat/ai_text_chat_view.dart';
+import 'package:unicorn_flutter/View/Chat/Doctor/TextChat/doctor_text_chat_view.dart';
+import 'package:unicorn_flutter/View/Chat/Doctor/Information/doctor_information_view.dart';
+import 'package:unicorn_flutter/View/Chat/Doctor/VoiceCall/Reserve/voice_call_reserve_view.dart';
+import 'package:unicorn_flutter/View/Chat/Doctor/Search/doctor_search_view.dart';
 import 'package:unicorn_flutter/View/Chat/chat_top_view.dart';
 import 'package:unicorn_flutter/View/Component/Pages/progress_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/Checkup/ai_checkup_view.dart';
@@ -344,21 +344,24 @@ class ChatDoctorPageRoute extends GoRouteData {
   const ChatDoctorPageRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => DoctorPageView();
+  Widget build(BuildContext context, GoRouterState state) =>
+      DoctorInformationView();
 }
 
 class ChatDoctorPageChatRoute extends GoRouteData {
   const ChatDoctorPageChatRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => DoctorChatView();
+  Widget build(BuildContext context, GoRouterState state) =>
+      DoctorTextChatView();
 }
 
 class ChatDoctorPageReserveRoute extends GoRouteData {
   const ChatDoctorPageReserveRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => CallReserveView();
+  Widget build(BuildContext context, GoRouterState state) =>
+      VoiceCallReserveView();
 }
 
 class ChatDoctorSearchRoute extends GoRouteData {
@@ -372,7 +375,7 @@ class ChatAiRoute extends GoRouteData {
   const ChatAiRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => AiChatView();
+  Widget build(BuildContext context, GoRouterState state) => AiTextChatView();
 }
 //////////////////////////////  chat  //////////////////////////////
 
