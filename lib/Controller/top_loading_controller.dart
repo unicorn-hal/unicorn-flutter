@@ -3,23 +3,24 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/fcm_topic_enum.dart';
+import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_service.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudMessaging/cloud_messaging_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
-class TopLoadingController {
+class TopLoadingController extends ControllerCore {
   FirebaseAuthenticationService get _authService =>
       FirebaseAuthenticationService();
   FirebaseCloudMessagingService get _messagingService =>
       FirebaseCloudMessagingService();
 
-  final BuildContext context;
-
+  BuildContext context;
   TopLoadingController(this.context);
 
-  void firstLoad() async {
+  @override
+  void initialize() async {
     /// todo: 初回起動時の処理を記述
 
     /// Firebase: Cloud Messagingの初期化

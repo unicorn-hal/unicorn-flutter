@@ -8,7 +8,7 @@ class TopLoadingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     try {
-      TopLoadingController(context).firstLoad();
+      TopLoadingController(context);
     } catch (e) {
       Log.echo('TopLoading Error: $e', symbol: '❌');
     }
