@@ -3,9 +3,9 @@ mixin Routes {
   static const String root = '/';
   static const String emergency = '/emergency';
   static const String emergencyProgress = '/emergency/progress';
-  static const String addressInformation = '/address_information';
-  static const String physicalInformation = '/physical_information';
-  static const String userInformation = '/user_information';
+  static const String registerAddressInfo = '/register/address_info';
+  static const String registerPhysicalInfo = '/register/physical_info';
+  static const String registerUserInfo = '/register/user_info';
 
   // home
   static const String home = '/home';
@@ -19,19 +19,20 @@ mixin Routes {
 
   // chat
   static const String chat = '/chat';
-  static const String chatDoctorPage = '/chat/doctor_page';
-  static const String chatDoctorPageChat = '/chat/doctor_page/chat';
-  static const String chatDoctorPageReserve = '/chat/doctor_page/reserve';
-  static const String chatDoctorSearch = '/chat/doctor_search';
-  static const String chatAi = '/chat/ai';
+  static const String chatDoctorInformation = '/chat/doctor/information';
+  static const String chatDoctorTextChat = '/chat/doctor/text_chat';
+  static const String chatDoctorSearch = '/chat/doctor/search';
+  static const String chatAiTextChat = '/chat/ai/text_chat';
+  static const String chatVoiceCall = '/chat/voice_call';
+  static const String chatVoiceCallReserve = '/chat/voice_call/reserve';
 
   // profile
   static const String profile = '/profile';
-  static const String profileAddressInformation =
-      '/profile/address_information';
-  static const String profilePhysicalInformation =
-      '/profile/physical_information';
-  static const String profileUserInformation = '/profile/user_information';
+  static const String profileRegisterAddressInfo =
+      '/profile/register/address_info';
+  static const String profileRegisterPhysicalInfo =
+      '/profile/register/physical_info';
+  static const String profileRegisterUserInfo = '/profile/register/user_info';
   static const String profileFamilyEmail = '/profile/family_email';
   static const String profileFamilyEmailRegister =
       '/profile/family_email/register';

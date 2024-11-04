@@ -3,11 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
-import 'package:unicorn_flutter/View/Chat/Ai/ai_chat_view.dart';
-import 'package:unicorn_flutter/View/Chat/DoctorChat/doctor_chat_view.dart';
-import 'package:unicorn_flutter/View/Chat/DoctorPage/doctor_page_view.dart';
-import 'package:unicorn_flutter/View/Chat/Reserve/call_reserve_view.dart';
-import 'package:unicorn_flutter/View/Chat/DoctorSearch/doctor_search_view.dart';
+import 'package:unicorn_flutter/View/Chat/Ai/TextChat/ai_text_chat_view.dart';
+import 'package:unicorn_flutter/View/Chat/Doctor/TextChat/doctor_text_chat_view.dart';
+import 'package:unicorn_flutter/View/Chat/Doctor/Information/doctor_information_view.dart';
+import 'package:unicorn_flutter/View/Chat/Doctor/VoiceCall/Reserve/voice_call_reserve_view.dart';
+import 'package:unicorn_flutter/View/Chat/Doctor/Search/doctor_search_view.dart';
 import 'package:unicorn_flutter/View/Chat/chat_top_view.dart';
 import 'package:unicorn_flutter/View/Component/Pages/progress_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/Checkup/ai_checkup_view.dart';
@@ -15,19 +15,19 @@ import 'package:unicorn_flutter/View/HealthCheckup/Checkup/normal_checkup_view.d
 import 'package:unicorn_flutter/View/HealthCheckup/Results/health_checkup_results_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart';
 import 'package:unicorn_flutter/View/Home/home_view.dart';
-import 'package:unicorn_flutter/View/Component/Pages/address_information.dart';
+import 'package:unicorn_flutter/View/Component/Pages/Register/register_address_info_view.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/chronic_disease_view.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/disease_search_view.dart';
-import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_edit_view.dart';
+import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_register_view.dart';
 import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/Medicine/medicine_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/Medicine/medicine_view.dart';
-import 'package:unicorn_flutter/View/Component/Pages/physical_infomation_view.dart';
+import 'package:unicorn_flutter/View/Component/Pages/Register/register_physical_info_view.dart';
 import 'package:unicorn_flutter/View/Profile/AppInformation/app_information_view.dart';
 import 'package:unicorn_flutter/View/Profile/NotificationSetting/notification_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/profile_top_view.dart';
 import 'package:unicorn_flutter/View/Profile/LocalAuth/local_auth_view.dart';
-import 'package:unicorn_flutter/View/Component/Pages/user_information.dart';
+import 'package:unicorn_flutter/View/Component/Pages/Register/register_user_info_view.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/View/emergency_view.dart';
 import 'package:unicorn_flutter/View/top_loading_view.dart';
@@ -86,20 +86,20 @@ final routerProvider = Provider(
         TypedGoRoute<ChatRoute>(
           path: Routes.chat,
         ),
-        TypedGoRoute<ChatDoctorPageRoute>(
-          path: Routes.chatDoctorPage,
+        TypedGoRoute<ChatDoctorInformationRoute>(
+          path: Routes.chatDoctorInformation,
         ),
-        TypedGoRoute<ChatDoctorPageChatRoute>(
-          path: Routes.chatDoctorPageChat,
+        TypedGoRoute<ChatDoctorTextChatRoute>(
+          path: Routes.chatDoctorTextChat,
         ),
-        TypedGoRoute<ChatDoctorPageReserveRoute>(
-          path: Routes.chatDoctorPageReserve,
+        TypedGoRoute<ChatDoctorVoiceCallReserveRoute>(
+          path: Routes.chatVoiceCallReserve,
         ),
         TypedGoRoute<ChatDoctorSearchRoute>(
           path: Routes.chatDoctorSearch,
         ),
-        TypedGoRoute<ChatAiRoute>(
-          path: Routes.chatAi,
+        TypedGoRoute<ChatAiTextChatRoute>(
+          path: Routes.chatAiTextChat,
         ),
       ],
     ),
@@ -108,14 +108,14 @@ final routerProvider = Provider(
         TypedGoRoute<ProfileRoute>(
           path: Routes.profile,
         ),
-        TypedGoRoute<ProfilePhysicalInformationRoute>(
-          path: Routes.profilePhysicalInformation,
+        TypedGoRoute<ProfileRegisterPhysicalInfoRoute>(
+          path: Routes.profileRegisterPhysicalInfo,
         ),
-        TypedGoRoute<ProfileAddressInformationRoute>(
-          path: Routes.profileAddressInformation,
+        TypedGoRoute<ProfileRegisterAddressInfoRoute>(
+          path: Routes.profileRegisterAddressInfo,
         ),
-        TypedGoRoute<ProfileUserInformationRoute>(
-          path: Routes.profileUserInformation,
+        TypedGoRoute<ProfileRegisterUserInfoRoute>(
+          path: Routes.profileRegisterUserInfo,
         ),
         TypedGoRoute<ProfileLocalAuthRoute>(
           path: Routes.profileLocalAuth,
@@ -241,37 +241,37 @@ class EmergencyProgressRoute extends GoRouteData {
       );
 }
 
-@TypedGoRoute<PhysicalInformationRoute>(
-  path: Routes.physicalInformation,
+@TypedGoRoute<RegisterPhysicalInfoRoute>(
+  path: Routes.registerPhysicalInfo,
 )
-class PhysicalInformationRoute extends GoRouteData {
-  const PhysicalInformationRoute();
+class RegisterPhysicalInfoRoute extends GoRouteData {
+  const RegisterPhysicalInfoRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const PhysicalInfomationView();
+      const RegisterPhysicalInfoView();
 }
 
-@TypedGoRoute<AddressInformationRoute>(
-  path: Routes.addressInformation,
+@TypedGoRoute<RegisterAddressInfoRoute>(
+  path: Routes.registerAddressInfo,
 )
-class AddressInformationRoute extends GoRouteData {
-  const AddressInformationRoute();
+class RegisterAddressInfoRoute extends GoRouteData {
+  const RegisterAddressInfoRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const AddressInfomationView();
+      const RegisterAddressInfoView();
 }
 
-@TypedGoRoute<UserInformationRoute>(
-  path: Routes.userInformation,
+@TypedGoRoute<RegisterUserInfoRoute>(
+  path: Routes.registerUserInfo,
 )
-class UserInformationRoute extends GoRouteData {
-  const UserInformationRoute();
+class RegisterUserInfoRoute extends GoRouteData {
+  const RegisterUserInfoRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const UserInfomationView();
+      const RegisterUserInfoView();
 }
 
 /////////////////////////////////  Root  //////////////////////////////
@@ -340,25 +340,28 @@ class ChatRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => ChatTopView();
 }
 
-class ChatDoctorPageRoute extends GoRouteData {
-  const ChatDoctorPageRoute();
+class ChatDoctorInformationRoute extends GoRouteData {
+  const ChatDoctorInformationRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => DoctorPageView();
+  Widget build(BuildContext context, GoRouterState state) =>
+      DoctorInformationView();
 }
 
-class ChatDoctorPageChatRoute extends GoRouteData {
-  const ChatDoctorPageChatRoute();
+class ChatDoctorTextChatRoute extends GoRouteData {
+  const ChatDoctorTextChatRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => DoctorChatView();
+  Widget build(BuildContext context, GoRouterState state) =>
+      DoctorTextChatView();
 }
 
-class ChatDoctorPageReserveRoute extends GoRouteData {
-  const ChatDoctorPageReserveRoute();
+class ChatDoctorVoiceCallReserveRoute extends GoRouteData {
+  const ChatDoctorVoiceCallReserveRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => CallReserveView();
+  Widget build(BuildContext context, GoRouterState state) =>
+      VoiceCallReserveView();
 }
 
 class ChatDoctorSearchRoute extends GoRouteData {
@@ -368,11 +371,11 @@ class ChatDoctorSearchRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => DoctorSearchView();
 }
 
-class ChatAiRoute extends GoRouteData {
-  const ChatAiRoute();
+class ChatAiTextChatRoute extends GoRouteData {
+  const ChatAiTextChatRoute();
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => AiChatView();
+  Widget build(BuildContext context, GoRouterState state) => AiTextChatView();
 }
 //////////////////////////////  chat  //////////////////////////////
 
@@ -385,28 +388,28 @@ class ProfileRoute extends GoRouteData {
       const ProfileTopView();
 }
 
-class ProfilePhysicalInformationRoute extends GoRouteData {
-  const ProfilePhysicalInformationRoute();
+class ProfileRegisterPhysicalInfoRoute extends GoRouteData {
+  const ProfileRegisterPhysicalInfoRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const PhysicalInfomationView();
+      const RegisterPhysicalInfoView();
 }
 
-class ProfileAddressInformationRoute extends GoRouteData {
-  const ProfileAddressInformationRoute();
+class ProfileRegisterAddressInfoRoute extends GoRouteData {
+  const ProfileRegisterAddressInfoRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const AddressInfomationView();
+      const RegisterAddressInfoView();
 }
 
-class ProfileUserInformationRoute extends GoRouteData {
-  const ProfileUserInformationRoute();
+class ProfileRegisterUserInfoRoute extends GoRouteData {
+  const ProfileRegisterUserInfoRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const UserInfomationView();
+      const RegisterUserInfoView();
 }
 
 class ProfileLocalAuthRoute extends GoRouteData {
@@ -446,7 +449,7 @@ class ProfileFamilyEmailRegisterRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const FamilyEmailEditView();
+      const FamilyEmailRegisterView();
 }
 
 class ProfileFamilyEmailSyncContactRoute extends GoRouteData {

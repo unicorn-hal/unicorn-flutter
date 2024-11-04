@@ -6,14 +6,15 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-class AddressInfomationView extends StatefulWidget {
-  const AddressInfomationView({super.key});
+class RegisterAddressInfoView extends StatefulWidget {
+  const RegisterAddressInfoView({super.key});
 
   @override
-  State<AddressInfomationView> createState() => _AddressInfomationViewState();
+  State<RegisterAddressInfoView> createState() =>
+      _RegisterAddressInfoViewState();
 }
 
-class _AddressInfomationViewState extends State<AddressInfomationView> {
+class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
   final TextEditingController addressNumber = TextEditingController();
   final TextEditingController address = TextEditingController();
   final TextEditingController addressDetail = TextEditingController();

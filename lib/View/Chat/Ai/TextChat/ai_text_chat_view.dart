@@ -7,14 +7,14 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.d
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 
-import '../../../gen/colors.gen.dart';
-import '../../Component/CustomWidget/custom_appbar.dart';
-import '../../Component/CustomWidget/custom_text.dart';
-import '../../Component/CustomWidget/custom_textfield.dart';
-import '../../Component/Parts/Chat/message_tile.dart';
+import '../../../../gen/colors.gen.dart';
+import '../../../Component/CustomWidget/custom_appbar.dart';
+import '../../../Component/CustomWidget/custom_text.dart';
+import '../../../Component/CustomWidget/custom_textfield.dart';
+import '../../../Component/Parts/Chat/message_tile.dart';
 
-class AiChatView extends StatelessWidget {
-  AiChatView({super.key});
+class AiTextChatView extends StatelessWidget {
+  AiTextChatView({super.key});
 
   @override
   final List<Map<String, bool>> chatList = [
