@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator/geolocator.dart';
@@ -95,8 +96,7 @@ class LocationService {
   }
 
   /// 住所から緯度経度を取得するサービス
-  // todo: 返り値の型をGoogleMapのLatLngに変更
-  Future<Map<String, double>?> getPositionFromAddress(String address) async {
+  Future<LatLng?> getPositionFromAddress(String address) async {
     try {
       List<Location> locations = await locationFromAddress(address);
       if (locations.isEmpty) {
@@ -104,10 +104,7 @@ class LocationService {
       }
 
       Location location = locations[0];
-      Map<String, double> position = {
-        'latitude': location.latitude,
-        'longitude': location.longitude,
-      };
+      LatLng position = LatLng(location.latitude, location.longitude);
 
       return position;
     } catch (e) {
