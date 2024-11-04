@@ -1,8 +1,11 @@
+import 'dart:typed_data';
+
 class FamilyEmailRequest {
   final String email;
   final String firstName;
   final String lastName;
-  final String? iconImageUrl;
+  String? iconImageUrl;
+  Uint8List? avatar;
   final String phoneNumber;
 
   FamilyEmailRequest({
@@ -10,17 +13,23 @@ class FamilyEmailRequest {
     required this.firstName,
     required this.lastName,
     this.iconImageUrl,
+    this.avatar,
     required this.phoneNumber,
   });
 
   factory FamilyEmailRequest.fromJson(Map<String, dynamic> json) {
-    return FamilyEmailRequest(
+    final request = FamilyEmailRequest(
       email: json['email'],
       firstName: json['firstName'],
       lastName: json['lastName'],
-      iconImageUrl: json['iconImageUrl'],
       phoneNumber: json['phoneNumber'],
     );
+    if (json['avatar'] != null) {
+      request.avatar = json['avatar'];
+    } else {
+      request.iconImageUrl = json['iconImageUrl'];
+    }
+    return request;
   }
 
   Map<String, dynamic> toJson() {
@@ -29,6 +38,7 @@ class FamilyEmailRequest {
       'firstName': firstName,
       'lastName': lastName,
       'iconImageUrl': iconImageUrl,
+      'avatar': avatar,
       'phoneNumber': phoneNumber,
     };
   }
