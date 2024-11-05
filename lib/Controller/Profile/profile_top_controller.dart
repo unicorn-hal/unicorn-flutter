@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Entity/Profile/profile_detail.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 
 class ProfileTopController extends ControllerCore {
@@ -12,74 +13,56 @@ class ProfileTopController extends ControllerCore {
   BuildContext context;
 
   /// 変数の定義
-  List<Map<String, dynamic>> cellData = [
-    {
-      'title': 'アプリ情報',
-      'icon': const Icon(Icons.info),
-    },
-    {
-      'title': '持病設定',
-      'icon': const Icon(Icons.sick),
-    },
-    {
-      'title': '家族メール',
-      'icon': const Icon(Icons.mail),
-    },
-    {
-      'title': 'セキュリティ',
-      'icon': const Icon(Icons.lock),
-    },
-    {
-      'title': 'おくすり',
-      'icon': const Icon(Icons.medical_services),
-    },
-    {
-      'title': '通知設定',
-      'icon': const Icon(Icons.notifications),
-    },
-    {
-      'title': '身体情報',
-      'icon': const Icon(Icons.man),
-    },
-    {
-      'title': '住所設定',
-      'icon': const Icon(Icons.home),
-    },
-    {
-      'title': 'ユーザー設定',
-      'icon': const Icon(Icons.manage_accounts),
-    },
-  ];
+  late List<ProfileDetail> _cellData;
 
   /// initialize()
   @override
   void initialize() {
-    print('Controller Init');
+    _cellData = [
+      ProfileDetail(
+          title: 'アプリ情報',
+          icon: Icons.info,
+          onTap: () => const ProfileAppInformationRoute().push(context)),
+      ProfileDetail(
+          title: '持病設定',
+          icon: Icons.sick,
+          onTap: () => const ProfileChronicDiseaseRoute().push(context)),
+      ProfileDetail(
+          title: '家族メール',
+          icon: Icons.mail,
+          onTap: () => const ProfileFamilyEmailRoute().push(context)),
+      ProfileDetail(
+          title: 'セキュリティ',
+          icon: Icons.lock,
+          onTap: () => const ProfileLocalAuthRoute().push(context)),
+      ProfileDetail(
+          title: 'おくすり',
+          icon: Icons.medical_services,
+          onTap: () => const ProfileMedicineRoute().push(context)),
+      ProfileDetail(
+          title: '通知設定',
+          icon: Icons.notifications,
+          onTap: () => const ProfileNotificationSettingRoute().push(context)),
+      ProfileDetail(
+          title: '身体情報',
+          icon: Icons.man,
+          onTap: () => const ProfileRegisterPhysicalInfoRoute().push(context)),
+      ProfileDetail(
+          title: '住所設定',
+          icon: Icons.home,
+          onTap: () => const ProfileRegisterAddressInfoRoute().push(context)),
+      ProfileDetail(
+          title: 'ユーザー設定',
+          icon: Icons.manage_accounts,
+          onTap: () => const ProfileRegisterUserInfoRoute().push(context)),
+    ];
   }
 
   /// 各関数の実装
+  // User getUser() {
+  //   User user = ;
+  //   return user;
+  // }
 
-  void cellTap(int index) {
-    switch (index) {
-      case 0:
-        const ProfileAppInformationRoute().push(context);
-      case 1:
-        const ProfileChronicDiseaseRoute().push(context);
-      case 2:
-        const ProfileFamilyEmailRoute().push(context);
-      case 3:
-        const ProfileLocalAuthRoute().push(context);
-      case 4:
-        const ProfileMedicineRoute().push(context);
-      case 5:
-        const ProfileNotificationSettingRoute().push(context);
-      case 6:
-        const ProfileRegisterPhysicalInfoRoute().push(context);
-      case 7:
-        const ProfileRegisterAddressInfoRoute().push(context);
-      case 8:
-        const ProfileRegisterUserInfoRoute().push(context);
-    }
-    return;
-  }
+  List<ProfileDetail> get cellData => _cellData;
 }

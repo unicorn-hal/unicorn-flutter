@@ -20,7 +20,6 @@ class ProfileTopView extends StatelessWidget {
     // todo: controller出来たら消す
     return CustomScaffold(
       isScrollable: true,
-      appBar: CustomAppBar(),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -84,11 +83,12 @@ class ProfileTopView extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.all(10),
                     child: ProfileDetailCell(
-                      icon: controller.cellData[index]['icon'],
-                      title: controller.cellData[index]['title'],
-                      onTap: () {
-                        controller.cellTap(index);
-                      },
+                      icon: Icon(
+                        controller.cellData[index].icon,
+                        color: ColorName.mainColor,
+                      ),
+                      title: controller.cellData[index].title,
+                      onTap: () => controller.cellData[index].onTap.call(),
                     ),
                   );
                 },
