@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Controller/Profile/profile_top_controller.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -11,6 +12,7 @@ class ProfileTopView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ProfileTopController controller = ProfileTopController(context);
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     String lastName = 'のりた';
@@ -77,18 +79,16 @@ class ProfileTopView extends StatelessWidget {
                   crossAxisCount: 3,
                   childAspectRatio: (1 / 1),
                 ),
-                itemCount: 10,
-                // todo: controller出来たら変更
+                itemCount: controller.cellData.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
                     padding: const EdgeInsets.all(10),
                     child: ProfileDetailCell(
-                      icon: Icon(Icons.add_circle_outline),
-                      title: '項目${index}',
+                      icon: controller.cellData[index]['icon'],
+                      title: controller.cellData[index]['title'],
                       onTap: () {
-                        // todo: controller出来たら変更
+                        controller.cellTap(index);
                       },
-
                     ),
                   );
                 },
