@@ -101,14 +101,32 @@ class TopLoadingController extends ControllerCore {
     await Future.delayed(const Duration(seconds: 1));
 
     /// 画面遷移
-    if (user == null) {
-      const RegisterPhysicalInfoRoute(from: Routes.root).go(context);
-    } else {
-      /// シングルトンにユーザー情報を保存
-      UserData().setUser(user!);
-      const HomeRoute().go(context);
-    }
+    // if (user == null) {
+    //   const RegisterPhysicalInfoRoute(from: Routes.root).go(context);
+    // } else {
+    /// シングルトンにユーザー情報を保存
+    // UserData().setUser(user!);
+
+    // デバッグ用
+    // todo: 本番環境では削除
+    UserData().setUser(User.fromJson({
+      'userID': uid,
+      'firstName': '太郎',
+      'lastName': '山田',
+      'email': 'test@test.com',
+      'gender': 'male',
+      'birthDate': '1990-01-01',
+      'address': '東京都新宿区1-1-1',
+      'postalCode': '1000001',
+      'phoneNumber': '09012345678',
+      'iconImageUrl': 'https://placehold.jp/150x150.png',
+      'bodyHeight': 180.5,
+      'bodyWeight': 75.5,
+      'occupation': 'エンジニア',
+    }));
+    const HomeRoute().go(context);
   }
+  // }
 
   Future<String> get appVersion async {
     final version = await _systemInfoService.appVersion;
