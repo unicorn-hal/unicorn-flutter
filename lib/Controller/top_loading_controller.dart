@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/fcm_topic_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
+import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account_request.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
@@ -30,7 +32,7 @@ class TopLoadingController extends ControllerCore {
   TopLoadingController(this.context);
 
   late String uid;
-  String? fcmTokenId;
+  String? fcmTokenId = 'debugToken';
   Account? account;
   User? user;
 
@@ -93,12 +95,17 @@ class TopLoadingController extends ControllerCore {
     Log.echo('Account: ${account?.toJson() ?? 'null'}');
     Log.echo('User: ${user?.toJson() ?? 'null'}');
 
+    /// シングルトンにアカウント情報を保存
+    AccountData().setAccount(account!);
+
     await Future.delayed(const Duration(seconds: 1));
 
     /// 画面遷移
     if (user == null) {
       const RegisterPhysicalInfoRoute(from: Routes.root).go(context);
     } else {
+      /// シングルトンにユーザー情報を保存
+      UserData().setUser(user!);
       const HomeRoute().go(context);
     }
   }
