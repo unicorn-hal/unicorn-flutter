@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Profile/profile_top_controller.dart';
-import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/profile_detail_cell.dart';
