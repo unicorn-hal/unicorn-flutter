@@ -1,5 +1,9 @@
 import 'package:unicorn_flutter/Model/Entity/Chat/chat.dart';
+import 'package:unicorn_flutter/Model/Entity/Chat/chat_request.dart';
+import 'package:unicorn_flutter/Model/Entity/Chat/chat_response.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/message.dart';
+import 'package:unicorn_flutter/Model/Entity/Chat/message_request.dart';
+import 'package:unicorn_flutter/Model/Entity/Chat/message_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
 import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 
@@ -19,22 +23,17 @@ class ChatApi extends ApiCore with Endpoint {
     }
   }
 
-  /// GET
-  /// チャット情報取得
-  /// [doctorId] 医師ID
-  /// [userId] ユーザID
-  Future<int> postChat({
-    required String doctorId,
-    required String userId,
+  /// POST
+  /// チャット作成
+  /// [body] ChatRequest
+  Future<ChatResponse?> postChat({
+    required ChatRequest body,
   }) async {
     try {
-      final response = await post({
-        'doctorID': doctorId,
-        'userID': userId,
-      });
-      return response.statusCode;
+      final response = await post(body.toJson());
+      return ChatResponse.fromJson(response.data);
     } catch (e) {
-      return 500;
+      return null;
     }
   }
 
@@ -54,24 +53,19 @@ class ChatApi extends ApiCore with Endpoint {
   }
 
   /// POST
-  /// チャットメッセージ送信
+  /// チャットメッセージ作成
+  /// [body] MessageRequest
   /// [chatId] チャットID
-  /// [senderId] 送信者ID
-  /// [content] メッセージ内容
-  Future<int> postMessage({
+  Future<MessageResponse?> postMessage({
+    required MessageRequest body,
     required String chatId,
-    required String senderId,
-    required String content,
   }) async {
     try {
       useParameter(parameter: '/$chatId/messages');
-      final response = await post({
-        'senderID': senderId,
-        'content': content,
-      });
-      return response.statusCode;
+      final response = await post(body.toJson());
+      return MessageResponse.fromJson(response.data);
     } catch (e) {
-      return 500;
+      return null;
     }
   }
 
