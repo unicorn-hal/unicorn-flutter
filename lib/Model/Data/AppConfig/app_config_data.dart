@@ -5,11 +5,11 @@ class AppConfigData {
   factory AppConfigData() => _instance;
   AppConfigData._internal();
 
-  AppConfig? _available;
+  AppConfig? _data;
 
-  AppConfig? get available => _available;
+  AppConfig? get data => _data;
 
-  void setAppConfig(AppConfig available) {
-    _available = available;
+  void setAppConfig(AppConfig data) {
+    _data = data;
   }
 }
