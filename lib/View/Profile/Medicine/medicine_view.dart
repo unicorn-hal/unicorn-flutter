@@ -13,6 +13,7 @@ class MedicineView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // todo: 薬追加されたら表示画面を更新させる処理追加予定
     MedicineController controller = MedicineController();
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
