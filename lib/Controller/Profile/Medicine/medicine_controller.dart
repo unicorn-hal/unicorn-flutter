@@ -20,10 +20,6 @@ class MedicineController extends ControllerCore {
   /// 各関数の実装
   Future<List<Medicine>?> getMedicineList() async {
     List<Medicine>? medicineList = await _medicineApi.getMedicineList();
-    if (medicineList == null) {
-      return medicineList;
-    }
-    print(medicineList[0].medicineName);
     return medicineList;
   }
 }
