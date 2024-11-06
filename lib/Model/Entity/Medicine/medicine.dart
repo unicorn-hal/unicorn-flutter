@@ -1,14 +1,18 @@
+import 'package:unicorn_flutter/Model/Entity/Medicine/reminder.dart';
+
 class Medicine {
   final String medicineId;
   final String medicineName;
   final int count;
   final int quantity;
+  final List<Reminder> reminders;
 
   Medicine({
     required this.medicineId,
     required this.medicineName,
     required this.count,
     required this.quantity,
+    required this.reminders,
   });
 
   factory Medicine.fromJson(Map<String, dynamic> json) {
@@ -17,6 +21,8 @@ class Medicine {
       medicineName: json['medicineName'],
       count: json['count'],
       quantity: json['quantity'],
+      reminders:
+          (json['reminders'] as List).map((e) => Reminder.fromJson(e)).toList(),
     );
   }
 
@@ -26,6 +32,7 @@ class Medicine {
       'medicineName': medicineName,
       'count': count,
       'quantity': quantity,
+      'reminders': reminders.map((e) => e.toJson()).toList(),
     };
   }
 }
