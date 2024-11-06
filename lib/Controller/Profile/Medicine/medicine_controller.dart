@@ -6,10 +6,6 @@ class MedicineController extends ControllerCore {
   /// Serviceのインスタンス化
   MedicineApi get _medicineApi => MedicineApi();
 
-  /// コンストラクタ
-
-  /// 変数の定義
-
   /// initialize()
   @override
   void initialize() {}
