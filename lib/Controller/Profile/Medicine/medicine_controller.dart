@@ -10,16 +10,15 @@ class MedicineController extends ControllerCore {
   MedicineController();
 
   /// 変数の定義
+  List<Medicine>? medicineList;
 
   /// initialize()
   @override
-  void initialize() {
-    print('Controller Init');
-  }
+  void initialize() {}
 
   /// 各関数の実装
   Future<List<Medicine>?> getMedicineList() async {
-    List<Medicine>? medicineList = await _medicineApi.getMedicineList();
+    medicineList = await _medicineApi.getMedicineList();
     return medicineList;
   }
 }
