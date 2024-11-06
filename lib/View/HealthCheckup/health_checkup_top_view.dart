@@ -72,7 +72,7 @@ class HealthCheckupTopView extends ConsumerWidget {
                                         horizontal: 16.0),
                                     child: CustomText(
                                       text: DateFormat('yyyy年MM月dd日').format(
-                                          controller.todayHealthCheckup.date),
+                                          controller.todayHealthCheckup!.date),
                                     ),
                                   ),
                                 ),
@@ -117,7 +117,7 @@ class HealthCheckupTopView extends ConsumerWidget {
                                                 ),
                                                 CustomText(
                                                   text:
-                                                      '${controller.todayHealthCheckup.bodyTemperature} ℃',
+                                                      '${controller.todayHealthCheckup!.bodyTemperature} ℃',
                                                   fontSize: 14,
                                                 ),
                                               ],
@@ -159,7 +159,7 @@ class HealthCheckupTopView extends ConsumerWidget {
                                                 ),
                                                 CustomText(
                                                   text:
-                                                      '${controller.todayHealthCheckup.bloodPressure} mmhg',
+                                                      '${controller.todayHealthCheckup!.bloodPressure} mmhg',
                                                   fontSize: 14,
                                                 ),
                                               ],

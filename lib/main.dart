@@ -7,7 +7,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:unicorn_flutter/firebase_options.dart';
 
 void main() async {
-  await dotenv.load(fileName: kDebugMode ? '.env.develop' : '.env.release');
+  await dotenv.load(fileName: kDebugMode ? '.env.release' : '.env.release');
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

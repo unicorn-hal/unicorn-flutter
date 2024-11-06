@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:unicorn_flutter/Constants/Enum/health_checkup_result_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup.dart';
 
@@ -11,7 +12,9 @@ class HealthCheckupTopController extends ControllerCore {
   // 変数の定義
   late String today;
   late bool alreadyCheackup;
-  late HealthCheckup todayHealthCheckup;
+
+  HealthCheckup? todayHealthCheckup;
+  HealthCheckupResultEnum? healthCheckupResult;
 
   // initialize()
   @override
@@ -20,6 +23,8 @@ class HealthCheckupTopController extends ControllerCore {
     today = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
     alreadyCheackup = checkTodayHealthCheckup();
+
+    // 本日の健康診断が登録されている場合の処理
     if (alreadyCheackup) {
       todayHealthCheckup = getTodayHealthCheckup();
     }
@@ -48,5 +53,26 @@ class HealthCheckupTopController extends ControllerCore {
       return date == today;
     });
     return todayHealthCheckup;
+  }
+
+  HealthCheckupResultEnum getHealthCheckupResult() {
+    // 本日の健康診断が登録されている場合は体温と血圧の結果を取得
+    final double bodyTemperature = todayHealthCheckup!.bodyTemperature;
+    final double bloodPressure = todayHealthCheckup!.bloodPressure;
+
+    // 体温と血圧の結果を元に健康診断結果を取得
+    if (bodyTemperature >= 36.0 && bodyTemperature <= 37.5) {
+      if (bloodPressure >= 80.0 && bloodPressure <= 120.0) {
+        return HealthCheckupResultEnum.normal;
+      } else {
+        return HealthCheckupResultEnum.bloodPressureHazard;
+      }
+    } else {
+      if (bloodPressure >= 80.0 && bloodPressure <= 120.0) {
+        return HealthCheckupResultEnum.bodyTemperatureHazard;
+      } else {
+        return HealthCheckupResultEnum.danger;
+      }
+    }
   }
 }
