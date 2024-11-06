@@ -81,7 +81,7 @@ class MedicineView extends StatelessWidget {
                                   title: medicineList[index].medicineName,
                                   onTap: () {
                                     ProfileMedicineSettingRoute(
-                                      $extra: medicineList,
+                                      $extra: medicineList[index],
                                     ).push(context);
                                   },
                                   action:

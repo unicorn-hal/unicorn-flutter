@@ -477,12 +477,12 @@ class ProfileMedicineSettingRoute extends GoRouteData {
   const ProfileMedicineSettingRoute({
     this.$extra,
   });
-  final List<Medicine>? $extra;
+  final Medicine? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       MedicineSettingView(
-        medicineList: $extra,
+        medicine: $extra,
       );
 }
 

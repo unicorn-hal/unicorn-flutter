@@ -18,9 +18,9 @@ import 'package:unicorn_flutter/gen/colors.gen.dart';
 class MedicineSettingView extends StatefulWidget {
   const MedicineSettingView({
     super.key,
-    this.medicineList,
+    this.medicine,
   });
-  final List<Medicine>? medicineList;
+  final Medicine? medicine;
 
   @override
   State<MedicineSettingView> createState() => _MedicineSettingViewState();
