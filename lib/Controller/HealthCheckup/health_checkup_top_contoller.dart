@@ -68,7 +68,7 @@ class HealthCheckupTopController extends ControllerCore {
     // 体温と血圧の結果を元に健康診断結果を取得
     if (bodyTemperature >= 36.0 && bodyTemperature <= 37.5) {
       if (bloodPressureLow >= 80.0 && bloodPressurehight <= 120.0) {
-        return HealthCheckupResultEnum.normal;
+        return HealthCheckupResultEnum.safety;
       } else {
         return HealthCheckupResultEnum.bloodPressureHazard;
       }

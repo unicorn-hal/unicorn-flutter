@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 
 enum HealthCheckupResultEnum {
   //　体温・血圧共に基準値内
-  normal,
+  safety,
   // 体温が基準値からはずれている
   bodyTemperatureHazard,
   // 血圧が基準値からはずれている
@@ -14,8 +15,8 @@ enum HealthCheckupResultEnum {
 class HealthCheckupResultType {
   static HealthCheckupResultEnum getHealthCheckupResultType(String type) {
     switch (type) {
-      case 'normal':
-        return HealthCheckupResultEnum.normal;
+      case 'safety':
+        return HealthCheckupResultEnum.safety;
       case 'bodyTemperatureHazard':
         return HealthCheckupResultEnum.bodyTemperatureHazard;
       case 'bloodPressureHazard':
@@ -29,7 +30,7 @@ class HealthCheckupResultType {
 
   static String typeTitle(HealthCheckupResultEnum type) {
     switch (type) {
-      case HealthCheckupResultEnum.normal:
+      case HealthCheckupResultEnum.safety:
         return "正常";
       case HealthCheckupResultEnum.bodyTemperatureHazard:
       case HealthCheckupResultEnum.bloodPressureHazard:
@@ -44,22 +45,23 @@ class HealthCheckupResultType {
 
   static String typeDescription(HealthCheckupResultEnum type) {
     switch (type) {
-      case HealthCheckupResultEnum.normal:
-        return "体温・血圧ともに平均値です。体調が優れない場合は医師との通話やAIチャットを利用してください。";
+      case HealthCheckupResultEnum.safety:
+        return Strings.HEALTH_CHECKUP_RESULT_DESCRIPTION_SAFETY;
       case HealthCheckupResultEnum.bodyTemperatureHazard:
-        return "体温が平均値から外れています。体調が優れない場合は医師との通話やAIチャットを利用してください。";
+        return Strings
+            .HEALTH_CHECKUP_RESULT_DESCRIPTION_BODY_TEMPERATURE_HAZARD;
       case HealthCheckupResultEnum.bloodPressureHazard:
-        return "血圧が平均値から外れています。体調が優れない場合は医師との通話やAIチャットを利用してください。";
+        return Strings.HEALTH_CHECKUP_RESULT_DESCRIPTION_BLOOD_PRESSURE_HAZARD;
       case HealthCheckupResultEnum.danger:
-        return "体温・血圧ともに平均値から外れています。緊急時は医師との通話やAIチャットを利用してください。";
+        return Strings.HEALTH_CHECKUP_RESULT_DESCRIPTION_DANGER;
       default:
-        return "体温・血圧ともに平均値です。体調が優れない場合は医師との通話やAIチャットを利用してください。";
+        return Strings.HEALTH_CHECKUP_RESULT_DESCRIPTION_SAFETY;
     }
   }
 
   static Color typeColor(HealthCheckupResultEnum type) {
     switch (type) {
-      case HealthCheckupResultEnum.normal:
+      case HealthCheckupResultEnum.safety:
         return Colors.green;
       case HealthCheckupResultEnum.bodyTemperatureHazard:
       case HealthCheckupResultEnum.bloodPressureHazard:
