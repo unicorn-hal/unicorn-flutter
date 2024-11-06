@@ -63,77 +63,8 @@ class MedicineView extends StatelessWidget {
                         ],
                       );
                     }
-                    if (snapshot.hasData) {
-                      List<Medicine> medicineList = snapshot.data!;
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: deviceWidth * 0.9,
-                            height: 48,
-                            padding: const EdgeInsets.only(
-                              top: 10,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Expanded(
-                                  flex: 3,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      left: 5,
-                                    ),
-                                    child: CustomText(text: 'Myおくすり'),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: IconButton(
-                                    onPressed: () {
-                                      const ProfileMedicineSettingRoute()
-                                          .push(context);
-                                    },
-                                    icon: const Icon(
-                                      Icons.add,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: deviceWidth * 0.9,
-                            child: ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: medicineList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return CommonItemTile(
-                                  title: medicineList[index].medicineName,
-                                  onTap: () {
-                                    ProfileMedicineSettingRoute(
-                                      $extra: medicineList[index],
-                                    ).push(context);
-                                  },
-                                  action:
-                                      medicineList[index].reminders.isNotEmpty
-                                          ? const Icon(
-                                              Icons.notifications,
-                                              color: Colors.blue,
-                                            )
-                                          : const Icon(
-                                              Icons.notifications_off_outlined,
-                                              color: Colors.grey,
-                                            ),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
-                      );
-                    } else {
-                      return Column(
+                    if (!snapshot.hasData) {
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(
@@ -188,6 +119,73 @@ class MedicineView extends StatelessWidget {
                         ],
                       );
                     }
+                    List<Medicine> medicineList = snapshot.data!;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: deviceWidth * 0.9,
+                          height: 48,
+                          padding: const EdgeInsets.only(
+                            top: 10,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Expanded(
+                                flex: 3,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 5,
+                                  ),
+                                  child: CustomText(text: 'Myおくすり'),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                  onPressed: () {
+                                    const ProfileMedicineSettingRoute()
+                                        .push(context);
+                                  },
+                                  icon: const Icon(
+                                    Icons.add,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: deviceWidth * 0.9,
+                          child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: medicineList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return CommonItemTile(
+                                title: medicineList[index].medicineName,
+                                onTap: () {
+                                  ProfileMedicineSettingRoute(
+                                    $extra: medicineList[index],
+                                  ).push(context);
+                                },
+                                action: medicineList[index].reminders.isNotEmpty
+                                    ? const Icon(
+                                        Icons.notifications,
+                                        color: Colors.blue,
+                                      )
+                                    : const Icon(
+                                        Icons.notifications_off_outlined,
+                                        color: Colors.grey,
+                                      ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    );
                   },
                 ),
               ),
