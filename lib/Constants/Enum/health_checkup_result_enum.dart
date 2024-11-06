@@ -38,7 +38,7 @@ class HealthCheckupResultType {
         return "危険";
 
       default:
-        return "Normal";
+        return "正常";
     }
   }
 
