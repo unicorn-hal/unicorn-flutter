@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:unicorn_flutter/Controller/Profile/Medicine/medicine_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
@@ -31,6 +33,37 @@ class MedicineView extends StatelessWidget {
                 child: FutureBuilder<List<Medicine>?>(
                   future: controller.getMedicineList(),
                   builder: (context, AsyncSnapshot<List<Medicine>?> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: deviceWidth * 0.9,
+                            height: 48,
+                            padding: const EdgeInsets.only(
+                              top: 10,
+                            ),
+                            child: const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: 5,
+                                ),
+                                child: CustomText(text: 'Myおくすり'),
+                              ),
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 100),
+                            child: CustomLoadingAnimation(
+                              text: 'ローディング中',
+                              iconColor: Colors.grey,
+                              textColor: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
                     if (snapshot.hasData) {
                       List<Medicine> medicineList = snapshot.data!;
                       return Column(
