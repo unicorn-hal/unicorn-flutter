@@ -1,6 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:unicorn_flutter/Controller/HealthCheckup/health_checkup_top_contoller.dart';
+import 'package:unicorn_flutter/Model/Data/HealthCheckup/health_checkup_data.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
@@ -9,17 +12,18 @@ import 'package:unicorn_flutter/View/Component/Parts/health_check_button.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-class HealthCheckupTopView extends StatelessWidget {
+class HealthCheckupTopView extends ConsumerWidget {
   const HealthCheckupTopView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     final Size size = MediaQuery.of(context).size;
+    final HealthCheckupData healthCheckupData =
+        ref.watch(healthCheckupDataProvider);
+    final HealthCheckupTopController controller = HealthCheckupTopController();
 
     // todo: 本来は当日に検診記録があるかどうかで判定する
     // todo: 検診データのモデルをnull許容で引数に持つ
-
-    final bool enableHealthCheck = true;
     final DateTime timeDate = DateTime.now();
     final double bodyTemperature = 36.5;
     final String bloodPressure = '90/110';
@@ -42,7 +46,7 @@ class HealthCheckupTopView extends StatelessWidget {
           ),
 
           /// 本日の検診記録があるかどうか
-          enableHealthCheck
+          controller.alreadyCheackup
               ? Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -288,19 +292,32 @@ class HealthCheckupTopView extends StatelessWidget {
               fontSize: 20,
             ),
           ),
-          ListView.builder(
-            // todo: controllerから値を取得する
-            itemCount: 7,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return HealthPastTile(
-                timeDate: DateTime.now(),
-                bodyTemperature: 36.5,
-                bloodPressure: '90/110',
-              );
-            },
-          )
+          healthCheckupData.data == null
+              ? SizedBox(
+                  height: 300,
+                  width: size.width,
+                  child: const Center(
+                    child: CustomText(text: '過去の検診記録はありません。'),
+                  ),
+                )
+              : ListView.builder(
+                  // todo: controllerから値を取得する
+                  itemCount: healthCheckupData.data!.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return HealthPastTile(
+                      timeDate: healthCheckupData.data![index].date,
+                      bodyTemperature:
+                          healthCheckupData.data![index].bodyTemperature,
+                      bloodPressure:
+                          healthCheckupData.data![index].bloodPressure,
+                    );
+                  },
+                ),
+          const SizedBox(
+            height: 40,
+          ),
         ],
       ),
     );

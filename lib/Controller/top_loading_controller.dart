@@ -10,7 +10,6 @@ import 'package:unicorn_flutter/Model/Entity/Account/account.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account_request.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Route/router.dart';
-import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/Api/Account/account_api.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_service.dart';
@@ -22,7 +21,6 @@ import 'package:unicorn_flutter/Service/Package/SystemInfo/system_info_service.d
 import '../Model/Data/HealthCheckup/health_checkup_data.dart';
 import '../Model/Entity/HealthCheckUp/health_checkup.dart';
 import '../Model/Entity/User/user_request.dart';
-import '../Service/Api/HealthCheckup/health_checkup_api.dart';
 
 class TopLoadingController extends ControllerCore {
   FirebaseAuthenticationService get _authService =>
@@ -32,7 +30,6 @@ class TopLoadingController extends ControllerCore {
   SystemInfoService get _systemInfoService => SystemInfoService();
   AccountApi get _accountApi => AccountApi();
   UserApi get _userApi => UserApi();
-  HealthCheckupApi get _healthCheckupApi => HealthCheckupApi();
 
   BuildContext context;
   TopLoadingController(this.context);
@@ -106,9 +103,7 @@ class TopLoadingController extends ControllerCore {
 
     /// 検診結果の取得とシングルトンへの保存
     final List<HealthCheckup>? healthCheckup =
-        await _healthCheckupApi.getHealthCheckupList();
-
-    print(healthCheckup);
+        await _userApi.getUserHealthCheckupList(userId: uid);
 
     if (healthCheckup != null) {
       HealthCheckupData().setList(healthCheckup);
