@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/Ai/TextChat/ai_text_chat_view.dart';
 import 'package:unicorn_flutter/View/Chat/Doctor/TextChat/doctor_text_chat_view.dart';
@@ -245,10 +246,14 @@ class EmergencyProgressRoute extends GoRouteData {
   path: Routes.registerPhysicalInfo,
 )
 class RegisterPhysicalInfoRoute extends GoRouteData {
-  const RegisterPhysicalInfoRoute();
+  const RegisterPhysicalInfoRoute({
+    required this.from,
+  });
+  final String from;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
+      // todo: View側でfromを受け取れるように変更
       const RegisterPhysicalInfoView();
 }
 
@@ -469,11 +474,16 @@ class ProfileMedicineRoute extends GoRouteData {
 }
 
 class ProfileMedicineSettingRoute extends GoRouteData {
-  const ProfileMedicineSettingRoute();
+  const ProfileMedicineSettingRoute({
+    this.$extra,
+  });
+  final Medicine? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const MedicineSettingView();
+      MedicineSettingView(
+        medicine: $extra,
+      );
 }
 
 class ProfileChronicDiseaseRoute extends GoRouteData {
