@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Controller/Profile/Medicine/medicine_controller.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -11,6 +12,8 @@ class MedicineView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MedicineController controller = MedicineController();
+    controller.getMedicineList();
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     List<Map<String, dynamic>> reminderList = [
