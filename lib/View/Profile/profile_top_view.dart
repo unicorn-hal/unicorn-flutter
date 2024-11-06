@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Profile/profile_top_controller.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
+import 'package:unicorn_flutter/Service/Api/Medicine/medicine_api.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/profile_detail_cell.dart';
@@ -22,78 +24,12 @@ class ProfileTopView extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 15,
-                ),
-                child: UserImageCircle(
-                  imageSize: 120,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 20,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomText(
-                      text: lastName,
-                      fontSize: 30,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    CustomText(
-                      text: firstName,
-                      fontSize: 30,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          Container(
-            width: deviceWidth,
-            height: deviceHeight * 0.7,
-            decoration: const BoxDecoration(
-              color: ColorName.profileBackgroundColor,
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(30),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top: 15,
-                left: 40,
-                right: 40,
-              ),
-              child: GridView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: (1 / 1),
-                ),
-                itemCount: controller.cellData.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ProfileDetailCell(
-                      icon: Icon(
-                        controller.cellData[index].icon,
-                        color: ColorName.mainColor,
-                      ),
-                      title: controller.cellData[index].title,
-                      onTap: () => controller.cellData[index].onTap.call(),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
+          ElevatedButton(
+              onPressed: () async {
+                List<Medicine>? value = await MedicineApi().getMedicineList();
+                print(value?[0].reminders[0].reminderId);
+              },
+              child: Text('GET MEDICINE LIST')),
         ],
       ),
     );
