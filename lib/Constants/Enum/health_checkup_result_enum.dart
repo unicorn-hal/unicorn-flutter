@@ -28,7 +28,7 @@ class HealthCheckupResultType {
     }
   }
 
-  static String typeTitle(HealthCheckupResultEnum type) {
+  static String title(HealthCheckupResultEnum type) {
     switch (type) {
       case HealthCheckupResultEnum.safety:
         return "正常";
@@ -43,7 +43,7 @@ class HealthCheckupResultType {
     }
   }
 
-  static String typeDescription(HealthCheckupResultEnum type) {
+  static String description(HealthCheckupResultEnum type) {
     switch (type) {
       case HealthCheckupResultEnum.safety:
         return Strings.HEALTH_CHECKUP_RESULT_DESCRIPTION_SAFETY;
@@ -59,7 +59,7 @@ class HealthCheckupResultType {
     }
   }
 
-  static Color typeColor(HealthCheckupResultEnum type) {
+  static Color color(HealthCheckupResultEnum type) {
     switch (type) {
       case HealthCheckupResultEnum.safety:
         return Colors.green;

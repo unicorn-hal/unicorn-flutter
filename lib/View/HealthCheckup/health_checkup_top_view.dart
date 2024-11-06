@@ -190,17 +190,16 @@ class HealthCheckupTopView extends ConsumerWidget {
                                       horizontal: 4.0,
                                     ),
                                     child: CustomText(
-                                      text: HealthCheckupResultType.typeTitle(
+                                      text: HealthCheckupResultType.title(
                                           controller.healthCheckupResult!),
                                       fontSize: 26,
-                                      color: HealthCheckupResultType.typeColor(
+                                      color: HealthCheckupResultType.color(
                                           controller.healthCheckupResult!),
                                     ),
                                   ),
                                   CustomText(
-                                    text:
-                                        HealthCheckupResultType.typeDescription(
-                                            controller.healthCheckupResult!),
+                                    text: HealthCheckupResultType.description(
+                                        controller.healthCheckupResult!),
                                     fontSize: 12,
                                   ),
                                 ],
