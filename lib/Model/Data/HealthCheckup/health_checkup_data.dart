@@ -19,10 +19,12 @@ class HealthCheckupData extends ChangeNotifier {
   /// リストごとデータをセット
   void setList(List<HealthCheckup> dataList) {
     _data = dataList;
+    notifyListeners();
   }
 
   /// リストにデータを追加
   void addList(HealthCheckup data) {
     _data?.add(data);
+    notifyListeners();
   }
 }
