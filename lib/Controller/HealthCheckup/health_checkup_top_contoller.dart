@@ -27,6 +27,7 @@ class HealthCheckupTopController extends ControllerCore {
     // 本日の健康診断が登録されている場合の処理
     if (alreadyCheackup) {
       todayHealthCheckup = getTodayHealthCheckup();
+      healthCheckupResult = resultToEnum(todayHealthCheckup!);
     }
   }
 
@@ -55,20 +56,24 @@ class HealthCheckupTopController extends ControllerCore {
     return todayHealthCheckup;
   }
 
-  HealthCheckupResultEnum getHealthCheckupResult() {
+  // 本日の健康診断結果からEnumを取得
+  HealthCheckupResultEnum resultToEnum(HealthCheckup result) {
     // 本日の健康診断が登録されている場合は体温と血圧の結果を取得
-    final double bodyTemperature = todayHealthCheckup!.bodyTemperature;
-    final double bloodPressure = todayHealthCheckup!.bloodPressure;
+    final double bodyTemperature = result.bodyTemperature;
+    final double bloodPressurehight =
+        double.parse(result.bloodPressure.split('/').first);
+    final double bloodPressureLow =
+        double.parse(result.bloodPressure.split('/').last);
 
     // 体温と血圧の結果を元に健康診断結果を取得
     if (bodyTemperature >= 36.0 && bodyTemperature <= 37.5) {
-      if (bloodPressure >= 80.0 && bloodPressure <= 120.0) {
+      if (bloodPressureLow >= 80.0 && bloodPressurehight <= 120.0) {
         return HealthCheckupResultEnum.normal;
       } else {
         return HealthCheckupResultEnum.bloodPressureHazard;
       }
     } else {
-      if (bloodPressure >= 80.0 && bloodPressure <= 120.0) {
+      if (bloodPressureLow >= 80.0 && bloodPressurehight <= 120.0) {
         return HealthCheckupResultEnum.bodyTemperatureHazard;
       } else {
         return HealthCheckupResultEnum.danger;

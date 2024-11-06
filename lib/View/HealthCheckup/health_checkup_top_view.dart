@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:unicorn_flutter/Constants/Enum/health_checkup_result_enum.dart';
 import 'package:unicorn_flutter/Controller/HealthCheckup/health_checkup_top_contoller.dart';
 import 'package:unicorn_flutter/Model/Data/HealthCheckup/health_checkup_data.dart';
 import 'package:unicorn_flutter/Route/router.dart';
@@ -23,9 +24,6 @@ class HealthCheckupTopView extends ConsumerWidget {
         ref.watch(healthCheckupDataProvider);
     final HealthCheckupTopController controller = HealthCheckupTopController();
 
-    final String healthCheckResult = '正常';
-    final String healthCheckComment =
-        '毎日の体温・血圧ともに平均値です。体調が優れない場合は医師との通話やAIチャットを利用してください';
     return CustomScaffold(
       isScrollable: true,
       body: Column(
@@ -183,7 +181,6 @@ class HealthCheckupTopView extends ConsumerWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // todo: 検診結果を反映する
                                   const CustomText(
                                     text: '検診結果',
                                     fontSize: 12,
@@ -193,13 +190,17 @@ class HealthCheckupTopView extends ConsumerWidget {
                                       horizontal: 4.0,
                                     ),
                                     child: CustomText(
-                                      text: healthCheckResult,
+                                      text: HealthCheckupResultType.typeTitle(
+                                          controller.healthCheckupResult!),
                                       fontSize: 26,
-                                      color: Colors.green,
+                                      color: HealthCheckupResultType.typeColor(
+                                          controller.healthCheckupResult!),
                                     ),
                                   ),
                                   CustomText(
-                                    text: healthCheckComment,
+                                    text:
+                                        HealthCheckupResultType.typeDescription(
+                                            controller.healthCheckupResult!),
                                     fontSize: 12,
                                   ),
                                 ],
@@ -236,11 +237,10 @@ class HealthCheckupTopView extends ConsumerWidget {
                     child: CustomText(text: '↓さあ、検診を開始しましょう↓'),
                   ),
                   CarouselSlider(
-                    // todo: 検診の処理を後から追加
                     items: [
                       HealthCheckButton(
                         onTap: () {
-                          const NormalCheckupRoute().push(context);
+                          const CheckupResultRoute().push(context);
                         },
                       ),
                       Stack(
@@ -248,7 +248,9 @@ class HealthCheckupTopView extends ConsumerWidget {
                           SizedBox(
                             height: 100,
                             child: HealthCheckButton(
-                              onTap: () {},
+                              onTap: () {
+                                const AiCheckupRoute().push(context);
+                              },
                               aiCheck: true,
                             ),
                           ),
@@ -304,6 +306,7 @@ class HealthCheckupTopView extends ConsumerWidget {
                   itemCount: healthCheckupData.data!.length,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
+                  reverse: true,
                   itemBuilder: (context, index) {
                     return HealthPastTile(
                       timeDate: healthCheckupData.data![index].date,
