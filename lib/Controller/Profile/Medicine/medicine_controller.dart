@@ -7,10 +7,8 @@ class MedicineController extends ControllerCore {
   MedicineApi get _medicineApi => MedicineApi();
 
   /// コンストラクタ
-  MedicineController();
 
   /// 変数の定義
-  List<Medicine>? medicineList;
 
   /// initialize()
   @override
@@ -18,7 +16,7 @@ class MedicineController extends ControllerCore {
 
   /// 各関数の実装
   Future<List<Medicine>?> getMedicineList() async {
-    medicineList = await _medicineApi.getMedicineList();
+    List<Medicine>? medicineList = await _medicineApi.getMedicineList();
     return medicineList;
   }
 }
