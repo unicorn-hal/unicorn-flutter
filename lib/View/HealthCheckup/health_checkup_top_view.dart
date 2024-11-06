@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Controller/HealthCheckup/health_checkup_top_contoller.dart';
 import 'package:unicorn_flutter/Model/Data/HealthCheckup/health_checkup_data.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
@@ -22,11 +23,6 @@ class HealthCheckupTopView extends ConsumerWidget {
         ref.watch(healthCheckupDataProvider);
     final HealthCheckupTopController controller = HealthCheckupTopController();
 
-    // todo: 本来は当日に検診記録があるかどうかで判定する
-    // todo: 検診データのモデルをnull許容で引数に持つ
-    final DateTime timeDate = DateTime.now();
-    final double bodyTemperature = 36.5;
-    final String bloodPressure = '90/110';
     final String healthCheckResult = '正常';
     final String healthCheckComment =
         '毎日の体温・血圧ともに平均値です。体調が優れない場合は医師との通話やAIチャットを利用してください';
@@ -75,8 +71,8 @@ class HealthCheckupTopView extends ConsumerWidget {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 16.0),
                                     child: CustomText(
-                                      text: DateFormat('yyyy年MM月dd日')
-                                          .format(timeDate),
+                                      text: DateFormat('yyyy年MM月dd日').format(
+                                          controller.todayHealthCheckup.date),
                                     ),
                                   ),
                                 ),
@@ -120,7 +116,8 @@ class HealthCheckupTopView extends ConsumerWidget {
                                                   fontSize: 14,
                                                 ),
                                                 CustomText(
-                                                  text: '$bodyTemperature℃',
+                                                  text:
+                                                      '${controller.todayHealthCheckup.bodyTemperature} ℃',
                                                   fontSize: 14,
                                                 ),
                                               ],
@@ -161,7 +158,8 @@ class HealthCheckupTopView extends ConsumerWidget {
                                                   fontSize: 14,
                                                 ),
                                                 CustomText(
-                                                  text: '$bloodPressure mmhg',
+                                                  text:
+                                                      '${controller.todayHealthCheckup.bloodPressure} mmhg',
                                                   fontSize: 14,
                                                 ),
                                               ],
@@ -241,7 +239,9 @@ class HealthCheckupTopView extends ConsumerWidget {
                     // todo: 検診の処理を後から追加
                     items: [
                       HealthCheckButton(
-                        onTap: () {},
+                        onTap: () {
+                          const NormalCheckupRoute().push(context);
+                        },
                       ),
                       Stack(
                         children: [
@@ -301,7 +301,6 @@ class HealthCheckupTopView extends ConsumerWidget {
                   ),
                 )
               : ListView.builder(
-                  // todo: controllerから値を取得する
                   itemCount: healthCheckupData.data!.length,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
