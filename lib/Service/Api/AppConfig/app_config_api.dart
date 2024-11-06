@@ -1,4 +1,4 @@
-import 'package:unicorn_flutter/Model/Data/AppConfig/app_config.dart';
+import 'package:unicorn_flutter/Model/Entity/AppConfig/app_config.dart';
 import 'package:unicorn_flutter/Model/Entity/api_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
 import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
@@ -8,15 +8,12 @@ class AppConfigApi extends ApiCore with Endpoint {
 
   /// GET
   /// アプリケーション設定取得
-  Future<bool> getAppConfig() async {
+  Future<AppConfig?> getAppConfig() async {
     try {
       final ApiResponse response = await get();
-      bool available = response.data['available'];
-      AppConfig().setAppConfig(available);
-
-      return available;
+      return AppConfig.fromJson(response.data);
     } catch (e) {
-      rethrow;
+      return null;
     }
   }
 }
