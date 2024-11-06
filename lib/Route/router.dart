@@ -245,10 +245,14 @@ class EmergencyProgressRoute extends GoRouteData {
   path: Routes.registerPhysicalInfo,
 )
 class RegisterPhysicalInfoRoute extends GoRouteData {
-  const RegisterPhysicalInfoRoute();
+  const RegisterPhysicalInfoRoute({
+    required this.from,
+  });
+  final String from;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
+      // todo: View側でfromを受け取れるように変更
       const RegisterPhysicalInfoView();
 }
 
