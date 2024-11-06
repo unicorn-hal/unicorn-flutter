@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/Ai/TextChat/ai_text_chat_view.dart';
 import 'package:unicorn_flutter/View/Chat/Doctor/TextChat/doctor_text_chat_view.dart';
@@ -473,11 +474,16 @@ class ProfileMedicineRoute extends GoRouteData {
 }
 
 class ProfileMedicineSettingRoute extends GoRouteData {
-  const ProfileMedicineSettingRoute();
+  const ProfileMedicineSettingRoute({
+    this.$extra,
+  });
+  final List<Medicine>? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const MedicineSettingView();
+      MedicineSettingView(
+        medicineList: $extra,
+      );
 }
 
 class ProfileChronicDiseaseRoute extends GoRouteData {

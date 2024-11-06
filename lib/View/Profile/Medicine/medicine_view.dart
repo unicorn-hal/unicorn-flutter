@@ -79,9 +79,9 @@ class MedicineView extends StatelessWidget {
                                 return CommonItemTile(
                                   title: medicineList[index].medicineName,
                                   onTap: () {
-                                    const ProfileMedicineSettingRoute()
-                                        .push(context);
-                                    // todo: リマインダー画面へmedicineListを
+                                    ProfileMedicineSettingRoute(
+                                      $extra: medicineList,
+                                    ).push(context);
                                   },
                                   action:
                                       medicineList[index].reminders.isNotEmpty
