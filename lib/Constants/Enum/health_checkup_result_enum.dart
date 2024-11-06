@@ -39,7 +39,7 @@ class HealthCheckupResultType {
         return "危険";
 
       default:
-        return "正常";
+        throw Exception('Unknown type: $type');
     }
   }
 
@@ -55,7 +55,7 @@ class HealthCheckupResultType {
       case HealthCheckupResultEnum.danger:
         return Strings.HEALTH_CHECKUP_RESULT_DESCRIPTION_DANGER;
       default:
-        return Strings.HEALTH_CHECKUP_RESULT_DESCRIPTION_SAFETY;
+        throw Exception('Unknown type: $type');
     }
   }
 
@@ -69,7 +69,7 @@ class HealthCheckupResultType {
       case HealthCheckupResultEnum.danger:
         return Colors.red;
       default:
-        return Colors.green;
+        throw Exception('Unknown type: $type');
     }
   }
 }
