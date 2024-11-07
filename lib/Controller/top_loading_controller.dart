@@ -20,14 +20,11 @@ import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:unicorn_flutter/Service/Package/SystemInfo/system_info_service.dart';
 
-<<<<<<< HEAD
 import '../Model/Chat/chat_data.dart';
 import '../Service/Api/Chat/chat_api.dart';
-=======
 import '../Model/Data/HealthCheckup/health_checkup_data.dart';
 import '../Model/Entity/HealthCheckUp/health_checkup.dart';
 import '../Model/Entity/User/user_request.dart';
->>>>>>> hotfix/Service/Api/convert_to_request/20241107
 
 class TopLoadingController extends ControllerCore {
   FirebaseAuthenticationService get _authService =>
