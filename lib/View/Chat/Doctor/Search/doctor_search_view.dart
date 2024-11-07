@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:unicorn_flutter/Controller/Chat/Doctor/doctor_search_controller.dart';
+import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -18,6 +20,7 @@ class DoctorSearchView extends StatefulWidget {
 }
 
 class _DoctorSearchViewState extends State<DoctorSearchView> {
+  late DoctorSearchController controller;
   //todo: controllerに移植
   final TextEditingController hospitalNameController = TextEditingController();
   final TextEditingController departmentNameController =
@@ -42,19 +45,13 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
 
   //todo: depertmentsのindex
   int? selectedItem = 0;
-  // 仮で診療科リストをStringで作成
-  final List<String> departments = [
-    '診療科1',
-    '診療科2',
-    '診療科3',
-    '診療科4',
-    '診療科5',
-    '診療科6',
-    '診療科7',
-    '診療科8',
-    '診療科9',
-    '診療科10',
-  ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller = DoctorSearchController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +123,7 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                   ),
                 ),
                 SizedBox(
-                  width: size.width * 0.5,
+                  width: size.width * 0.6,
                   child: Center(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
@@ -135,11 +132,13 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                         height: 44,
                         dropdownItems: [
                           // todo: controllerからforの個数決める
-                          for (String department in departments)
+                          for (Department department
+                              in controller.departmentList)
                             DropdownMenuItem(
-                              value: departments.indexOf(department),
+                              value:
+                                  controller.departmentList.indexOf(department),
                               child: CustomText(
-                                text: department,
+                                text: department.departmentName,
                                 fontSize: 12,
                               ),
                             ),
