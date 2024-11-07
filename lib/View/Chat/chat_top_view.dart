@@ -16,6 +16,7 @@ class ChatTopView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     ChatTopController controller = ChatTopController();
     final Size size = MediaQuery.of(context).size;
     return Stack(
