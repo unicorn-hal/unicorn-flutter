@@ -1,4 +1,4 @@
-import 'package:unicorn_flutter/Model/Data/AppConfig/app_config.dart';
+import 'package:unicorn_flutter/Model/Entity/AppConfig/app_config.dart';
 
 class AppConfigData {
   static final AppConfigData _instance = AppConfigData._internal();
