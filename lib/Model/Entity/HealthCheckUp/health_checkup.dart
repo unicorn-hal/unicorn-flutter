@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup_request.dart';
 
 class HealthCheckup {
   final String healthCheckupId;
@@ -33,5 +34,9 @@ class HealthCheckup {
       'bloodPressure': bloodPressure,
       'medicalRecord': medicalRecord,
     };
+  }
+
+  HealthCheckupRequest toRequest() {
+    return HealthCheckupRequest.fromJson(toJson());
   }
 }
