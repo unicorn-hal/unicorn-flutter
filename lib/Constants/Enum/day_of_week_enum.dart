@@ -50,4 +50,46 @@ class DayOfWeekEnumType {
         throw Exception('Unknown type: $value');
     }
   }
+
+  static String toStringValueForKanji(DayOfWeekEnum value) {
+    switch (value) {
+      case DayOfWeekEnum.monday:
+        return '月';
+      case DayOfWeekEnum.tuesday:
+        return '火';
+      case DayOfWeekEnum.wednesday:
+        return '水';
+      case DayOfWeekEnum.thursday:
+        return '木';
+      case DayOfWeekEnum.friday:
+        return '金';
+      case DayOfWeekEnum.saturday:
+        return '土';
+      case DayOfWeekEnum.sunday:
+        return '日';
+      default:
+        throw Exception('Unknown type: $value');
+    }
+  }
+
+  static DayOfWeekEnum fromWeekday(int value) {
+    switch (value) {
+      case 1:
+        return DayOfWeekEnum.monday;
+      case 2:
+        return DayOfWeekEnum.tuesday;
+      case 3:
+        return DayOfWeekEnum.wednesday;
+      case 4:
+        return DayOfWeekEnum.thursday;
+      case 5:
+        return DayOfWeekEnum.friday;
+      case 6:
+        return DayOfWeekEnum.saturday;
+      case 7:
+        return DayOfWeekEnum.sunday;
+      default:
+        throw Exception('Unknown type: $value');
+    }
+  }
 }

@@ -236,8 +236,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                           ),
                           IconButton(
                             onPressed: () {
-                              if (reminderList.length < 5) {
-                                reminderList.add('a');
+                              if (controller.reminders.length < 5) {
+                                controller.addReminders();
                                 setState(() {});
                               } else {
                                 Fluttertoast.showToast(
