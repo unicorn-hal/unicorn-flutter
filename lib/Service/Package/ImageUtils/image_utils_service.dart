@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart' as package;
@@ -64,5 +65,17 @@ class ImageUtilsService {
     Uint8List uint8list = b64ToUint8List(base64String);
     Image image = uint8ListToImage(uint8list);
     return image;
+  }
+
+  /// Uint8ListをFileに変換する
+  File uint8listToFile(Uint8List uint8list) {
+    File file = File.fromRawPath(uint8list);
+    return file;
+  }
+
+  /// FileをUint8Listに変換する
+  Future<Uint8List> fileToUint8List(File file) async {
+    Uint8List uint8list = await file.readAsBytes();
+    return uint8list;
   }
 }
