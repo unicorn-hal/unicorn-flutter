@@ -71,7 +71,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
         title: '常備薬の登録',
         foregroundColor: Colors.white,
         backgroundColor: ColorName.mainColor,
-        actions: registration
+        actions: widget.medicine != null
             ? [
                 IconButton(
                   onPressed: () {
