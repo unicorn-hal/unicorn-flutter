@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
+import 'package:unicorn_flutter/Controller/Chat/chat_top_controller.dart';
+import 'package:unicorn_flutter/Model/Chat/chat_data.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -9,24 +12,11 @@ import 'package:unicorn_flutter/View/Component/Parts/user_info_tile.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class ChatTopView extends StatelessWidget {
-  ChatTopView({super.key});
-
-  // todo: controllerを使ってチャット履歴を取得する
-  List<String> chatList = [
-    '先生1',
-    '先生2',
-    '先生3',
-    '先生4',
-    '先生5',
-    '先生6',
-    '先生7',
-    '先生8',
-    '先生9',
-    '先生10',
-  ];
+  const ChatTopView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    ChatTopController controller = ChatTopController();
     final Size size = MediaQuery.of(context).size;
     return Stack(
       children: [
@@ -82,50 +72,55 @@ class ChatTopView extends StatelessWidget {
                   ),
                 ),
               ),
-
-              chatList.isEmpty
-                  ?
+              Consumer(builder: (context, ref, _) {
+                ChatData chatData = ref.watch(chatDataProvider);
+                if (chatData.data.isEmpty) {
                   // チャット履歴がない場合は履歴がありませんを表示
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 16.0,
-                      ),
-                      child: SizedBox(
-                        width: size.width * 0.9,
-                        height: 400,
-                        child: const Center(
-                          child: CustomText(
-                            text: 'やりとりした先生がいません',
-                          ),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 16.0,
+                    ),
+                    child: SizedBox(
+                      width: size.width * 0.9,
+                      height: 400,
+                      child: const Center(
+                        child: CustomText(
+                          text: 'やりとりした先生がいません',
                         ),
                       ),
-                    )
-                  :
-                  // チャット履歴がある場合はリスト表示
-                  Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 4.0,
-                      ),
-                      width: size.width,
-                      constraints: const BoxConstraints(
-                        minHeight: 400,
-                      ),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: chatList.length,
-                        itemBuilder: (context, index) {
-                          return UserInfoTile(
-                            onTap: () {
-                              // todo: それぞれのチャット画面へ遷移
-                              ChatDoctorInformationRoute().push(context);
-                            },
-                            userName: chatList[index],
-                            description: ('前回の検診についてですが・・・'),
-                          );
-                        },
-                      ),
                     ),
+                  );
+                } else {
+                  // チャット履歴がある場合はリスト表示
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4.0,
+                    ),
+                    width: size.width,
+                    constraints: const BoxConstraints(
+                      minHeight: 400,
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: chatData.data.length,
+                      itemBuilder: (context, index) {
+                        return UserInfoTile(
+                          onTap: () {
+                            // todo: それぞれのチャット画面へ遷移
+                            ChatDoctorInformationRoute(
+                              chatData.data[index].doctor.doctorId,
+                            ).push(context);
+                          },
+                          userName: chatData.data[index].doctor.firstName +
+                              chatData.data[index].doctor.lastName,
+                          description: chatData.data[index].latestMessageText,
+                        );
+                      },
+                    ),
+                  );
+                }
+              }),
             ],
           ),
         ),
@@ -139,7 +134,7 @@ class ChatTopView extends StatelessWidget {
             buttonColor: ColorName.mainColor,
             onTap: () {
               // todo: 医師を探す画面へ遷移
-              ChatDoctorSearchRoute().push(context);
+              const ChatDoctorSearchRoute().push(context);
             },
             icon: const Icon(
               Icons.search,
