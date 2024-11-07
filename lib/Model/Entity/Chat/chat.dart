@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat_doctor.dart';
+import 'package:unicorn_flutter/Model/Entity/Chat/chat_request.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat_user.dart';
 
 class Chat {
@@ -36,5 +37,12 @@ class Chat {
       'latestMessageSentAt':
           DateFormat('yyyy-MM-dd').format(latestMessageSentAt),
     };
+  }
+
+  ChatRequest toRequest() {
+    return ChatRequest.fromJson({
+      'doctorID': doctor.doctorId,
+      'userID': user.userId,
+    });
   }
 }

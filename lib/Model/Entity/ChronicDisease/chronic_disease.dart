@@ -1,3 +1,5 @@
+import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease_request.dart';
+
 class ChronicDisease {
   final String chronicDiseaseId;
   final String diseaseName;
@@ -19,5 +21,9 @@ class ChronicDisease {
       'chronicDiseaseID': chronicDiseaseId,
       'diseaseName': diseaseName,
     };
+  }
+
+  ChronicDiseaseRequest toRequest() {
+    return ChronicDiseaseRequest.fromJson(toJson());
   }
 }

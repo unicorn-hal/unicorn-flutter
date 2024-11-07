@@ -1,4 +1,5 @@
 import 'package:unicorn_flutter/Constants/Enum/user_role_enum.dart';
+import 'package:unicorn_flutter/Model/Entity/Account/account_request.dart';
 
 class Account {
   final String uid;
@@ -25,5 +26,9 @@ class Account {
       'role': UserRoleType.toStringValue(role),
       'fcmTokenId': fcmTokenId,
     };
+  }
+
+  AccountRequest toRequest() {
+    return AccountRequest.fromJson(toJson());
   }
 }
