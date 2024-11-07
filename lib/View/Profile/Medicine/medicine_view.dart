@@ -64,7 +64,7 @@ class MedicineView extends StatelessWidget {
                       );
                     }
                     if (!snapshot.hasData) {
-                      Column(
+                      return Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Container(

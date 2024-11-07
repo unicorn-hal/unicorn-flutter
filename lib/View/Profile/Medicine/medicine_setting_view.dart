@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
+import 'package:unicorn_flutter/Controller/Profile/Medicine/medicine_setting_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
@@ -27,8 +28,7 @@ class MedicineSettingView extends StatefulWidget {
 }
 
 class _MedicineSettingViewState extends State<MedicineSettingView> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController countController = TextEditingController();
+  late MedicineSettingController controller;
   bool registration = true;
   bool repeat = false;
   List<String> weekdays = [
@@ -43,7 +43,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
   DateTime now = DateTime.now();
   String repeatWeek = '月,火,水,木,金,土';
   List<String> reminderList = [];
-  int? selectIndex = 0;
+
   List<Map<String, dynamic>> repeatWeekList = [
     {'name': '毎日曜日', 'check': false},
     {'name': '毎月曜日', 'check': false},
@@ -53,6 +53,12 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
     {'name': '毎金曜日', 'check': false},
     {'name': '毎土曜日', 'check': false},
   ];
+  @override
+  void initState() {
+    super.initState();
+    controller = MedicineSettingController(widget.medicine);
+  }
+
   // todo: controller出来たら削除
   final focusNode = FocusNode();
   @override
@@ -124,7 +130,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                         height: 70,
                         child: CustomTextfield(
                           hintText: '20文字以内で入力してください',
-                          controller: nameController,
+                          controller: controller.nameController,
                           height: 50,
                           maxLines: 1,
                           maxLength: 20,
@@ -158,7 +164,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                   height: 70,
                                   child: CustomTextfield(
                                     hintText: '1 ~ 100(錠)',
-                                    controller: countController,
+                                    controller: controller.countController,
                                     height: 50,
                                     maxLines: 1,
                                     keyboardType: TextInputType.number,
@@ -207,9 +213,9 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                       },
                                     ],
                                     height: 50,
-                                    selectIndex: selectIndex,
+                                    selectIndex: controller.selectIndex,
                                     onChanged: (int? value) {
-                                      selectIndex = value!;
+                                      controller.selectIndex = value!;
                                       setState(() {});
                                     },
                                   ),
@@ -246,9 +252,9 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            itemCount: reminderList.length,
+                            itemCount: controller.reminders.length,
                             itemBuilder: (BuildContext context, int index) {
-                              if (reminderList.isEmpty) {
+                              if (controller.reminders.isEmpty) {
                                 return Container();
                               }
                               return Row(
@@ -270,7 +276,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                       // todo: 設定した日付をControllerに渡す
                                       Log.echo('date: $date');
                                     },
-                                    initValue: DateTime.now(),
+                                    initValue: controller.changeDateTime(index),
                                     // todo: リマインダー設定がすでにある場合initValueに入れる
                                   ),
                                   const SizedBox(
