@@ -1,3 +1,4 @@
+import 'package:unicorn_flutter/Model/Entity/Medicine/medicine_request.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/reminder.dart';
 
 class Medicine {
@@ -34,5 +35,9 @@ class Medicine {
       'quantity': quantity,
       'reminders': reminders.map((e) => e.toJson()).toList(),
     };
+  }
+
+  MedicineRequest toRequest() {
+    return MedicineRequest.fromJson(toJson());
   }
 }
