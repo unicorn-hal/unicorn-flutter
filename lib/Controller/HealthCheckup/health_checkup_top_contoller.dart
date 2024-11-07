@@ -10,54 +10,58 @@ class HealthCheckupTopController extends ControllerCore {
   HealthCheckupTopController();
 
   // 変数の定義
-  late String today;
-  late bool alreadyCheackup;
+  late String _today;
+  late bool _alreadyCheackup;
 
-  HealthCheckup? todayHealthCheckup;
-  HealthCheckupResultEnum? healthCheckupResult;
+  HealthCheckup? _todayHealthCheckup;
+  HealthCheckupResultEnum? _healthCheckupResult;
 
   // initialize()
   @override
   void initialize() {
     // 本日の日付をDateTime方で取得(2024-11-06の形式)
-    today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    _today = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-    alreadyCheackup = checkTodayHealthCheckup();
+    _alreadyCheackup = _checkTodayHealthCheckup();
 
     // 本日の健康診断が登録されている場合の処理
-    if (alreadyCheackup) {
-      todayHealthCheckup = getTodayHealthCheckup();
-      healthCheckupResult = resultToEnum(todayHealthCheckup!);
+    if (_alreadyCheackup) {
+      _todayHealthCheckup = _getTodayHealthCheckup();
+      _healthCheckupResult = _resultToEnum(_todayHealthCheckup!);
     }
   }
 
   // 本日の健康診断が登録されているかを確認
-  bool checkTodayHealthCheckup() {
+  bool _checkTodayHealthCheckup() {
     // データがnullの場合はfalseを返す
     if (HealthCheckupData().data == null) return false;
     // 本日の日付で健康診断がシングルトンに格納されているか確認
     final bool result = HealthCheckupData().data!.any((element) {
       final HealthCheckup healthCheckup = element;
       final String date = DateFormat('yyyy-MM-dd').format(healthCheckup.date);
-      return date == today;
+      return date == _today;
     });
     return result;
   }
 
+  bool get alreadyCheackup => _alreadyCheackup;
+
   // 本日の健康診断を取得
-  HealthCheckup getTodayHealthCheckup() {
+  HealthCheckup _getTodayHealthCheckup() {
     // 本日の日付で健康診断がシングルトンに格納されているか確認
     final HealthCheckup todayHealthCheckup =
         HealthCheckupData().data!.firstWhere((element) {
       final HealthCheckup healthCheckup = element;
       final String date = DateFormat('yyyy-MM-dd').format(healthCheckup.date);
-      return date == today;
+      return date == _today;
     });
     return todayHealthCheckup;
   }
 
+  HealthCheckup get todayHealthCheckup => _todayHealthCheckup!;
+
   // 本日の健康診断結果からEnumを取得
-  HealthCheckupResultEnum resultToEnum(HealthCheckup result) {
+  HealthCheckupResultEnum _resultToEnum(HealthCheckup result) {
     // 本日の健康診断が登録されている場合は体温と血圧の結果を取得
     final double bodyTemperature = result.bodyTemperature;
     final double bloodPressurehight =
@@ -80,4 +84,6 @@ class HealthCheckupTopController extends ControllerCore {
       }
     }
   }
+
+  HealthCheckupResultEnum get healthCheckupResult => _healthCheckupResult!;
 }
