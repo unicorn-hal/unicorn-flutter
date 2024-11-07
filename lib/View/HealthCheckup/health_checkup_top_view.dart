@@ -40,189 +40,185 @@ class HealthCheckupTopView extends ConsumerWidget {
           ),
 
           /// 本日の検診記録があるかどうか
-          controller.alreadyCheackup
-              ? Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: size.width,
-                    height: 250,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        color: ColorName.shadowGray,
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: size.width,
-                          height: 120,
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: size.width,
-                                height: 40,
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16.0),
-                                    child: CustomText(
-                                      text: DateFormat('yyyy年MM月dd日').format(
-                                          controller.todayHealthCheckup.date),
-                                    ),
-                                  ),
+          if (controller.alreadyCheackup)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: size.width,
+                height: 250,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(
+                    color: ColorName.shadowGray,
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: size.width,
+                      height: 120,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: size.width,
+                            height: 40,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: CustomText(
+                                  text: DateFormat('yyyy年MM月dd日').format(
+                                      controller.todayHealthCheckup.date),
                                 ),
                               ),
-                              SizedBox(
-                                width: size.width,
-                                height: 80,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    SizedBox(
-                                      width: size.width * 0.3,
-                                      height: 100,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            width: size.width * 0.15,
-                                            height: 90,
-                                            child: const FittedBox(
-                                              fit: BoxFit.fitWidth,
-                                              child: Icon(
-                                                Icons.thermostat,
-                                                color: Colors.black,
-                                              ),
-                                            ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: size.width,
+                            height: 80,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                SizedBox(
+                                  width: size.width * 0.3,
+                                  height: 100,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: size.width * 0.15,
+                                        height: 90,
+                                        child: const FittedBox(
+                                          fit: BoxFit.fitWidth,
+                                          child: Icon(
+                                            Icons.thermostat,
+                                            color: Colors.black,
                                           ),
-                                          SizedBox(
-                                            width: size.width * 0.15,
-                                            height: 90,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                const CustomText(
-                                                  text: '体温',
-                                                  fontSize: 14,
-                                                ),
-                                                CustomText(
-                                                  text:
-                                                      '${controller.todayHealthCheckup.bodyTemperature} ℃',
-                                                  fontSize: 14,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: size.width * 0.5,
-                                      height: 100,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            width: size.width * 0.15,
-                                            height: 90,
-                                            child: const FittedBox(
-                                              fit: BoxFit.fitWidth,
-                                              child: Icon(
-                                                Icons.bloodtype,
-                                                color: Colors.black,
-                                              ),
+                                      SizedBox(
+                                        width: size.width * 0.15,
+                                        height: 90,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const CustomText(
+                                              text: '体温',
+                                              fontSize: 14,
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: size.width * 0.3,
-                                            height: 90,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                const CustomText(
-                                                  text: '血圧',
-                                                  fontSize: 14,
-                                                ),
-                                                CustomText(
-                                                  text:
-                                                      '${controller.todayHealthCheckup.bloodPressure} mmhg',
-                                                  fontSize: 14,
-                                                ),
-                                              ],
+                                            CustomText(
+                                              text:
+                                                  '${controller.todayHealthCheckup.bodyTemperature} ℃',
+                                              fontSize: 14,
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
+                                SizedBox(
+                                  width: size.width * 0.5,
+                                  height: 100,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: size.width * 0.15,
+                                        height: 90,
+                                        child: const FittedBox(
+                                          fit: BoxFit.fitWidth,
+                                          child: Icon(
+                                            Icons.bloodtype,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: size.width * 0.3,
+                                        height: 90,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const CustomText(
+                                              text: '血圧',
+                                              fontSize: 14,
+                                            ),
+                                            CustomText(
+                                              text:
+                                                  '${controller.todayHealthCheckup.bloodPressure} mmhg',
+                                              fontSize: 14,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: size.width,
+                      height: 120,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: SizedBox(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const CustomText(
+                                text: '検診結果',
+                                fontSize: 12,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 4.0,
+                                ),
+                                child: CustomText(
+                                  text: HealthCheckupResultType.title(
+                                      controller.healthCheckupResult),
+                                  fontSize: 26,
+                                  color: HealthCheckupResultType.color(
+                                      controller.healthCheckupResult),
+                                ),
+                              ),
+                              CustomText(
+                                text: HealthCheckupResultType.description(
+                                    controller.healthCheckupResult),
+                                fontSize: 12,
                               ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                          width: size.width,
-                          height: 120,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: SizedBox(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const CustomText(
-                                    text: '検診結果',
-                                    fontSize: 12,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 4.0,
-                                    ),
-                                    child: CustomText(
-                                      text: HealthCheckupResultType.title(
-                                          controller.healthCheckupResult),
-                                      fontSize: 26,
-                                      color: HealthCheckupResultType.color(
-                                          controller.healthCheckupResult),
-                                    ),
-                                  ),
-                                  CustomText(
-                                    text: HealthCheckupResultType.description(
-                                        controller.healthCheckupResult),
-                                    fontSize: 12,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                )
-              :
-
-              /// 本日の検診記録がない場合はへッダー画像を表示
-              Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: AspectRatio(
-                    aspectRatio: 3 / 2,
-                    child: Assets.images.healthCheckupHeader.image(
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                  ],
                 ),
+              ),
+            )
+          else
+            // 本日の検診記録がない場合はへッダー画像を表示
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: AspectRatio(
+                aspectRatio: 3 / 2,
+                child: Assets.images.healthCheckupHeader.image(
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
 
           /// 検診を開始するボタン(通常検診&AI音声検診)
           Center(
