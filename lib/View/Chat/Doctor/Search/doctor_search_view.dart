@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/doctor_search_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
@@ -21,11 +19,6 @@ class DoctorSearchView extends StatefulWidget {
 
 class _DoctorSearchViewState extends State<DoctorSearchView> {
   late DoctorSearchController controller;
-  //todo: controllerに移植
-  final TextEditingController hospitalNameController = TextEditingController();
-  final TextEditingController departmentNameController =
-      TextEditingController();
-  final TextEditingController doctorNameController = TextEditingController();
 
   final focusNode = FocusNode();
 
@@ -42,9 +35,6 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
     // '医師9',
     // '医師10',
   ];
-
-  //todo: depertmentsのindex
-  int? selectedItem = 0;
 
   @override
   void initState() {
@@ -96,7 +86,7 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                       width: size.width * 0.7,
                       height: 44,
                       hintText: '病院名を入力してください',
-                      controller: hospitalNameController,
+                      controller: controller.hospitalNameController,
                       maxLength: 20,
                       maxLines: 1,
                     ),
@@ -131,7 +121,6 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                       child: CustomDropdown(
                         height: 44,
                         dropdownItems: [
-                          // todo: controllerからforの個数決める
                           for (Department department
                               in controller.departmentList)
                             DropdownMenuItem(
@@ -144,9 +133,8 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                             ),
                         ],
                         onChanged: (int? value) {
-                          setState(() {
-                            selectedItem = value;
-                          });
+                          controller.setSelectedDepartmentIndex(value!);
+                          setState(() {});
                         },
                       ),
                     ),
@@ -181,7 +169,7 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                         width: size.width * 0.6,
                         height: 44,
                         hintText: '名前を入力してください',
-                        controller: doctorNameController,
+                        controller: controller.doctorNameController,
                         maxLength: 10,
                         maxLines: 1,
                       ),
@@ -198,51 +186,52 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
           ),
 
           ///検索結果表示部
-          doctors.isEmpty
-              ?
-              // 医師リストが空の場合は該当する医師が見つかりませんでしたを表示
-              SizedBox(
-                  width: size.width * 0.9,
-                  height: 400,
-                  child: const Center(
-                    child: CustomText(
-                      text: '該当する医師が見つかりませんでした',
-                    ),
-                  ),
-                )
-              :
-              // 医師リストがある場合は医師リストを表示
-              Column(
-                  children: [
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: CustomText(text: '検索結果'),
-                      ),
-                    ),
-                    ListView.builder(
-                        itemCount: doctors.length,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 4.0,
-                              vertical: 1.0,
-                            ),
-                            child: UserInfoTile(
-                              tileColor: ColorName.userInfoTileBackground,
-                              onTap: () {
-                                // todo: 医師詳細画面へ遷移
-                              },
-                              userName: doctors[index],
-                              description: '診療科: 内科',
-                            ),
-                          );
-                        }),
-                  ],
+          if (controller.doctorList.isEmpty)
+            // 医師リストが空の場合は該当する医師が見つかりませんでしたを表示
+            SizedBox(
+              width: size.width * 0.9,
+              height: 400,
+              child: const Center(
+                child: CustomText(
+                  text: '該当する医師が見つかりませんでした',
                 ),
+              ),
+            )
+          else
+            // 医師リストがある場合は医師リストを表示
+            Column(
+              children: [
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CustomText(text: '検索結果'),
+                  ),
+                ),
+                ListView.builder(
+                    itemCount: controller.doctorList.length,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4.0,
+                          vertical: 1.0,
+                        ),
+                        child: UserInfoTile(
+                          tileColor: ColorName.userInfoTileBackground,
+                          onTap: () {
+                            // todo: 医師詳細画面へ遷移
+                          },
+                          userName: controller.doctorList[index].firstName +
+                              controller.doctorList[index].lastName,
+                          description:
+                              '診療科: ${controller.doctorList[index].departments.map((e) => e.departmentName).join(',')}',
+                        ),
+                      );
+                    }),
+              ],
+            ),
         ],
       ),
     );
