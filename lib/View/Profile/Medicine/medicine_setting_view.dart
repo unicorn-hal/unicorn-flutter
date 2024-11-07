@@ -261,7 +261,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                 children: [
                                   IconButton(
                                     onPressed: () {
-                                      reminderList.removeAt(index);
+                                      controller.deleteReminders(index);
                                       setState(() {});
                                     },
                                     icon: const Icon(
@@ -273,11 +273,11 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                     drumRollType: DrumRollType.time,
                                     splitMinute: 15,
                                     onConfirm: (DateTime date) {
-                                      // todo: 設定した日付をControllerに渡す
+                                      controller.updateReminderTime(
+                                          date, index);
                                       Log.echo('date: $date');
                                     },
                                     initValue: controller.changeDateTime(index),
-                                    // todo: リマインダー設定がすでにある場合initValueに入れる
                                   ),
                                   const SizedBox(
                                     width: 10,

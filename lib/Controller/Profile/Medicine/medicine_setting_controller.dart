@@ -58,4 +58,24 @@ class MedicineSettingController extends ControllerCore {
         reminderDayOfWeek: reminderDayOfWeek);
     reminders.add(reminder);
   }
+
+  void deleteReminders(int index) {
+    reminders.removeAt(index);
+  }
+
+  void updateReminderTime(DateTime date, int index) {
+    DateTime formatTime = DateTime(
+      date.year,
+      date.month,
+      date.day,
+      date.hour,
+      date.minute - date.minute % 15,
+    );
+    String reminderTime = DateFormat('HH:mm').format(formatTime);
+    reminders[index] = Reminder(
+        reminderId: reminders[index].reminderId,
+        reminderTime: reminderTime,
+        reminderDayOfWeek: reminders[index].reminderDayOfWeek);
+    print(reminders[index].reminderTime);
+  }
 }
