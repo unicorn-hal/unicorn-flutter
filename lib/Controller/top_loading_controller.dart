@@ -8,16 +8,20 @@ import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account_request.dart';
+import 'package:unicorn_flutter/Model/Entity/Chat/chat.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Route/router.dart';
-import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/Api/Account/account_api.dart';
+import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_service.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudMessaging/cloud_messaging_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:unicorn_flutter/Service/Package/SystemInfo/system_info_service.dart';
+
+import '../Model/Chat/chat_data.dart';
+import '../Service/Api/Chat/chat_api.dart';
 
 class TopLoadingController extends ControllerCore {
   FirebaseAuthenticationService get _authService =>
@@ -27,6 +31,7 @@ class TopLoadingController extends ControllerCore {
   SystemInfoService get _systemInfoService => SystemInfoService();
   AccountApi get _accountApi => AccountApi();
   UserApi get _userApi => UserApi();
+  ChatApi get _chatApi => ChatApi();
 
   BuildContext context;
   TopLoadingController(this.context);
@@ -106,6 +111,13 @@ class TopLoadingController extends ControllerCore {
     // } else {
     /// シングルトンにユーザー情報を保存
     // UserData().setUser(user!);
+
+    // チャット情報を取得してデータクラスに保存
+    final List<Chat>? chatList = await _chatApi.getChatList();
+    if (chatList != null) {
+      ChatData().setChat(chatList);
+      Log.echo('Chat: ${chatList.map((e) => e.toJson()).toList()}');
+    }
 
     // デバッグ用
     // todo: 本番環境では削除

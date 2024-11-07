@@ -7,10 +7,15 @@ import 'package:unicorn_flutter/View/Component/Parts/Chat/department_badges.dart
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
+import '../../../../Model/Entity/Doctor/doctor.dart';
 import '../../../../Route/router.dart';
 
 class DoctorInformationView extends StatelessWidget {
-  DoctorInformationView({super.key});
+  DoctorInformationView({
+    super.key,
+    required this.doctorId,
+  });
+  final String doctorId;
 
   final imageUrl = 'https://picsum.photos/200/300';
   final String doctorName = '長谷川';
