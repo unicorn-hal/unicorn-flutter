@@ -1,4 +1,5 @@
 import 'package:unicorn_flutter/Constants/Enum/day_of_week_enum.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/reminder_request.dart';
 
 class Reminder {
   final String reminderId;
@@ -29,5 +30,9 @@ class Reminder {
           .map((e) => DayOfWeekEnumType.toStringValue(e))
           .toList(),
     };
+  }
+
+  ReminderRequest toRequest() {
+    return ReminderRequest.fromJson(toJson());
   }
 }

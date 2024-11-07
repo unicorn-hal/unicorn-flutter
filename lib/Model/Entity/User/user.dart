@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 
 class User {
   final String userId;
@@ -66,5 +67,9 @@ class User {
       'bodyWeight': bodyWeight,
       'occupation': occupation,
     };
+  }
+
+  UserRequest toUserRequest() {
+    return UserRequest.fromJson(toJson());
   }
 }

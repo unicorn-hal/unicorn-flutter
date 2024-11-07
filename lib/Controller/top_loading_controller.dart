@@ -20,8 +20,14 @@ import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:unicorn_flutter/Service/Package/SystemInfo/system_info_service.dart';
 
+<<<<<<< HEAD
 import '../Model/Chat/chat_data.dart';
 import '../Service/Api/Chat/chat_api.dart';
+=======
+import '../Model/Data/HealthCheckup/health_checkup_data.dart';
+import '../Model/Entity/HealthCheckUp/health_checkup.dart';
+import '../Model/Entity/User/user_request.dart';
+>>>>>>> hotfix/Service/Api/convert_to_request/20241107
 
 class TopLoadingController extends ControllerCore {
   FirebaseAuthenticationService get _authService =>
@@ -103,6 +109,15 @@ class TopLoadingController extends ControllerCore {
     /// シングルトンにアカウント情報を保存
     AccountData().setAccount(account!);
 
+    /// 検診結果の取得とシングルトンへの保存
+    final List<HealthCheckup>? healthCheckup =
+        await _userApi.getUserHealthCheckupList(userId: uid);
+
+    if (healthCheckup != null) {
+      HealthCheckupData().setList(healthCheckup);
+    }
+    Log.echo('HealthCheckup: ${HealthCheckupData().data}');
+
     await Future.delayed(const Duration(seconds: 1));
 
     /// 画面遷移
@@ -121,6 +136,23 @@ class TopLoadingController extends ControllerCore {
 
     // デバッグ用
     // todo: 本番環境では削除
+    await _userApi.postUser(
+        body: UserRequest.fromJson({
+      'userID': uid,
+      'firstName': '太郎',
+      'lastName': '山田',
+      'email': 'test@test.com',
+      'gender': 'male',
+      'birthDate': '1990-01-01',
+      'address': '東京都新宿区1-1-1',
+      'postalCode': '1000001',
+      'phoneNumber': '09012345678',
+      'iconImageUrl': 'https://placehold.jp/150x150.png',
+      'bodyHeight': 180.5,
+      'bodyWeight': 75.5,
+      'occupation': 'エンジニア',
+    }));
+
     UserData().setUser(User.fromJson({
       'userID': uid,
       'firstName': '太郎',
@@ -136,6 +168,7 @@ class TopLoadingController extends ControllerCore {
       'bodyWeight': 75.5,
       'occupation': 'エンジニア',
     }));
+
     const HomeRoute().go(context);
   }
   // }

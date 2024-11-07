@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:unicorn_flutter/Model/Entity/Chat/message_request.dart';
 
 class Message {
   final String messageId;
@@ -45,5 +46,9 @@ class Message {
       'content': content,
       'sentAt': DateFormat('yyyy-MM-dd').format(sentAt),
     };
+  }
+
+  MessageRequest toRequest() {
+    return MessageRequest.fromJson(toJson());
   }
 }

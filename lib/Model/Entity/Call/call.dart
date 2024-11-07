@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:unicorn_flutter/Model/Entity/Call/call_request.dart';
 
 class Call {
   final String callReservationId;
@@ -33,5 +34,9 @@ class Call {
       'callStartTime': DateFormat('yyyy-MM-ddThh:mm:ss').format(callStartTime),
       'callEndTime': DateFormat('yyyy-MM-ddThh:mm:ss').format(callEndTime),
     };
+  }
+
+  CallRequest toRequest() {
+    return CallRequest.fromJson(toJson());
   }
 }
