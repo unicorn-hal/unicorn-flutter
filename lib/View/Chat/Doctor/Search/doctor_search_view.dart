@@ -22,23 +22,8 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
 
   final focusNode = FocusNode();
 
-  // 仮で医師リストをStringで作成
-  final List<String> doctors = [
-    // '医師1',
-    // '医師2',
-    // '医師3',
-    // '医師4',
-    // '医師5',
-    // '医師6',
-    // '医師7',
-    // '医師8',
-    // '医師9',
-    // '医師10',
-  ];
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     controller = DoctorSearchController();
   }
