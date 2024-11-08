@@ -4,12 +4,14 @@ class MedicineRequest {
   final String medicineName;
   final int count;
   final int quantity;
+  final int dosage;
   final List<ReminderRequest> reminders;
 
   MedicineRequest({
     required this.medicineName,
     required this.count,
     required this.quantity,
+    required this.dosage,
     required this.reminders,
   });
 
@@ -18,6 +20,7 @@ class MedicineRequest {
       medicineName: json['medicineName'],
       count: json['count'],
       quantity: json['quantity'],
+      dosage: json['dosage'],
       reminders: (json['reminders'] as List)
           .map((e) => ReminderRequest.fromJson(e))
           .toList(),
@@ -29,6 +32,7 @@ class MedicineRequest {
       'medicineName': medicineName,
       'count': count,
       'quantity': quantity,
+      'dosage': dosage,
       'reminders': reminders.map((e) => e.toJson()).toList(),
     };
   }

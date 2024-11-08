@@ -6,6 +6,7 @@ class Medicine {
   final String medicineName;
   final int count;
   final int quantity;
+  final int dosage;
   final List<Reminder> reminders;
 
   Medicine({
@@ -13,6 +14,7 @@ class Medicine {
     required this.medicineName,
     required this.count,
     required this.quantity,
+    required this.dosage,
     required this.reminders,
   });
 
@@ -22,6 +24,7 @@ class Medicine {
       medicineName: json['medicineName'],
       count: json['count'],
       quantity: json['quantity'],
+      dosage: json['dosage'],
       reminders:
           (json['reminders'] as List).map((e) => Reminder.fromJson(e)).toList(),
     );
@@ -33,6 +36,7 @@ class Medicine {
       'medicineName': medicineName,
       'count': count,
       'quantity': quantity,
+      'dosage': dosage,
       'reminders': reminders.map((e) => e.toJson()).toList(),
     };
   }
