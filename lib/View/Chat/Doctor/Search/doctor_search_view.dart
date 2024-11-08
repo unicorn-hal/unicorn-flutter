@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:unicorn_flutter/Controller/Chat/Doctor/doctor_search_controller.dart';
+import 'package:unicorn_flutter/Controller/Chat/Doctor/Search/doctor_search_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Route/router.dart';

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Model/Data/Department/department_data.dart';
 import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
 
-import '../../../Model/Entity/Department/department.dart';
-import '../../../Model/Entity/Doctor/doctor.dart';
-import '../../Core/controller_core.dart';
+import '../../../../Model/Entity/Department/department.dart';
+import '../../../../Model/Entity/Doctor/doctor.dart';
+import '../../../Core/controller_core.dart';
 
 class DoctorSearchController extends ControllerCore {
   DoctorApi get _doctorApi => DoctorApi();
