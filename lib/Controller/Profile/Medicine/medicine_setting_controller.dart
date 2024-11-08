@@ -25,7 +25,7 @@ class MedicineSettingController extends ControllerCore {
     if (medicine != null) {
       nameController.text = medicine!.medicineName;
       countController.text = medicine!.count.toString();
-      // selectIndex = medicine!.服用量 - 1;
+      selectIndex = medicine!.dosage - 1;
       if (medicine!.reminders.isNotEmpty) {
         reminders.addAll(medicine!.reminders);
       }
