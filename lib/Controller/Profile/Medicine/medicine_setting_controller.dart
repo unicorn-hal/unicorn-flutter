@@ -33,11 +33,13 @@ class MedicineSettingController extends ControllerCore {
   }
 
   /// 各関数の実装
+  /// Stringの時間をDateTime型に変換する関数
   DateTime changeDateTime(int index) {
     return DateTime.parse(
         '${DateFormat('yyyy-MM-dd').format(DateTime.now())} ${reminders[index].reminderTime}');
   }
 
+  ///リマインダーに初期値を入れ、追加する関数
   void addReminders() {
     DateTime now = DateTime.now();
     String reminderId = const Uuid().v4();
@@ -59,11 +61,13 @@ class MedicineSettingController extends ControllerCore {
     reminders.add(reminder);
   }
 
+  ///リマインダーを削除する関数
   void deleteReminders(int index) {
     reminders.removeAt(index);
   }
 
-  void updateReminderTime(DateTime date, int index) {
+  ///リマインダーに登録されている時間を更新する
+  void updateReminderTime({required DateTime date, required int index}) {
     DateTime formatTime = DateTime(
       date.year,
       date.month,
@@ -76,6 +80,57 @@ class MedicineSettingController extends ControllerCore {
         reminderId: reminders[index].reminderId,
         reminderTime: reminderTime,
         reminderDayOfWeek: reminders[index].reminderDayOfWeek);
-    print(reminders[index].reminderTime);
+  }
+
+  ///リマインダーの曜日listに曜日を追加する関数
+  void addReminderDayOfWeek({required int remindersIndex, required int index}) {
+    if (!reminders[remindersIndex]
+        .reminderDayOfWeek
+        .contains(DayOfWeekEnumType.fromWeekday(index + 1))) {
+      reminders[remindersIndex]
+          .reminderDayOfWeek
+          .add(DayOfWeekEnumType.fromWeekday(index + 1));
+      return;
+    }
+    reminders[remindersIndex]
+        .reminderDayOfWeek
+        .remove(DayOfWeekEnumType.fromWeekday(index + 1));
+    return;
+  }
+
+  ///intから漢字の曜日に変える関数
+  String changeWeekday(int index) {
+    return DayOfWeekEnumType.toStringValueForKanji(
+        DayOfWeekEnumType.fromWeekday(index + 1));
+  }
+
+  ///reminderDayOfWeekに選択した曜日があるかチェックする関数
+  bool checkReminderDayOfWeek(
+      {required int remindersIndex, required int index}) {
+    return reminders[remindersIndex]
+        .reminderDayOfWeek
+        .contains(DayOfWeekEnumType.fromWeekday(index + 1));
+  }
+
+  ///reminderDayOfWeekを表示する形に成形する関数
+  String moldingReminderDayOfWeek(int index) {
+    String displayedReminderDayOfWeek = '';
+    if (reminders[index].reminderDayOfWeek.length == 7) {
+      return '毎日';
+    }
+    if (reminders[index].reminderDayOfWeek.length == 1) {
+      return '毎${DayOfWeekEnumType.toStringValueForKanji(reminders[index].reminderDayOfWeek[0])}曜日';
+    }
+    for (var i = 0; i < reminders[index].reminderDayOfWeek.length; i++) {
+      //ソート
+      if (i == 0) {
+        displayedReminderDayOfWeek =
+            '$displayedReminderDayOfWeek${DayOfWeekEnumType.toStringValueForKanji(reminders[index].reminderDayOfWeek[i])}';
+      } else {
+        displayedReminderDayOfWeek =
+            '$displayedReminderDayOfWeek,${DayOfWeekEnumType.toStringValueForKanji(reminders[index].reminderDayOfWeek[i])}';
+      }
+    }
+    return displayedReminderDayOfWeek;
   }
 }
