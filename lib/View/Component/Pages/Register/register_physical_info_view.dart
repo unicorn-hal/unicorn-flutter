@@ -214,7 +214,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                       initValue: controller.birthDate,
                       drumRollType: DrumRollType.date,
                       onConfirm: (DateTime date) {
-                        // todo: 設定した日付をControllerに渡す
+                        controller.birthDate = date;
                         Log.echo('date: $date');
                       },
                     ),
