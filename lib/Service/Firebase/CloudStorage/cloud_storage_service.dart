@@ -7,6 +7,10 @@ class FirebaseCloudStrorageService {
 
   Future<String> _uploadFile(String path, File file,
       {SettableMetadata? metadata}) async {
+    if (!file.existsSync()) {
+      throw Exception('File does not exist: ${file.path}');
+    }
+
     try {
       final ref = _firebaseStorage.ref().child(path);
       final metaData = metadata ?? SettableMetadata(contentType: 'image/png');
