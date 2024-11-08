@@ -18,18 +18,25 @@ class DoctorSearchController extends ControllerCore {
   final TextEditingController _doctorNameController = TextEditingController();
 
   // 選択された科のインデックス(未選択はnull)
-  late int? selectedDepartmentIndex;
+  late int? _selectedDepartmentIndex;
   late List<Department> departmentList;
 
   @override
   void initialize() {
     departmentList = DepartmentData().data;
-    selectedDepartmentIndex = null;
+    _selectedDepartmentIndex = null;
   }
 
   // テキストコントローラーのgetter
   TextEditingController get hospitalNameController => _hospitalNameController;
   TextEditingController get doctorNameController => _doctorNameController;
+
+  // 科目が選択された際の処理
+  void chaneDepartqmentIndex(int? index) {
+    _selectedDepartmentIndex = index;
+  }
+
+  int? get selectedDepartmentIndex => _selectedDepartmentIndex;
 
   // 設定されたクエリで医師検索を実行する
   Future<List<Doctor>> searchDoctors() async {

@@ -166,7 +166,7 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                         selectIndex: controller.selectedDepartmentIndex,
                         onChanged: (int? value) {
                           // valueをセット。"未選択"の場合はnullが入る
-                          controller.selectedDepartmentIndex = value;
+                          controller.chaneDepartqmentIndex(value);
                         },
                       ),
                     ),
