@@ -144,7 +144,7 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                       child: CustomDropdown(
                         height: 44,
                         dropdownItems: [
-                          //　未選択だけはnullをセット
+                          // 未選択だけはnullをセット
                           const DropdownMenuItem(
                             value: null,
                             child: CustomText(
