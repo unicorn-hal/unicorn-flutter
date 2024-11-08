@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 
-class FirebaseCloudStrorageService {
+class FirebaseCloudStorageService {
   FirebaseStorage get _firebaseStorage => FirebaseStorage.instance;
 
   Future<String> _uploadFile(String path, File file,
