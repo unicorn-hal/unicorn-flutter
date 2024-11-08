@@ -292,6 +292,7 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
+                          final Doctor doctor = snapshot.data![index];
                           return Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 4.0,
@@ -300,14 +301,12 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                             child: UserInfoTile(
                               tileColor: ColorName.userInfoTileBackground,
                               onTap: () {
-                                ChatDoctorInformationRoute(
-                                        snapshot.data![index].doctorId)
+                                ChatDoctorInformationRoute(doctor.doctorId)
                                     .push(context);
                               },
-                              userName: snapshot.data![index].firstName +
-                                  snapshot.data![index].lastName,
+                              userName: doctor.firstName + doctor.lastName,
                               description:
-                                  '病院: ${snapshot.data![index].hospital.hospitalName} 診療科: ${snapshot.data![index].departments.map((e) => e.departmentName).join(',')}',
+                                  '病院: ${doctor.hospital.hospitalName} 診療科: ${doctor.departments.map((e) => e.departmentName).join(',')}',
                             ),
                           );
                         });
