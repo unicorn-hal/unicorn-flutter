@@ -73,8 +73,7 @@ class DoctorSearchController extends ControllerCore {
     _doctorList = await _doctorApi.getDoctorList(
           doctorName: doctorName,
           hospitalName: hospitalName,
-          departmentId:
-              DepartmentData().data[_selectedDepartmentIndex].departmentId,
+          departmentId: _departmentList[_selectedDepartmentIndex].departmentId,
         ) ??
         [];
 
