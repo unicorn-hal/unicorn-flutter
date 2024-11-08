@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/Search/doctor_search_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
-import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
-import 'package:unicorn_flutter/View/Component/Parts/user_info_tile.dart';
+
 import 'package:unicorn_flutter/gen/colors.gen.dart';
+
+import '../../../../Route/router.dart';
+import '../../../Component/Parts/user_info_tile.dart';
 
 class DoctorSearchView extends StatefulWidget {
   const DoctorSearchView({super.key});
@@ -68,8 +72,20 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                   child: const Center(
                     child: Padding(
                       padding: EdgeInsets.only(left: 16.0),
-                      child: CustomText(
-                        text: '病院名 :',
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.apartment,
+                            color: ColorName.mainColor,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(2.0),
+                            child: CustomText(
+                              text: '病院名',
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -101,8 +117,20 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                   child: const Center(
                     child: Padding(
                       padding: EdgeInsets.only(left: 16.0),
-                      child: CustomText(
-                        text: '診療科 :',
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.healing,
+                            color: ColorName.mainColor,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(2.0),
+                            child: CustomText(
+                              text: '診察科',
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -116,6 +144,14 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                       child: CustomDropdown(
                         height: 44,
                         dropdownItems: [
+                          //　未選択だけはnullをセット
+                          const DropdownMenuItem(
+                            value: null,
+                            child: CustomText(
+                              text: '未選択',
+                              fontSize: 12,
+                            ),
+                          ),
                           for (Department department
                               in controller.departmentList)
                             DropdownMenuItem(
@@ -127,8 +163,14 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                               ),
                             ),
                         ],
+                        selectIndex: controller.selectedDepartmentIndex,
                         onChanged: (int? value) {
-                          controller.setSelectedDepartmentIndex(value!);
+                          // 未選択の場合はnullをセット
+                          if (value == null) {
+                            controller.selectedDepartmentIndex = null;
+                            return;
+                          }
+                          controller.selectedDepartmentIndex = value;
                         },
                       ),
                     ),
@@ -148,8 +190,20 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                   child: const Center(
                     child: Padding(
                       padding: EdgeInsets.only(left: 16.0),
-                      child: CustomText(
-                        text: '医師名 :',
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.face,
+                            color: ColorName.mainColor,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(2.0),
+                            child: CustomText(
+                              text: '医師名',
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -174,6 +228,21 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
             ),
           ),
 
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: SizedBox(
+              height: 36,
+              width: size.width * 0.9,
+              child: CustomButton(
+                text: '検索',
+                onTap: () {
+                  setState(() {});
+                },
+                isFilledColor: true,
+              ),
+            ),
+          ),
+
           const SpacerAndDivider(
             topHeight: 4.0,
             bottomHeight: 0,
@@ -189,16 +258,35 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                   child: CustomText(text: '検索結果'),
                 ),
               ),
-              StreamBuilder<List<Doctor>>(
-                  stream: controller.doctorListStream,
+              FutureBuilder<List<Doctor>>(
+                  future: controller.searchDoctors(),
                   builder: (context, snapshot) {
-                    if (snapshot.data?.isEmpty ?? true) {
-                      return const Center(
-                        child: SizedBox(
-                          width: 300,
-                          height: 300,
-                          child: Center(
-                            child: CustomText(text: '該当する医師が見つかりませんでした'),
+                    // 通信中はローディングを表示
+                    if (snapshot.connectionState != ConnectionState.done) {
+                      return const SizedBox(
+                        width: 300,
+                        height: 300,
+                        child: Center(
+                          child: CustomIndicator(),
+                        ),
+                      );
+                    }
+                    // 通信失敗＆データがない場合は文字を表示
+                    if (snapshot.hasData && snapshot.data!.isEmpty) {
+                      return const SizedBox(
+                        width: 300,
+                        height: 300,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.search_off,
+                                size: 40,
+                                color: ColorName.mainColor,
+                              ),
+                              CustomText(text: '該当する医師が見つかりませんでした'),
+                            ],
                           ),
                         ),
                       );
