@@ -16,6 +16,7 @@ class ChatTopView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     ChatTopController controller = ChatTopController();
     final Size size = MediaQuery.of(context).size;
     return Stack(
@@ -90,36 +91,35 @@ class ChatTopView extends StatelessWidget {
                       ),
                     ),
                   );
-                } else {
-                  // チャット履歴がある場合はリスト表示
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 4.0,
-                    ),
-                    width: size.width,
-                    constraints: const BoxConstraints(
-                      minHeight: 400,
-                    ),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: chatData.data.length,
-                      itemBuilder: (context, index) {
-                        return UserInfoTile(
-                          onTap: () {
-                            // todo: それぞれのチャット画面へ遷移
-                            ChatDoctorInformationRoute(
-                              chatData.data[index].doctor.doctorId,
-                            ).push(context);
-                          },
-                          userName: chatData.data[index].doctor.firstName +
-                              chatData.data[index].doctor.lastName,
-                          description: chatData.data[index].latestMessageText,
-                        );
-                      },
-                    ),
-                  );
                 }
+                // チャット履歴がある場合はリスト表示
+                return Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4.0,
+                  ),
+                  width: size.width,
+                  constraints: const BoxConstraints(
+                    minHeight: 400,
+                  ),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: chatData.data.length,
+                    itemBuilder: (context, index) {
+                      return UserInfoTile(
+                        onTap: () {
+                          // todo: それぞれのチャット画面へ遷移
+                          ChatDoctorInformationRoute(
+                            chatData.data[index].doctor.doctorId,
+                          ).push(context);
+                        },
+                        userName: chatData.data[index].doctor.firstName +
+                            chatData.data[index].doctor.lastName,
+                        description: chatData.data[index].latestMessageText,
+                      );
+                    },
+                  ),
+                );
               }),
             ],
           ),
