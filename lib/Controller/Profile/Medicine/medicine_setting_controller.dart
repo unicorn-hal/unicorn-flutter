@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/Enum/day_of_week_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/medicine_request.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/reminder.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/reminder_request.dart';
+import 'package:unicorn_flutter/Service/Api/Medicine/medicine_api.dart';
 import 'package:uuid/uuid.dart';
 
 class MedicineSettingController extends ControllerCore {
   /// Serviceのインスタンス化
+  MedicineApi get _medicineApi => MedicineApi();
 
   /// コンストラクタ
   MedicineSettingController(this.medicine);
@@ -136,5 +141,58 @@ class MedicineSettingController extends ControllerCore {
       }
     }
     return displayedReminderDayOfWeek;
+  }
+
+  ///List<Reminder>型のremindersをList<ReminderRequest>型に変換する関数
+  List<ReminderRequest> createReminderRequestList(List<Reminder> reminders) {
+    List<ReminderRequest> reminderRequestList = [];
+    for (var i = 0; i < reminders.length; i++) {
+      reminderRequestList.add(reminders[i].toRequest());
+    }
+    return reminderRequestList;
+  }
+
+  ///Medicineの情報を更新する関数
+  void putMedicine() {
+    if (!emptyCheck()) {
+      return;
+    }
+    MedicineRequest body = MedicineRequest(
+      medicineName: nameController.text,
+      count: int.parse(countController.text),
+      quantity: int.parse(countController.text),
+      dosage: selectIndex!,
+      reminders: createReminderRequestList(reminders),
+    );
+    _medicineApi.putMedicine(body: body, medicineId: medicine!.medicineId);
+  }
+
+  ///Medicineの情報を登録する関数
+  void postMedicine() {
+    if (!emptyCheck()) {
+      return;
+    }
+    MedicineRequest body = MedicineRequest(
+      medicineName: nameController.text,
+      count: int.parse(countController.text),
+      quantity: int.parse(countController.text),
+      dosage: selectIndex!,
+      reminders: createReminderRequestList(reminders),
+    );
+    _medicineApi.postMedicine(body: body);
+  }
+
+  ///Medicineの情報を削除する関数
+  void deleteMedicine() {
+    _medicineApi.deleteMedicine(medicineId: medicine!.medicineId);
+  }
+
+  ///TextEditingControllerが空文字でないかチェックする関数
+  bool emptyCheck() {
+    if ((countController.text == '') || (nameController.text == '')) {
+      Fluttertoast.showToast(msg: 'おくすりの名称とおくすりの量は必須の入力項目です');
+      return false;
+    }
+    return true;
   }
 }

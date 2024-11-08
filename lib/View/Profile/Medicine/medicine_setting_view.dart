@@ -29,30 +29,6 @@ class MedicineSettingView extends StatefulWidget {
 
 class _MedicineSettingViewState extends State<MedicineSettingView> {
   late MedicineSettingController controller;
-  bool registration = true;
-  bool repeat = false;
-  List<String> weekdays = [
-    '毎月曜日',
-    '毎火曜日',
-    '毎水曜日',
-    '毎木曜日',
-    '毎金曜日',
-    '毎土曜日',
-    '毎日曜日',
-  ];
-  DateTime now = DateTime.now();
-  String repeatWeek = '月,火,水,木,金,土';
-  List<String> reminderList = [];
-
-  List<Map<String, dynamic>> repeatWeekList = [
-    {'name': '毎日曜日', 'check': false},
-    {'name': '毎月曜日', 'check': false},
-    {'name': '毎火曜日', 'check': false},
-    {'name': '毎水曜日', 'check': false},
-    {'name': '毎木曜日', 'check': false},
-    {'name': '毎金曜日', 'check': false},
-    {'name': '毎土曜日', 'check': false},
-  ];
   @override
   void initState() {
     super.initState();
@@ -82,8 +58,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                           title: Strings.DIALOG_TITLE_CAVEAT,
                           bodyText: Strings.DIALOG_BODY_TEXT_DELETE,
                           onTap: () {
+                            controller.deleteMedicine();
                             Navigator.pop(context);
-                            // todo: controller出来たら削除処理追加
                           },
                         );
                       },
@@ -429,7 +405,6 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                                                               remindersIndex,
                                                                           index:
                                                                               index);
-                                                                      // todo: controller出来たら変更
                                                                       setState(
                                                                           () {});
                                                                     },
@@ -484,7 +459,10 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                 child: CustomButton(
                   text: '保存',
                   onTap: () {
-                    Navigator.pop(context);
+                    widget.medicine != null
+                        ? controller.putMedicine()
+                        : controller.postMedicine();
+                    controller.emptyCheck() ? Navigator.pop(context) : null;
                   },
                   isFilledColor: true,
                 ),
