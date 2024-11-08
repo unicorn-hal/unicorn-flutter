@@ -270,7 +270,9 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                           )),
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    controller.submit();
+                  },
                   // todo: 次のViewができ次第ルーティングします。
                 )
               ],

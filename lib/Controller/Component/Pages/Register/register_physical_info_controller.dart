@@ -28,4 +28,8 @@ class RegisterPhysicalInfoController extends ControllerCore {
     bodyHeight = double.tryParse(bodyHeightTextController.text);
     bodyWeight = double.tryParse(bodyWeightTextController.text);
   }
+
+  void submit() {
+    print('aaa');
+  }
 }
