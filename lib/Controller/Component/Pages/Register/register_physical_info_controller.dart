@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 
 class RegisterPhysicalInfoController extends ControllerCore {
   UserApi get _userApi => UserApi();
+
   late String firstName;
   late String lastName;
   UserGenderEnum? gender;
@@ -29,7 +31,15 @@ class RegisterPhysicalInfoController extends ControllerCore {
     bodyWeight = double.tryParse(bodyWeightTextController.text);
   }
 
-  void submit() {
-    print('aaa');
+  PhysicalInfo submit() {
+    PhysicalInfo physicalInfo = PhysicalInfo(
+      firstName: firstName,
+      lastName: lastName,
+      gender: gender!,
+      birthDate: birthDate,
+      bodyHeight: bodyHeight!,
+      bodyWeight: bodyWeight!,
+    );
+    return physicalInfo;
   }
 }
