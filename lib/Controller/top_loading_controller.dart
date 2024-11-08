@@ -27,7 +27,6 @@ import '../Service/Api/Chat/chat_api.dart';
 import '../Model/Data/HealthCheckup/health_checkup_data.dart';
 import '../Model/Entity/HealthCheckUp/health_checkup.dart';
 import '../Model/Entity/User/user_request.dart';
-import '../Service/Api/Hospital/hospital_api.dart';
 
 class TopLoadingController extends ControllerCore {
   FirebaseAuthenticationService get _authService =>
@@ -39,7 +38,6 @@ class TopLoadingController extends ControllerCore {
   UserApi get _userApi => UserApi();
   ChatApi get _chatApi => ChatApi();
   DepartmentApi get _departmentApi => DepartmentApi();
-  HospitalApi get _hospitalApi => HospitalApi();
 
   BuildContext context;
   TopLoadingController(this.context);
