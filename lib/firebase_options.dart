@@ -45,7 +45,7 @@ class DefaultFirebaseOptions {
     appId: '1:384446500375:android:b22bb47230e79f0e1dd652',
     messagingSenderId: '384446500375',
     projectId: 'unicorn-hal',
-    storageBucket: 'unicorn-hal.appspot.com',
+    storageBucket: 'unicorn-hal.firebasestorage.app',
   );
 
   static FirebaseOptions ios = FirebaseOptions(
@@ -53,7 +53,7 @@ class DefaultFirebaseOptions {
     appId: '1:384446500375:ios:1ab744fad04cde071dd652',
     messagingSenderId: '384446500375',
     projectId: 'unicorn-hal',
-    storageBucket: 'unicorn-hal.appspot.com',
+    storageBucket: 'unicorn-hal.firebasestorage.app',
     iosBundleId: 'jp.ac.hal.unicorn',
   );
 }
