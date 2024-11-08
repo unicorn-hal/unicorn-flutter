@@ -1,69 +1,65 @@
 // ignore_for_file: non_constant_identifier_names
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart' as package;
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-
-enum ImageSource { gallery, camera }
+import 'package:image_picker/image_picker.dart';
+import 'package:image/image.dart' as img;
 
 class ImageUtilsService {
   package.ImagePicker get _imagePicker => package.ImagePicker();
 
-  int get IMAGE_MIN_HEIGHT => 512;
-  int get IMAGE_MIN_WIDTH => 512;
+  final int _IMAGE_MIN = 512;
 
   /// 画像を選択する
-  /// [imageSource] 画像の選択元
-  Future<Uint8List?> getImageBinary(ImageSource imageSource) async {
+  /// [imageSource] 画像の選択元 (gallery or camera)
+  Future<File> getImageFile(ImageSource imageSource) async {
     final XFile? image = await _imagePicker.pickImage(
         source: imageSource == ImageSource.gallery
             ? package.ImageSource.gallery
             : package.ImageSource.camera);
     if (image == null) {
-      return null;
+      throw Exception('No image selected');
     }
-    Uint8List? compressedImage = await _compressImage(image);
-    if (compressedImage == null) {
-      return null;
-    }
-    return compressedImage;
+    File convertedImage = await _compressAndConvertToPng(image);
+    return convertedImage;
   }
 
   /// 画像を圧縮する
-  Future<Uint8List?> _compressImage(XFile image) async {
-    final Uint8List? result = await FlutterImageCompress.compressWithFile(
-      image.path,
-      quality: 85,
-      minHeight: IMAGE_MIN_HEIGHT,
-      minWidth: IMAGE_MIN_WIDTH,
+  Future<File> _compressImage(XFile image) async {
+    File file = File(image.path);
+    XFile? compressedImage = await FlutterImageCompress.compressAndGetFile(
+      file.path,
+      file.path.replaceAll(RegExp(r'\.\w+$'), '_compressed.jpg'),
+      minHeight: _IMAGE_MIN,
+      minWidth: _IMAGE_MIN,
+      quality: 80,
     );
-    return result;
+    if (compressedImage == null) {
+      throw Exception('Failed to compress image');
+    }
+    return File(compressedImage.path);
   }
 
-  /// Uint8ListをBase64に変換する
-  String uint8ListTob64(Uint8List uint8list) {
-    String base64String = base64Encode(uint8list);
-    return base64String;
+  /// pngに変換する
+  Future<File> _convertToPng(File image) async {
+    img.Image imageFile = img.decodeImage(image.readAsBytesSync())!;
+    File pngImage = File(image.path.replaceAll(RegExp(r'\.\w+$'), '.png'));
+    await pngImage.writeAsBytes(img.encodePng(imageFile));
+    return pngImage;
   }
 
-  /// Base64をUint8Listに変換する
-  Uint8List b64ToUint8List(String base64String) {
-    Uint8List uint8list = base64Decode(base64String);
-    return uint8list;
+  /// XFileを圧縮してpngに変換する
+  Future<File> _compressAndConvertToPng(XFile image) async {
+    File compressedImage = await _compressImage(image);
+    File pngImage = await _convertToPng(compressedImage);
+    return pngImage;
   }
 
   /// Uint8ListをImageに変換する
   Image uint8ListToImage(Uint8List uint8list) {
     Image image = Image.memory(uint8list);
-    return image;
-  }
-
-  /// Base64をImageに変換する
-  Image b64ToImage(String base64String) {
-    Uint8List uint8list = b64ToUint8List(base64String);
-    Image image = uint8ListToImage(uint8list);
     return image;
   }
 
@@ -77,5 +73,12 @@ class ImageUtilsService {
   Future<Uint8List> fileToUint8List(File file) async {
     Uint8List uint8list = await file.readAsBytes();
     return uint8list;
+  }
+
+  /// FileをImageに変換する
+  Future<Image> fileToImage(File file) async {
+    Uint8List uint8list = await fileToUint8List(file);
+    Image image = uint8ListToImage(uint8list);
+    return image;
   }
 }
