@@ -143,7 +143,7 @@ class MedicineSettingController extends ControllerCore {
       return '毎${DayOfWeekEnumType.toStringValueForKanji(reminders[index].reminderDayOfWeek[0])}曜日';
     }
     reminders[index].reminderDayOfWeek.sort((a, b) => a.index - b.index);
-    for (var i = 0; i < reminders[index].reminderDayOfWeek.length; i++) {
+    for (int i = 0; i < reminders[index].reminderDayOfWeek.length; i++) {
       if (i == 0) {
         displayedReminderDayOfWeek =
             '$displayedReminderDayOfWeek${DayOfWeekEnumType.toStringValueForKanji(reminders[index].reminderDayOfWeek[i])}';
@@ -159,7 +159,7 @@ class MedicineSettingController extends ControllerCore {
   List<ReminderRequest> createReminderRequestList(
       {required List<Reminder> reminders}) {
     List<ReminderRequest> reminderRequestList = [];
-    for (var i = 0; i < reminders.length; i++) {
+    for (int i = 0; i < reminders.length; i++) {
       reminderRequestList.add(reminders[i].toRequest());
     }
     return reminderRequestList;
