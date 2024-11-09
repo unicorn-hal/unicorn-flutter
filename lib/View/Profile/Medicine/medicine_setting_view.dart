@@ -57,8 +57,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                         return CustomDialog(
                           title: Strings.DIALOG_TITLE_CAVEAT,
                           bodyText: Strings.DIALOG_BODY_TEXT_DELETE,
-                          onTap: () {
-                            controller.deleteMedicine();
+                          onTap: () async {
+                            await controller.deleteMedicine();
                             Navigator.pop(context);
                           },
                         );
@@ -260,7 +260,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      int remindersIndex = index;
+                                      controller
+                                          .getReminderDayOfWeekList(index);
                                       showModalBottomSheet(
                                         backgroundColor: Colors.transparent,
                                         isScrollControlled: true,
@@ -288,6 +289,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                                       children: [
                                                         TextButton(
                                                           onPressed: () {
+                                                            controller
+                                                                .resetReminderDayOfWeekList();
                                                             Navigator.pop(
                                                                 context);
                                                           },
@@ -305,10 +308,12 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                                         ),
                                                         TextButton(
                                                           onPressed: () {
+                                                            controller
+                                                                .updateReminderDayOfWeek(
+                                                                    index);
                                                             setState(() {});
                                                             Navigator.pop(
                                                                 context);
-                                                            // todo: Controllerに渡す処理
                                                           },
                                                           child: const Padding(
                                                             padding:
@@ -389,8 +394,6 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                                                     title:
                                                                         '毎${controller.changeWeekday(index)}曜日',
                                                                     action: controller.checkReminderDayOfWeek(
-                                                                            remindersIndex:
-                                                                                remindersIndex,
                                                                             index:
                                                                                 index)
                                                                         ? const Icon(
@@ -401,8 +404,6 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                                                         : null,
                                                                     onTap: () {
                                                                       controller.addReminderDayOfWeek(
-                                                                          remindersIndex:
-                                                                              remindersIndex,
                                                                           index:
                                                                               index);
                                                                       setState(
@@ -423,7 +424,6 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                           );
                                         },
                                       );
-                                      setState(() {});
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.all(8),
@@ -458,10 +458,10 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                 width: deviceWidth * 0.9,
                 child: CustomButton(
                   text: '保存',
-                  onTap: () {
+                  onTap: () async {
                     widget.medicine != null
-                        ? controller.putMedicine()
-                        : controller.postMedicine();
+                        ? await controller.putMedicine()
+                        : await controller.postMedicine();
                     controller.emptyCheck() ? Navigator.pop(context) : null;
                   },
                   isFilledColor: true,

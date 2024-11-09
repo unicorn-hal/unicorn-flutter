@@ -23,6 +23,7 @@ class MedicineSettingController extends ControllerCore {
   TextEditingController countController = TextEditingController();
   int? selectIndex = 0;
   List<Reminder> reminders = [];
+  List<DayOfWeekEnum> reminderDayOfWeekList = [];
 
   /// initialize()
   @override
@@ -88,22 +89,27 @@ class MedicineSettingController extends ControllerCore {
     );
   }
 
+  ///Modalで使用するDayOfWeekEnum型のListを返す関数
+  List<DayOfWeekEnum> getReminderDayOfWeekList(int index) {
+    reminderDayOfWeekList = [...reminders[index].reminderDayOfWeek];
+    return reminderDayOfWeekList;
+  }
+
+  void resetReminderDayOfWeekList() {
+    reminderDayOfWeekList = [];
+  }
+
   ///reminderDayOfWeekに曜日を追加、削除する関数
-  void addReminderDayOfWeek({required int remindersIndex, required int index}) {
-    if (!reminders[remindersIndex]
-        .reminderDayOfWeek
+  void addReminderDayOfWeek({required int index}) {
+    if (!reminderDayOfWeekList
         .contains(DayOfWeekEnumType.fromWeekday(index + 1))) {
-      reminders[remindersIndex]
-          .reminderDayOfWeek
-          .add(DayOfWeekEnumType.fromWeekday(index + 1));
+      reminderDayOfWeekList.add(DayOfWeekEnumType.fromWeekday(index + 1));
       return;
     }
-    if (reminders[remindersIndex].reminderDayOfWeek.length <= 1) {
+    if (reminderDayOfWeekList.length <= 1) {
       return;
     }
-    reminders[remindersIndex]
-        .reminderDayOfWeek
-        .remove(DayOfWeekEnumType.fromWeekday(index + 1));
+    reminderDayOfWeekList.remove(DayOfWeekEnumType.fromWeekday(index + 1));
     return;
   }
 
@@ -114,11 +120,17 @@ class MedicineSettingController extends ControllerCore {
   }
 
   ///reminderDayOfWeekに選択した曜日があるかチェックする関数
-  bool checkReminderDayOfWeek(
-      {required int remindersIndex, required int index}) {
-    return reminders[remindersIndex]
-        .reminderDayOfWeek
+  bool checkReminderDayOfWeek({required int index}) {
+    return reminderDayOfWeekList
         .contains(DayOfWeekEnumType.fromWeekday(index + 1));
+  }
+
+  ///Modalの決定ボタンが押されたときにreminderDayOfWeekListの値をreminders[index].reminderDayOfWeekに入れる関数
+  void updateReminderDayOfWeek(int index) {
+    reminders[index] = Reminder(
+        reminderId: reminders[index].reminderId,
+        reminderTime: reminders[index].reminderTime,
+        reminderDayOfWeek: reminderDayOfWeekList);
   }
 
   ///reminderDayOfWeekをMedicineSettingViewに表示する形に成形する関数
@@ -153,7 +165,7 @@ class MedicineSettingController extends ControllerCore {
   }
 
   ///Medicineの情報を更新する関数
-  void putMedicine() {
+  Future<void> putMedicine() async {
     if (!emptyCheck()) {
       return;
     }
@@ -164,11 +176,12 @@ class MedicineSettingController extends ControllerCore {
       dosage: selectIndex!,
       reminders: createReminderRequestList(reminders),
     );
-    _medicineApi.putMedicine(body: body, medicineId: medicine!.medicineId);
+    await _medicineApi.putMedicine(
+        body: body, medicineId: medicine!.medicineId);
   }
 
   ///Medicineの情報を登録する関数
-  void postMedicine() {
+  Future<void> postMedicine() async {
     if (!emptyCheck()) {
       return;
     }
@@ -179,12 +192,12 @@ class MedicineSettingController extends ControllerCore {
       dosage: selectIndex!,
       reminders: createReminderRequestList(reminders),
     );
-    _medicineApi.postMedicine(body: body);
+    await _medicineApi.postMedicine(body: body);
   }
 
   ///Medicineの情報を削除する関数
-  void deleteMedicine() {
-    _medicineApi.deleteMedicine(medicineId: medicine!.medicineId);
+  Future<void> deleteMedicine() async {
+    await _medicineApi.deleteMedicine(medicineId: medicine!.medicineId);
   }
 
   ///TextEditingControllerが空文字でないかチェックする関数
