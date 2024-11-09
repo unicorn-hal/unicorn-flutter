@@ -19,9 +19,6 @@ class DoctorInformationView extends StatelessWidget {
 
   final String doctorId;
 
-  final String chatSupportHours = '平日9:00~12:00';
-  final String callSupportHours = '平日14:00~22:00';
-
   @override
   Widget build(BuildContext context) {
     DoctorInformationController controller =
@@ -159,7 +156,8 @@ class DoctorInformationView extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () {
                             // todo: 通話予約画面へ遷移
-                            ChatDoctorVoiceCallReserveRoute().push(context);
+                            const ChatDoctorVoiceCallReserveRoute()
+                                .push(context);
                           },
                           child: Container(
                             width: 160,
