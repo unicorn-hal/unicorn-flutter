@@ -64,6 +64,11 @@ class MedicineView extends StatelessWidget {
                       );
                     }
                     if (!snapshot.hasData) {
+                      // todo: エラー時の処理
+                      return Container();
+                    }
+                    List<Medicine> medicineList = snapshot.data!;
+                    if (medicineList.isEmpty) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -119,7 +124,6 @@ class MedicineView extends StatelessWidget {
                         ],
                       );
                     }
-                    List<Medicine> medicineList = snapshot.data!;
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
