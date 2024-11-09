@@ -40,7 +40,7 @@ class MedicineSettingController extends ControllerCore {
 
   /// 各関数の実装
   /// String型で受け取ったreminderTimeをDateTime型に変換する関数
-  DateTime changeDateTime(int index) {
+  DateTime changeDateTime({required int index}) {
     return DateTime.parse(
         '${DateFormat('yyyy-MM-dd').format(DateTime.now())} ${reminders[index].reminderTime}');
   }
@@ -68,7 +68,7 @@ class MedicineSettingController extends ControllerCore {
   }
 
   ///remindersから選択されたリマインダーを削除する関数
-  void deleteReminders(int index) {
+  void deleteReminders({required int index}) {
     reminders.removeAt(index);
   }
 
@@ -90,7 +90,7 @@ class MedicineSettingController extends ControllerCore {
   }
 
   ///Modalで使用するDayOfWeekEnum型のListを返す関数
-  List<DayOfWeekEnum> getReminderDayOfWeekList(int index) {
+  List<DayOfWeekEnum> getReminderDayOfWeekList({required int index}) {
     reminderDayOfWeekList = [...reminders[index].reminderDayOfWeek];
     return reminderDayOfWeekList;
   }
@@ -114,7 +114,7 @@ class MedicineSettingController extends ControllerCore {
   }
 
   ///intからModalに表示する漢字表記の曜日に変える関数
-  String changeWeekday(int index) {
+  String changeWeekday({required int index}) {
     return DayOfWeekEnumType.toStringValueForKanji(
         DayOfWeekEnumType.fromWeekday(index + 1));
   }
@@ -126,7 +126,7 @@ class MedicineSettingController extends ControllerCore {
   }
 
   ///Modalの決定ボタンが押されたときにreminderDayOfWeekListの値をreminders[index].reminderDayOfWeekに入れる関数
-  void updateReminderDayOfWeek(int index) {
+  void updateReminderDayOfWeek({required int index}) {
     reminders[index] = Reminder(
         reminderId: reminders[index].reminderId,
         reminderTime: reminders[index].reminderTime,
@@ -134,7 +134,7 @@ class MedicineSettingController extends ControllerCore {
   }
 
   ///reminderDayOfWeekをMedicineSettingViewに表示する形に成形する関数
-  String moldingReminderDayOfWeek(int index) {
+  String moldingReminderDayOfWeek({required int index}) {
     String displayedReminderDayOfWeek = '';
     if (reminders[index].reminderDayOfWeek.length == 7) {
       return '毎日';
@@ -156,7 +156,8 @@ class MedicineSettingController extends ControllerCore {
   }
 
   ///List<Reminder>型のremindersをList<ReminderRequest>型に変換する関数
-  List<ReminderRequest> createReminderRequestList(List<Reminder> reminders) {
+  List<ReminderRequest> createReminderRequestList(
+      {required List<Reminder> reminders}) {
     List<ReminderRequest> reminderRequestList = [];
     for (var i = 0; i < reminders.length; i++) {
       reminderRequestList.add(reminders[i].toRequest());
@@ -174,7 +175,7 @@ class MedicineSettingController extends ControllerCore {
       count: int.parse(countController.text),
       quantity: int.parse(countController.text),
       dosage: selectIndex!,
-      reminders: createReminderRequestList(reminders),
+      reminders: createReminderRequestList(reminders: reminders),
     );
     await _medicineApi.putMedicine(
         body: body, medicineId: medicine!.medicineId);
@@ -190,7 +191,7 @@ class MedicineSettingController extends ControllerCore {
       count: int.parse(countController.text),
       quantity: int.parse(countController.text),
       dosage: selectIndex!,
-      reminders: createReminderRequestList(reminders),
+      reminders: createReminderRequestList(reminders: reminders),
     );
     await _medicineApi.postMedicine(body: body);
   }

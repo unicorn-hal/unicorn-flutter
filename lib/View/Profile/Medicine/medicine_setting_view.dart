@@ -237,7 +237,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                 children: [
                                   IconButton(
                                     onPressed: () {
-                                      controller.deleteReminders(index);
+                                      controller.deleteReminders(index: index);
                                       setState(() {});
                                     },
                                     icon: const Icon(
@@ -253,15 +253,16 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                           date: date, index: index);
                                       Log.echo('date: $date');
                                     },
-                                    initValue: controller.changeDateTime(index),
+                                    initValue:
+                                        controller.changeDateTime(index: index),
                                   ),
                                   const SizedBox(
                                     width: 10,
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      controller
-                                          .getReminderDayOfWeekList(index);
+                                      controller.getReminderDayOfWeekList(
+                                          index: index);
                                       showModalBottomSheet(
                                         backgroundColor: Colors.transparent,
                                         isScrollControlled: true,
@@ -310,7 +311,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                                           onPressed: () {
                                                             controller
                                                                 .updateReminderDayOfWeek(
-                                                                    index);
+                                                                    index:
+                                                                        index);
                                                             setState(() {});
                                                             Navigator.pop(
                                                                 context);
@@ -392,7 +394,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                                                   child:
                                                                       CommonItemTile(
                                                                     title:
-                                                                        '毎${controller.changeWeekday(index)}曜日',
+                                                                        '毎${controller.changeWeekday(index: index)}曜日',
                                                                     action: controller.checkReminderDayOfWeek(
                                                                             index:
                                                                                 index)
@@ -432,8 +434,9 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                         borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: CustomText(
-                                        text: controller
-                                            .moldingReminderDayOfWeek(index),
+                                        text:
+                                            controller.moldingReminderDayOfWeek(
+                                                index: index),
                                         color: Colors.blue,
                                       ),
                                     ),
