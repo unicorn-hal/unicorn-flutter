@@ -19,13 +19,16 @@ class DoctorSearchController extends ControllerCore {
 
   // 選択された科のインデックス(未選択はnull)
   late int? _selectedDepartmentIndex;
-  late List<Department> departmentList;
+  late List<Department> _departmentList;
 
   @override
   void initialize() {
-    departmentList = DepartmentData().data;
+    _departmentList = DepartmentData().data;
     _selectedDepartmentIndex = null;
   }
+
+  // 科目リストのgetter
+  List<Department> get departmentList => _departmentList;
 
   // テキストコントローラーのgetter
   TextEditingController get hospitalNameController => _hospitalNameController;
