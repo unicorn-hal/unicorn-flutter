@@ -115,7 +115,8 @@ class ChatTopView extends StatelessWidget {
                         },
                         userName: chatData.data[index].doctor.firstName +
                             chatData.data[index].doctor.lastName,
-                        description: chatData.data[index].latestMessageText,
+                        description:
+                            '${chatData.data[index].latestMessageText}',
                       );
                     },
                   ),

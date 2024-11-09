@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:unicorn_flutter/Controller/Chat/Doctor/TextChat/doctor_text_chat_controller.dart';
+import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
+import 'package:unicorn_flutter/Model/Entity/Chat/message.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
@@ -13,6 +18,7 @@ class DoctorTextChatView extends StatefulWidget {
 }
 
 class _DoctorTextChatViewState extends State<DoctorTextChatView> {
+  late DoctorTextChatController controller;
   // todo: controllerを使ってチャット型のリストを作る
   final List<Map<String, bool>> chatList = [
     {
@@ -75,7 +81,7 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
   final String doctorName = '長谷川';
 
   //　チャット用のコントローラー
-  final TextEditingController controller = TextEditingController();
+  final TextEditingController chatController = TextEditingController();
 
   // フォーカス用のノード
   final focusNode = FocusNode();
@@ -89,6 +95,7 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
   @override
   void initState() {
     super.initState();
+    controller = DoctorTextChatController('1234567890');
 
     //画面が表示された時にスクロール位置が最下部になるようにする
     WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -137,28 +144,36 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
           SizedBox(
             child: Stack(
               children: [
-                Column(
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: chatList.length,
-                        controller: scrollController,
-                        shrinkWrap: true,
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        itemBuilder: (BuildContext context, int index) {
-                          // todo: モデルに変更して当てはめる
-                          return MessageTile(
-                              messageBody: chatList[index].keys.first,
-                              myMessage: chatList[index].values.first,
-                              postAt: '12:00');
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 60,
-                    ),
-                  ],
-                ),
+                ValueListenableBuilder<List<Message>>(
+                    valueListenable: controller.messageHistory,
+                    builder: (context, value, child) {
+                      return Column(
+                        children: [
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: value.length,
+                              controller: scrollController,
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemBuilder: (BuildContext context, int index) {
+                                final Message message = value[index];
+
+                                return MessageTile(
+                                  messageBody: message.content,
+                                  // 自分のメッセージかどうかを判定
+                                  myMessage: message.senderId ==
+                                      AccountData().account!.uid,
+                                  postAt: message.sentAt.toString(),
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 60,
+                          ),
+                        ],
+                      );
+                    }),
                 Positioned(
                   bottom: 80,
                   right: 20,
@@ -211,7 +226,7 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
                     ),
                     child: CustomTextfield(
                       hintText: 'メッセージを入力',
-                      controller: controller,
+                      controller: chatController,
                       width: size.width * 0.85,
                       height: 44,
                     ),
