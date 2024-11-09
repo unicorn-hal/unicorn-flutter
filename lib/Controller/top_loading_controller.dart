@@ -9,10 +9,11 @@ import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account_request.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat.dart';
+import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/Account/account_api.dart';
-import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
+import 'package:unicorn_flutter/Service/Api/Department/department_api.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_service.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudMessaging/cloud_messaging_service.dart';
@@ -21,6 +22,7 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:unicorn_flutter/Service/Package/SystemInfo/system_info_service.dart';
 
 import '../Model/Chat/chat_data.dart';
+import '../Model/Data/Department/department_data.dart';
 import '../Service/Api/Chat/chat_api.dart';
 import '../Model/Data/HealthCheckup/health_checkup_data.dart';
 import '../Model/Entity/HealthCheckUp/health_checkup.dart';
@@ -35,6 +37,7 @@ class TopLoadingController extends ControllerCore {
   AccountApi get _accountApi => AccountApi();
   UserApi get _userApi => UserApi();
   ChatApi get _chatApi => ChatApi();
+  DepartmentApi get _departmentApi => DepartmentApi();
 
   BuildContext context;
   TopLoadingController(this.context);
@@ -105,6 +108,15 @@ class TopLoadingController extends ControllerCore {
 
     /// シングルトンにアカウント情報を保存
     AccountData().setAccount(account!);
+
+    // 診療科一覧を取得してデータクラスに保存
+    final List<Department>? departmentList =
+        await _departmentApi.getDepartmentList();
+
+    if (departmentList != null) {
+      DepartmentData().setDepartment(departmentList);
+      Log.echo('Department: ${departmentList.map((e) => e.toJson()).toList()}');
+    }
 
     /// 検診結果の取得とシングルトンへの保存
     final List<HealthCheckup>? healthCheckup =
