@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
-import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 
 class RegisterPhysicalInfoController extends ControllerCore {
-  UserApi get _userApi => UserApi();
-
-  late String firstName;
-  late String lastName;
-  UserGenderEnum? gender;
   late DateTime birthDate;
-  double? bodyHeight;
-  double? bodyWeight;
+  UserGenderEnum? gender;
 
   final TextEditingController firstNameTextController = TextEditingController();
   final TextEditingController lastNameTextController = TextEditingController();
@@ -24,22 +17,39 @@ class RegisterPhysicalInfoController extends ControllerCore {
 
   @override
   void initialize() {
-    firstName = firstNameTextController.text;
-    lastName = lastNameTextController.text;
     birthDate = DateTime.now();
-    bodyHeight = double.tryParse(bodyHeightTextController.text);
-    bodyWeight = double.tryParse(bodyWeightTextController.text);
   }
 
   PhysicalInfo submit() {
+    // print(firstNameTextController.text);
     PhysicalInfo physicalInfo = PhysicalInfo(
-      firstName: firstName,
-      lastName: lastName,
-      gender: gender!,
+      firstName: firstNameTextController.text,
+      lastName: lastNameTextController.text,
+      gender: gender,
       birthDate: birthDate,
-      bodyHeight: bodyHeight!,
-      bodyWeight: bodyWeight!,
+      bodyHeight: double.tryParse(bodyHeightTextController.text.trim()),
+      bodyWeight: double.tryParse(bodyWeightTextController.text.trim()),
     );
     return physicalInfo;
+  }
+
+  bool validateField() {
+    List<String> emptyMessageField = [];
+    firstNameTextController.text.isEmpty
+        ? emptyMessageField.add("お名前（姓）")
+        : null;
+    lastNameTextController.text.isEmpty
+        ? emptyMessageField.add("お名前（名）")
+        : null;
+    gender == null ? emptyMessageField.add("性別") : null;
+    bodyHeightTextController.text.isEmpty ? emptyMessageField.add("身長") : null;
+    bodyWeightTextController.text.isEmpty ? emptyMessageField.add("体重") : null;
+
+    if (emptyMessageField.isNotEmpty) {
+      Fluttertoast.showToast(
+          msg: "${emptyMessageField.join(',')}が入力または選択されていません。");
+      return false;
+    }
+    return true;
   }
 }
