@@ -261,7 +261,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      controller.getReminderDayOfWeekList(
+                                      controller.copyReminderDayOfWeek(
                                           index: index);
                                       showModalBottomSheet(
                                         backgroundColor: Colors.transparent,
@@ -394,8 +394,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                                                   child:
                                                                       CommonItemTile(
                                                                     title:
-                                                                        '毎${controller.changeWeekday(index: index)}曜日',
-                                                                    action: controller.checkReminderDayOfWeek(
+                                                                        '毎${controller.getDayAbbreviation(index: index)}曜日',
+                                                                    action: controller.checkReminderDayOfWeekList(
                                                                             index:
                                                                                 index)
                                                                         ? const Icon(
@@ -405,7 +405,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                                                           )
                                                                         : null,
                                                                     onTap: () {
-                                                                      controller.addReminderDayOfWeek(
+                                                                      controller.changeReminderDayOfWeekList(
                                                                           index:
                                                                               index);
                                                                       setState(

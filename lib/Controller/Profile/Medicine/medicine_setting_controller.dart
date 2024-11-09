@@ -89,8 +89,8 @@ class MedicineSettingController extends ControllerCore {
     );
   }
 
-  ///Modalで使用するDayOfWeekEnum型のListを返す関数
-  List<DayOfWeekEnum> getReminderDayOfWeekList({required int index}) {
+  ///Modalで使用するためにDayOfWeekEnum型のListを複製する関数
+  List<DayOfWeekEnum> copyReminderDayOfWeek({required int index}) {
     _reminderDayOfWeekList = [...reminders[index].reminderDayOfWeek];
     return _reminderDayOfWeekList;
   }
@@ -100,7 +100,7 @@ class MedicineSettingController extends ControllerCore {
   }
 
   ///reminderDayOfWeekに曜日を追加、削除する関数
-  void addReminderDayOfWeek({required int index}) {
+  void changeReminderDayOfWeekList({required int index}) {
     if (!_reminderDayOfWeekList
         .contains(DayOfWeekEnumType.fromWeekday(index + 1))) {
       _reminderDayOfWeekList.add(DayOfWeekEnumType.fromWeekday(index + 1));
@@ -114,13 +114,13 @@ class MedicineSettingController extends ControllerCore {
   }
 
   ///intからModalに表示する漢字表記の曜日に変える関数
-  String changeWeekday({required int index}) {
+  String getDayAbbreviation({required int index}) {
     return DayOfWeekEnumType.toStringValueForKanji(
         DayOfWeekEnumType.fromWeekday(index + 1));
   }
 
   ///reminderDayOfWeekに選択した曜日があるかチェックする関数
-  bool checkReminderDayOfWeek({required int index}) {
+  bool checkReminderDayOfWeekList({required int index}) {
     return _reminderDayOfWeekList
         .contains(DayOfWeekEnumType.fromWeekday(index + 1));
   }
