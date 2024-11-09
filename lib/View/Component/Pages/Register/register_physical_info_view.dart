@@ -27,6 +27,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
 
   @override
   void initState() {
+    super.initState();
     controller = RegisterPhysicalInfoController();
   }
 
@@ -211,6 +212,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                   child: FittedBox(
                     fit: BoxFit.cover,
                     child: CustomDrumRoll(
+                      maxDate: controller.birthDate,
                       initValue: controller.birthDate,
                       drumRollType: DrumRollType.date,
                       onConfirm: (DateTime date) {
@@ -238,6 +240,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                         maxLines: 1,
                         controller: controller.bodyHeightTextController,
                         width: deviceWidth * 0.4,
+                        keyboardType: TextInputType.number,
                       ),
                     ),
                     SizedBox(
@@ -248,6 +251,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                         maxLines: 1,
                         controller: controller.bodyWeightTextController,
                         width: deviceWidth * 0.4,
+                        keyboardType: TextInputType.number,
                       ),
                     ),
                   ],
@@ -272,10 +276,11 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                   ),
                   onTap: () {
                     PhysicalInfo physicalInfo = controller.submit();
-                    ProfileRegisterAddressInfoRoute($extra: physicalInfo)
-                        .push(context);
+                    controller.validateField()
+                        ? ProfileRegisterAddressInfoRoute($extra: physicalInfo)
+                            .push(context)
+                        : null;
                   },
-                  // todo: 次のViewができ次第ルーティングします。
                 )
               ],
             ),
