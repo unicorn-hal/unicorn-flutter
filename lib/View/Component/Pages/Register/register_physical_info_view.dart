@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_physical_info_controller.dart';
@@ -237,7 +235,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                       child: CustomTextfield(
                         hintText: '身長(cm)',
                         height: 44,
-                        maxLines: 3,
+                        maxLines: 1,
                         controller: controller.bodyHeightTextController,
                         width: deviceWidth * 0.4,
                       ),
@@ -247,7 +245,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                       child: CustomTextfield(
                         hintText: '体重(kg)',
                         height: 44,
-                        maxLines: 3,
+                        maxLines: 1,
                         controller: controller.bodyWeightTextController,
                         width: deviceWidth * 0.4,
                       ),
