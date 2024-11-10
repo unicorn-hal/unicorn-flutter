@@ -3,10 +3,10 @@ import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
 class PhysicalInfo {
   final String firstName;
   final String lastName;
-  final UserGenderEnum? gender;
+  final UserGenderEnum gender;
   final DateTime birthDate;
-  final double? bodyHeight;
-  final double? bodyWeight;
+  final double bodyHeight;
+  final double bodyWeight;
 
   PhysicalInfo({
     required this.firstName,

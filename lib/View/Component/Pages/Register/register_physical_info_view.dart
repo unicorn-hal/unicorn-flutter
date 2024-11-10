@@ -23,7 +23,6 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
   late RegisterPhysicalInfoController controller;
 
   final FocusNode focusnode = FocusNode();
-  // todo: Controllerが完成次第、ここに追記していきます。
 
   @override
   void initState() {
@@ -275,11 +274,12 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                     ),
                   ),
                   onTap: () {
-                    PhysicalInfo physicalInfo = controller.submit();
-                    controller.validateField()
-                        ? ProfileRegisterAddressInfoRoute($extra: physicalInfo)
-                            .push(context)
-                        : null;
+                    PhysicalInfo? physicalInfo = controller.submit();
+                    if (physicalInfo == null) {
+                      return;
+                    }
+                    ProfileRegisterAddressInfoRoute($extra: physicalInfo)
+                        .push(context);
                   },
                 )
               ],
