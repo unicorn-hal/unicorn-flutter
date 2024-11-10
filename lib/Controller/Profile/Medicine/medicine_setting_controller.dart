@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/Enum/day_of_week_enum.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine_request.dart';
@@ -211,7 +212,7 @@ class MedicineSettingController extends ControllerCore {
   ///TextEditingControllerが空文字でないかチェックする関数
   bool validateField() {
     if ((countController.text == '') || (nameController.text == '')) {
-      Fluttertoast.showToast(msg: 'おくすりの名称とおくすりの量は必須の入力項目です');
+      Fluttertoast.showToast(msg: Strings.MEDICINE_VALIDATE_TEXT);
       return false;
     }
     return true;
