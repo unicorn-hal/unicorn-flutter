@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 import 'package:unicorn_flutter/Model/Chat/chat_data.dart';
 
@@ -9,6 +11,7 @@ import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat_request.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat_response.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/message.dart';
+import 'package:unicorn_flutter/Model/Entity/Chat/message_request.dart';
 import 'package:unicorn_flutter/Service/Api/Chat/chat_api.dart';
 
 import '../../../../Model/Entity/Chat/chat.dart';
@@ -16,6 +19,7 @@ import '../../../Core/controller_core.dart';
 
 class DoctorTextChatController extends ControllerCore {
   ChatApi get _chatApi => ChatApi();
+
   DoctorTextChatController(
     this._doctorId,
   );
@@ -25,19 +29,39 @@ class DoctorTextChatController extends ControllerCore {
   final String _doctorId;
 
   late ValueNotifier<List<Message>> _messageHistory;
-  late List<Message> _newMessageList;
+  StreamController<List> streamController = StreamController();
+
+  // スクロール用のコントローラー
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initialize() async {
+    // メッセージ履歴の初期化
     _messageHistory = ValueNotifier([]);
+
+    // メッセージ履歴が更新された場合、画面をスクロール
+    _messageHistory.addListener(() {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (scrollController.hasClients) {
+          scrollController.jumpTo(
+            scrollController.position.maxScrollExtent,
+          );
+        }
+      });
+    });
+
+    // 初回メッセージの場合は新規チャットを作成
     _firstMessage = await _chatMessageNotExists();
+
     if (_firstMessage) {
       _chatId = await _createChat();
     } else {
       _chatId = await _getChatId();
     }
     await _getMessageHistory();
-    _getNewMessage();
+
+    // メッセージの受信を開始
+    _listenNewMessage();
   }
 
   // 該当医師とのチャット履歴があるか
@@ -65,6 +89,8 @@ class DoctorTextChatController extends ControllerCore {
     if (response == null) {
       // todo: エラー時はアプリを再起動させる
     }
+
+    // 新規作成したチャットをデータクラスに追加
     ChatData().addChat(Chat.fromJson(response!.toJson()));
     return response.chatId;
   }
@@ -76,24 +102,69 @@ class DoctorTextChatController extends ControllerCore {
     _messageHistory.value = messageList;
   }
 
-  ValueNotifier<List<Message>> get messageHistory => _messageHistory;
-
-  void _getNewMessage() {
+  // メッセージの受信を開始
+  void _listenNewMessage() {
     late StompClient stompClient;
+    // todo: 環境変数に移動
+
+    String wsUrl =
+        '${dotenv.env['UNICORN_API_BASEURL']!.replaceFirst(RegExp('https'), 'ws')}/ws';
+    final String destination = '/topic/chats/$_chatId/messages';
 
     stompClient = StompClient(
       config: StompConfig(
-        url: 'ws://unicorn-monorepo-384446500375.asia-east1.run.app/ws',
+        url: wsUrl,
         onConnect: (StompFrame frame) {
           stompClient.subscribe(
-              destination: '/topic/chats/$_chatId/messages',
-              callback: (StompFrame frame) {
-                print('💎new: ${frame.body}');
+              destination: destination,
+              callback: (StompFrame frame) async {
+                try {
+                  // Stringで受け取ったメッセージをjsonに変換
+                  final Map<String, dynamic> json =
+                      jsonDecode(frame.body!) as Map<String, dynamic>;
+
+                  // メッセージを追加
+                  final Message message = Message.fromJson(
+                    {
+                      'messageID': json['messageID'],
+                      'chatID': json['chatID'],
+                      'senderID': json['senderID'],
+                      'firstName': json['firstName'],
+                      'lastName': json['lastName'],
+                      'iconImageUrl': json['iconImageUrl'],
+                      'content': json['content'],
+                      'sentAt': json['sentAt'],
+                    },
+                  );
+                  _messageHistory.value = List.from(_messageHistory.value)
+                    ..add(message);
+                } catch (e) {
+                  // todo: エラー処理
+                }
               });
+        },
+        onStompError: (StompFrame frame) {
+          // todo: エラー処理
+        },
+        onDisconnect: (StompFrame frame) {
+          // 切断時にStreamを閉じる
+          streamController.close();
         },
       ),
     );
 
+    // アクティベート
     stompClient.activate();
   }
+
+  // テキストフィールドに入力されたメッセージを送信
+  Future<void> sendMessage() async {
+    MessageRequest message = MessageRequest(
+      senderId: AccountData().account!.uid,
+      content: 'あくしろ',
+    );
+    await _chatApi.postMessage(body: message, chatId: _chatId);
+  }
+
+  ValueNotifier<List<Message>> get messageHistory => _messageHistory;
 }

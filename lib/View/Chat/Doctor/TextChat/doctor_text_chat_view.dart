@@ -18,63 +18,6 @@ class DoctorTextChatView extends StatefulWidget {
 
 class _DoctorTextChatViewState extends State<DoctorTextChatView> {
   late DoctorTextChatController controller;
-  // todo: controllerを使ってチャット型のリストを作る
-  final List<Map<String, bool>> chatList = [
-    {
-      '何してんですか': true,
-    },
-    {
-      '何もしてないよ': false,
-    },
-    {
-      '昨日のテレビ見ましたか？': true,
-    },
-    {
-      'ずっと仕事だったわ': false,
-    },
-    {
-      '普通に面白かったですよ': true,
-    },
-    {
-      '病気だよお前': false,
-    },
-    {
-      'マジか': true,
-    },
-    {
-      'どんなの？': false,
-    },
-    {
-      'ああああ': true,
-    },
-    {
-      'あああああああ': false,
-    },
-    {
-      '昨日のテレビ見ましたか？': true,
-    },
-    {
-      'ずっと仕事だったわ': false,
-    },
-    {
-      '普通に面白かったですよ': true,
-    },
-    {
-      '病気だよお前': false,
-    },
-    {
-      'マジか': true,
-    },
-    {
-      'どんなの？': false,
-    },
-    {
-      'ああああ': true,
-    },
-    {
-      'あああああああ': false,
-    },
-  ];
 
   // 医師名
   final String doctorName = '長谷川';
@@ -85,9 +28,6 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
   // フォーカス用のノード
   final focusNode = FocusNode();
 
-  // スクロール用のコントローラー
-  final ScrollController scrollController = ScrollController();
-
   // スクロール位置が最下部になるかどうかを判定するための変数
   bool scrollButton = false;
 
@@ -95,16 +35,10 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
   void initState() {
     super.initState();
     controller = DoctorTextChatController('1234567890');
-
-    //画面が表示された時にスクロール位置が最下部になるようにする
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      scrollController.jumpTo(scrollController.position.maxScrollExtent);
-    });
-
     //スクロール位置が最下部になかったらscrollButtonを表示する
-    scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent !=
-          scrollController.position.pixels) {
+    controller.scrollController.addListener(() {
+      if (controller.scrollController.position.maxScrollExtent !=
+          controller.scrollController.position.pixels) {
         scrollButton = true;
         setState(() {});
       } else {
@@ -151,7 +85,7 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
                           Expanded(
                             child: ListView.builder(
                               itemCount: value.length,
-                              controller: scrollController,
+                              controller: controller.scrollController,
                               shrinkWrap: true,
                               physics: const AlwaysScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, int index) {
@@ -181,8 +115,9 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
                     child: GestureDetector(
                       //アニメーションをつけてスクロール位置を最下部にする
                       onTap: () {
-                        scrollController.animateTo(
-                            scrollController.position.maxScrollExtent,
+                        controller.scrollController.animateTo(
+                            controller
+                                .scrollController.position.maxScrollExtent,
                             duration: const Duration(milliseconds: 100),
                             curve: Curves.bounceIn);
                       },
@@ -231,8 +166,9 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       // todo: チャットを送信するAPIを叩く
+                      await controller.sendMessage();
                     },
                     child: SizedBox(
                       width: size.width * 0.1,
