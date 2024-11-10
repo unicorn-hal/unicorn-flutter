@@ -36,18 +36,18 @@ class DoctorTextChatController extends ControllerCore {
 
   // 該当医師とのチャット履歴があるか
   Future<bool> _chatMessageNotExists() async {
-    final List<Chat> chatList = await _chatApi.getChatList() ?? [];
+    final chatList = ChatData().data;
     // 該当医師とのチャット履歴がない場合true
     return !chatList.any((element) => element.doctor.doctorId == _doctorId);
   }
 
   // 該当医師とのチャットIDを取得
   Future<String> _getChatId() async {
-    final List<Chat> chatList = await _chatApi.getChatList() ?? [];
-    final Chat chat =
-        chatList.firstWhere((element) => element.doctor.doctorId == _doctorId);
-    print('chatId: ${chat.chatId}');
-    return chat.chatId;
+    final String chatId = ChatData()
+        .data
+        .firstWhere((element) => element.doctor.doctorId == _doctorId)
+        .chatId;
+    return chatId;
   }
 
   // 初回メッセージの場合は新規チャットを作成
@@ -67,11 +67,7 @@ class DoctorTextChatController extends ControllerCore {
   Future<void> _getMessageHistory() async {
     final List<Message> messageList =
         await _chatApi.getMessageList(chatId: _chatId) ?? [];
-
-    print('messageList: $messageList');
-
     _messageHistory.value = messageList;
-    print('messageHistory: $_messageHistory');
   }
 
   ValueNotifier<List<Message>> get messageHistory => _messageHistory;
