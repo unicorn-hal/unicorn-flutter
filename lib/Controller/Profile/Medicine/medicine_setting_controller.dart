@@ -115,7 +115,7 @@ class MedicineSettingController extends ControllerCore {
 
   ///intからModalに表示する漢字表記の曜日に変える関数
   String getDayAbbreviation({required int index}) {
-    return DayOfWeekEnumType.toStringValueForKanji(
+    return DayOfWeekEnumType.toDayAbbreviation(
         DayOfWeekEnumType.fromWeekday(index + 1));
   }
 
@@ -140,23 +140,23 @@ class MedicineSettingController extends ControllerCore {
       return '毎日';
     }
     if (reminders[index].reminderDayOfWeek.length == 1) {
-      return '毎${DayOfWeekEnumType.toStringValueForKanji(reminders[index].reminderDayOfWeek[0])}曜日';
+      return '毎${DayOfWeekEnumType.toDayAbbreviation(reminders[index].reminderDayOfWeek[0])}曜日';
     }
     reminders[index].reminderDayOfWeek.sort((a, b) => a.index - b.index);
     for (int i = 0; i < reminders[index].reminderDayOfWeek.length; i++) {
       if (i == 0) {
         displayedReminderDayOfWeek =
-            '$displayedReminderDayOfWeek${DayOfWeekEnumType.toStringValueForKanji(reminders[index].reminderDayOfWeek[i])}';
+            '$displayedReminderDayOfWeek${DayOfWeekEnumType.toDayAbbreviation(reminders[index].reminderDayOfWeek[i])}';
       } else {
         displayedReminderDayOfWeek =
-            '$displayedReminderDayOfWeek,${DayOfWeekEnumType.toStringValueForKanji(reminders[index].reminderDayOfWeek[i])}';
+            '$displayedReminderDayOfWeek,${DayOfWeekEnumType.toDayAbbreviation(reminders[index].reminderDayOfWeek[i])}';
       }
     }
     return displayedReminderDayOfWeek;
   }
 
   ///List<Reminder>型のremindersをList<ReminderRequest>型に変換する関数
-  List<ReminderRequest> createReminderRequestList(
+  List<ReminderRequest> _createReminderRequestList(
       {required List<Reminder> reminders}) {
     List<ReminderRequest> reminderRequestList = [];
     for (int i = 0; i < reminders.length; i++) {
@@ -172,10 +172,10 @@ class MedicineSettingController extends ControllerCore {
     }
     MedicineRequest body = MedicineRequest(
       medicineName: nameController.text,
-      count: int.parse(countController.text),
+      count: medicine!.count,
       quantity: int.parse(countController.text),
       dosage: selectIndex!,
-      reminders: createReminderRequestList(reminders: reminders),
+      reminders: _createReminderRequestList(reminders: reminders),
     );
     await _medicineApi.putMedicine(
         body: body, medicineId: medicine!.medicineId);
@@ -191,7 +191,7 @@ class MedicineSettingController extends ControllerCore {
       count: int.parse(countController.text),
       quantity: int.parse(countController.text),
       dosage: selectIndex!,
-      reminders: createReminderRequestList(reminders: reminders),
+      reminders: _createReminderRequestList(reminders: reminders),
     );
     await _medicineApi.postMedicine(body: body);
   }

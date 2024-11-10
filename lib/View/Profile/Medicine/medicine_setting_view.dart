@@ -465,6 +465,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                     widget.medicine != null
                         ? await controller.putMedicine()
                         : await controller.postMedicine();
+                    // ignore: use_build_context_synchronously
                     controller.emptyCheck() ? Navigator.pop(context) : null;
                   },
                   isFilledColor: true,
