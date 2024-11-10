@@ -51,7 +51,7 @@ class DayOfWeekEnumType {
     }
   }
 
-  static String toStringValueForKanji(DayOfWeekEnum value) {
+  static String toDayAbbreviation(DayOfWeekEnum value) {
     switch (value) {
       case DayOfWeekEnum.monday:
         return '月';
