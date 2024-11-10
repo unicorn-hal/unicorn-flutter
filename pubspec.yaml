@@ -46,6 +46,7 @@ dependencies:
   firebase_messaging: ^15.1.0
   firebase_storage: ^12.2.0
   image: ^4.3.0
+  stomp_dart_client: ^2.0.0
 
 dev_dependencies:
   flutter_test:

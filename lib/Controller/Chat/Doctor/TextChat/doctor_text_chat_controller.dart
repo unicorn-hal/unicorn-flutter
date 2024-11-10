@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:stomp_dart_client/stomp_dart_client.dart';
 import 'package:unicorn_flutter/Model/Chat/chat_data.dart';
 
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
@@ -21,6 +25,7 @@ class DoctorTextChatController extends ControllerCore {
   final String _doctorId;
 
   late ValueNotifier<List<Message>> _messageHistory;
+  late List<Message> _newMessageList;
 
   @override
   void initialize() async {
@@ -32,6 +37,7 @@ class DoctorTextChatController extends ControllerCore {
       _chatId = await _getChatId();
     }
     await _getMessageHistory();
+    _getNewMessage();
   }
 
   // 該当医師とのチャット履歴があるか
@@ -71,4 +77,23 @@ class DoctorTextChatController extends ControllerCore {
   }
 
   ValueNotifier<List<Message>> get messageHistory => _messageHistory;
+
+  void _getNewMessage() {
+    late StompClient stompClient;
+
+    stompClient = StompClient(
+      config: StompConfig(
+        url: 'ws://unicorn-monorepo-384446500375.asia-east1.run.app/ws',
+        onConnect: (StompFrame frame) {
+          stompClient.subscribe(
+              destination: '/topic/chats/$_chatId/messages',
+              callback: (StompFrame frame) {
+                print('💎new: ${frame.body}');
+              });
+        },
+      ),
+    );
+
+    stompClient.activate();
+  }
 }
