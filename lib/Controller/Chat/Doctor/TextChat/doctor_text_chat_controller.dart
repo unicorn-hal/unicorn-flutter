@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Model/Chat/chat_data.dart';
 
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat_request.dart';
@@ -58,13 +59,16 @@ class DoctorTextChatController extends ControllerCore {
     if (response == null) {
       // todo: エラー時はアプリを再起動させる
     }
-    return response!.chatId;
+    ChatData().addChat(Chat.fromJson(response!.toJson()));
+    return response.chatId;
   }
 
   // チャットIDからメッセージ履歴を取得
   Future<void> _getMessageHistory() async {
     final List<Message> messageList =
         await _chatApi.getMessageList(chatId: _chatId) ?? [];
+
+    print('messageList: $messageList');
 
     _messageHistory.value = messageList;
     print('messageHistory: $_messageHistory');

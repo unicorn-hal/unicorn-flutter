@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/TextChat/doctor_text_chat_controller.dart';
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/message.dart';
@@ -157,13 +156,13 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
                               physics: const AlwaysScrollableScrollPhysics(),
                               itemBuilder: (BuildContext context, int index) {
                                 final Message message = value[index];
-
                                 return MessageTile(
                                   messageBody: message.content,
                                   // 自分のメッセージかどうかを判定
                                   myMessage: message.senderId ==
                                       AccountData().account!.uid,
-                                  postAt: message.sentAt.toString(),
+                                  postAt: DateFormat('HH:MM')
+                                      .format(message.sentAt),
                                 );
                               },
                             ),
