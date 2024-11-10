@@ -7,8 +7,6 @@ import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
 class RegisterPhysicalInfoController extends ControllerCore {
   late DateTime birthDate;
   UserGenderEnum? gender;
-  double? bodyHeight;
-  double? bodyWeight;
 
   final TextEditingController firstNameTextController = TextEditingController();
   final TextEditingController lastNameTextController = TextEditingController();
