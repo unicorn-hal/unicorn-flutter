@@ -21,28 +21,35 @@ class MedicineSettingController extends ControllerCore {
   /// 変数の定義
   TextEditingController nameController = TextEditingController();
   TextEditingController countController = TextEditingController();
-  int? selectIndex = 0;
-  List<Reminder> reminders = [];
-  List<DayOfWeekEnum> _reminderDayOfWeekList = [];
+  int? _selectIndex = 0;
+  late List<Reminder> _reminders;
+  late List<DayOfWeekEnum> _reminderDayOfWeekList;
 
   /// initialize()
   @override
   void initialize() {
+    _reminders = <Reminder>[];
+    _reminderDayOfWeekList = <DayOfWeekEnum>[];
     if (medicine != null) {
       nameController.text = medicine!.medicineName;
       countController.text = medicine!.count.toString();
-      selectIndex = medicine!.dosage - 1;
+      _selectIndex = medicine!.dosage - 1;
       if (medicine!.reminders.isNotEmpty) {
-        reminders.addAll(medicine!.reminders);
+        _reminders.addAll(medicine!.reminders);
       }
     }
   }
 
   /// 各関数の実装
+  int? get selectIndex => _selectIndex;
+  set selectIndex(int? index) => _selectIndex;
+
+  List<Reminder> get reminders => _reminders;
+
   /// String型で受け取ったreminderTimeをDateTime型に変換する関数
   DateTime changeDateTime({required int index}) {
     return DateTime.parse(
-        '${DateFormat('yyyy-MM-dd').format(DateTime.now())} ${reminders[index].reminderTime}');
+        '${DateFormat('yyyy-MM-dd').format(DateTime.now())} ${_reminders[index].reminderTime}');
   }
 
   ///リマインダーに初期値を入れ、remindersに追加する関数
@@ -64,12 +71,12 @@ class MedicineSettingController extends ControllerCore {
         reminderId: reminderId,
         reminderTime: reminderTime,
         reminderDayOfWeek: reminderDayOfWeek);
-    reminders.add(reminder);
+    _reminders.add(reminder);
   }
 
   ///remindersから選択されたリマインダーを削除する関数
   void deleteReminders({required int index}) {
-    reminders.removeAt(index);
+    _reminders.removeAt(index);
   }
 
   ///リマインダーに登録されている時間を更新する関数
@@ -82,16 +89,16 @@ class MedicineSettingController extends ControllerCore {
       date.minute - date.minute % 15,
     );
     String reminderTime = DateFormat('HH:mm').format(formatTime);
-    reminders[index] = Reminder(
-      reminderId: reminders[index].reminderId,
+    _reminders[index] = Reminder(
+      reminderId: _reminders[index].reminderId,
       reminderTime: reminderTime,
-      reminderDayOfWeek: reminders[index].reminderDayOfWeek,
+      reminderDayOfWeek: _reminders[index].reminderDayOfWeek,
     );
   }
 
   ///Modalで使用するためにDayOfWeekEnum型のListを複製する関数
   List<DayOfWeekEnum> copyReminderDayOfWeek({required int index}) {
-    _reminderDayOfWeekList = [...reminders[index].reminderDayOfWeek];
+    _reminderDayOfWeekList = [..._reminders[index].reminderDayOfWeek];
     return _reminderDayOfWeekList;
   }
 
@@ -127,29 +134,29 @@ class MedicineSettingController extends ControllerCore {
 
   ///Modalの決定ボタンが押されたときにreminderDayOfWeekListの値をreminders[index].reminderDayOfWeekに入れる関数
   void updateReminderDayOfWeek({required int index}) {
-    reminders[index] = Reminder(
-        reminderId: reminders[index].reminderId,
-        reminderTime: reminders[index].reminderTime,
+    _reminders[index] = Reminder(
+        reminderId: _reminders[index].reminderId,
+        reminderTime: _reminders[index].reminderTime,
         reminderDayOfWeek: _reminderDayOfWeekList);
   }
 
   ///reminderDayOfWeekをMedicineSettingViewに表示する形に成形する関数
   String moldingReminderDayOfWeek({required int index}) {
     String displayedReminderDayOfWeek = '';
-    if (reminders[index].reminderDayOfWeek.length == 7) {
+    if (_reminders[index].reminderDayOfWeek.length == 7) {
       return '毎日';
     }
-    if (reminders[index].reminderDayOfWeek.length == 1) {
-      return '毎${DayOfWeekEnumType.toDayAbbreviation(reminders[index].reminderDayOfWeek[0])}曜日';
+    if (_reminders[index].reminderDayOfWeek.length == 1) {
+      return '毎${DayOfWeekEnumType.toDayAbbreviation(_reminders[index].reminderDayOfWeek[0])}曜日';
     }
-    reminders[index].reminderDayOfWeek.sort((a, b) => a.index - b.index);
-    for (int i = 0; i < reminders[index].reminderDayOfWeek.length; i++) {
+    _reminders[index].reminderDayOfWeek.sort((a, b) => a.index - b.index);
+    for (int i = 0; i < _reminders[index].reminderDayOfWeek.length; i++) {
       if (i == 0) {
         displayedReminderDayOfWeek =
-            '$displayedReminderDayOfWeek${DayOfWeekEnumType.toDayAbbreviation(reminders[index].reminderDayOfWeek[i])}';
+            '$displayedReminderDayOfWeek${DayOfWeekEnumType.toDayAbbreviation(_reminders[index].reminderDayOfWeek[i])}';
       } else {
         displayedReminderDayOfWeek =
-            '$displayedReminderDayOfWeek,${DayOfWeekEnumType.toDayAbbreviation(reminders[index].reminderDayOfWeek[i])}';
+            '$displayedReminderDayOfWeek,${DayOfWeekEnumType.toDayAbbreviation(_reminders[index].reminderDayOfWeek[i])}';
       }
     }
     return displayedReminderDayOfWeek;
@@ -167,15 +174,15 @@ class MedicineSettingController extends ControllerCore {
 
   ///Medicineの情報を更新する関数
   Future<void> putMedicine() async {
-    if (!emptyCheck()) {
+    if (!validateField()) {
       return;
     }
     MedicineRequest body = MedicineRequest(
       medicineName: nameController.text,
       count: medicine!.count,
       quantity: int.parse(countController.text),
-      dosage: selectIndex!,
-      reminders: _createReminderRequestList(reminders: reminders),
+      dosage: _selectIndex!,
+      reminders: _createReminderRequestList(reminders: _reminders),
     );
     await _medicineApi.putMedicine(
         body: body, medicineId: medicine!.medicineId);
@@ -183,15 +190,15 @@ class MedicineSettingController extends ControllerCore {
 
   ///Medicineの情報を登録する関数
   Future<void> postMedicine() async {
-    if (!emptyCheck()) {
+    if (!validateField()) {
       return;
     }
     MedicineRequest body = MedicineRequest(
       medicineName: nameController.text,
       count: int.parse(countController.text),
       quantity: int.parse(countController.text),
-      dosage: selectIndex!,
-      reminders: _createReminderRequestList(reminders: reminders),
+      dosage: _selectIndex!,
+      reminders: _createReminderRequestList(reminders: _reminders),
     );
     await _medicineApi.postMedicine(body: body);
   }
@@ -202,7 +209,7 @@ class MedicineSettingController extends ControllerCore {
   }
 
   ///TextEditingControllerが空文字でないかチェックする関数
-  bool emptyCheck() {
+  bool validateField() {
     if ((countController.text == '') || (nameController.text == '')) {
       Fluttertoast.showToast(msg: 'おくすりの名称とおくすりの量は必須の入力項目です');
       return false;

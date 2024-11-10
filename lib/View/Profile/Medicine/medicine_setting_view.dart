@@ -14,6 +14,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
+import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class MedicineSettingView extends StatefulWidget {
@@ -462,11 +463,16 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                 child: CustomButton(
                   text: '保存',
                   onTap: () async {
+                    if (!controller.validateField()) {
+                      return;
+                    }
+                    ProtectorNotifier().enableProtector();
                     widget.medicine != null
                         ? await controller.putMedicine()
                         : await controller.postMedicine();
+                    ProtectorNotifier().disableProtector();
                     // ignore: use_build_context_synchronously
-                    controller.emptyCheck() ? Navigator.pop(context) : null;
+                    Navigator.pop(context);
                   },
                   isFilledColor: true,
                 ),
