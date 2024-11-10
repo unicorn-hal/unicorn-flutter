@@ -1,5 +1,4 @@
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
-import 'package:unicorn_flutter/Model/Entity/Doctor/doctorRequest.dart';
 import 'package:unicorn_flutter/Model/Entity/api_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
 import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
@@ -24,8 +23,8 @@ class DoctorApi extends ApiCore with Endpoint {
       }
       if (departmentId != null) {
         parameter += parameter.isEmpty
-            ? '?departmentId=$departmentId'
-            : '&departmentId=$departmentId';
+            ? '?departmentID=$departmentId'
+            : '&departmentID=$departmentId';
       }
       if (hospitalName != null) {
         parameter += parameter.isEmpty
@@ -44,17 +43,6 @@ class DoctorApi extends ApiCore with Endpoint {
     }
   }
 
-  /// POST
-  /// [body] DoctorRequest
-  Future<int> postDoctor({required DoctorRequest body}) async {
-    try {
-      final ApiResponse response = await post(body.toJson());
-      return response.statusCode;
-    } catch (e) {
-      return 500;
-    }
-  }
-
   /// GET
   /// 医師情報取得
   /// [doctorId] 医師ID
@@ -65,34 +53,6 @@ class DoctorApi extends ApiCore with Endpoint {
       return Doctor.fromJson(response.data);
     } catch (e) {
       return null;
-    }
-  }
-
-  /// PUT
-  /// [doctorId] 医師ID
-  /// [body] DoctorRequest
-  Future<int> putDoctor({
-    required String doctorId,
-    required DoctorRequest body,
-  }) async {
-    try {
-      useParameter(parameter: '/$doctorId');
-      final ApiResponse response = await put(body.toJson());
-      return response.statusCode;
-    } catch (e) {
-      return 500;
-    }
-  }
-
-  /// DELETE
-  /// [doctorId] 医師ID
-  Future<int> deleteDoctor({required String doctorId}) async {
-    try {
-      useParameter(parameter: '/$doctorId');
-      final ApiResponse response = await delete();
-      return response.statusCode;
-    } catch (e) {
-      return 500;
     }
   }
 }

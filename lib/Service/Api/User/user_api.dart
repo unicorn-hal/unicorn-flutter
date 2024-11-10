@@ -1,3 +1,5 @@
+import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup.dart';
+import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup_request.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Model/Entity/api_response.dart';
@@ -19,7 +21,42 @@ class UserApi extends ApiCore with Endpoint {
     }
   }
 
+  /// GET
+  /// ユーザーの健康診断結果一覧取得
+  /// [userId] ユーザーID
+  Future<List<HealthCheckup>?> getUserHealthCheckupList(
+      {required String userId}) async {
+    try {
+      useParameter(parameter: '/$userId/health_checkups');
+      final ApiResponse response = await get();
+      print(response.data);
+      return (response.data['data'] as List)
+          .map((e) => HealthCheckup.fromJson(e))
+          .toList();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// GET
+  /// ユーザーの健康診断結果取得
+  /// [userId] ユーザーID
+  /// [healthCheckupId] 健康診断ID
+  Future<HealthCheckup?> getUserHealthCheckup({
+    required String userId,
+    required String healthCheckupId,
+  }) async {
+    try {
+      useParameter(parameter: '/$userId/health_checkups/$healthCheckupId');
+      final ApiResponse response = await get();
+      return HealthCheckup.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
   /// POST
+  /// ユーザー登録
   /// [body] UserRequest
   Future<int> postUser({required UserRequest body}) async {
     try {
@@ -31,6 +68,7 @@ class UserApi extends ApiCore with Endpoint {
   }
 
   /// PUT
+  /// ユーザー情報更新
   /// [userId] ユーザーID
   /// [body] UserRequest
   Future<int> putUser({
@@ -46,7 +84,27 @@ class UserApi extends ApiCore with Endpoint {
     }
   }
 
+  /// PUT
+  /// ユーザー健康診断結果更新
+  /// [userId] ユーザーID
+  /// [healthCheckupId] 健康診断ID
+  /// [body] HealthCheckupRequest
+  Future<int> putUserHealthCheckup({
+    required String userId,
+    required String healthCheckupId,
+    required HealthCheckupRequest body,
+  }) async {
+    try {
+      useParameter(parameter: '/$userId/health_checkups/$healthCheckupId');
+      final ApiResponse response = await put(body.toJson());
+      return response.statusCode;
+    } catch (e) {
+      return 500;
+    }
+  }
+
   /// DELETE
+  /// ユーザー削除
   /// [userId] ユーザーID
   Future<int> deleteUser({required String userId}) async {
     try {

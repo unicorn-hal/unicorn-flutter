@@ -1,4 +1,5 @@
 import 'package:unicorn_flutter/Constants/Enum/day_of_week_enum.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/reminder_request.dart';
 
 class Reminder {
   final String reminderId;
@@ -16,7 +17,7 @@ class Reminder {
       reminderId: json['reminderID'],
       reminderTime: json['reminderTime'],
       reminderDayOfWeek: (json['reminderDayOfWeek'] as List)
-          .map((e) => DayOfWeekEnum.values[e])
+          .map((e) => DayOfWeekEnumType.fromString(e))
           .toList(),
     );
   }
@@ -25,7 +26,13 @@ class Reminder {
     return {
       'reminderID': reminderId,
       'reminderTime': reminderTime,
-      'reminderDayOfWeek': reminderDayOfWeek.map((e) => e.index).toList(),
+      'reminderDayOfWeek': reminderDayOfWeek
+          .map((e) => DayOfWeekEnumType.toStringValue(e))
+          .toList(),
     };
+  }
+
+  ReminderRequest toRequest() {
+    return ReminderRequest.fromJson(toJson());
   }
 }

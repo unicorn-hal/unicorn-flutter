@@ -28,6 +28,17 @@ class AccountApi extends ApiCore with Endpoint {
     }
   }
 
+  /// PUT
+  /// [fcmTokenId] FCMトークンID
+  Future<int> putAccount({required String fcmTokenId}) async {
+    try {
+      final ApiResponse response = await put({'fcm_token_id': fcmTokenId});
+      return response.statusCode;
+    } catch (e) {
+      return 500;
+    }
+  }
+
   /// DELETE
   Future<int> deleteAccount() async {
     try {

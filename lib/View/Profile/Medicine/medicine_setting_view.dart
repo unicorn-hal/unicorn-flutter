@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
@@ -15,7 +16,11 @@ import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.da
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class MedicineSettingView extends StatefulWidget {
-  const MedicineSettingView({super.key});
+  const MedicineSettingView({
+    super.key,
+    this.medicine,
+  });
+  final Medicine? medicine;
 
   @override
   State<MedicineSettingView> createState() => _MedicineSettingViewState();

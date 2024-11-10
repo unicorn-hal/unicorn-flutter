@@ -28,4 +28,15 @@ class Strings {
   // ダイアログに使用するテキスト
   static const String DIALOG_TITLE_CAVEAT = '警告';
   static const String DIALOG_BODY_TEXT_DELETE = '本当に削除しますか？';
+
+  // 検診結果に使用するテキスト
+  static const String HEALTH_CHECKUP_RESULT_DESCRIPTION_SAFETY =
+      '体温・血圧ともに平均値です。体調が優れない場合は医師との通話やAIチャットを利用してください。';
+  static const String
+      HEALTH_CHECKUP_RESULT_DESCRIPTION_BODY_TEMPERATURE_HAZARD =
+      '体温が平均値から外れています。体調が優れない場合は医師との通話やAIチャットを利用してください。';
+  static const String HEALTH_CHECKUP_RESULT_DESCRIPTION_BLOOD_PRESSURE_HAZARD =
+      '血圧が平均値から外れています。体調が優れない場合は医師との通話やAIチャットを利用してください。';
+  static const String HEALTH_CHECKUP_RESULT_DESCRIPTION_DANGER =
+      '体温・血圧ともに平均値から外れています。緊急時は医師との通話やAIチャットを利用してください。';
 }

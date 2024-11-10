@@ -1,3 +1,5 @@
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_request.dart';
+
 class FamilyEmail {
   final String familyEmailId;
   final String email;
@@ -35,5 +37,9 @@ class FamilyEmail {
       'iconImageUrl': iconImageUrl,
       'phoneNumber': phoneNumber,
     };
+  }
+
+  FamilyEmailRequest toRequest() {
+    return FamilyEmailRequest.fromJson(toJson());
   }
 }

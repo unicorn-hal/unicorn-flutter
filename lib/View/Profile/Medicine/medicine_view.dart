@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Controller/Profile/Medicine/medicine_controller.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
@@ -11,57 +14,10 @@ class MedicineView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // todo: 薬追加されたら表示画面を更新させる処理追加予定
+    MedicineController controller = MedicineController();
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
-    List<Map<String, dynamic>> reminderList = [
-      {
-        'name': 'カロナール',
-        'week': '毎日曜日',
-        'reminder': [
-          '13:00',
-        ]
-      },
-      {
-        'name': 'ロキソニン',
-        'week': '毎月曜日',
-        'reminder': [
-          '06:00',
-          '11:00',
-          '15:00',
-          '19:00',
-          '23:00',
-        ]
-      },
-      {'name': 'ボルタレン錠', 'week': '', 'reminder': []},
-      {
-        'name': 'メキシチールカプセル50mg',
-        'week': '日,月,火,水,木,金',
-        'reminder': [
-          '19:00',
-        ]
-      },
-      {'name': 'メインテート錠', 'week': '', 'reminder': []},
-      {
-        'name': 'ファスティック錠30',
-        'week': '毎金曜日',
-        'reminder': [
-          '11:00',
-        ]
-      },
-      {
-        'name': 'サーティカン錠0.5mg',
-        'week': '火,水',
-        'reminder': [
-          '09:00',
-          '12:00',
-          '19:00',
-        ]
-      },
-    ];
-    // todo: ↑形全然違うけどcontroller出来たら変えるので気にしないで
-    // List<Map<String, dynamic>> reminderList = [];
-
-    // todo: controller出来たら移動
     return CustomScaffold(
       body: SizedBox(
         width: deviceWidth,
@@ -73,83 +29,66 @@ class MedicineView extends StatelessWidget {
               height: deviceHeight * 0.5,
               width: deviceWidth * 0.9,
               child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: deviceWidth * 0.9,
-                      height: 48,
-                      padding: const EdgeInsets.only(
-                        top: 10,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: FutureBuilder<List<Medicine>?>(
+                  future: controller.getMedicineList(),
+                  builder: (context, AsyncSnapshot<List<Medicine>?> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Expanded(
-                            flex: 3,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 5,
+                          Container(
+                            width: deviceWidth * 0.9,
+                            height: 48,
+                            padding: const EdgeInsets.only(
+                              top: 10,
+                            ),
+                            child: const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: 5,
+                                ),
+                                child: CustomText(text: 'Myおくすり'),
                               ),
-                              child: CustomText(text: 'Myおくすり'),
                             ),
                           ),
-                          Visibility(
-                            visible: reminderList.isNotEmpty,
-                            child: Expanded(
-                              flex: 1,
-                              child: IconButton(
-                                onPressed: () {
-                                  const ProfileMedicineSettingRoute()
-                                      .push(context);
-                                  // todo: リマインダー画面へ
-                                },
-                                icon: const Icon(
-                                  Icons.add,
-                                  color: Colors.blue,
-                                ),
-                              ),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 100),
+                            child: CustomLoadingAnimation(
+                              text: 'ローディング中',
+                              iconColor: Colors.grey,
+                              textColor: Colors.grey,
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                    reminderList.isNotEmpty
-                        ? SizedBox(
+                      );
+                    }
+                    if (!snapshot.hasData) {
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
                             width: deviceWidth * 0.9,
-                            child: ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: reminderList.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return CommonItemTile(
-                                  title: reminderList[index]['name'],
-                                  onTap: () {
-                                    const ProfileMedicineSettingRoute()
-                                        .push(context);
-                                    // todo: リマインダー画面へ
-                                  },
-                                  action:
-                                      reminderList[index]['reminder'].isNotEmpty
-                                          ? const Icon(
-                                              Icons.notifications,
-                                              color: Colors.blue,
-                                            )
-                                          : const Icon(
-                                              Icons.notifications_off_outlined,
-                                              color: Colors.grey,
-                                            ),
-                                );
-                              },
+                            height: 48,
+                            padding: const EdgeInsets.only(
+                              top: 10,
                             ),
-                          )
-                        : Padding(
+                            child: const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  left: 5,
+                                ),
+                                child: CustomText(text: 'Myおくすり'),
+                              ),
+                            ),
+                          ),
+                          Padding(
                             padding: const EdgeInsets.only(top: 20),
                             child: GestureDetector(
                               onTap: () {
                                 const ProfileMedicineSettingRoute()
                                     .push(context);
-                                // todo: リマインダー画面へ
                               },
                               child: DottedBorder(
                                 dashPattern: const [15, 10],
@@ -177,7 +116,77 @@ class MedicineView extends StatelessWidget {
                               ),
                             ),
                           ),
-                  ],
+                        ],
+                      );
+                    }
+                    List<Medicine> medicineList = snapshot.data!;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: deviceWidth * 0.9,
+                          height: 48,
+                          padding: const EdgeInsets.only(
+                            top: 10,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Expanded(
+                                flex: 3,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    left: 5,
+                                  ),
+                                  child: CustomText(text: 'Myおくすり'),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: IconButton(
+                                  onPressed: () {
+                                    const ProfileMedicineSettingRoute()
+                                        .push(context);
+                                  },
+                                  icon: const Icon(
+                                    Icons.add,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: deviceWidth * 0.9,
+                          child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: medicineList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return CommonItemTile(
+                                title: medicineList[index].medicineName,
+                                onTap: () {
+                                  ProfileMedicineSettingRoute(
+                                    $extra: medicineList[index],
+                                  ).push(context);
+                                },
+                                action: medicineList[index].reminders.isNotEmpty
+                                    ? const Icon(
+                                        Icons.notifications,
+                                        color: Colors.blue,
+                                      )
+                                    : const Icon(
+                                        Icons.notifications_off_outlined,
+                                        color: Colors.grey,
+                                      ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
