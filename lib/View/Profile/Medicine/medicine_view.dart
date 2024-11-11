@@ -26,7 +26,6 @@ class _MedicineViewState extends State<MedicineView> {
 
   @override
   Widget build(BuildContext context) {
-    // todo: 薬追加されたら表示画面を更新させる処理追加予定
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     return CustomScaffold(
