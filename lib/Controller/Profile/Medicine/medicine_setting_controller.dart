@@ -186,7 +186,7 @@ class MedicineSettingController extends ControllerCore {
     int res = await _medicineApi.putMedicine(
         body: body, medicineId: _medicine.medicineId);
     if (res != 200) {
-      Fluttertoast.showToast(msg: 'エラーが発生しました');
+      Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
     }
   }
 
@@ -204,7 +204,7 @@ class MedicineSettingController extends ControllerCore {
     );
     int res = await _medicineApi.postMedicine(body: body);
     if (res != 200) {
-      Fluttertoast.showToast(msg: 'エラーが発生しました');
+      Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
     }
   }
 
@@ -213,7 +213,7 @@ class MedicineSettingController extends ControllerCore {
     int res =
         await _medicineApi.deleteMedicine(medicineId: _medicine!.medicineId);
     if (res != 204) {
-      Fluttertoast.showToast(msg: 'エラーが発生しました');
+      Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
     }
   }
 
