@@ -33,7 +33,7 @@ class MedicineSettingController extends ControllerCore {
     _reminderDayOfWeekList = <DayOfWeekEnum>[];
     if (medicine != null) {
       nameController.text = medicine!.medicineName;
-      countController.text = medicine!.count.toString();
+      countController.text = medicine!.quantity.toString();
       _selectIndex = medicine!.dosage - 1;
       if (medicine!.reminders.isNotEmpty) {
         _reminders.addAll(medicine!.reminders);
