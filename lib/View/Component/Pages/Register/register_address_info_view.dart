@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:unicorn_flutter/Constants/prefectures.dart';
+import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_address_info_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -17,23 +17,27 @@ class RegisterAddressInfoView extends StatefulWidget {
 }
 
 class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
-  final TextEditingController addressNumber = TextEditingController();
-  final TextEditingController address = TextEditingController();
-  final TextEditingController addressDetail = TextEditingController();
-  final List<String> entryItemStrings = ['未設定'] + Prefectures.list;
+  late RegisterAddressInfoController controller;
+
   final FocusNode focusnode = FocusNode();
-  // todo: Controllerが完成次第、ここに追記または変更していきます。
+
+  @override
+  void initState() {
+    super.initState();
+    controller = RegisterAddressInfoController();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<DropdownMenuItem<int>> dropdownItems = entryItemStrings
-        .map((e) => DropdownMenuItem(
-              value: entryItemStrings.indexOf(e),
-              child: CustomText(
-                text: e,
-              ),
-            ))
-        .toList();
+    final List<DropdownMenuItem<int>> dropdownItems =
+        controller.entryItemStrings
+            .map((e) => DropdownMenuItem(
+                  value: controller.entryItemStrings.indexOf(e),
+                  child: CustomText(
+                    text: e,
+                  ),
+                ))
+            .toList();
     final deviceWidth = MediaQuery.of(context).size.width;
     return CustomScaffold(
       focusNode: focusnode,
@@ -126,7 +130,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                       maxLines: 1,
                       maxLength: 7,
                       keyboardType: TextInputType.number,
-                      controller: addressNumber,
+                      controller: controller.addressNumber,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -185,7 +189,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   hintText: '静岡市葵区追手町５－１',
                   width: deviceWidth * 0.85,
                   height: 44,
-                  controller: address,
+                  controller: controller.address,
                   maxLines: 1,
                   maxLength: 25,
                 ),
@@ -200,7 +204,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   hintText: 'ユニコーンビル１０３号',
                   width: deviceWidth * 0.85,
                   height: 44,
-                  controller: addressDetail,
+                  controller: controller.addressDetail,
                   maxLines: 1,
                   maxLength: 25,
                 ),
