@@ -55,7 +55,7 @@ class MedicineSettingController extends ControllerCore {
         '${DateFormat('yyyy-MM-dd').format(DateTime.now())} ${_reminders[index].reminderTime}');
   }
 
-  ///リマインダーに初期値を入れ、remindersに追加する関数
+  /// リマインダーに初期値を入れ、remindersに追加する関数
   void addReminders() {
     DateTime now = DateTime.now();
     String reminderId = const Uuid().v4();
@@ -77,12 +77,12 @@ class MedicineSettingController extends ControllerCore {
     _reminders.add(reminder);
   }
 
-  ///remindersから選択されたリマインダーを削除する関数
+  /// remindersから選択されたリマインダーを削除する関数
   void deleteReminders({required int index}) {
     _reminders.removeAt(index);
   }
 
-  ///リマインダーに登録されている時間を更新する関数
+  /// リマインダーに登録されている時間を更新する関数
   void updateReminderTime({required DateTime date, required int index}) {
     DateTime formatTime = DateTime(
       date.year,
@@ -99,7 +99,7 @@ class MedicineSettingController extends ControllerCore {
     );
   }
 
-  ///Modalで使用するためにDayOfWeekEnum型のListを複製する関数
+  /// Modalで使用するためにDayOfWeekEnum型のListを複製する関数
   List<DayOfWeekEnum> copyReminderDayOfWeek({required int index}) {
     _reminderDayOfWeekList = [..._reminders[index].reminderDayOfWeek];
     return _reminderDayOfWeekList;
@@ -109,7 +109,7 @@ class MedicineSettingController extends ControllerCore {
     _reminderDayOfWeekList = [];
   }
 
-  ///reminderDayOfWeekに曜日を追加、削除する関数
+  /// reminderDayOfWeekに曜日を追加、削除する関数
   void changeReminderDayOfWeekList({required int index}) {
     if (!_reminderDayOfWeekList
         .contains(DayOfWeekEnumType.fromWeekday(index + 1))) {
@@ -123,19 +123,19 @@ class MedicineSettingController extends ControllerCore {
     return;
   }
 
-  ///intからModalに表示する漢字表記の曜日に変える関数
+  /// intからModalに表示する漢字表記の曜日に変える関数
   String getDayAbbreviation({required int index}) {
     return DayOfWeekEnumType.toDayAbbreviation(
         DayOfWeekEnumType.fromWeekday(index + 1));
   }
 
-  ///reminderDayOfWeekに選択した曜日があるかチェックする関数
+  /// reminderDayOfWeekに選択した曜日があるかチェックする関数
   bool checkReminderDayOfWeekList({required int index}) {
     return _reminderDayOfWeekList
         .contains(DayOfWeekEnumType.fromWeekday(index + 1));
   }
 
-  ///Modalの決定ボタンが押されたときにreminderDayOfWeekListの値をreminders[index].reminderDayOfWeekに入れる関数
+  /// Modalの決定ボタンが押されたときにreminderDayOfWeekListの値をreminders[index].reminderDayOfWeekに入れる関数
   void updateReminderDayOfWeek({required int index}) {
     _reminders[index] = Reminder(
         reminderId: _reminders[index].reminderId,
@@ -143,7 +143,7 @@ class MedicineSettingController extends ControllerCore {
         reminderDayOfWeek: _reminderDayOfWeekList);
   }
 
-  ///reminderDayOfWeekをMedicineSettingViewに表示する形に成形する関数
+  /// reminderDayOfWeekをMedicineSettingViewに表示する形に成形する関数
   String moldingReminderDayOfWeek({required int index}) {
     String displayedReminderDayOfWeek = '';
     if (_reminders[index].reminderDayOfWeek.length == 7) {
@@ -165,7 +165,7 @@ class MedicineSettingController extends ControllerCore {
     return displayedReminderDayOfWeek;
   }
 
-  ///List<Reminder>型のremindersをList<ReminderRequest>型に変換する関数
+  /// List<Reminder>型のremindersをList<ReminderRequest>型に変換する関数
   List<ReminderRequest> _createReminderRequestList(
       {required List<Reminder> reminders}) {
     List<ReminderRequest> reminderRequestList = [];
@@ -175,7 +175,7 @@ class MedicineSettingController extends ControllerCore {
     return reminderRequestList;
   }
 
-  ///Medicineの情報を更新する関数
+  /// Medicineの情報を更新する関数
   Future<void> putMedicine() async {
     if (!validateField()) {
       return;
@@ -191,7 +191,7 @@ class MedicineSettingController extends ControllerCore {
         body: body, medicineId: medicine!.medicineId);
   }
 
-  ///Medicineの情報を登録する関数
+  /// Medicineの情報を登録する関数
   Future<void> postMedicine() async {
     if (!validateField()) {
       return;
@@ -206,12 +206,12 @@ class MedicineSettingController extends ControllerCore {
     await _medicineApi.postMedicine(body: body);
   }
 
-  ///Medicineの情報を削除する関数
+  /// Medicineの情報を削除する関数
   Future<void> deleteMedicine() async {
     await _medicineApi.deleteMedicine(medicineId: medicine!.medicineId);
   }
 
-  ///TextEditingControllerが空文字でないかチェックする関数
+  /// TextEditingControllerが空文字でないかチェックする関数
   bool validateField() {
     if ((countController.text == '') || (nameController.text == '')) {
       Fluttertoast.showToast(msg: Strings.MEDICINE_VALIDATE_TEXT);
