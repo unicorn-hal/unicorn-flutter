@@ -43,7 +43,9 @@ class MedicineSettingController extends ControllerCore {
 
   /// 各関数の実装
   int? get selectIndex => _selectIndex;
-  set selectIndex(int? index) => _selectIndex;
+  void setSelectIndex(int? value) {
+    _selectIndex = value;
+  }
 
   List<Reminder> get reminders => _reminders;
 
@@ -182,7 +184,7 @@ class MedicineSettingController extends ControllerCore {
       medicineName: nameController.text,
       count: medicine!.count,
       quantity: int.parse(countController.text),
-      dosage: _selectIndex!,
+      dosage: _selectIndex! + 1,
       reminders: _createReminderRequestList(reminders: _reminders),
     );
     await _medicineApi.putMedicine(
@@ -198,7 +200,7 @@ class MedicineSettingController extends ControllerCore {
       medicineName: nameController.text,
       count: int.parse(countController.text),
       quantity: int.parse(countController.text),
-      dosage: _selectIndex!,
+      dosage: _selectIndex! + 1,
       reminders: _createReminderRequestList(reminders: _reminders),
     );
     await _medicineApi.postMedicine(body: body);

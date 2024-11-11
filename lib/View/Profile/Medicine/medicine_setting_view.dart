@@ -192,7 +192,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                     height: 50,
                                     selectIndex: controller.selectIndex,
                                     onChanged: (int? value) {
-                                      controller.selectIndex = value!;
+                                      controller.setSelectIndex(value!);
                                       setState(() {});
                                     },
                                   ),
