@@ -9,13 +9,24 @@ import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.da
 import 'package:dotted_border/dotted_border.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-class MedicineView extends StatelessWidget {
+class MedicineView extends StatefulWidget {
   const MedicineView({super.key});
+
+  @override
+  State<MedicineView> createState() => _MedicineViewState();
+}
+
+class _MedicineViewState extends State<MedicineView> {
+  late MedicineController controller;
+  @override
+  void initState() {
+    super.initState();
+    controller = MedicineController();
+  }
 
   @override
   Widget build(BuildContext context) {
     // todo: 薬追加されたら表示画面を更新させる処理追加予定
-    MedicineController controller = MedicineController();
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     return CustomScaffold(
@@ -93,7 +104,8 @@ class MedicineView extends StatelessWidget {
                             child: GestureDetector(
                               onTap: () {
                                 const ProfileMedicineSettingRoute()
-                                    .push(context);
+                                    .push(context)
+                                    .then((value) => setState(() {}));
                               },
                               child: DottedBorder(
                                 dashPattern: const [15, 10],
@@ -150,7 +162,8 @@ class MedicineView extends StatelessWidget {
                                 child: IconButton(
                                   onPressed: () {
                                     const ProfileMedicineSettingRoute()
-                                        .push(context);
+                                        .push(context)
+                                        .then((value) => setState(() {}));
                                   },
                                   icon: const Icon(
                                     Icons.add,
@@ -173,7 +186,9 @@ class MedicineView extends StatelessWidget {
                                 onTap: () {
                                   ProfileMedicineSettingRoute(
                                     $extra: medicineList[index],
-                                  ).push(context);
+                                  )
+                                      .push(context)
+                                      .then((value) => setState(() {}));
                                 },
                                 action: medicineList[index].reminders.isNotEmpty
                                     ? const Icon(
