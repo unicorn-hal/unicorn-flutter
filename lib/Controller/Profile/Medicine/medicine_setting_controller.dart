@@ -16,8 +16,8 @@ class MedicineSettingController extends ControllerCore {
   MedicineApi get _medicineApi => MedicineApi();
 
   /// コンストラクタ
-  MedicineSettingController(this.medicine);
-  Medicine? medicine;
+  MedicineSettingController(this._medicine);
+  final Medicine? _medicine;
 
   /// 変数の定義
   TextEditingController nameController = TextEditingController();
@@ -31,12 +31,12 @@ class MedicineSettingController extends ControllerCore {
   void initialize() {
     _reminders = <Reminder>[];
     _reminderDayOfWeekList = <DayOfWeekEnum>[];
-    if (medicine != null) {
-      nameController.text = medicine!.medicineName;
-      countController.text = medicine!.quantity.toString();
-      _selectIndex = medicine!.dosage - 1;
-      if (medicine!.reminders.isNotEmpty) {
-        _reminders.addAll(medicine!.reminders);
+    if (_medicine != null) {
+      nameController.text = _medicine.medicineName;
+      countController.text = _medicine.quantity.toString();
+      _selectIndex = _medicine.dosage - 1;
+      if (_medicine.reminders.isNotEmpty) {
+        _reminders.addAll(_medicine.reminders);
       }
     }
   }
@@ -182,13 +182,13 @@ class MedicineSettingController extends ControllerCore {
     }
     MedicineRequest body = MedicineRequest(
       medicineName: nameController.text,
-      count: medicine!.count,
+      count: _medicine!.count,
       quantity: int.parse(countController.text),
       dosage: _selectIndex! + 1,
       reminders: _createReminderRequestList(reminders: _reminders),
     );
     await _medicineApi.putMedicine(
-        body: body, medicineId: medicine!.medicineId);
+        body: body, medicineId: _medicine.medicineId);
   }
 
   /// Medicineの情報を登録する関数
@@ -208,7 +208,7 @@ class MedicineSettingController extends ControllerCore {
 
   /// Medicineの情報を削除する関数
   Future<void> deleteMedicine() async {
-    await _medicineApi.deleteMedicine(medicineId: medicine!.medicineId);
+    await _medicineApi.deleteMedicine(medicineId: _medicine!.medicineId);
   }
 
   /// TextEditingControllerが空文字でないかチェックする関数
