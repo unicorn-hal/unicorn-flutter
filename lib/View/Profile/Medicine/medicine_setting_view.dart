@@ -36,7 +36,6 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
     controller = MedicineSettingController(widget.medicine);
   }
 
-  // todo: controller出来たら削除
   final focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
