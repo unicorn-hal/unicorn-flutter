@@ -145,7 +145,6 @@ class MedicineSettingController extends ControllerCore {
 
   /// reminderDayOfWeekをMedicineSettingViewに表示する形に成形する関数
   String moldingReminderDayOfWeek({required int index}) {
-    String displayedReminderDayOfWeek = '';
     if (_reminders[index].reminderDayOfWeek.length == 7) {
       return '毎日';
     }
@@ -153,15 +152,12 @@ class MedicineSettingController extends ControllerCore {
       return '毎${DayOfWeekEnumType.toDayAbbreviation(_reminders[index].reminderDayOfWeek[0])}曜日';
     }
     _reminders[index].reminderDayOfWeek.sort((a, b) => a.index - b.index);
-    for (int i = 0; i < _reminders[index].reminderDayOfWeek.length; i++) {
-      if (i == 0) {
-        displayedReminderDayOfWeek =
-            '$displayedReminderDayOfWeek${DayOfWeekEnumType.toDayAbbreviation(_reminders[index].reminderDayOfWeek[i])}';
-      } else {
-        displayedReminderDayOfWeek =
-            '$displayedReminderDayOfWeek,${DayOfWeekEnumType.toDayAbbreviation(_reminders[index].reminderDayOfWeek[i])}';
-      }
-    }
+    String displayedReminderDayOfWeek = (_reminders[index]
+            .reminderDayOfWeek
+            .map(
+                (DayOfWeekEnum day) => DayOfWeekEnumType.toDayAbbreviation(day))
+            .toList())
+        .join(',');
     return displayedReminderDayOfWeek;
   }
 
@@ -187,8 +183,11 @@ class MedicineSettingController extends ControllerCore {
       dosage: _selectIndex! + 1,
       reminders: _createReminderRequestList(reminders: _reminders),
     );
-    await _medicineApi.putMedicine(
+    int res = await _medicineApi.putMedicine(
         body: body, medicineId: _medicine.medicineId);
+    if (res != 200) {
+      Fluttertoast.showToast(msg: 'エラーが発生しました');
+    }
   }
 
   /// Medicineの情報を登録する関数
@@ -203,12 +202,19 @@ class MedicineSettingController extends ControllerCore {
       dosage: _selectIndex! + 1,
       reminders: _createReminderRequestList(reminders: _reminders),
     );
-    await _medicineApi.postMedicine(body: body);
+    int res = await _medicineApi.postMedicine(body: body);
+    if (res != 200) {
+      Fluttertoast.showToast(msg: 'エラーが発生しました');
+    }
   }
 
   /// Medicineの情報を削除する関数
   Future<void> deleteMedicine() async {
-    await _medicineApi.deleteMedicine(medicineId: _medicine!.medicineId);
+    int res =
+        await _medicineApi.deleteMedicine(medicineId: _medicine!.medicineId);
+    if (res != 204) {
+      Fluttertoast.showToast(msg: 'エラーが発生しました');
+    }
   }
 
   /// TextEditingControllerが空文字でないかチェックする関数
