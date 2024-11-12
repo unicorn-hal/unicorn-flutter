@@ -25,11 +25,9 @@ class DoctorTextChatController extends ControllerCore {
 
   late bool _firstMessage;
   late String _chatId;
-  late String _doctorName;
   final String _doctorId;
 
   late ValueNotifier<List<Message>> _messageHistory;
-  StreamController<List> streamController = StreamController();
 
   // スクロール用のコントローラー
   final ScrollController scrollController = ScrollController();
@@ -142,7 +140,7 @@ class DoctorTextChatController extends ControllerCore {
         },
         onDisconnect: (StompFrame frame) {
           // 切断時にStreamを閉じる
-          streamController.close();
+          stompClient.deactivate();
         },
       ),
     );
