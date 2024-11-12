@@ -117,23 +117,14 @@ class DoctorTextChatController extends ControllerCore {
           stompClient.subscribe(
               destination: destination,
               callback: (StompFrame frame) async {
-                try {
-                  // Stringで受け取ったメッセージをjsonに変換
-                  final Map<String, dynamic> json =
-                      jsonDecode(frame.body!) as Map<String, dynamic>;
+                // Stringで受け取ったメッセージをjsonに変換
+                final Map<String, dynamic> json =
+                    jsonDecode(frame.body!) as Map<String, dynamic>;
 
-                  // メッセージを追加
+                // メッセージを追加
+                try {
                   final Message message = Message.fromJson(
-                    {
-                      'messageID': json['messageID'],
-                      'chatID': json['chatID'],
-                      'senderID': json['senderID'],
-                      'firstName': json['firstName'],
-                      'lastName': json['lastName'],
-                      'iconImageUrl': json['iconImageUrl'],
-                      'content': json['content'],
-                      'sentAt': json['sentAt'],
-                    },
+                    json,
                   );
                   // index 0に追加
                   final List<Message> newMessageHistory = _messageHistory.value;
@@ -142,7 +133,7 @@ class DoctorTextChatController extends ControllerCore {
                   newMessageHistory.insert(0, message);
                   _messageHistory.value = newMessageHistory;
                 } catch (e) {
-                  // todo: エラー処理
+                  print(e);
                 }
               });
         },
