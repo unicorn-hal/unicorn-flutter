@@ -1,27 +1,25 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:flutter/foundation.dart';
 
 class VoiceCallController extends ControllerCore {
+  final String calleeUid;
   late RTCPeerConnection peerConnection;
   late MediaStream localStream;
   late WebSocketChannel channel;
   final remoteRenderer = RTCVideoRenderer();
   final localRenderer = RTCVideoRenderer();
-  final peersController = StreamController<List<String>>.broadcast();
-  List<String> peers = [];
-  String? selectedPeer;
   String userId = UserData().user!.userId; // ユーザー固有のID
   bool isMuted = false;
   bool isCameraOff = false;
+  ValueNotifier<bool> isCallConnected = ValueNotifier(false);
 
-  VoiceCallController();
+  VoiceCallController({required this.calleeUid});
 
   @override
   void initialize() {
@@ -49,6 +47,11 @@ class VoiceCallController extends ControllerCore {
     localStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
     localRenderer.srcObject = localStream;
 
+    // ビデオトラックを有効化
+    localStream.getVideoTracks().forEach((track) {
+      track.enabled = true;
+    });
+
     localStream.getTracks().forEach((track) {
       peerConnection.addTrack(track, localStream);
     });
@@ -68,9 +71,16 @@ class VoiceCallController extends ControllerCore {
       _sendSignalingMessage({
         'type': 'candidate',
         'candidate': candidate.toMap(),
-        'targetId': selectedPeer,
+        'targetId': calleeUid,
         'userId': userId,
       });
+    };
+
+    pc.onConnectionState = (RTCPeerConnectionState state) {
+      if (state == RTCPeerConnectionState.RTCPeerConnectionStateConnected) {
+        // 通話が接続されたらフラグを更新
+        isCallConnected.value = true;
+      }
     };
 
     pc.onTrack = (RTCTrackEvent event) {
@@ -111,8 +121,7 @@ class VoiceCallController extends ControllerCore {
           _handleCandidate(data);
           break;
         case 'peers':
-          peers = List<String>.from(data['peers']);
-          peersController.add(peers);
+          _handlePeersUpdate(data);
           break;
         default:
           break;
@@ -159,19 +168,24 @@ class VoiceCallController extends ControllerCore {
     await peerConnection.addCandidate(candidate);
   }
 
-  Future<void> createOffer(Function onError) async {
-    if (selectedPeer == null) {
-      onError();
-      return;
+  void _handlePeersUpdate(Map<String, dynamic> data) {
+    var peersList = List<String>.from(data['peers']);
+    if (peersList.contains(calleeUid)) {
+      // 通話相手がオンラインならピア接続を開始
+      _createOffer();
+    } else {
+      // 通話相手がオフラインなら待機状態
     }
+  }
 
+  Future<void> _createOffer() async {
     RTCSessionDescription offer = await peerConnection.createOffer();
     await peerConnection.setLocalDescription(offer);
 
     _sendSignalingMessage({
       'type': 'offer',
       'sdp': offer.sdp,
-      'targetId': selectedPeer,
+      'targetId': calleeUid,
       'userId': userId,
     });
   }
@@ -197,13 +211,7 @@ class VoiceCallController extends ControllerCore {
     });
     localRenderer.srcObject = null;
     remoteRenderer.srcObject = null;
-
-    _createPeerConnection().then((pc) {
-      peerConnection = pc;
-      _startLocalStream();
-    });
-
-    selectedPeer = null;
+    isCallConnected.value = false;
   }
 
   void dispose() {
@@ -211,6 +219,6 @@ class VoiceCallController extends ControllerCore {
     remoteRenderer.dispose();
     peerConnection.close();
     channel.sink.close();
-    peersController.close();
+    isCallConnected.dispose();
   }
 }
