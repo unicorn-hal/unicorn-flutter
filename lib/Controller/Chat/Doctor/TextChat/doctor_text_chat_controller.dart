@@ -63,14 +63,14 @@ class DoctorTextChatController extends ControllerCore {
     _listenNewMessage();
   }
 
-  // 該当医師とのチャット履歴があるか
+  /// 該当医師とのチャット履歴があるかチェックする
   Future<bool> _chatMessageNotExists() async {
     final chatList = ChatData().data;
     // 該当医師とのチャット履歴がない場合true
     return !chatList.any((element) => element.doctor.doctorId == _doctorId);
   }
 
-  // 該当医師とのチャットIDを取得
+  /// 該当医師とのチャットIDを取得
   Future<String> _getChatId() async {
     final String chatId = ChatData()
         .data
@@ -79,7 +79,7 @@ class DoctorTextChatController extends ControllerCore {
     return chatId;
   }
 
-  // 初回メッセージの場合は新規チャットを作成
+  /// 初回メッセージの場合に新規チャットを作成
   Future<String> _createChat() async {
     ChatRequest body =
         ChatRequest(doctorId: _doctorId, userId: AccountData().account!.uid);
@@ -94,14 +94,14 @@ class DoctorTextChatController extends ControllerCore {
     return response.chatId;
   }
 
-  // チャットIDからメッセージ履歴を取得
+  /// チャットIDからメッセージ履歴を取得
   Future<void> _getMessageHistory() async {
     final List<Message> messageList =
         await _chatApi.getMessageList(chatId: _chatId) ?? [];
     _messageHistory.value = messageList.reversed.toList();
   }
 
-  // メッセージの受信を開始
+  /// メッセージの受信を開始
   void _listenNewMessage() {
     late StompClient stompClient;
     String wsUrl =
@@ -149,7 +149,7 @@ class DoctorTextChatController extends ControllerCore {
     stompClient.activate();
   }
 
-  // テキストフィールドに入力されたメッセージを送信
+  /// テキストフィールドに入力されたメッセージを送信
   Future<void> sendMessage() async {
     MessageRequest message = MessageRequest(
       senderId: AccountData().account!.uid,
