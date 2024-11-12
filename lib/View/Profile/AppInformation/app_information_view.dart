@@ -47,10 +47,23 @@ class AppInformationView extends StatelessWidget {
             ),
             CommonItemTile(
               title: 'アプリバージョン',
-              action: CustomText(
-                text: controller.appVersion,
-                color: ColorName.textGray,
-                fontSize: 14,
+              action: FutureBuilder<String>(
+                future: controller.getAppVersion(),
+                builder: (context, AsyncSnapshot<String> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CustomText(
+                      text: '',
+                      color: ColorName.textGray,
+                      fontSize: 14,
+                    );
+                  }
+                  String appVersion = snapshot.data!;
+                  return CustomText(
+                    text: appVersion,
+                    color: ColorName.textGray,
+                    fontSize: 14,
+                  );
+                },
               ),
             ),
           ],

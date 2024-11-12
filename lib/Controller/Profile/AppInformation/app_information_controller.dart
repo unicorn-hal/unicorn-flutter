@@ -12,19 +12,15 @@ class AppInformationController extends ControllerCore {
   final String _privacyPolicyUrl = '';
   final String _licenseUrl = '';
   final String _appReviewUrl = '';
-  late String _appVersion;
 
   /// initialize()
   @override
-  void initialize() async {
-    _appVersion = await getAppVersion();
-  }
+  void initialize() {}
 
   /// 各関数の実装
   String get privacyPolicyUrl => _privacyPolicyUrl;
   String get licenseUrl => _licenseUrl;
   String get appReviewUrl => _appReviewUrl;
-  String get appVersion => _appVersion;
 
   /// urlをたたく関数
   Future<void> launchUrl(String url) async {
