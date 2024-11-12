@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -26,6 +25,7 @@ class DoctorTextChatController extends ControllerCore {
 
   late bool _firstMessage;
   late String _chatId;
+  late String _doctorName;
   final String _doctorId;
 
   late ValueNotifier<List<Message>> _messageHistory;
@@ -34,18 +34,19 @@ class DoctorTextChatController extends ControllerCore {
   // スクロール用のコントローラー
   final ScrollController scrollController = ScrollController();
 
+  //テキストフィールド用のコントローラー
+  final TextEditingController chatController = TextEditingController();
+
   @override
   void initialize() async {
     // メッセージ履歴の初期化
     _messageHistory = ValueNotifier([]);
 
-    // メッセージ履歴が更新された場合、画面をスクロール
+    // メッセージリストの変更があればスクロール位置を最下部に移動
     _messageHistory.addListener(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (scrollController.hasClients) {
-          scrollController.jumpTo(
-            scrollController.position.maxScrollExtent,
-          );
+          scrollController.jumpTo(0.0);
         }
       });
     });
@@ -99,14 +100,12 @@ class DoctorTextChatController extends ControllerCore {
   Future<void> _getMessageHistory() async {
     final List<Message> messageList =
         await _chatApi.getMessageList(chatId: _chatId) ?? [];
-    _messageHistory.value = messageList;
+    _messageHistory.value = messageList.reversed.toList();
   }
 
   // メッセージの受信を開始
   void _listenNewMessage() {
     late StompClient stompClient;
-    // todo: 環境変数に移動
-
     String wsUrl =
         '${dotenv.env['UNICORN_API_BASEURL']!.replaceFirst(RegExp('https'), 'ws')}/ws';
     final String destination = '/topic/chats/$_chatId/messages';
@@ -136,8 +135,12 @@ class DoctorTextChatController extends ControllerCore {
                       'sentAt': json['sentAt'],
                     },
                   );
+                  // index 0に追加
+                  final List<Message> newMessageHistory = _messageHistory.value;
                   _messageHistory.value = List.from(_messageHistory.value)
                     ..add(message);
+                  newMessageHistory.insert(0, message);
+                  _messageHistory.value = newMessageHistory;
                 } catch (e) {
                   // todo: エラー処理
                 }
@@ -161,10 +164,12 @@ class DoctorTextChatController extends ControllerCore {
   Future<void> sendMessage() async {
     MessageRequest message = MessageRequest(
       senderId: AccountData().account!.uid,
-      content: 'あくしろ',
+      content: chatController.text,
     );
+    chatController.text = '';
     await _chatApi.postMessage(body: message, chatId: _chatId);
   }
 
+  // チャット履歴を逆順にして返す
   ValueNotifier<List<Message>> get messageHistory => _messageHistory;
 }

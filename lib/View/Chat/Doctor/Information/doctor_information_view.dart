@@ -109,7 +109,8 @@ class DoctorInformationView extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       // todo: チャット画面へ遷移
-                      ChatDoctorTextChatRoute().push(context);
+                      ChatDoctorTextChatRoute(doctorId, doctorName)
+                          .push(context);
                     },
                     child: Container(
                       width: 160,

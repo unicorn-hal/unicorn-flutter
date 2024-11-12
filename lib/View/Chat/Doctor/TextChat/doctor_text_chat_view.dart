@@ -10,8 +10,14 @@ import 'package:unicorn_flutter/View/Component/Parts/Chat/message_tile.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class DoctorTextChatView extends StatefulWidget {
-  DoctorTextChatView({super.key});
+  DoctorTextChatView({
+    super.key,
+    required this.doctorId,
+    required this.doctorName,
+  });
 
+  String doctorId;
+  String doctorName;
   @override
   State<DoctorTextChatView> createState() => _DoctorTextChatViewState();
 }
@@ -19,32 +25,30 @@ class DoctorTextChatView extends StatefulWidget {
 class _DoctorTextChatViewState extends State<DoctorTextChatView> {
   late DoctorTextChatController controller;
 
-  // 医師名
-  final String doctorName = '長谷川';
-
-  //　チャット用のコントローラー
-  final TextEditingController chatController = TextEditingController();
-
   // フォーカス用のノード
   final focusNode = FocusNode();
 
   // スクロール位置が最下部になるかどうかを判定するための変数
   bool scrollButton = false;
 
+  bool visible = false;
+
   @override
   void initState() {
     super.initState();
-    controller = DoctorTextChatController('1234567890');
+
+    // doctorIdを元にチャットコントローラーを初期化
+    controller = DoctorTextChatController(widget.doctorId);
+
     //スクロール位置が最下部になかったらscrollButtonを表示する
     controller.scrollController.addListener(() {
-      if (controller.scrollController.position.maxScrollExtent !=
-          controller.scrollController.position.pixels) {
-        scrollButton = true;
-        setState(() {});
-      } else {
+      if (controller.scrollController.offset ==
+          controller.scrollController.position.minScrollExtent) {
         scrollButton = false;
-        setState(() {});
+      } else {
+        scrollButton = true;
       }
+      setState(() {});
     });
   }
 
@@ -55,7 +59,7 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
       focusNode: focusNode,
       appBar: CustomAppBar(
         backgroundColor: ColorName.mainColor,
-        title: '$doctorName先生',
+        title: '${widget.doctorName}先生',
         foregroundColor: Colors.white,
       ),
       body: Stack(
@@ -85,24 +89,23 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
                           Expanded(
                             child: ListView.builder(
                               itemCount: value.length,
+                              reverse: true,
                               controller: controller.scrollController,
-                              shrinkWrap: true,
                               physics: const AlwaysScrollableScrollPhysics(),
+                              padding: const EdgeInsets.only(bottom: 60),
                               itemBuilder: (BuildContext context, int index) {
                                 final Message message = value[index];
+
                                 return MessageTile(
                                   messageBody: message.content,
                                   // 自分のメッセージかどうかを判定
                                   myMessage: message.senderId ==
                                       AccountData().account!.uid,
-                                  postAt: DateFormat('HH:MM')
+                                  postAt: DateFormat('HH:mm')
                                       .format(message.sentAt),
                                 );
                               },
                             ),
-                          ),
-                          const SizedBox(
-                            height: 60,
                           ),
                         ],
                       );
@@ -115,11 +118,9 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
                     child: GestureDetector(
                       //アニメーションをつけてスクロール位置を最下部にする
                       onTap: () {
-                        controller.scrollController.animateTo(
-                            controller
-                                .scrollController.position.maxScrollExtent,
-                            duration: const Duration(milliseconds: 100),
-                            curve: Curves.bounceIn);
+                        if (controller.scrollController.hasClients) {
+                          controller.scrollController.jumpTo(0.0);
+                        }
                       },
                       child: Container(
                         width: 40,
@@ -160,7 +161,7 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
                     ),
                     child: CustomTextfield(
                       hintText: 'メッセージを入力',
-                      controller: chatController,
+                      controller: controller.chatController,
                       width: size.width * 0.85,
                       height: 44,
                     ),
