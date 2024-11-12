@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/Medicine/medicine_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Route/router.dart';
@@ -65,7 +66,7 @@ class _MedicineViewState extends State<MedicineView> {
                           const Padding(
                             padding: EdgeInsets.only(top: 100),
                             child: CustomLoadingAnimation(
-                              text: 'ローディング中',
+                              text: Strings.LOADING_TEXT,
                               iconColor: Colors.grey,
                               textColor: Colors.grey,
                             ),

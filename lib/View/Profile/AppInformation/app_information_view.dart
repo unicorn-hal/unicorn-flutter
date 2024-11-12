@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/AppInformation/app_information_controller.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
@@ -33,7 +34,7 @@ class AppInformationView extends StatelessWidget {
               builder: (context, AsyncSnapshot<String> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CustomLoadingAnimation(
-                    text: 'ローディング中',
+                    text: Strings.LOADING_TEXT,
                     iconColor: Colors.grey,
                     textColor: Colors.grey,
                   );
