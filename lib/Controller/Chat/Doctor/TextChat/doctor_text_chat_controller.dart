@@ -3,7 +3,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Model/Chat/chat_data.dart';
 
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
@@ -157,7 +159,12 @@ class DoctorTextChatController extends ControllerCore {
       content: chatController.text,
     );
     chatController.text = '';
-    await _chatApi.postMessage(body: message, chatId: _chatId);
+    final response = await _chatApi.postMessage(body: message, chatId: _chatId);
+
+    // 200以外の場合はエラーを表示
+    if (response.hashCode != 200) {
+      Fluttertoast.showToast(msg: Strings.CHAT_POST_RESPONSE_ERROR);
+    }
   }
 
   // チャット履歴を逆順にして返す
