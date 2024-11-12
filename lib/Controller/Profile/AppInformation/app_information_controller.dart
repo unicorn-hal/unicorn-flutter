@@ -11,7 +11,6 @@ class AppInformationController extends ControllerCore {
   // todo: url決まったら入れる
   final String _privacyPolicyUrl = '';
   final String _licenseUrl = '';
-  final String _appReviewUrl = '';
 
   /// initialize()
   @override
@@ -20,7 +19,6 @@ class AppInformationController extends ControllerCore {
   /// 各関数の実装
   String get privacyPolicyUrl => _privacyPolicyUrl;
   String get licenseUrl => _licenseUrl;
-  String get appReviewUrl => _appReviewUrl;
 
   /// urlをたたく関数
   Future<void> launchUrl(String url) async {
@@ -32,6 +30,7 @@ class AppInformationController extends ControllerCore {
     return await _systemInfoService.appVersion;
   }
 
+  /// アプリのレビューページに飛ばす関数
   Future<void> openReview() async {
     await _systemInfoService.openReview();
   }
