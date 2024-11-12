@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/Information/doctor_information_controller.dart';
-import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
-import 'package:unicorn_flutter/View/Component/Parts/Chat/department_badges.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -81,50 +79,6 @@ class DoctorInformationView extends StatelessWidget {
                   ),
                 ),
 
-            /// 通話予約&チャット画面へ遷移するボタン
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      // todo: チャット画面へ遷移
-                      ChatDoctorTextChatRoute(doctorId, doctorName)
-                          .push(context);
-                    },
-                    child: Container(
-                      width: 160,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: ColorName.shadowGray,
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.chat,
-                            color: ColorName.mainColor,
-                            size: 40,
-                          ),
-                          CustomText(
-                            text: 'チャット',
-                            fontSize: 14,
-                          ),
-                      ],
-                    ),
-                  ),
-                ),
-
                 /// 通話予約&チャット画面へ遷移するボタン
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -133,8 +87,11 @@ class DoctorInformationView extends StatelessWidget {
                       padding: const EdgeInsets.all(4.0),
                       child: GestureDetector(
                         onTap: () {
+                          final String doctorName =
+                              doctor.firstName + doctor.lastName;
                           // todo: チャット画面へ遷移
-                          const ChatDoctorTextChatRoute().push(context);
+                          ChatDoctorTextChatRoute(doctorId, doctorName)
+                              .push(context);
                         },
                         child: Container(
                           width: 160,
