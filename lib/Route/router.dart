@@ -449,12 +449,12 @@ class ProfileAppInformationRoute extends GoRouteData {
 }
 
 class ProfileAppInformationLicenseRoute extends GoRouteData {
-  const ProfileAppInformationLicenseRoute({required this.$extra});
-  final String $extra;
+  const ProfileAppInformationLicenseRoute({required this.appVersion});
+  final String appVersion;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => LicenseView(
-        appVersion: $extra,
+        appVersion: appVersion,
       );
 }
 

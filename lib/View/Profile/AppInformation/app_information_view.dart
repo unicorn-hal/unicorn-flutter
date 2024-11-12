@@ -56,7 +56,8 @@ class AppInformationView extends StatelessWidget {
                     CommonItemTile(
                       title: 'ライセンス',
                       onTap: () {
-                        ProfileAppInformationLicenseRoute($extra: appVersion)
+                        ProfileAppInformationLicenseRoute(
+                                appVersion: appVersion)
                             .push(context);
                       },
                     ),
