@@ -39,6 +39,13 @@ class Strings {
       '血圧が平均値から外れています。体調が優れない場合は医師との通話やAIチャットを利用してください。';
   static const String HEALTH_CHECKUP_RESULT_DESCRIPTION_DANGER =
       '体温・血圧ともに平均値から外れています。緊急時は医師との通話やAIチャットを利用してください。';
-
+  
   static const String CHAT_POST_RESPONSE_ERROR = 'メッセージの送信に失敗しました。';
+
+  // おくすり登録・修正時のvalidateに使うテキスト
+  static const String MEDICINE_VALIDATE_TEXT = 'おくすりの名称とおくすりの量は必須の入力項目です';
+  // おくすり登録・修正・削除時のエラー発生時に使うテキスト
+  static const String MEDICINE_ERROR_RESPONSE_TEXT = '通信エラーが発生しました';
+  // ローディング中に表示するテキスト
+  static const String LOADING_TEXT = 'ロード中';
 }

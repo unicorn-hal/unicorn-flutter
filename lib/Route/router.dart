@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
+import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
@@ -18,6 +19,7 @@ import 'package:unicorn_flutter/View/HealthCheckup/Results/health_checkup_result
 import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart';
 import 'package:unicorn_flutter/View/Home/home_view.dart';
 import 'package:unicorn_flutter/View/Component/Pages/Register/register_address_info_view.dart';
+import 'package:unicorn_flutter/View/Profile/AppInformation/license_view.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/chronic_disease_view.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/disease_search_view.dart';
 import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_register_view.dart';
@@ -124,6 +126,9 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<ProfileAppInformationRoute>(
           path: Routes.profileAppInformation,
+        ),
+        TypedGoRoute<ProfileAppInformationLicenseRoute>(
+          path: Routes.profileAppInformationLicense,
         ),
         TypedGoRoute<ProfileNotificationSettingRoute>(
           path: Routes.profileNotificationSetting,
@@ -416,11 +421,14 @@ class ProfileRegisterPhysicalInfoRoute extends GoRouteData {
 }
 
 class ProfileRegisterAddressInfoRoute extends GoRouteData {
-  const ProfileRegisterAddressInfoRoute();
+  ProfileRegisterAddressInfoRoute({required this.$extra});
+  PhysicalInfo $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const RegisterAddressInfoView();
+      RegisterAddressInfoView(
+        physicalInfo: $extra,
+      );
 }
 
 class ProfileRegisterUserInfoRoute extends GoRouteData {
@@ -445,6 +453,16 @@ class ProfileAppInformationRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const AppInformationView();
+}
+
+class ProfileAppInformationLicenseRoute extends GoRouteData {
+  const ProfileAppInformationLicenseRoute({required this.appVersion});
+  final String appVersion;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => LicenseView(
+        appVersion: appVersion,
+      );
 }
 
 class ProfileNotificationSettingRoute extends GoRouteData {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/prefectures.dart';
+import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -7,7 +8,8 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dar
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class RegisterAddressInfoView extends StatefulWidget {
-  const RegisterAddressInfoView({super.key});
+  const RegisterAddressInfoView({super.key, this.physicalInfo});
+  final PhysicalInfo? physicalInfo;
 
   @override
   State<RegisterAddressInfoView> createState() =>
