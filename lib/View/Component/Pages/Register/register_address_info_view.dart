@@ -29,15 +29,6 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
 
   @override
   Widget build(BuildContext context) {
-    final List<DropdownMenuItem<int>> dropdownItems =
-        controller.entryItemStrings
-            .map((e) => DropdownMenuItem(
-                  value: controller.entryItemStrings.indexOf(e),
-                  child: CustomText(
-                    text: e,
-                  ),
-                ))
-            .toList();
     final deviceWidth = MediaQuery.of(context).size.width;
     return CustomScaffold(
       focusNode: focusnode,
@@ -174,7 +165,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   ),
                 ),
                 CustomDropdown(
-                  dropdownItems: dropdownItems,
+                  dropdownItems: controller.countryList(),
                   height: 44,
                   onChanged: (int? index) {},
                 ),
