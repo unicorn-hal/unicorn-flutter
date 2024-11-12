@@ -29,54 +29,54 @@ class AppInformationView extends StatelessWidget {
               child: const CustomText(text: 'アプリ情報'),
             ),
             FutureBuilder<String>(
-                future: controller.getAppVersion(),
-                builder: (context, AsyncSnapshot<String> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CustomLoadingAnimation(
-                      text: 'ローディング中',
-                      iconColor: Colors.grey,
-                      textColor: Colors.grey,
-                    );
-                  }
-                  if (!snapshot.hasData) {
-                    // todo: エラー時の処理
-                    return Container();
-                  }
-                  String appVersion = snapshot.data!;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CommonItemTile(
-                        title: 'アプリをレビューする',
-                        onTap: () async {
-                          await controller.openReview();
-                        },
-                      ),
-                      CommonItemTile(
-                        title: 'ライセンス',
-                        onTap: () {
-                          ProfileAppInformationLicenseRoute($extra: appVersion)
-                              .push(context);
-                        },
-                      ),
-                      CommonItemTile(
-                        title: 'プライバシーポリシー',
-                        onTap: () async {
-                          await controller
-                              .launchUrl(controller.privacyPolicyUrl);
-                        },
-                      ),
-                      CommonItemTile(
-                        title: 'アプリバージョン',
-                        action: CustomText(
-                          text: appVersion,
-                          color: ColorName.textGray,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
+              future: controller.getAppVersion(),
+              builder: (context, AsyncSnapshot<String> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CustomLoadingAnimation(
+                    text: 'ローディング中',
+                    iconColor: Colors.grey,
+                    textColor: Colors.grey,
                   );
-                }),
+                }
+                if (!snapshot.hasData) {
+                  // todo: エラー時の処理
+                  return Container();
+                }
+                String appVersion = snapshot.data!;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CommonItemTile(
+                      title: 'アプリをレビューする',
+                      onTap: () async {
+                        await controller.openReview();
+                      },
+                    ),
+                    CommonItemTile(
+                      title: 'ライセンス',
+                      onTap: () {
+                        ProfileAppInformationLicenseRoute($extra: appVersion)
+                            .push(context);
+                      },
+                    ),
+                    CommonItemTile(
+                      title: 'プライバシーポリシー',
+                      onTap: () async {
+                        await controller.launchUrl(controller.privacyPolicyUrl);
+                      },
+                    ),
+                    CommonItemTile(
+                      title: 'アプリバージョン',
+                      action: CustomText(
+                        text: appVersion,
+                        color: ColorName.textGray,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ),
