@@ -219,6 +219,15 @@ class VoiceCallController extends ControllerCore {
   }
 
   void dispose() {
+    // カメラストリームを停止
+    localStream.getTracks().forEach((track) {
+      track.stop();
+    });
+    localStream.dispose();
+
+    // ピアコネクションを閉じる
+    peerConnection.close();
+
     localRenderer.dispose();
     remoteRenderer.dispose();
     peerConnection.close();

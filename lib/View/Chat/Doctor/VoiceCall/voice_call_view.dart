@@ -5,7 +5,7 @@ import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_cont
 class VoiceCallView extends StatefulWidget {
   final String calleeUid;
 
-  const VoiceCallView({Key? key, required this.calleeUid}) : super(key: key);
+  const VoiceCallView({super.key, required this.calleeUid});
 
   @override
   State<VoiceCallView> createState() => _VoiceCallViewState();
@@ -55,7 +55,7 @@ class _VoiceCallViewState extends State<VoiceCallView> {
         appBar: AppBar(
           title: Text('${widget.calleeUid} さんとの通話中...'),
         ),
-        body: Center(
+        body: const Center(
           child: Text('通話接続を待っています...'),
         ),
       );
