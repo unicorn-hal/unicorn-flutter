@@ -12,6 +12,7 @@ import 'package:unicorn_flutter/Model/Entity/Chat/chat_response.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/message.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/message_request.dart';
 import 'package:unicorn_flutter/Service/Api/Chat/chat_api.dart';
+import 'package:unicorn_flutter/Service/Log/log_service.dart';
 
 import '../../../../Model/Entity/Chat/chat.dart';
 import '../../../Core/controller_core.dart';
@@ -131,7 +132,7 @@ class DoctorTextChatController extends ControllerCore {
                   newMessageHistory.insert(0, message);
                   _messageHistory.value = newMessageHistory;
                 } catch (e) {
-                  print(e);
+                  Log.echo('$e');
                 }
               });
         },
