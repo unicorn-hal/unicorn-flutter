@@ -13,23 +13,21 @@ class NotificationSettingController extends ControllerCore {
 
   /// initialize()
   @override
-  void initialize() {
-    print('Controller Init');
-  }
+  void initialize() {}
 
   /// 各関数の実装
   bool get medicineNotificationValue => _medicineNotificationValue;
-  void setmedicineNotificationValue(bool value) {
+  void setMedicineNotificationValue(bool value) {
     _medicineNotificationValue = value;
   }
 
   bool get healthCheckupValue => _healthCheckupValue;
-  void sethealthCheckupValue(bool value) {
+  void setHealthCheckupValue(bool value) {
     _healthCheckupValue = value;
   }
 
   bool get hospitalNotificationValue => _hospitalNotificationValue;
-  void sethospitalNotificationValue(bool value) {
+  void setHospitalNotificationValue(bool value) {
     _hospitalNotificationValue = value;
   }
 }

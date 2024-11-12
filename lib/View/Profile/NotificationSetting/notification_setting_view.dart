@@ -14,11 +14,6 @@ class NotificationSettingView extends StatefulWidget {
 
 class _NotificationSettingViewState extends State<NotificationSettingView> {
   late NotificationSettingController controller;
-  bool _value = false;
-  bool _value1 = false;
-  bool _value2 = false;
-
-  // todo: controller出来たら消す
   @override
   void initState() {
     super.initState();
@@ -46,42 +41,42 @@ class _NotificationSettingViewState extends State<NotificationSettingView> {
             ),
             CommonItemTile(
               title: 'おくすり通知',
-              // todo: controller出来たら変更
               action: CupertinoSwitch(
-                value: _value,
-                onChanged: (value) => setState(() => _value = value),
+                value: controller.medicineNotificationValue,
+                onChanged: (value) => setState(
+                    () => controller.setMedicineNotificationValue(value)),
               ),
               onTap: () {
-                _value = !_value;
+                controller.setMedicineNotificationValue(
+                    !controller.medicineNotificationValue);
                 setState(() {});
               },
-              // todo: viewが全部出来たタイミングでvoidCallbackに変える
             ),
             CommonItemTile(
               title: '定時検診',
-              // todo: controller出来たら変更
               action: CupertinoSwitch(
-                value: _value1,
-                onChanged: (value) => setState(() => _value1 = value),
+                value: controller.healthCheckupValue,
+                onChanged: (value) =>
+                    setState(() => controller.setHealthCheckupValue(value)),
               ),
               onTap: () {
-                _value1 = !_value1;
+                controller
+                    .setHealthCheckupValue(!controller.healthCheckupValue);
                 setState(() {});
               },
-              // todo: viewが全部出来たタイミングでvoidCallbackに変える
             ),
             CommonItemTile(
               title: '新着病院お知らせ',
-              // todo: controller出来たら変更
               action: CupertinoSwitch(
-                value: _value2,
-                onChanged: (value) => setState(() => _value2 = value),
+                value: controller.hospitalNotificationValue,
+                onChanged: (value) => setState(
+                    () => controller.setHospitalNotificationValue(value)),
               ),
               onTap: () {
-                _value2 = !_value2;
+                controller.setHospitalNotificationValue(
+                    !controller.hospitalNotificationValue);
                 setState(() {});
               },
-              // todo: viewが全部出来たタイミングでvoidCallbackに変える
             ),
           ],
         ),
