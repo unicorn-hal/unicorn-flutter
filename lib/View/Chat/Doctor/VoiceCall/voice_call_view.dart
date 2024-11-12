@@ -12,44 +12,43 @@ class VoiceCallView extends StatefulWidget {
 }
 
 class _VoiceCallViewState extends State<VoiceCallView> {
-  late VoiceCallController controller;
+  late VoiceCallController _controller;
 
   @override
   void initState() {
     super.initState();
-    controller = VoiceCallController(calleeUid: widget.calleeUid);
-    controller.initialize();
-    controller.isCallConnected.addListener(() {
+    _controller = VoiceCallController(calleeUid: widget.calleeUid);
+    _controller.isCallConnected.addListener(() {
       setState(() {}); // 通話状態が変化したら画面を更新
     });
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   void _onToggleMute() {
     setState(() {
-      controller.toggleMute();
+      _controller.toggleMute();
     });
   }
 
   void _onToggleCamera() {
     setState(() {
-      controller.toggleCamera();
+      _controller.toggleCamera();
     });
   }
 
   void _onEndCall() {
-    controller.endCall();
+    _controller.endCall();
     Navigator.of(context).pop(); // 前の画面に戻る
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!controller.isCallConnected.value) {
+    if (!_controller.isCallConnected.value) {
       // 通話待機画面
       return Scaffold(
         appBar: AppBar(
@@ -63,7 +62,7 @@ class _VoiceCallViewState extends State<VoiceCallView> {
       // ビデオ通話画面
       return Scaffold(
         appBar: AppBar(
-          title: Text('ビデオ通話 - ${controller.userId}'),
+          title: Text('ビデオ通話 - ${_controller.userId}'),
         ),
         body: Column(
           children: [
@@ -75,11 +74,11 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                     child: Column(
                       children: [
                         Expanded(
-                          child: RTCVideoView(controller.localRenderer,
+                          child: RTCVideoView(_controller.localRenderer,
                               mirror: true),
                         ),
                         Expanded(
-                          child: RTCVideoView(controller.remoteRenderer),
+                          child: RTCVideoView(_controller.remoteRenderer),
                         ),
                       ],
                     ),
@@ -91,11 +90,11 @@ class _VoiceCallViewState extends State<VoiceCallView> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
-                  icon: Icon(controller.isMuted ? Icons.mic_off : Icons.mic),
+                  icon: Icon(_controller.isMuted ? Icons.mic_off : Icons.mic),
                   onPressed: _onToggleMute,
                 ),
                 IconButton(
-                  icon: Icon(controller.isCameraOff
+                  icon: Icon(_controller.isCameraOff
                       ? Icons.videocam_off
                       : Icons.videocam),
                   onPressed: _onToggleCamera,
