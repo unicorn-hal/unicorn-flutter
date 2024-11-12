@@ -29,20 +29,20 @@ class AppInformationView extends StatelessWidget {
             ),
             CommonItemTile(
               title: 'アプリをレビューする',
-              onTap: () {
-                controller.launchUrl(controller.appReviewUrl);
+              onTap: () async {
+                await controller.launchUrl(controller.appReviewUrl);
               },
             ),
             CommonItemTile(
               title: 'ライセンス',
-              onTap: () {
-                controller.launchUrl(controller.licenseUrl);
+              onTap: () async {
+                await controller.launchUrl(controller.licenseUrl);
               },
             ),
             CommonItemTile(
               title: 'プライバシーポリシー',
-              onTap: () {
-                controller.launchUrl(controller.privacyPolicyUrl);
+              onTap: () async {
+                await controller.launchUrl(controller.privacyPolicyUrl);
               },
             ),
             CommonItemTile(
