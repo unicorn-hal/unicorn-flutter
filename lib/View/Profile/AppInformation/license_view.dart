@@ -13,7 +13,7 @@ class LicenseView extends StatelessWidget {
     return CustomScaffold(
       isAppbar: false,
       body: LicensePage(
-        applicationName: 'FleetTracker',
+        applicationName: 'Unicorn',
         applicationVersion: appVersion,
         applicationIcon: const Placeholder(),
         // todo: アイコンできたらぶちこみ
