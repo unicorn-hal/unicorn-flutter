@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/TextChat/doctor_text_chat_controller.dart';
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
@@ -12,14 +10,14 @@ import 'package:unicorn_flutter/View/Component/Parts/Chat/message_tile.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class DoctorTextChatView extends StatefulWidget {
-  DoctorTextChatView({
+  const DoctorTextChatView({
     super.key,
     required this.doctorId,
     required this.doctorName,
   });
 
-  String doctorId;
-  String doctorName;
+  final String doctorId;
+  final String doctorName;
   @override
   State<DoctorTextChatView> createState() => _DoctorTextChatViewState();
 }
