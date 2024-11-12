@@ -30,7 +30,7 @@ class AppInformationView extends StatelessWidget {
             CommonItemTile(
               title: 'アプリをレビューする',
               onTap: () async {
-                await controller.launchUrl(controller.appReviewUrl);
+                await controller.openReview();
               },
             ),
             CommonItemTile(

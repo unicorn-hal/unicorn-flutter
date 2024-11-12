@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 class SystemInfoService {
   DeviceInfoPlugin get _deviceInfo => DeviceInfoPlugin();
   Future<PackageInfo> get _packageInfo async =>
       await PackageInfo.fromPlatform();
+  InAppReview get _inAppReview => InAppReview.instance;
 
   Future<String> get appVersion async {
     final PackageInfo packageInfo = await _packageInfo;
@@ -54,5 +56,13 @@ class SystemInfoService {
       return iosInfo.utsname.machine;
     }
     return 'Unknown';
+  }
+
+  Future<void> openReview() async {
+    if (await _inAppReview.isAvailable()) {
+      _inAppReview.openStoreListing(
+        appStoreId: '6737767733',
+      );
+    }
   }
 }

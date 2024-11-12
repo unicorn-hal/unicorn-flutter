@@ -31,4 +31,8 @@ class AppInformationController extends ControllerCore {
   Future<String> getAppVersion() async {
     return await _systemInfoService.appVersion;
   }
+
+  Future<void> openReview() async {
+    await _systemInfoService.openReview();
+  }
 }
