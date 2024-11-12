@@ -164,6 +164,7 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                                             chronicDiseaseList[index]
                                                 .chronicDiseaseId);
                                         ProtectorNotifier().disableProtector();
+                                        setState(() {});
                                       },
                                     );
                                   },
