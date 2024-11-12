@@ -45,5 +45,5 @@ class Strings {
   // おくすり登録・修正・削除時のエラー発生時に使うテキスト
   static const String MEDICINE_ERROR_RESPONSE_TEXT = '通信エラーが発生しました';
   // ローディング中に表示するテキスト
-  static const String LOADING_TEXT = 'ローディング中';
+  static const String LOADING_TEXT = 'ロード中';
 }
