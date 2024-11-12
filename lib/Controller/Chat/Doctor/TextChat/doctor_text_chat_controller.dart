@@ -9,6 +9,7 @@ import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Model/Chat/chat_data.dart';
 
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
+import 'package:unicorn_flutter/Model/Entity/Chat/chat.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat_request.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat_response.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/message.dart';
@@ -16,7 +17,6 @@ import 'package:unicorn_flutter/Model/Entity/Chat/message_request.dart';
 import 'package:unicorn_flutter/Service/Api/Chat/chat_api.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 
-import '../../../../Model/Entity/Chat/chat.dart';
 import '../../../Core/controller_core.dart';
 
 class DoctorTextChatController extends ControllerCore {
@@ -92,9 +92,21 @@ class DoctorTextChatController extends ControllerCore {
       // todo: エラー時はアプリを再起動させる
     }
 
+    // チャットIDからメッセージ履歴を取得
+    List<Chat>? chatList = await _chatApi.getChatList();
+
+    if (chatList == null) {
+      // todo: エラー時はアプリを再起動させる
+    }
+
+    final Chat newChat = chatList!.firstWhere(
+      (element) => element.chatId == response!.chatId,
+    );
+
     // 新規作成したチャットをデータクラスに追加
-    ChatData().addChat(Chat.fromJson(response!.toJson()));
-    return response.chatId;
+    ChatData().addChat(newChat);
+
+    return response!.chatId;
   }
 
   /// チャットIDからメッセージ履歴を取得

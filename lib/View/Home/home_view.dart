@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/bottom_navigation_bar_controller.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
