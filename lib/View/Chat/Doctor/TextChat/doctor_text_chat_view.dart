@@ -102,8 +102,10 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
                                   // 自分のメッセージかどうかを判定
                                   myMessage: message.senderId ==
                                       AccountData().account!.uid,
-                                  postAt: DateFormat('HH:mm')
-                                      .format(message.sentAt),
+                                  // utc時間を日本時間に変換
+                                  postAt: DateFormat('HH:mm').format(
+                                    message.sentAt.toLocal(),
+                                  ),
                                 );
                               },
                             );
