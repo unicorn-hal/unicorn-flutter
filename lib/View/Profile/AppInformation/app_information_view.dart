@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Controller/Profile/AppInformation/app_information_controller.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
@@ -9,9 +10,8 @@ class AppInformationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppInformationController controller = AppInformationController();
     double deviceWidth = MediaQuery.of(context).size.width;
-    String version = '1.0.0';
-    // todo: controller出来たら移動
     return CustomScaffold(
       body: SizedBox(
         width: deviceWidth,
@@ -30,31 +30,28 @@ class AppInformationView extends StatelessWidget {
             CommonItemTile(
               title: 'アプリをレビューする',
               onTap: () {
-                // todo: controller出来たら変更
+                controller.launchUrl(controller.appReviewUrl);
               },
             ),
             CommonItemTile(
               title: 'ライセンス',
               onTap: () {
-                // todo: controller出来たら変更
+                controller.launchUrl(controller.licenseUrl);
               },
             ),
             CommonItemTile(
               title: 'プライバシーポリシー',
               onTap: () {
-                // todo: controller出来たら変更
+                controller.launchUrl(controller.privacyPolicyUrl);
               },
             ),
             CommonItemTile(
               title: 'アプリバージョン',
               action: CustomText(
-                text: version,
+                text: controller.appVersion,
                 color: ColorName.textGray,
                 fontSize: 14,
               ),
-              onTap: () {
-                // todo: controller出来たら変更
-              },
             ),
           ],
         ),
