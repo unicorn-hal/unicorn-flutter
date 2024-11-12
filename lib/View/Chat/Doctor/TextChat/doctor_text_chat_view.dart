@@ -31,8 +31,6 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
   // スクロール位置が最下部になるかどうかを判定するための変数
   bool scrollButton = false;
 
-  bool visible = false;
-
   @override
   void initState() {
     super.initState();
