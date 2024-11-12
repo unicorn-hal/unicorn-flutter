@@ -82,7 +82,7 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                     return const Padding(
                       padding: EdgeInsets.only(top: 100),
                       child: CustomLoadingAnimation(
-                        text: 'ローディング中',
+                        text: Strings.LOADING_TEXT,
                         iconColor: Colors.grey,
                         textColor: Colors.grey,
                       ),
