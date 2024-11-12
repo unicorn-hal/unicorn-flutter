@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Profile/AppInformation/app_information_controller.dart';
+import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
@@ -16,7 +18,6 @@ class AppInformationView extends StatelessWidget {
       body: SizedBox(
         width: deviceWidth,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               width: deviceWidth * 0.9,
@@ -27,45 +28,55 @@ class AppInformationView extends StatelessWidget {
               ),
               child: const CustomText(text: 'アプリ情報'),
             ),
-            CommonItemTile(
-              title: 'アプリをレビューする',
-              onTap: () async {
-                await controller.openReview();
-              },
-            ),
-            CommonItemTile(
-              title: 'ライセンス',
-              onTap: () async {
-                await controller.launchUrl(controller.licenseUrl);
-              },
-            ),
-            CommonItemTile(
-              title: 'プライバシーポリシー',
-              onTap: () async {
-                await controller.launchUrl(controller.privacyPolicyUrl);
-              },
-            ),
-            CommonItemTile(
-              title: 'アプリバージョン',
-              action: FutureBuilder<String>(
+            FutureBuilder<String>(
                 future: controller.getAppVersion(),
                 builder: (context, AsyncSnapshot<String> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CustomText(
-                      text: '',
-                      color: ColorName.textGray,
-                      fontSize: 14,
+                    return const CustomLoadingAnimation(
+                      text: 'ローディング中',
+                      iconColor: Colors.grey,
+                      textColor: Colors.grey,
                     );
                   }
+                  if (!snapshot.hasData) {
+                    // todo: エラー時の処理
+                    return Container();
+                  }
                   String appVersion = snapshot.data!;
-                  return CustomText(
-                    text: appVersion,
-                    color: ColorName.textGray,
-                    fontSize: 14,
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CommonItemTile(
+                        title: 'アプリをレビューする',
+                        onTap: () async {
+                          await controller.openReview();
+                        },
+                      ),
+                      CommonItemTile(
+                        title: 'ライセンス',
+                        onTap: () {
+                          ProfileAppInformationLicenseRoute($extra: appVersion)
+                              .push(context);
+                        },
+                      ),
+                      CommonItemTile(
+                        title: 'プライバシーポリシー',
+                        onTap: () async {
+                          await controller
+                              .launchUrl(controller.privacyPolicyUrl);
+                        },
+                      ),
+                      CommonItemTile(
+                        title: 'アプリバージョン',
+                        action: CustomText(
+                          text: appVersion,
+                          color: ColorName.textGray,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
                   );
-                },
-              ),
-            ),
+                }),
           ],
         ),
       ),

@@ -10,7 +10,6 @@ class AppInformationController extends ControllerCore {
   /// 変数の定義
   // todo: url決まったら入れる
   final String _privacyPolicyUrl = '';
-  final String _licenseUrl = '';
 
   /// initialize()
   @override
@@ -18,7 +17,6 @@ class AppInformationController extends ControllerCore {
 
   /// 各関数の実装
   String get privacyPolicyUrl => _privacyPolicyUrl;
-  String get licenseUrl => _licenseUrl;
 
   /// urlをたたく関数
   Future<void> launchUrl(String url) async {
