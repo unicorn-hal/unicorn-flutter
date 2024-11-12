@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
+import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
@@ -409,11 +410,14 @@ class ProfileRegisterPhysicalInfoRoute extends GoRouteData {
 }
 
 class ProfileRegisterAddressInfoRoute extends GoRouteData {
-  const ProfileRegisterAddressInfoRoute();
+  ProfileRegisterAddressInfoRoute({required this.$extra});
+  PhysicalInfo $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const RegisterAddressInfoView();
+      RegisterAddressInfoView(
+        physicalInfo: $extra,
+      );
 }
 
 class ProfileRegisterUserInfoRoute extends GoRouteData {

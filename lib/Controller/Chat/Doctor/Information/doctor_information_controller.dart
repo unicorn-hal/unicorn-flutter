@@ -1,0 +1,46 @@
+import 'package:unicorn_flutter/Model/Data/Doctor/Information/doctor_information_data.dart';
+import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
+
+import '../../../../Model/Entity/Doctor/doctor.dart';
+import '../../../Core/controller_core.dart';
+
+class DoctorInformationController extends ControllerCore {
+  DoctorApi get _doctorApi => DoctorApi();
+  DoctorInformationController(
+    this._doctorId,
+  );
+
+  late List<Doctor>? _doctorInformationData;
+  final String _doctorId;
+  late bool _exist;
+
+  @override
+  void initialize() {
+    _doctorInformationData = DoctorInformationData().data;
+    _exist = _checkExist();
+  }
+
+  bool get exist => _exist;
+
+  // キャッシュしたデータの中に指定したIDの医師情報があるかを確認
+  bool _checkExist() {
+    return _doctorInformationData!
+        .any((element) => element.doctorId == _doctorId);
+  }
+
+  // APIで医師情報を取得
+  Future<Doctor?> getDoctor() async {
+    final Doctor? doctor = await _doctorApi.getDoctor(doctorId: _doctorId);
+    if (doctor != null) {
+      DoctorInformationData().addDoctor(doctor);
+    }
+    return doctor;
+  }
+
+  //キャッシュから医師情報を取得
+  Future<Doctor> getDoctorFromCache() async {
+    return _doctorInformationData!.firstWhere((element) {
+      return element.doctorId == _doctorId;
+    });
+  }
+}

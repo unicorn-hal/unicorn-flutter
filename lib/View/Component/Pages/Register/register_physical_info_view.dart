@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
+import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_physical_info_controller.dart';
+import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -16,14 +20,15 @@ class RegisterPhysicalInfoView extends StatefulWidget {
 }
 
 class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
-  final TextEditingController firstname = TextEditingController();
-  final TextEditingController secondname = TextEditingController();
-  final TextEditingController datetime = TextEditingController();
-  final TextEditingController taller = TextEditingController();
-  final TextEditingController weight = TextEditingController();
+  late RegisterPhysicalInfoController controller;
+
   final FocusNode focusnode = FocusNode();
-  int checkInt = 0;
-  // todo: Controllerが完成次第、ここに追記していきます。
+
+  @override
+  void initState() {
+    super.initState();
+    controller = RegisterPhysicalInfoController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +87,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                       child: CustomTextfield(
                         hintText: '山田',
                         height: 44,
-                        controller: firstname,
+                        controller: controller.firstNameTextController,
                         width: deviceWidth * 0.4,
                       ),
                     ),
@@ -91,7 +96,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                       child: CustomTextfield(
                         hintText: '太郎',
                         height: 44,
-                        controller: secondname,
+                        controller: controller.lastNameTextController,
                         width: deviceWidth * 0.4,
                       ),
                     ),
@@ -111,12 +116,12 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                       children: [
                         CircleButton(
                           buttonSize: 90,
-                          buttonColor: checkInt == 1
+                          buttonColor: controller.gender == UserGenderEnum.male
                               ? ColorName.menCirclebuttonColor
                               : ColorName.nocheckedCirclebuttonColor,
                           onTap: () {
                             setState(() {
-                              checkInt = 1;
+                              controller.gender = UserGenderEnum.male;
                             });
                           },
                           icon: const Icon(
@@ -128,7 +133,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                           padding: const EdgeInsets.all(8.0),
                           child: CustomText(
                             text: '男性',
-                            color: checkInt == 1
+                            color: controller.gender == UserGenderEnum.male
                                 ? ColorName.menCirclebuttonColor
                                 : ColorName.nocheckedCirclebuttonColor,
                           ),
@@ -139,12 +144,13 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                       children: [
                         CircleButton(
                           buttonSize: 90,
-                          buttonColor: checkInt == 2
-                              ? ColorName.womenCirclebuttonColor
-                              : ColorName.nocheckedCirclebuttonColor,
+                          buttonColor:
+                              controller.gender == UserGenderEnum.female
+                                  ? ColorName.womenCirclebuttonColor
+                                  : ColorName.nocheckedCirclebuttonColor,
                           onTap: () {
                             setState(() {
-                              checkInt = 2;
+                              controller.gender = UserGenderEnum.female;
                             });
                           },
                           icon: const Icon(
@@ -156,7 +162,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                           padding: const EdgeInsets.all(8.0),
                           child: CustomText(
                             text: '女性',
-                            color: checkInt == 2
+                            color: controller.gender == UserGenderEnum.female
                                 ? ColorName.womenCirclebuttonColor
                                 : ColorName.nocheckedCirclebuttonColor,
                           ),
@@ -167,12 +173,12 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                       children: [
                         CircleButton(
                           buttonSize: 90,
-                          buttonColor: checkInt == 3
+                          buttonColor: controller.gender == UserGenderEnum.other
                               ? ColorName.textGray
                               : ColorName.nocheckedCirclebuttonColor,
                           onTap: () {
                             setState(() {
-                              checkInt = 3;
+                              controller.gender = UserGenderEnum.other;
                             });
                           },
                           icon: const Icon(
@@ -184,7 +190,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                           padding: const EdgeInsets.all(8.0),
                           child: CustomText(
                             text: 'その他',
-                            color: checkInt == 3
+                            color: controller.gender == UserGenderEnum.other
                                 ? ColorName.textGray
                                 : ColorName.nocheckedCirclebuttonColor,
                           ),
@@ -205,9 +211,11 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                   child: FittedBox(
                     fit: BoxFit.cover,
                     child: CustomDrumRoll(
+                      maxDate: controller.birthDate,
+                      initValue: controller.birthDate,
                       drumRollType: DrumRollType.date,
                       onConfirm: (DateTime date) {
-                        // todo: 設定した日付をControllerに渡す
+                        controller.birthDate = date;
                         Log.echo('date: $date');
                       },
                     ),
@@ -228,9 +236,10 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                       child: CustomTextfield(
                         hintText: '身長(cm)',
                         height: 44,
-                        maxLines: 3,
-                        controller: taller,
+                        maxLines: 1,
+                        controller: controller.bodyHeightTextController,
                         width: deviceWidth * 0.4,
+                        keyboardType: TextInputType.number,
                       ),
                     ),
                     SizedBox(
@@ -238,9 +247,10 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                       child: CustomTextfield(
                         hintText: '体重(kg)',
                         height: 44,
-                        maxLines: 3,
-                        controller: weight,
+                        maxLines: 1,
+                        controller: controller.bodyWeightTextController,
                         width: deviceWidth * 0.4,
+                        keyboardType: TextInputType.number,
                       ),
                     ),
                   ],
@@ -263,8 +273,14 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                           )),
                     ),
                   ),
-                  onTap: () {},
-                  // todo: 次のViewができ次第ルーティングします。
+                  onTap: () {
+                    PhysicalInfo? physicalInfo = controller.submit();
+                    if (physicalInfo == null) {
+                      return;
+                    }
+                    ProfileRegisterAddressInfoRoute($extra: physicalInfo)
+                        .push(context);
+                  },
                 )
               ],
             ),

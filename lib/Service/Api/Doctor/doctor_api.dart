@@ -23,8 +23,8 @@ class DoctorApi extends ApiCore with Endpoint {
       }
       if (departmentId != null) {
         parameter += parameter.isEmpty
-            ? '?departmentId=$departmentId'
-            : '&departmentId=$departmentId';
+            ? '?departmentID=$departmentId'
+            : '&departmentID=$departmentId';
       }
       if (hospitalName != null) {
         parameter += parameter.isEmpty
