@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/TextChat/doctor_text_chat_controller.dart';
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
@@ -41,7 +43,7 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
     //スクロール位置が最下部になかったらscrollButtonを表示する
     controller.scrollController.addListener(() {
       if (controller.scrollController.offset ==
-          controller.scrollController.position.minScrollExtent) {
+          controller.scrollController.position.maxScrollExtent) {
         scrollButton = false;
       } else {
         scrollButton = true;
@@ -79,17 +81,18 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
           SizedBox(
             child: Stack(
               children: [
-                ValueListenableBuilder<List<Message>>(
-                    valueListenable: controller.messageHistory,
-                    builder: (context, value, child) {
-                      return Column(
-                        children: [
-                          Expanded(
-                            child: ListView.builder(
+                SingleChildScrollView(
+                  controller: controller.scrollController,
+                  child: Column(
+                    children: [
+                      ValueListenableBuilder<List<Message>>(
+                          valueListenable: controller.messageHistory,
+                          builder: (context, value, child) {
+                            return ListView.builder(
                               itemCount: value.length,
+                              shrinkWrap: true,
                               reverse: true,
-                              controller: controller.scrollController,
-                              physics: const AlwaysScrollableScrollPhysics(),
+                              physics: const NeverScrollableScrollPhysics(),
                               padding: const EdgeInsets.only(bottom: 60),
                               itemBuilder: (BuildContext context, int index) {
                                 final Message message = value[index];
@@ -103,11 +106,11 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
                                       .format(message.sentAt),
                                 );
                               },
-                            ),
-                          ),
-                        ],
-                      );
-                    }),
+                            );
+                          }),
+                    ],
+                  ),
+                ),
                 Positioned(
                   bottom: 80,
                   right: 20,
@@ -117,7 +120,10 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
                       //アニメーションをつけてスクロール位置を最下部にする
                       onTap: () {
                         if (controller.scrollController.hasClients) {
-                          controller.scrollController.jumpTo(0.0);
+                          controller.scrollController.jumpTo(
+                            controller
+                                .scrollController.position.maxScrollExtent,
+                          );
                         }
                       },
                       child: Container(

@@ -44,7 +44,7 @@ class DoctorTextChatController extends ControllerCore {
     _messageHistory.addListener(() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (scrollController.hasClients) {
-          scrollController.jumpTo(0.0);
+          scrollController.jumpTo(scrollController.position.maxScrollExtent);
         }
       });
     });
