@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:in_app_review/in_app_review.dart';
 
@@ -63,6 +64,8 @@ class SystemInfoService {
       _inAppReview.openStoreListing(
         appStoreId: '6737767733',
       );
+    } else {
+      Fluttertoast.showToast(msg: 'リリース後はレビューお願いします！');
     }
   }
 }
