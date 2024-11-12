@@ -51,7 +51,9 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                     const CustomText(text: '体のお悩み'),
                     IconButton(
                       onPressed: () {
-                        const ProfileChronicDiseaseSearchRoute().push(context);
+                        const ProfileChronicDiseaseSearchRoute()
+                            .push(context)
+                            .then((value) => setState(() {}));
                       },
                       icon: const Icon(
                         Icons.add,
@@ -99,7 +101,8 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                       child: GestureDetector(
                         onTap: () {
                           const ProfileChronicDiseaseSearchRoute()
-                              .push(context);
+                              .push(context)
+                              .then((value) => setState(() {}));
                         },
                         child: DottedBorder(
                           dashPattern: const [15, 10],
