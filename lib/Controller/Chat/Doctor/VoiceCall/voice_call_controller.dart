@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
+import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:flutter/foundation.dart';
 
@@ -60,14 +62,14 @@ class VoiceCallController extends ControllerCore {
   Future<RTCPeerConnection> _createPeerConnection() async {
     final Map<String, dynamic> configuration = {
       'iceServers': [
-        {'urls': 'stun:10.205.112.53:3478'},
+        {'urls': dotenv.env['STUN_SERVER_URL']},
       ],
     };
 
     final pc = await createPeerConnection(configuration);
 
     pc.onIceCandidate = (RTCIceCandidate candidate) {
-      debugPrint('Sending ICE candidate to peer: ${candidate.toMap()}');
+      Log.echo('Sending ICE candidate to peer: ${candidate.toMap()}');
       _sendSignalingMessage({
         'type': 'candidate',
         'candidate': candidate.toMap(),
@@ -85,7 +87,7 @@ class VoiceCallController extends ControllerCore {
 
     pc.onTrack = (RTCTrackEvent event) {
       if (event.track.kind == 'video') {
-        debugPrint('Received remote video track');
+        Log.echo('Received remote video track');
         remoteRenderer.srcObject = event.streams.first;
       }
     };
@@ -94,7 +96,9 @@ class VoiceCallController extends ControllerCore {
   }
 
   void _connectToSignalingServer() {
-    channel = WebSocketChannel.connect(Uri.parse('ws://10.205.112.53:3000'));
+    channel = WebSocketChannel.connect(
+      Uri.parse(dotenv.env['SIGNALING_SERVER_URL']!),
+    );
 
     channel.stream.listen((message) {
       String messageString;
@@ -104,7 +108,7 @@ class VoiceCallController extends ControllerCore {
       } else if (message is Uint8List) {
         messageString = utf8.decode(message);
       } else {
-        debugPrint('Unsupported message type received: ${message.runtimeType}');
+        Log.echo('Unsupported message type received: ${message.runtimeType}');
         return;
       }
 
