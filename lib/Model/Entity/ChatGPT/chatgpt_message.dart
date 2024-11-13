@@ -1,23 +1,4 @@
-enum Role {
-  user,
-  assistant,
-  system,
-}
-
-class RoleHelper {
-  static Role fromString(String role) {
-    switch (role) {
-      case 'user':
-        return Role.user;
-      case 'assistant':
-        return Role.assistant;
-      case 'system':
-        return Role.system;
-      default:
-        throw Exception('Role not found');
-    }
-  }
-}
+import '../../../Constants/Enum/chatgpt_role.dart';
 
 class ChatGPTMessage {
   ChatGPTMessage({
@@ -25,12 +6,12 @@ class ChatGPTMessage {
     required this.content,
   });
 
-  final Role role;
+  final ChatGPTRole role;
   final String content;
 
   factory ChatGPTMessage.fromJson(Map<String, dynamic> json) {
     return ChatGPTMessage(
-      role: RoleHelper.fromString(json['role']),
+      role: ChatGPTRoleHelper.fromString(json['role']),
       content: json['content'],
     );
   }
