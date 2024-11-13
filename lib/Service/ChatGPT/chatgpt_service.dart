@@ -8,7 +8,7 @@ import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_response.dart';
 class ChatGPTService {
   final String _endpoint = 'https://api.openai.com/v1/chat/completions';
 
-  Future<ChatGPTResponse?> getAiAnswer(List<ChatGPTMessage> body) async {
+  Future<ChatGPTResponse?> postChatGPTMessage(List<ChatGPTMessage> body) async {
     try {
       final http.Response response = await http.post(
         Uri.parse(_endpoint),
