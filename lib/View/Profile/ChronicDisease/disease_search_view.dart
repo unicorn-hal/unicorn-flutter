@@ -68,14 +68,14 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                     maxLength: 40,
                     width: deviceWidth * 0.9,
                     useSearchButton: true,
-                    buttonOnTap: () {
+                    buttonOnTap: () async {
                       if (!controller.checkEmpty()) {
-                        controller.setInitial();
+                        await controller.getDiseaseList();
                         setState(() {});
                       }
                     },
                   ),
-                  controller.initial
+                  controller.diseaseList!.isEmpty
                       ? SizedBox(
                           height: 180,
                           child: Padding(
@@ -99,103 +99,61 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                             ),
                           ),
                         )
-                      : FutureBuilder<List<Disease>?>(
-                          future: controller.getDiseaseList(),
-                          builder: (context,
-                              AsyncSnapshot<List<Disease>?> snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const Padding(
-                                padding: EdgeInsets.only(top: 100),
-                                child: CustomLoadingAnimation(
-                                  text: Strings.LOADING_TEXT,
-                                  iconColor: Colors.grey,
-                                  textColor: Colors.grey,
+                      : Column(
+                          children: [
+                            const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: 10,
+                                  bottom: 5,
+                                  left: 5,
                                 ),
-                              );
-                            }
-                            if (!snapshot.hasData) {
-                              // todo: エラー時の処理
-                              return const CustomText(text: 'エラーやん');
-                            }
-                            List<Disease> diseaseList = snapshot.data!;
-                            if (diseaseList.isEmpty) {
-                              return SizedBox(
-                                height: 180,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5),
-                                  child: Container(
-                                    width: deviceWidth * 0.9,
-                                    decoration: const BoxDecoration(
-                                      color: ColorName.profileBackgroundColor,
+                                child: CustomText(
+                                  text: 'もしかして',
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                            ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: controller.diseaseList!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 5,
+                                  ),
+                                  child: CommonItemTile(
+                                    title: controller
+                                        .diseaseList![index].diseaseName,
+                                    tileHeight: 60,
+                                    boxDecoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 1,
+                                        color: Colors.grey,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
-                                    child: const Align(
-                                      alignment: Alignment.center,
-                                      child: CustomText(
-                                        text: '検索結果が見つかりません',
+                                    action: IconButton(
+                                      onPressed: () async {
+                                        await controller.registrationDisease(
+                                            controller
+                                                .diseaseList![index].diseaseId);
+                                        controller.setDiseaseList(index);
+                                        setState(() {});
+                                      },
+                                      icon: const Icon(
+                                        Icons.add,
+                                        color: Colors.blue,
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            }
-                            return Column(
-                              children: [
-                                const Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 10,
-                                      bottom: 5,
-                                      left: 5,
-                                    ),
-                                    child: CustomText(
-                                      text: 'もしかして',
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                ),
-                                ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: diseaseList.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        vertical: 5,
-                                      ),
-                                      child: CommonItemTile(
-                                        title: diseaseList[index].diseaseName,
-                                        tileHeight: 60,
-                                        boxDecoration: BoxDecoration(
-                                          border: Border.all(
-                                            width: 1,
-                                            color: Colors.grey,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        action: IconButton(
-                                          onPressed: () async {
-                                            await controller
-                                                .registrationDisease(
-                                                    diseaseList[index]
-                                                        .diseaseId);
-                                            setState(() {});
-                                          },
-                                          icon: const Icon(
-                                            Icons.add,
-                                            color: Colors.blue,
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            );
-                          }),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                 ],
               ),
             ),
@@ -265,18 +223,17 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     action: IconButton(
-                                      onPressed: false
-                                          // todo: 持病登録されてるかチェック
-                                          ? () {
-                                              // todo: お悩み削除処理をつけるか、見えるけど処理なしか悩み。ここは常に決まった数表示したい
-                                            }
+                                      onPressed: controller
+                                              .registrationCheck[index]
+                                          ? () {}
                                           : () async {
                                               await controller
                                                   .registrationDisease(
                                                       famousDiseaseList[index]
                                                           .diseaseId);
+                                              setState(() {});
                                             },
-                                      icon: false
+                                      icon: controller.registrationCheck[index]
                                           ? const Icon(
                                               Icons.check,
                                               color: Colors.green,

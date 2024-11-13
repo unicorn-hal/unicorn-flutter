@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart';
 import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease_request.dart';
 import 'package:unicorn_flutter/Model/Entity/Disease/disease.dart';
 import 'package:unicorn_flutter/Service/Api/ChronicDisease/chronic_disease_api.dart';
 import 'package:unicorn_flutter/Service/Api/Disease/disease_api.dart';
+import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 class DiseaseSearchController extends ControllerCore {
   /// Serviceのインスタンス化
@@ -19,45 +21,77 @@ class DiseaseSearchController extends ControllerCore {
 
   /// 変数の定義
   TextEditingController diseaseController = TextEditingController();
-  late bool _initial;
+  late List<Disease>? _diseaseList;
+  late List<bool> _registrationCheck;
 
   /// initialize()
   @override
   void initialize() {
-    _initial = true;
+    _diseaseList = [];
+    _registrationCheck = [];
   }
 
   /// 各関数の実装
-  bool get initial => _initial;
-  void setInitial() {
-    _initial = false;
+
+  List<Disease>? get diseaseList => _diseaseList;
+  void setDiseaseList(int index) {
+    _diseaseList!.removeAt(index);
   }
 
+  List<bool> get registrationCheck => _registrationCheck;
+
   /// 検索内容から病気のlistを取得する関数
-  Future<List<Disease>?> getDiseaseList() async {
+  Future<void> getDiseaseList() async {
+    ProtectorNotifier().enableProtector();
     List<ChronicDisease>? chronicDiseaseList =
         await _chronicDiseaseApi.getChronicDiseaseList();
     if (chronicDiseaseList == null) {
-      return null;
+      Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
+      ProtectorNotifier().disableProtector();
+      return;
     }
-    List<Disease>? diseaseList =
+    _diseaseList =
         await _diseaseApi.getDiseaseList(diseaseName: diseaseController.text);
-    if (diseaseList == null) {
-      return null;
+    if (_diseaseList == null) {
+      Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
+      ProtectorNotifier().disableProtector();
+      return;
     }
     for (int i = 0; i < chronicDiseaseList.length; i++) {
-      for (int j = 0; j < diseaseList.length; j++) {
-        if (chronicDiseaseList[i].diseaseName == diseaseList[j].diseaseName) {
-          diseaseList.removeAt(j);
+      for (int j = 0; j < _diseaseList!.length; j++) {
+        if (chronicDiseaseList[i].diseaseName == _diseaseList![j].diseaseName) {
+          _diseaseList!.removeAt(j);
         }
       }
     }
-    return diseaseList;
+    ProtectorNotifier().disableProtector();
   }
 
   /// 固定のよくある病気を取得する関数
   Future<List<Disease>?> getFamousDiseaseList() async {
-    return await _diseaseApi.getFamousDiseaseList();
+    _registrationCheck = [];
+    List<ChronicDisease>? chronicDiseaseList =
+        await _chronicDiseaseApi.getChronicDiseaseList();
+    if (chronicDiseaseList == null) {
+      Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
+      return null;
+    }
+    List<Disease>? famousDiseaseList = await _diseaseApi.getFamousDiseaseList();
+    if (famousDiseaseList == null) {
+      Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
+      return null;
+    }
+    List<String> chronicDiseaseNameList = chronicDiseaseList
+        .map((chronicDisease) => chronicDisease.diseaseName)
+        .toList();
+    for (int i = 0; i < famousDiseaseList.length; i++) {
+      if (chronicDiseaseNameList.contains(famousDiseaseList[i].diseaseName)) {
+        _registrationCheck.add(true);
+      } else {
+        _registrationCheck.add(false);
+      }
+    }
+    return famousDiseaseList;
   }
 
   /// 空文字チェックする関数
@@ -74,7 +108,12 @@ class DiseaseSearchController extends ControllerCore {
 
   /// 持病に登録する関数
   Future<void> registrationDisease(int diseaseId) async {
+    ProtectorNotifier().enableProtector();
     ChronicDiseaseRequest disease = ChronicDiseaseRequest(diseaseId: diseaseId);
-    await _chronicDiseaseApi.postChronicDisease(body: disease);
+    int res = await _chronicDiseaseApi.postChronicDisease(body: disease);
+    if (res != 200) {
+      Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
+    }
+    ProtectorNotifier().disableProtector();
   }
 }
