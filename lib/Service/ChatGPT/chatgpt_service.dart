@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_message.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_response.dart';
+import 'package:unicorn_flutter/Service/Log/log_service.dart';
 
 class ChatGPTService {
   final String _endpoint = 'https://api.openai.com/v1/chat/completions';
@@ -18,7 +19,7 @@ class ChatGPTService {
         },
         body: jsonEncode(
           <String, dynamic>{
-            'model': 'gpt-4',
+            'model': 'gpt-4o',
             'messages': body.map((e) => e.toJson()).toList(),
             'temperature': 0.7,
           },
@@ -33,7 +34,7 @@ class ChatGPTService {
 
       return ChatGPTResponse.fromJson(data);
     } catch (e) {
-      print(e);
+      Log.echo('$e');
       return null;
     }
   }
