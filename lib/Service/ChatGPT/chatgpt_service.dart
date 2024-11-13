@@ -31,9 +31,7 @@ class ChatGPTService {
 
       Map<String, dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
 
-      print(data);
-
-      //return ChatGPTResponse.fromJson(data);
+      return ChatGPTResponse.fromJson(data);
     } catch (e) {
       print(e);
       return null;
