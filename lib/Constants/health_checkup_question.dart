@@ -2,7 +2,7 @@ import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart'
 import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup_anser.dart';
 import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup_question.dart';
 
-class HealthCheckupQuestionDatas {
+class HealthCheckupQuestionData {
   static List<HealthCheckupQuestion> questions = [
     HealthCheckupQuestion(
         number: 1,
