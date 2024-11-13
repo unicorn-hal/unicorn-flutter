@@ -15,7 +15,7 @@ class ChatGPTService {
         Uri.parse(_endpoint),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${dotenv.env['CHATGPI_API_KEY']}',
+          'Authorization': 'Bearer ${dotenv.env['CHATGPT_API_KEY']}',
         },
         body: jsonEncode(
           <String, dynamic>{
