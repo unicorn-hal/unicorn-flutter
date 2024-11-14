@@ -76,7 +76,6 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                     buttonOnTap: () async {
                       if (!controller.checkEmpty()) {
                         await controller.getDiseaseList();
-                        controller.setInitial();
                         setState(() {});
                       }
                     },

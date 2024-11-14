@@ -50,13 +50,16 @@ class DiseaseSearchController extends ControllerCore {
   }
 
   bool get init => _init;
-  void setInitial() {
+  void setInit() {
     _init = false;
   }
 
   /// 検索内容から病気のlistを取得する関数
   Future<void> getDiseaseList() async {
     ProtectorNotifier().enableProtector();
+    if (_init) {
+      setInit();
+    }
     _diseaseList =
         await _diseaseApi.getDiseaseList(diseaseName: diseaseController.text);
     if (_diseaseList == null) {
