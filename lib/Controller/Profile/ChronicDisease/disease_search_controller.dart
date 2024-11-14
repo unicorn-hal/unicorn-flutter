@@ -59,7 +59,7 @@ class DiseaseSearchController extends ControllerCore {
       _diseaseList = await _diseaseApi.getDiseaseList(
           diseaseName: diseaseTextController.text);
       if (_diseaseList == null) {
-        Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
+        Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
         throw ('Disease search failed');
       }
       if (_famousDiseaseList == null) {
@@ -93,7 +93,7 @@ class DiseaseSearchController extends ControllerCore {
     _registrationCheck = [];
     _famousDiseaseList = await _diseaseApi.getFamousDiseaseList();
     if (_famousDiseaseList == null) {
-      Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
       return null;
     }
     if (_chronicDiseaseList == null) {
@@ -130,7 +130,7 @@ class DiseaseSearchController extends ControllerCore {
     ChronicDiseaseRequest disease = ChronicDiseaseRequest(diseaseId: diseaseId);
     int res = await _chronicDiseaseApi.postChronicDisease(body: disease);
     if (res != 200) {
-      Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
     ProtectorNotifier().disableProtector();
   }
@@ -140,7 +140,7 @@ class DiseaseSearchController extends ControllerCore {
     ProtectorNotifier().enableProtector();
     _chronicDiseaseList = await _chronicDiseaseApi.getChronicDiseaseList();
     if (_chronicDiseaseList == null) {
-      Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
     ProtectorNotifier().disableProtector();
   }
