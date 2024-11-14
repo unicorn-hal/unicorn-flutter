@@ -82,6 +82,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                     },
                   ),
                   controller.diseaseList == null
+                      // todo: エラー時の処理
                       ? SizedBox(
                           height: 180,
                           child: Padding(
@@ -91,16 +92,8 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                               decoration: const BoxDecoration(
                                 color: ColorName.profileBackgroundColor,
                               ),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.search,
-                                  ),
-                                  CustomText(
-                                    text: 'お悩みを探す',
-                                  )
-                                ],
+                              child: const CustomText(
+                                text: 'エラー',
                               ),
                             ),
                           ),
@@ -115,12 +108,25 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                   decoration: const BoxDecoration(
                                     color: ColorName.profileBackgroundColor,
                                   ),
-                                  child: const Align(
-                                    alignment: Alignment.center,
-                                    child: CustomText(
-                                      text: '検索結果がありません',
-                                    ),
-                                  ),
+                                  child: controller.initial
+                                      ? const Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(
+                                              Icons.search,
+                                            ),
+                                            CustomText(
+                                              text: 'お悩みを探す',
+                                            )
+                                          ],
+                                        )
+                                      : const Align(
+                                          alignment: Alignment.center,
+                                          child: CustomText(
+                                            text: '検索結果がありません',
+                                          ),
+                                        ),
                                 ),
                               ),
                             )
