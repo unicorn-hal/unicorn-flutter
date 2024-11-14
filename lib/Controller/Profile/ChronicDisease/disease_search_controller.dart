@@ -61,16 +61,18 @@ class DiseaseSearchController extends ControllerCore {
       ProtectorNotifier().disableProtector();
       return;
     }
-    if (_chronicDiseaseList == null && _famousDiseaseList == null) {
+    if (_famousDiseaseList == null) {
       ProtectorNotifier().disableProtector();
+      _diseaseList = null;
       return;
     }
+
+    /// 検索結果からよくあるお悩みを排除
+    _diseaseList = _diseaseList!
+        .where((disease) => !_famousDiseaseList!
+            .any((famous) => famous.diseaseName == disease.diseaseName))
+        .toList();
     if (_chronicDiseaseList == null) {
-      /// 検索結果からよくあるお悩みを排除
-      _diseaseList = _diseaseList!
-          .where((disease) => !_famousDiseaseList!
-              .any((famous) => famous.diseaseName == disease.diseaseName))
-          .toList();
       ProtectorNotifier().disableProtector();
       return;
     }
@@ -79,16 +81,6 @@ class DiseaseSearchController extends ControllerCore {
     _diseaseList = _diseaseList!
         .where((disease) => !_chronicDiseaseList!
             .any((chronic) => chronic.diseaseName == disease.diseaseName))
-        .toList();
-    if (_famousDiseaseList == null) {
-      ProtectorNotifier().disableProtector();
-      return;
-    }
-
-    /// 検索結果からよくあるお悩みを排除
-    _diseaseList = _diseaseList!
-        .where((disease) => !_famousDiseaseList!
-            .any((famous) => famous.diseaseName == disease.diseaseName))
         .toList();
     ProtectorNotifier().disableProtector();
   }
