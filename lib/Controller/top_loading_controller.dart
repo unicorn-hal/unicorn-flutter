@@ -51,26 +51,6 @@ class TopLoadingController extends ControllerCore {
   void initialize() async {
     /// todo: 初回起動時の処理を記述
 
-    /// Firebase: Cloud Messagingの初期化
-    /// tips: 通知のテストを行う場合は、本番環境でのみ実行する
-    if (!kDebugMode) {
-      await _messagingService.initialize();
-      fcmTokenId = await _messagingService.getToken();
-      Log.echo('FirebaseCloudMessaging: $fcmTokenId');
-
-      if (fcmTokenId == null) {
-        throw Exception('Firebase Cloud Messaging failed');
-      }
-
-      /// Firebase: Topicの購読
-      await _messagingService.subscribeToTopics(
-        <FCMTopicEnum>[
-          FCMTopicEnum.all,
-          FCMTopicEnum.user,
-        ],
-      );
-    }
-
     /// ユーザー情報を取得
     firebase_auth.User? authUser = _authService.getUser();
     if (authUser == null) {
@@ -80,6 +60,9 @@ class TopLoadingController extends ControllerCore {
         throw Exception('Firebase authentication failed');
       }
       uid = credential.uid;
+
+      /// Firebase: FCMトークンを取得
+      await _cloudMessagingInitialize();
 
       /// API: アカウント情報を送信
       account = Account.fromJson({
@@ -186,5 +169,26 @@ class TopLoadingController extends ControllerCore {
     final version = await _systemInfoService.appVersion;
     final buildNumber = await _systemInfoService.appBuildNumber;
     return '$version ($buildNumber)';
+  }
+
+  /// Firebase Cloud Messagingの初期化
+  Future<void> _cloudMessagingInitialize() async {
+    /// tips: デバッグモードの場合はFirebase Cloud Messagingを初期化しない
+    if (!kDebugMode) {
+      await _messagingService.initialize();
+      fcmTokenId = await _messagingService.getToken();
+      Log.echo('FirebaseCloudMessaging: $fcmTokenId');
+
+      if (fcmTokenId == null) {
+        throw Exception('Firebase Cloud Messaging failed');
+      }
+
+      await _messagingService.subscribeToTopics(
+        <String>[
+          FCMTopicEnum.all.name,
+          FCMTopicEnum.user.name,
+        ],
+      );
+    }
   }
 }
