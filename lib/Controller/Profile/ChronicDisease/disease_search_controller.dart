@@ -18,24 +18,18 @@ class DiseaseSearchController extends ControllerCore {
 
   /// コンストラクタ
   DiseaseSearchController(this._chronicDiseaseList);
-  final List<ChronicDisease>? _chronicDiseaseList;
+  List<ChronicDisease>? _chronicDiseaseList;
 
   /// 変数の定義
   TextEditingController diseaseController = TextEditingController();
-  late List<Disease>? _diseaseList;
+  List<Disease>? _diseaseList = [];
   List<Disease>? _famousDiseaseList;
-  late List<bool> _registrationCheck;
-  late bool _init;
-  late List<ChronicDisease>? _chronicDiseaseCopyList;
+  late List<bool> _registrationCheck = [];
+  late bool _isSearched = false;
 
   /// initialize()
   @override
-  void initialize() {
-    _init = true;
-    _diseaseList = [];
-    _registrationCheck = [];
-    _chronicDiseaseCopyList = _chronicDiseaseList;
-  }
+  void initialize() {}
 
   /// 各関数の実装
 
@@ -49,16 +43,16 @@ class DiseaseSearchController extends ControllerCore {
     _registrationCheck[index] = true;
   }
 
-  bool get init => _init;
-  void setInit() {
-    _init = false;
+  bool get isSearched => _isSearched;
+  void setIsSearched() {
+    _isSearched = true;
   }
 
   /// 検索内容から病気のlistを取得する関数
   Future<void> getDiseaseList() async {
     ProtectorNotifier().enableProtector();
-    if (_init) {
-      setInit();
+    if (_isSearched) {
+      setIsSearched();
     }
     _diseaseList =
         await _diseaseApi.getDiseaseList(diseaseName: diseaseController.text);
@@ -67,11 +61,11 @@ class DiseaseSearchController extends ControllerCore {
       ProtectorNotifier().disableProtector();
       return;
     }
-    if (_chronicDiseaseCopyList == null && _famousDiseaseList == null) {
+    if (_chronicDiseaseList == null && _famousDiseaseList == null) {
       ProtectorNotifier().disableProtector();
       return;
     }
-    if (_chronicDiseaseCopyList == null) {
+    if (_chronicDiseaseList == null) {
       /// 検索結果からよくあるお悩みを排除
       _diseaseList = _diseaseList!
           .where((disease) => !_famousDiseaseList!
@@ -83,7 +77,7 @@ class DiseaseSearchController extends ControllerCore {
 
     /// 検索結果から持病を排除
     _diseaseList = _diseaseList!
-        .where((disease) => !_chronicDiseaseCopyList!
+        .where((disease) => !_chronicDiseaseList!
             .any((chronic) => chronic.diseaseName == disease.diseaseName))
         .toList();
     if (_famousDiseaseList == null) {
@@ -107,7 +101,7 @@ class DiseaseSearchController extends ControllerCore {
       Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
       return null;
     }
-    if (_chronicDiseaseCopyList == null) {
+    if (_chronicDiseaseList == null) {
       for (int i = 0; i < _famousDiseaseList!.length; i++) {
         _registrationCheck.add(false);
       }
@@ -117,7 +111,7 @@ class DiseaseSearchController extends ControllerCore {
 
     /// よくあるお悩みが持病登録されているかを配列で返す
     for (Disease famous in _famousDiseaseList!) {
-      _registrationCheck.add(_chronicDiseaseCopyList!
+      _registrationCheck.add(_chronicDiseaseList!
           .any((chronic) => chronic.diseaseName == famous.diseaseName));
     }
     return _famousDiseaseList;
@@ -149,8 +143,8 @@ class DiseaseSearchController extends ControllerCore {
   /// 持病のリストを更新する関数(よくあるお悩みを持病に登録時のみ使用)
   Future<void> updateChronicDiseaseList() async {
     ProtectorNotifier().enableProtector();
-    _chronicDiseaseCopyList = await _chronicDiseaseApi.getChronicDiseaseList();
-    if (_chronicDiseaseCopyList == null) {
+    _chronicDiseaseList = await _chronicDiseaseApi.getChronicDiseaseList();
+    if (_chronicDiseaseList == null) {
       Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
     }
     ProtectorNotifier().disableProtector();
