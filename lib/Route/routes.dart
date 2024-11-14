@@ -42,6 +42,8 @@ mixin Routes {
   static const String profileMedicineSetting = '/profile/medicine/setting';
   static const String profileLocalAuth = '/profile/local_auth';
   static const String profileAppInformation = '/profile/app_information';
+  static const String profileAppInformationLicense =
+      '/profile/app_information/license';
   static const String profileNotificationSetting =
       '/profile/notification_setting';
   static const String profileChronicDisease = '/profile/chronic_disease';

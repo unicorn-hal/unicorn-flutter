@@ -19,6 +19,7 @@ import 'package:unicorn_flutter/View/HealthCheckup/Results/health_checkup_result
 import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart';
 import 'package:unicorn_flutter/View/Home/home_view.dart';
 import 'package:unicorn_flutter/View/Component/Pages/Register/register_address_info_view.dart';
+import 'package:unicorn_flutter/View/Profile/AppInformation/license_view.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/chronic_disease_view.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/disease_search_view.dart';
 import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_register_view.dart';
@@ -125,6 +126,9 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<ProfileAppInformationRoute>(
           path: Routes.profileAppInformation,
+        ),
+        TypedGoRoute<ProfileAppInformationLicenseRoute>(
+          path: Routes.profileAppInformationLicense,
         ),
         TypedGoRoute<ProfileNotificationSettingRoute>(
           path: Routes.profileNotificationSetting,
@@ -362,11 +366,18 @@ class ChatDoctorInformationRoute extends GoRouteData {
 }
 
 class ChatDoctorTextChatRoute extends GoRouteData {
-  const ChatDoctorTextChatRoute();
+  ChatDoctorTextChatRoute(
+    this.doctorId,
+    this.doctorName,
+  );
+  String doctorId;
+  String doctorName;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      DoctorTextChatView();
+  Widget build(BuildContext context, GoRouterState state) => DoctorTextChatView(
+        doctorId: doctorId,
+        doctorName: doctorName,
+      );
 }
 
 class ChatDoctorVoiceCallReserveRoute extends GoRouteData {
@@ -442,6 +453,16 @@ class ProfileAppInformationRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const AppInformationView();
+}
+
+class ProfileAppInformationLicenseRoute extends GoRouteData {
+  const ProfileAppInformationLicenseRoute({required this.appVersion});
+  final String appVersion;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => LicenseView(
+        appVersion: appVersion,
+      );
 }
 
 class ProfileNotificationSettingRoute extends GoRouteData {
