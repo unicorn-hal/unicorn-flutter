@@ -3,6 +3,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/fcm_topic_enum.dart';
+import 'package:unicorn_flutter/Constants/Enum/shared_preferences_keys_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
@@ -19,6 +20,7 @@ import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_s
 import 'package:unicorn_flutter/Service/Firebase/CloudMessaging/cloud_messaging_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:unicorn_flutter/Service/Package/SharedPreferences/shared_preferences_service.dart';
 import 'package:unicorn_flutter/Service/Package/SystemInfo/system_info_service.dart';
 
 import '../Model/Chat/chat_data.dart';
@@ -29,6 +31,8 @@ import '../Model/Entity/HealthCheckUp/health_checkup.dart';
 import '../Model/Entity/User/user_request.dart';
 
 class TopLoadingController extends ControllerCore {
+  SharedPreferencesService get _sharedPreferencesService =>
+      SharedPreferencesService();
   FirebaseAuthenticationService get _authService =>
       FirebaseAuthenticationService();
   FirebaseCloudMessagingService get _messagingService =>
@@ -51,25 +55,9 @@ class TopLoadingController extends ControllerCore {
   void initialize() async {
     /// todo: 初回起動時の処理を記述
 
-    /// Firebase: Cloud Messagingの初期化
-    /// tips: 通知のテストを行う場合は、本番環境でのみ実行する
-    if (!kDebugMode) {
-      await _messagingService.initialize();
-      fcmTokenId = await _messagingService.getToken();
-      Log.echo('FirebaseCloudMessaging: $fcmTokenId');
-
-      if (fcmTokenId == null) {
-        throw Exception('Firebase Cloud Messaging failed');
-      }
-
-      /// Firebase: Topicの購読
-      await _messagingService.subscribeToTopics(
-        <FCMTopicEnum>[
-          FCMTopicEnum.all,
-          FCMTopicEnum.user,
-        ],
-      );
-    }
+    /// SharedPreferences: 起動フラグを確認
+    bool? appInitialized = await _sharedPreferencesService
+        .getBool(SharedPreferencesKeysEnum.appInitialized.name);
 
     /// ユーザー情報を取得
     firebase_auth.User? authUser = _authService.getUser();
@@ -80,6 +68,9 @@ class TopLoadingController extends ControllerCore {
         throw Exception('Firebase authentication failed');
       }
       uid = credential.uid;
+
+      /// Firebase: FCMトークンを取得
+      await _cloudMessagingInitialize();
 
       /// API: アカウント情報を送信
       account = Account.fromJson({
@@ -95,6 +86,20 @@ class TopLoadingController extends ControllerCore {
       }
     } else {
       uid = authUser.uid;
+
+      /// 起動フラグが立っていない場合はTokenの再取得
+      if (appInitialized == false || appInitialized == null) {
+        /// Firebase: FCMトークンを取得
+        await _cloudMessagingInitialize();
+
+        /// API: アカウント情報を更新
+        final int statusCode = await _accountApi.putAccount(
+          fcmTokenId: fcmTokenId!,
+        );
+        if (statusCode != 200) {
+          throw Exception('Account API failed');
+        }
+      }
 
       /// API: アカウント・ユーザー情報を取得
       account = await _accountApi.getAccount();
@@ -131,6 +136,8 @@ class TopLoadingController extends ControllerCore {
 
     /// 画面遷移
     // if (user == null) {
+    //   _sharedPreferencesService.setBool(
+    //       SharedPreferencesKeysEnum.appInitialized.name, true);
     //   const RegisterPhysicalInfoRoute(from: Routes.root).go(context);
     // } else {
     /// シングルトンにユーザー情報を保存
@@ -178,6 +185,10 @@ class TopLoadingController extends ControllerCore {
       'occupation': 'エンジニア',
     }));
 
+    /// SharedPreferences: 起動フラグ
+    _sharedPreferencesService.setBool(
+        SharedPreferencesKeysEnum.appInitialized.name, true);
+
     const HomeRoute().go(context);
   }
   // }
@@ -186,5 +197,26 @@ class TopLoadingController extends ControllerCore {
     final version = await _systemInfoService.appVersion;
     final buildNumber = await _systemInfoService.appBuildNumber;
     return '$version ($buildNumber)';
+  }
+
+  /// Firebase Cloud Messagingの初期化
+  Future<void> _cloudMessagingInitialize() async {
+    /// tips: デバッグモードの場合はFirebase Cloud Messagingを初期化しない
+    if (!kDebugMode) {
+      await _messagingService.initialize();
+      fcmTokenId = await _messagingService.getToken();
+      Log.echo('FirebaseCloudMessaging: $fcmTokenId');
+
+      if (fcmTokenId == null) {
+        throw Exception('Firebase Cloud Messaging failed');
+      }
+
+      await _messagingService.subscribeToTopics(
+        <String>[
+          FCMTopicEnum.all.name,
+          FCMTopicEnum.user.name,
+        ],
+      );
+    }
   }
 }
