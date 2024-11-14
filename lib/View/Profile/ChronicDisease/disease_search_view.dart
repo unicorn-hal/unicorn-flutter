@@ -92,8 +92,11 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                               decoration: const BoxDecoration(
                                 color: ColorName.profileBackgroundColor,
                               ),
-                              child: const CustomText(
-                                text: 'エラー',
+                              child: const Align(
+                                alignment: Alignment.center,
+                                child: CustomText(
+                                  text: '通信エラー',
+                                ),
                               ),
                             ),
                           ),
