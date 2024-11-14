@@ -51,7 +51,7 @@ class DiseaseSearchController extends ControllerCore {
   /// 検索内容から病気のlistを取得する関数
   Future<void> getDiseaseList() async {
     ProtectorNotifier().enableProtector();
-    if (_isSearched) {
+    if (!_isSearched) {
       setIsSearched();
     }
     _diseaseList =

@@ -74,10 +74,11 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                     width: deviceWidth * 0.9,
                     useSearchButton: true,
                     buttonOnTap: () async {
-                      if (!controller.checkEmpty()) {
-                        await controller.getDiseaseList();
-                        setState(() {});
+                      if (controller.checkEmpty()) {
+                        return;
                       }
+                      await controller.getDiseaseList();
+                      setState(() {});
                     },
                   ),
                   controller.diseaseList == null
