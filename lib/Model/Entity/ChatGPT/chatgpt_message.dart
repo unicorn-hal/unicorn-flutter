@@ -11,7 +11,7 @@ class ChatGPTMessage {
 
   factory ChatGPTMessage.fromJson(Map<String, dynamic> json) {
     return ChatGPTMessage(
-      role: ChatGPTRoleHelper.fromString(json['role']),
+      role: ChatGPTRoleType.fromString(json['role']),
       content: json['content'],
     );
   }

@@ -4,7 +4,7 @@ enum ChatGPTRole {
   system,
 }
 
-class ChatGPTRoleHelper {
+class ChatGPTRoleType {
   static ChatGPTRole fromString(String role) {
     switch (role) {
       case 'user':
