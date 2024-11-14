@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:unicorn_flutter/Constants/prefectures.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
-import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
 import 'package:unicorn_flutter/Model/Entity/location_address_info.dart';
 import 'package:unicorn_flutter/Service/Package/Location/location_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -32,21 +30,6 @@ class RegisterAddressInfoController extends ControllerCore {
     return dropdownItems;
   }
 
-  // Future<AddressInfo?> submit() async {
-  //   if (validateField() == false) {
-  //     return null;
-  //   }
-
-  //   AddressInfo addressInfo = AddressInfo(
-  //     postCode: postCode.text,
-  //     prefectures: entryItemStrings,
-  //     municipalities: municipalities.text,
-  //     addressDetail: addressDetail.text,
-  //   );
-
-  //   return addressInfo;
-  // }
-
   Future<void> potisionSubmit() async {
     final LocationAddressInfo? currentPositionInfo =
         await locate.getAddressFromPosition();
@@ -61,6 +44,14 @@ class RegisterAddressInfoController extends ControllerCore {
     selectedPrefectureIndex = selectedIndex;
     postCode.text = postalCode;
     municipalities.text = city + town;
+  }
+
+  Future<void> postcodeSubmit() async {
+    LocationAddressInfo? addressFromPostalCode =
+        await locate.getAddressFromPostalCode(postCode.text);
+    if (addressFromPostalCode == null) {
+      return;
+    }
   }
 
   bool validateField() {

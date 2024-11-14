@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_address_info_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
-import 'package:unicorn_flutter/Model/Entity/location_address_info.dart';
 import 'package:unicorn_flutter/Service/Package/Location/location_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -75,10 +74,8 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                 ),
                 GestureDetector(
                   onTap: () async {
-                    // Future<AddressInfo?> test = locate.getAddressFromPosition();
                     await controller.potisionSubmit();
                     setState(() {});
-                    // print(addressInfo);
                   },
                   child: Align(
                     alignment: Alignment.center,
@@ -131,8 +128,9 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                       controller: controller.postCode,
                     ),
                     GestureDetector(
-                      onTap: () {
-                        // todo: controllerでき次第ここに追記します。
+                      onTap: () async {
+                        await controller.postcodeSubmit();
+                        setState(() {});
                       },
                       child: Align(
                         alignment: Alignment.center,
