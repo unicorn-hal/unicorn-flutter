@@ -81,7 +81,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                       }
                     },
                   ),
-                  controller.diseaseList!.isEmpty
+                  controller.diseaseList == null
                       ? SizedBox(
                           height: 180,
                           child: Padding(
@@ -91,83 +91,97 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                               decoration: const BoxDecoration(
                                 color: ColorName.profileBackgroundColor,
                               ),
-                              child: controller.initial
-                                  ? const Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.search,
-                                        ),
-                                        CustomText(
-                                          text: 'お悩みを探す',
-                                        )
-                                      ],
-                                    )
-                                  : const Align(
-                                      alignment: Alignment.center,
-                                      child: CustomText(
-                                        text: '検索結果がありません',
-                                      ),
-                                    ),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.search,
+                                  ),
+                                  CustomText(
+                                    text: 'お悩みを探す',
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         )
-                      : Column(
-                          children: [
-                            const Align(
-                              alignment: Alignment.centerLeft,
+                      : controller.diseaseList!.isEmpty
+                          ? SizedBox(
+                              height: 180,
                               child: Padding(
-                                padding: EdgeInsets.only(
-                                  top: 10,
-                                  bottom: 5,
-                                  left: 5,
-                                ),
-                                child: CustomText(
-                                  text: 'もしかして',
-                                  fontSize: 14,
+                                padding: const EdgeInsets.all(5),
+                                child: Container(
+                                  width: deviceWidth * 0.9,
+                                  decoration: const BoxDecoration(
+                                    color: ColorName.profileBackgroundColor,
+                                  ),
+                                  child: const Align(
+                                    alignment: Alignment.center,
+                                    child: CustomText(
+                                      text: '検索結果がありません',
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                            ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: controller.diseaseList!.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 5,
-                                  ),
-                                  child: CommonItemTile(
-                                    title: controller
-                                        .diseaseList![index].diseaseName,
-                                    tileHeight: 60,
-                                    boxDecoration: BoxDecoration(
-                                      border: Border.all(
-                                        width: 1,
-                                        color: Colors.grey,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
+                            )
+                          : Column(
+                              children: [
+                                const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      top: 10,
+                                      bottom: 5,
+                                      left: 5,
                                     ),
-                                    action: IconButton(
-                                      onPressed: () async {
-                                        await controller.registrationDisease(
-                                            controller
-                                                .diseaseList![index].diseaseId);
-                                        controller.setDiseaseList(index);
-                                        setState(() {});
-                                      },
-                                      icon: const Icon(
-                                        Icons.add,
-                                        color: Colors.blue,
-                                      ),
+                                    child: CustomText(
+                                      text: 'もしかして',
+                                      fontSize: 14,
                                     ),
                                   ),
-                                );
-                              },
+                                ),
+                                ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: controller.diseaseList!.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        vertical: 5,
+                                      ),
+                                      child: CommonItemTile(
+                                        title: controller
+                                            .diseaseList![index].diseaseName,
+                                        tileHeight: 60,
+                                        boxDecoration: BoxDecoration(
+                                          border: Border.all(
+                                            width: 1,
+                                            color: Colors.grey,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        action: IconButton(
+                                          onPressed: () async {
+                                            await controller
+                                                .registrationDisease(controller
+                                                    .diseaseList![index]
+                                                    .diseaseId);
+                                            controller.setDiseaseList(index);
+                                            setState(() {});
+                                          },
+                                          icon: const Icon(
+                                            Icons.add,
+                                            color: Colors.blue,
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
                 ],
               ),
             ),
