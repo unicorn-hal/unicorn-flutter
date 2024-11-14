@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:unicorn_flutter/Constants/prefectures.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Entity/address_info.dart';
+import 'package:unicorn_flutter/Service/Package/Location/location_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 
 class RegisterAddressInfoController extends ControllerCore {
   final TextEditingController addressNumber = TextEditingController();
   final TextEditingController address = TextEditingController();
   final TextEditingController addressDetail = TextEditingController();
-  List<String> entryItemStrings = ['未設定'];
+  final List<String> entryItemStrings = ['未設定'] + Prefectures.list;
+
+  LocationService locate = LocationService();
 
   void initialize() {}
 
   List<DropdownMenuItem<int>> countryList() {
-    final List<String> entryItemStrings = Prefectures.list;
     final List<DropdownMenuItem<int>> dropdownItems = entryItemStrings
         .map((e) => DropdownMenuItem(
               value: entryItemStrings.indexOf(e),
@@ -23,6 +27,19 @@ class RegisterAddressInfoController extends ControllerCore {
             ))
         .toList();
     return dropdownItems;
+  }
+
+  Future<AddressInfo?> submit() async {
+    if (validateField() == false) {
+      return null;
+    }
+    locate.getAddressFromPosition();
+    return addressInfo;
+  }
+
+  Future<Position?> potisionSubmit() {
+    Future<Position?> currentPositionInfo = locate.getCurrentPosition();
+    return currentPositionInfo;
   }
 
   bool validateField() {
