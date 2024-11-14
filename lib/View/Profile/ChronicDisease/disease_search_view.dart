@@ -259,18 +259,16 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   action: IconButton(
-                                    onPressed:
-                                        controller.registrationCheck[index]
-                                            ? () {}
-                                            : () async {
-                                                await controller
-                                                    .registrationDisease(
-                                                        famousDiseaseList[index]
-                                                            .diseaseId);
-                                                await controller
-                                                    .updateChronicDiseaseList();
-                                                setState(() {});
-                                              },
+                                    onPressed: () async {
+                                      if (controller.registrationCheck[index]) {
+                                        return;
+                                      }
+                                      await controller.registrationDisease(
+                                          famousDiseaseList[index].diseaseId);
+                                      await controller
+                                          .updateChronicDiseaseList();
+                                      setState(() {});
+                                    },
                                     icon: controller.registrationCheck[index]
                                         ? const Icon(
                                             Icons.check,
