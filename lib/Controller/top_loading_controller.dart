@@ -3,6 +3,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/fcm_topic_enum.dart';
+import 'package:unicorn_flutter/Constants/Enum/shared_preferences_keys_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
@@ -19,6 +20,7 @@ import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_s
 import 'package:unicorn_flutter/Service/Firebase/CloudMessaging/cloud_messaging_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:unicorn_flutter/Service/Package/SharedPreferences/shared_preferences_service.dart';
 import 'package:unicorn_flutter/Service/Package/SystemInfo/system_info_service.dart';
 
 import '../Model/Chat/chat_data.dart';
@@ -29,6 +31,8 @@ import '../Model/Entity/HealthCheckUp/health_checkup.dart';
 import '../Model/Entity/User/user_request.dart';
 
 class TopLoadingController extends ControllerCore {
+  SharedPreferencesService get _sharedPreferencesService =>
+      SharedPreferencesService();
   FirebaseAuthenticationService get _authService =>
       FirebaseAuthenticationService();
   FirebaseCloudMessagingService get _messagingService =>
@@ -50,6 +54,10 @@ class TopLoadingController extends ControllerCore {
   @override
   void initialize() async {
     /// todo: 初回起動時の処理を記述
+
+    /// SharedPreferences: 起動フラグを確認
+    bool? appInitailized = await _sharedPreferencesService
+        .getBool(SharedPreferencesKeysEnum.appInitailized.name);
 
     /// ユーザー情報を取得
     firebase_auth.User? authUser = _authService.getUser();
@@ -78,6 +86,20 @@ class TopLoadingController extends ControllerCore {
       }
     } else {
       uid = authUser.uid;
+
+      /// 起動フラグが立っていない場合はTokenの再取得
+      if (appInitailized == false || appInitailized == null) {
+        /// Firebase: FCMトークンを取得
+        await _cloudMessagingInitialize();
+
+        /// API: アカウント情報を更新
+        final int statusCode = await _accountApi.putAccount(
+          fcmTokenId: fcmTokenId!,
+        );
+        if (statusCode != 200) {
+          throw Exception('Account API failed');
+        }
+      }
 
       /// API: アカウント・ユーザー情報を取得
       account = await _accountApi.getAccount();
@@ -114,6 +136,8 @@ class TopLoadingController extends ControllerCore {
 
     /// 画面遷移
     // if (user == null) {
+    //   _sharedPreferencesService.setBool(
+    //       SharedPreferencesKeysEnum.appInitailized.name, true);
     //   const RegisterPhysicalInfoRoute(from: Routes.root).go(context);
     // } else {
     /// シングルトンにユーザー情報を保存
@@ -160,6 +184,10 @@ class TopLoadingController extends ControllerCore {
       'bodyWeight': 75.5,
       'occupation': 'エンジニア',
     }));
+
+    /// SharedPreferences: 起動フラグ
+    _sharedPreferencesService.setBool(
+        SharedPreferencesKeysEnum.appInitailized.name, true);
 
     const HomeRoute().go(context);
   }
