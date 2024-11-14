@@ -50,7 +50,7 @@ class MessageTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             constraints: BoxConstraints(
-              maxWidth: size.width * 0.6,
+              maxWidth: size.width * 0.7,
               minHeight: 30,
               minWidth: 30,
             ),

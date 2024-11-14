@@ -12,7 +12,7 @@ class ChatGPTChat {
   factory ChatGPTChat.fromJson(Map<String, dynamic> json) {
     return ChatGPTChat(
       created: DateTime.fromMillisecondsSinceEpoch(json['created']),
-      message: ChatGPTMessage.fromJson(json['choices'][0]['message']),
+      message: ChatGPTMessage.fromJson(json['message']),
     );
   }
 
