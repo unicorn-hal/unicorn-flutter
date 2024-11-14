@@ -3,16 +3,20 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:unicorn_flutter/Constants/prefectures.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
+import 'package:unicorn_flutter/Model/Entity/location_address_info.dart';
 import 'package:unicorn_flutter/Service/Package/Location/location_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 
 class RegisterAddressInfoController extends ControllerCore {
-  final TextEditingController addressNumber = TextEditingController();
-  final TextEditingController address = TextEditingController();
+  final TextEditingController postCode = TextEditingController();
+  final TextEditingController municipalities = TextEditingController();
   final TextEditingController addressDetail = TextEditingController();
+
   final List<String> entryItemStrings = ['未設定'] + Prefectures.list;
 
   LocationService locate = LocationService();
+  int? selectedPrefectureIndex = 0;
 
   void initialize() {}
 
@@ -28,25 +32,42 @@ class RegisterAddressInfoController extends ControllerCore {
     return dropdownItems;
   }
 
-  Future<AddressInfo?> submit() async {
-    if (validateField() == false) {
-      return null;
-    }
-    locate.getAddressFromPosition();
-    return addressInfo;
-  }
+  // Future<AddressInfo?> submit() async {
+  //   if (validateField() == false) {
+  //     return null;
+  //   }
 
-  Future<Position?> potisionSubmit() {
-    Future<Position?> currentPositionInfo = locate.getCurrentPosition();
-    return currentPositionInfo;
+  //   AddressInfo addressInfo = AddressInfo(
+  //     postCode: postCode.text,
+  //     prefectures: entryItemStrings,
+  //     municipalities: municipalities.text,
+  //     addressDetail: addressDetail.text,
+  //   );
+
+  //   return addressInfo;
+  // }
+
+  Future<void> potisionSubmit() async {
+    final LocationAddressInfo? currentPositionInfo =
+        await locate.getAddressFromPosition();
+    if (currentPositionInfo == null) {
+      return;
+    }
+    final String postalCode = currentPositionInfo.postalCode;
+    final String prefecture = currentPositionInfo.prefecture;
+    final String city = currentPositionInfo.city;
+    final String town = currentPositionInfo.town;
+    int selectedIndex = entryItemStrings.indexOf(prefecture);
+    selectedPrefectureIndex = selectedIndex;
+    postCode.text = postalCode;
+    municipalities.text = city + town;
   }
 
   bool validateField() {
     List<String> emptyMessageField = [];
-    addressNumber.text.isEmpty ? emptyMessageField.add("郵便番号") : null;
+    postCode.text.isEmpty ? emptyMessageField.add("郵便番号") : null;
     entryItemStrings == ['未設定'] ? emptyMessageField.add('都道府県') : null;
-    address.text.isEmpty ? emptyMessageField.add("市区町村") : null;
-    addressDetail.text.isEmpty ? emptyMessageField.add("住所詳細") : null;
+    municipalities.text.isEmpty ? emptyMessageField.add("市区町村") : null;
 
     if (emptyMessageField.isNotEmpty) {
       Fluttertoast.showToast(msg: "${emptyMessageField.join(',')}が入力されていません。");

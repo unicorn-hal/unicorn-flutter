@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_address_info_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
-import 'package:unicorn_flutter/Model/Entity/address_info.dart';
+import 'package:unicorn_flutter/Model/Entity/location_address_info.dart';
 import 'package:unicorn_flutter/Service/Package/Location/location_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -74,10 +74,10 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     // Future<AddressInfo?> test = locate.getAddressFromPosition();
-                    // Future<AddressInfo?> addressInfo =
-                    //     controller.potisionSubmit();
+                    await controller.potisionSubmit();
+                    setState(() {});
                     // print(addressInfo);
                   },
                   child: Align(
@@ -128,7 +128,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                       maxLines: 1,
                       maxLength: 7,
                       keyboardType: TextInputType.number,
-                      controller: controller.addressNumber,
+                      controller: controller.postCode,
                     ),
                     GestureDetector(
                       onTap: () {
@@ -173,8 +173,11 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                 ),
                 CustomDropdown(
                   dropdownItems: controller.countryList(),
+                  selectIndex: controller.selectedPrefectureIndex,
                   height: 44,
-                  onChanged: (int? index) {},
+                  onChanged: (int? index) {
+                    index = controller.selectedPrefectureIndex;
+                  },
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 20, bottom: 10),
@@ -187,7 +190,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   hintText: '静岡市葵区追手町５－１',
                   width: deviceWidth * 0.85,
                   height: 44,
-                  controller: controller.address,
+                  controller: controller.municipalities,
                   maxLines: 1,
                   maxLength: 25,
                 ),

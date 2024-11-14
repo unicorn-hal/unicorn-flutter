@@ -1,5 +1,5 @@
 class AddressInfo {
-  final int postCode;
+  final String postCode;
   final String prefectures;
   final String municipalities;
   final String addressDetail;
