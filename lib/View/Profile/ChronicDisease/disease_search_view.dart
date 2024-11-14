@@ -67,7 +67,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                   ),
                   CustomTextfield(
                     hintText: '病名を入力してください',
-                    controller: controller.diseaseController,
+                    controller: controller.diseaseTextController,
                     height: 50,
                     maxLines: 1,
                     maxLength: 40,

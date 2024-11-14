@@ -9,6 +9,7 @@ import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease_requ
 import 'package:unicorn_flutter/Model/Entity/Disease/disease.dart';
 import 'package:unicorn_flutter/Service/Api/ChronicDisease/chronic_disease_api.dart';
 import 'package:unicorn_flutter/Service/Api/Disease/disease_api.dart';
+import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 class DiseaseSearchController extends ControllerCore {
@@ -21,7 +22,7 @@ class DiseaseSearchController extends ControllerCore {
   List<ChronicDisease>? _chronicDiseaseList;
 
   /// 変数の定義
-  TextEditingController diseaseController = TextEditingController();
+  TextEditingController diseaseTextController = TextEditingController();
   List<Disease>? _diseaseList = [];
   List<Disease>? _famousDiseaseList;
   late List<bool> _registrationCheck = [];
@@ -54,35 +55,37 @@ class DiseaseSearchController extends ControllerCore {
     if (!_isSearched) {
       setIsSearched();
     }
-    _diseaseList =
-        await _diseaseApi.getDiseaseList(diseaseName: diseaseController.text);
-    if (_diseaseList == null) {
-      Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
-      ProtectorNotifier().disableProtector();
-      return;
-    }
-    if (_famousDiseaseList == null) {
-      ProtectorNotifier().disableProtector();
-      _diseaseList = null;
-      return;
-    }
+    try {
+      _diseaseList = await _diseaseApi.getDiseaseList(
+          diseaseName: diseaseTextController.text);
+      if (_diseaseList == null) {
+        Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
+        throw ('Disease search failed');
+      }
+      if (_famousDiseaseList == null) {
+        _diseaseList = null;
+        throw ('famousDisease get failed');
+      }
 
-    /// 検索結果からよくあるお悩みを排除
-    _diseaseList = _diseaseList!
-        .where((disease) => !_famousDiseaseList!
-            .any((famous) => famous.diseaseName == disease.diseaseName))
-        .toList();
-    if (_chronicDiseaseList == null) {
-      ProtectorNotifier().disableProtector();
-      return;
-    }
+      /// 検索結果からよくあるお悩みを排除
+      _diseaseList = _diseaseList!
+          .where((disease) => !_famousDiseaseList!
+              .any((famous) => famous.diseaseName == disease.diseaseName))
+          .toList();
+      if (_chronicDiseaseList == null) {
+        throw ('chronicDisease is null');
+      }
 
-    /// 検索結果から持病を排除
-    _diseaseList = _diseaseList!
-        .where((disease) => !_chronicDiseaseList!
-            .any((chronic) => chronic.diseaseName == disease.diseaseName))
-        .toList();
-    ProtectorNotifier().disableProtector();
+      /// 検索結果から持病を排除
+      _diseaseList = _diseaseList!
+          .where((disease) => !_chronicDiseaseList!
+              .any((chronic) => chronic.diseaseName == disease.diseaseName))
+          .toList();
+    } catch (e) {
+      Log.echo('error: $e');
+    } finally {
+      ProtectorNotifier().disableProtector();
+    }
   }
 
   /// 固定のよくある病気を取得する関数
@@ -112,8 +115,8 @@ class DiseaseSearchController extends ControllerCore {
   /// 空文字チェックする関数
   bool checkEmpty() {
     RegExp regExp = RegExp(r'^\s*$');
-    if (diseaseController.text.isEmpty == true ||
-        regExp.hasMatch(diseaseController.text)) {
+    if (diseaseTextController.text.isEmpty == true ||
+        regExp.hasMatch(diseaseTextController.text)) {
       Fluttertoast.showToast(msg: '何も入力されていません');
       return true;
     } else {
