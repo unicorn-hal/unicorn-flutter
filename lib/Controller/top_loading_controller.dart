@@ -56,7 +56,7 @@ class TopLoadingController extends ControllerCore {
     /// todo: 初回起動時の処理を記述
 
     /// SharedPreferences: 起動フラグを確認
-    bool? appInitailized = await _sharedPreferencesService
+    bool? appInitialized = await _sharedPreferencesService
         .getBool(SharedPreferencesKeysEnum.appInitialized.name);
 
     /// ユーザー情報を取得
@@ -88,7 +88,7 @@ class TopLoadingController extends ControllerCore {
       uid = authUser.uid;
 
       /// 起動フラグが立っていない場合はTokenの再取得
-      if (appInitailized == false || appInitailized == null) {
+      if (appInitialized == false || appInitialized == null) {
         /// Firebase: FCMトークンを取得
         await _cloudMessagingInitialize();
 
@@ -137,7 +137,7 @@ class TopLoadingController extends ControllerCore {
     /// 画面遷移
     // if (user == null) {
     //   _sharedPreferencesService.setBool(
-    //       SharedPreferencesKeysEnum.appInitailized.name, true);
+    //       SharedPreferencesKeysEnum.appInitialized.name, true);
     //   const RegisterPhysicalInfoRoute(from: Routes.root).go(context);
     // } else {
     /// シングルトンにユーザー情報を保存
