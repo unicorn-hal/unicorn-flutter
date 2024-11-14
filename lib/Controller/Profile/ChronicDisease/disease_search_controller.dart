@@ -25,13 +25,13 @@ class DiseaseSearchController extends ControllerCore {
   late List<Disease>? _diseaseList;
   List<Disease>? _famousDiseaseList;
   late List<bool> _registrationCheck;
-  late bool _initial;
+  late bool _init;
   late List<ChronicDisease>? _chronicDiseaseCopyList;
 
   /// initialize()
   @override
   void initialize() {
-    _initial = true;
+    _init = true;
     _diseaseList = [];
     _registrationCheck = [];
     _chronicDiseaseCopyList = _chronicDiseaseList;
@@ -49,9 +49,9 @@ class DiseaseSearchController extends ControllerCore {
     _registrationCheck[index] = true;
   }
 
-  bool get initial => _initial;
+  bool get init => _init;
   void setInitial() {
-    _initial = false;
+    _init = false;
   }
 
   /// 検索内容から病気のlistを取得する関数

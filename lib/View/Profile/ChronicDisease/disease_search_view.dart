@@ -108,7 +108,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                   decoration: const BoxDecoration(
                                     color: ColorName.profileBackgroundColor,
                                   ),
-                                  child: controller.initial
+                                  child: controller.init
                                       ? const Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
