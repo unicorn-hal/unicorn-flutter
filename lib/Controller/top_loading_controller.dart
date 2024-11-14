@@ -57,7 +57,7 @@ class TopLoadingController extends ControllerCore {
 
     /// SharedPreferences: 起動フラグを確認
     bool? appInitailized = await _sharedPreferencesService
-        .getBool(SharedPreferencesKeysEnum.appInitailized.name);
+        .getBool(SharedPreferencesKeysEnum.appInitialized.name);
 
     /// ユーザー情報を取得
     firebase_auth.User? authUser = _authService.getUser();
@@ -187,7 +187,7 @@ class TopLoadingController extends ControllerCore {
 
     /// SharedPreferences: 起動フラグ
     _sharedPreferencesService.setBool(
-        SharedPreferencesKeysEnum.appInitailized.name, true);
+        SharedPreferencesKeysEnum.appInitialized.name, true);
 
     const HomeRoute().go(context);
   }
