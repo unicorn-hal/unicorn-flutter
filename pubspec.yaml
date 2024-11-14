@@ -49,6 +49,7 @@ dependencies:
   image: ^4.3.0
   stomp_dart_client: ^2.0.0
   in_app_review: ^2.0.9
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
