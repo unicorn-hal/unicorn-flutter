@@ -19,6 +19,7 @@ class CustomTextfield extends StatefulWidget {
     required this.width,
     this.useSearchButton = false,
     this.buttonOnTap,
+    this.onTapOutside,
   });
 
   final String hintText;
@@ -34,6 +35,7 @@ class CustomTextfield extends StatefulWidget {
   final double width;
   final bool useSearchButton;
   final Function? buttonOnTap;
+  final Function(PointerDownEvent)? onTapOutside;
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -53,6 +55,9 @@ class _CustomTextfieldState extends State<CustomTextfield> {
             controller: widget.controller,
             onChanged: (value) {
               setState(() {});
+            },
+            onTapOutside: (PointerDownEvent event) {
+              widget.onTapOutside?.call(event);
             },
             textAlignVertical: TextAlignVertical.center,
             style: TextStyle(

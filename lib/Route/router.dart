@@ -5,7 +5,6 @@ import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
 import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
 import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
-import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/Ai/TextChat/ai_text_chat_view.dart';
@@ -423,8 +422,8 @@ class ProfileRegisterPhysicalInfoRoute extends GoRouteData {
 }
 
 class ProfileRegisterAddressInfoRoute extends GoRouteData {
-  ProfileRegisterAddressInfoRoute({required this.$extra});
-  PhysicalInfo $extra;
+  ProfileRegisterAddressInfoRoute({this.$extra});
+  PhysicalInfo? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
@@ -434,14 +433,12 @@ class ProfileRegisterAddressInfoRoute extends GoRouteData {
 }
 
 class ProfileRegisterUserInfoRoute extends GoRouteData {
-  ProfileRegisterUserInfoRoute({required this.$extra});
-  AddressInfo $extra;
+  ProfileRegisterUserInfoRoute({this.$extra});
+  AddressInfo? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      RegisterUserInfoView(
-        addressInfo: $extra
-      );
+      RegisterUserInfoView(addressInfo: $extra);
 }
 
 class ProfileLocalAuthRoute extends GoRouteData {

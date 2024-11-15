@@ -9,6 +9,14 @@ import 'package:unicorn_flutter/Service/Package/Location/location_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 
 class RegisterAddressInfoController extends ControllerCore {
+  LocationService get _locationService => LocationService();
+
+  late List<String> _entryItemStrings;
+  late LatLng _mapPinPosition;
+
+  int selectedPrefectureIndex = 0;
+
+  /// 入力欄のコントローラー
   final TextEditingController postalCodeTextController =
       TextEditingController();
   final TextEditingController municipalitiesTextController =
@@ -16,19 +24,21 @@ class RegisterAddressInfoController extends ControllerCore {
   final TextEditingController addressDetailTextController =
       TextEditingController();
 
-  final List<String> entryItemStrings = ['未設定'] + Prefectures.list;
+  @override
+  void initialize() {
+    _entryItemStrings = ['未設定'] + Prefectures.list;
+    _mapPinPosition =
+        const LatLng(35.69168711233464, 139.69700732758113); // HAL東京・仮初期値
+  }
 
-  LocationService locate = LocationService();
-  int selectedPrefectureIndex = 0;
+  List<String> get entryItemStrings => _entryItemStrings;
+  LatLng get mapPinPosition => _mapPinPosition;
 
-  LatLng? point = LatLng(35.738566723050454, 140.10325321828262);
-
-  void initialize() {}
-
+  /// 都道府県のリストを作成
   List<DropdownMenuItem<int>> countryList() {
-    final List<DropdownMenuItem<int>> dropdownItems = entryItemStrings
+    final List<DropdownMenuItem<int>> dropdownItems = _entryItemStrings
         .map((e) => DropdownMenuItem(
-              value: entryItemStrings.indexOf(e),
+              value: _entryItemStrings.indexOf(e),
               child: CustomText(
                 text: e,
               ),
@@ -37,51 +47,80 @@ class RegisterAddressInfoController extends ControllerCore {
     return dropdownItems;
   }
 
+  /// Mapのピンを移動する
+  Future<void> updateMapPinPosition() async {
+    final String address = _entryItemStrings[selectedPrefectureIndex] +
+        municipalitiesTextController.text;
+    LatLng? position = await _locationService.getPositionFromAddress(address);
+    if (position != null) {
+      _mapPinPosition = position;
+    }
+  }
+
+  /// 入力欄に値をセットする
+  void _setValues({
+    String? postalCode,
+    String? prefecture,
+    String? city,
+    String? town,
+  }) {
+    if (postalCode != null) {
+      postalCodeTextController.text = postalCode;
+    }
+    if (city != null && town != null) {
+      municipalitiesTextController.text = city + town;
+    }
+    if (prefecture != null) {
+      selectedPrefectureIndex = _entryItemStrings.indexOf(prefecture);
+    }
+  }
+
+  /// 現在位置から住所を取得し、入力欄にセットする
   Future<void> setAddressFromLocation() async {
     final LocationAddressInfo? currentPositionInfo =
-        await locate.getAddressFromPosition();
+        await _locationService.getAddressFromPosition();
     if (currentPositionInfo == null) {
       return;
     }
-    final String postalCode = currentPositionInfo.postalCode;
-    final String prefecture = currentPositionInfo.prefecture;
-    final String city = currentPositionInfo.city;
-    final String town = currentPositionInfo.town;
-    selectedPrefectureIndex = entryItemStrings.indexOf(prefecture);
-    postalCodeTextController.text = postalCode;
-    municipalitiesTextController.text = city + town;
-    LatLng? setLocation = await locate.getPositionFromAddress(prefecture + city + town);
-    point = setLocation;
+
+    _setValues(
+      postalCode: currentPositionInfo.postalCode,
+      prefecture: currentPositionInfo.prefecture,
+      city: currentPositionInfo.city,
+      town: currentPositionInfo.town,
+    );
+
+    await updateMapPinPosition();
+  }
+
+  /// 郵便番号から住所を取得し、入力欄にセットする
+  Future<void> setAddressFromPostalCode() async {
+    LocationAddressInfo? addressFromPostalCode = await _locationService
+        .getAddressFromPostalCode(postalCodeTextController.text);
+    if (addressFromPostalCode == null) {
+      return;
+    }
+
+    _setValues(
+      postalCode: addressFromPostalCode.postalCode,
+      prefecture: addressFromPostalCode.prefecture,
+      city: addressFromPostalCode.city,
+      town: addressFromPostalCode.town,
+    );
+
+    await updateMapPinPosition();
   }
 
   AddressInfo? submit() {
     if (validateField() == false) {
       return null;
     }
-    AddressInfo addressInfo = AddressInfo (
-      postalCode: postalCodeTextController.text,
-      prefectures: entryItemStrings[selectedPrefectureIndex],
-      municipalities: municipalitiesTextController.text,
-      addressDetail: addressDetailTextController.text
-    );
+    AddressInfo addressInfo = AddressInfo(
+        postalCode: postalCodeTextController.text,
+        prefectures: _entryItemStrings[selectedPrefectureIndex],
+        municipalities: municipalitiesTextController.text,
+        addressDetail: addressDetailTextController.text);
     return addressInfo;
-  }
-
-  Future<void> setAddressFromPostalCode() async {
-    LocationAddressInfo? addressFromPostalCode =
-        await locate.getAddressFromPostalCode(postalCodeTextController.text);
-    if (addressFromPostalCode == null) {
-      return;
-    }
-    final String postalCode = addressFromPostalCode.postalCode;
-    final String prefecture = addressFromPostalCode.prefecture;
-    final String city = addressFromPostalCode.city;
-    final String town = addressFromPostalCode.town;
-    selectedPrefectureIndex = entryItemStrings.indexOf(prefecture);
-    postalCodeTextController.text = postalCode;
-    municipalitiesTextController.text = city + town;
-    LatLng? setLocation = await locate.getPositionFromAddress(prefecture + city + town);
-    point = setLocation;
   }
 
   bool validateField() {
@@ -89,7 +128,7 @@ class RegisterAddressInfoController extends ControllerCore {
     postalCodeTextController.text.isEmpty
         ? emptyMessageField.add("郵便番号")
         : null;
-    entryItemStrings == ['未設定'] ? emptyMessageField.add('都道府県') : null;
+    _entryItemStrings == ['未設定'] ? emptyMessageField.add('都道府県') : null;
     municipalitiesTextController.text.isEmpty
         ? emptyMessageField.add("市区町村")
         : null;
