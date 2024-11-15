@@ -197,7 +197,6 @@ class _AiTextChatViewState extends State<AiTextChatView> {
                       buttonSize: 60,
                       buttonColor: ColorName.mainColor,
                       onTap: () async {
-                        // todo: クイックアクションの内容を変更する
                         final action = await showDialog(
                             context: context,
                             builder: (context) {
@@ -231,10 +230,12 @@ class _AiTextChatViewState extends State<AiTextChatView> {
                                       SizedBox(
                                         width: 250,
                                         height: 250,
-                                        // todo: 最終的にクイックアクションの数と内容を変更する
                                         child: ListView.builder(
-                                          itemCount: 5,
+                                          itemCount:
+                                              controller.quickActionList.length,
                                           itemBuilder: (context, index) {
+                                            final String action = controller
+                                                .quickActionList[index];
                                             return ListTile(
                                               contentPadding: EdgeInsets.zero,
                                               title: Container(
@@ -253,16 +254,15 @@ class _AiTextChatViewState extends State<AiTextChatView> {
                                                   alignment:
                                                       Alignment.centerLeft,
                                                   child: CustomText(
-                                                    text: 'クイックアクション$indexについて',
+                                                    text: action,
                                                     fontSize: 14,
                                                   ),
                                                 ),
                                               ),
                                               onTap: () {
-                                                // todo: タップしたときの処理
                                                 Navigator.pop(
                                                   context,
-                                                  'クイックアクション$index',
+                                                  action,
                                                 );
                                               },
                                             );
@@ -277,7 +277,7 @@ class _AiTextChatViewState extends State<AiTextChatView> {
 
                         // ダイアログの返り値を待って処理を行う
                         if (action != null) {
-                          Log.echo(action);
+                          await controller.postMessage();
                         }
                       },
                       icon: const Icon(

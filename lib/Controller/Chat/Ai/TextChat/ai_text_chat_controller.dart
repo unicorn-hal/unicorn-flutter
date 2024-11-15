@@ -4,7 +4,6 @@ import 'package:unicorn_flutter/Constants/Enum/chatgpt_role.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_response.dart';
-import 'package:unicorn_flutter/Service/Log/log_service.dart';
 
 import '../../../../Constants/app_data_constants.dart';
 import '../../../../Model/Entity/ChatGPT/chatgpt_chat.dart';
@@ -33,6 +32,15 @@ class AiTextChatController extends ControllerCore {
   // AIが思考中のフラグ
   bool _isThinking = false;
 
+  // クイックアクションのリスト
+  List<String> _quickActionList = [
+    '持病の検索/登録をしたい',
+    'おくすりリマインダーについて',
+    'Myおくすりの登録をしたい',
+    '医師との通話/通話予約について',
+    '医師の検索がしたい',
+  ];
+
   @override
   void initialize() {
     // チャットリストには初期メッセージとしてsystem命令文を追加
@@ -60,24 +68,33 @@ class AiTextChatController extends ControllerCore {
   ValueNotifier<List<ChatGPTChat>> get chatList => _chatList;
 
   /// AIのへのメッセージ送信
-  Future<void> postMessage() async {
-    // テキストフィールドのバリデートチェック
-    if (!_validateTextField()) {
-      Fluttertoast.showToast(msg: 'メッセージを入力してください');
-      return;
+  Future<void> postMessage([String? quickAction]) async {
+    // 追加するメッセージ
+    late String postMessage;
+
+    // クイックアクションがある場合はそれをメッセージとして送信
+    if (quickAction != null) {
+      postMessage = quickAction;
+    } else {
+      // テキストフィールドのバリデートチェック
+      if (!_validateTextField()) {
+        Fluttertoast.showToast(msg: 'メッセージを入力してください');
+        return;
+      }
+      postMessage = messageController.text;
+
+      // メッセージコントローラーのクリア
+      messageController.text = '';
     }
 
     // 自分が送信したメッセージの追加
     ChatGPTChat newChat = ChatGPTChat(
       created: DateTime.now(),
       message: ChatGPTMessage(
-        content: messageController.text,
+        content: postMessage,
         role: ChatGPTRole.user,
       ),
     );
-
-    // メッセージコントローラーのクリア
-    messageController.text = '';
 
     // チャットリストに追加
     _chatList.value = [..._chatList.value, newChat];
@@ -126,4 +143,6 @@ class AiTextChatController extends ControllerCore {
   }
 
   bool get isThinking => _isThinking;
+
+  List<String> get quickActionList => _quickActionList;
 }
