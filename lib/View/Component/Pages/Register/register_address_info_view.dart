@@ -130,7 +130,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                     GestureDetector(
                       onTap: () async {
                         ProtectorNotifier().enableProtector();
-                        await controller.setAddressFromPostcode();
+                        await controller.setAddressFromPostalCode();
                         setState(() {});
                         ProtectorNotifier().disableProtector();
                       },

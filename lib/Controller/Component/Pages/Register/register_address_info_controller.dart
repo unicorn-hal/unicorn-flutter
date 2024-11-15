@@ -48,7 +48,7 @@ class RegisterAddressInfoController extends ControllerCore {
     municipalitiesTextController.text = city + town;
   }
 
-  Future<void> setAddressFromPostcode() async {
+  Future<void> setAddressFromPostalCode() async {
     LocationAddressInfo? addressFromPostalCode =
         await locate.getAddressFromPostalCode(postalCodeTextController.text);
     if (addressFromPostalCode == null) {
