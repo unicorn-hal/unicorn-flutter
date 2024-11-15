@@ -43,8 +43,7 @@ class RegisterAddressInfoController extends ControllerCore {
     final String prefecture = currentPositionInfo.prefecture;
     final String city = currentPositionInfo.city;
     final String town = currentPositionInfo.town;
-    int selectedIndex = entryItemStrings.indexOf(prefecture);
-    selectedPrefectureIndex = selectedIndex;
+    selectedPrefectureIndex = entryItemStrings.indexOf(prefecture);
     postalCodeTextController.text = postalCode;
     municipalitiesTextController.text = city + town;
   }
