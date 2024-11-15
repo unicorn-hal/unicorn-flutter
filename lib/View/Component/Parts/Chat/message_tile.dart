@@ -3,18 +3,20 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class MessageTile extends StatelessWidget {
-  const MessageTile({
+  MessageTile({
     super.key,
-    required this.messageBody,
+    this.messageBody,
     required this.myMessage,
     required this.postAt,
+    this.postAtColor,
     this.actionWidget,
   });
 
-  final String messageBody;
+  final String? messageBody;
   final bool myMessage;
   final String postAt;
   final Widget? actionWidget;
+  Color? postAtColor;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,7 @@ class MessageTile extends StatelessWidget {
                       text: postAt,
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
-                      color: Colors.white,
+                      color: postAtColor ?? Colors.white,
                     ),
                   ),
                 )
@@ -57,10 +59,12 @@ class MessageTile extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: actionWidget == null
-                  ? CustomText(text: messageBody)
+                  ? CustomText(text: messageBody!)
                   : Column(
                       children: [
-                        CustomText(text: messageBody),
+                        messageBody != null
+                            ? CustomText(text: messageBody!)
+                            : Container(),
                         actionWidget!,
                       ],
                     ),
@@ -78,7 +82,7 @@ class MessageTile extends StatelessWidget {
                       text: postAt,
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
-                      color: Colors.white,
+                      color: postAtColor ?? Colors.white,
                     ),
                   ),
                 ),
