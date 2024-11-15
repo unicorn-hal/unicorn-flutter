@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_address_info_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
@@ -220,8 +219,8 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                     height: 170,
                     color: Colors.grey,
                     child: GoogleMapViewer(
-                      point: controller.point!
-                    )                                 
+                      point: controller.mapPinPosition,
+                    ),
                   ),
                 ),
                 GestureDetector(
@@ -230,7 +229,8 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                     if (addressInfo == null) {
                       return;
                     }
-                    ProfileRegisterUserInfoRoute($extra: addressInfo).push(context);
+                    ProfileRegisterUserInfoRoute($extra: addressInfo)
+                        .push(context);
                   },
                   child: Align(
                     alignment: Alignment.center,
