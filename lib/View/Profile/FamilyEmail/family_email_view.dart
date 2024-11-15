@@ -16,8 +16,10 @@ class FamilyEmailView extends StatefulWidget {
   const FamilyEmailView({
     super.key,
     required this.from,
+    this.registeredEmailList,
   });
   final String from;
+  final List<FamilyEmail>? registeredEmailList;
 
   @override
   State<FamilyEmailView> createState() => _FamilyEmailViewState();
@@ -28,7 +30,10 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
   @override
   void initState() {
     super.initState();
-    controller = FamilyEmailController(from: widget.from);
+    controller = FamilyEmailController(
+      registeredEmailList: widget.registeredEmailList,
+      from: widget.from,
+    );
   }
 
   @override
@@ -138,10 +143,10 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
                             },
                           );
                         })
-                    : FutureBuilder<List<FamilyEmailRequest>>(
+                    : FutureBuilder<List<FamilyEmailRequest>?>(
                         future: controller.getFamilyEmailRequest(),
                         builder: (context,
-                            AsyncSnapshot<List<FamilyEmailRequest>> snapshot) {
+                            AsyncSnapshot<List<FamilyEmailRequest>?> snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return const Padding(
@@ -155,7 +160,8 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
                           }
                           if (!snapshot.hasData) {
                             // todo: エラー時の処理
-                            return Container();
+                            return const CustomText(
+                                text: '端末設定から連絡先へのアクセスを許可してください');
                           }
                           List<FamilyEmailRequest> familyEmailRequestList =
                               snapshot.data!;
@@ -215,11 +221,14 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
                   isFilledColor: true,
                   text: '連絡先から追加',
                   onTap: () {
-                    const ProfileFamilyEmailSyncContactRoute(
-                            from: Routes.profileFamilyEmail)
+                    if (controller.familyEmailList == null) {
+                      return;
+                    }
+                    ProfileFamilyEmailSyncContactRoute(
+                            from: Routes.profileFamilyEmail,
+                            $extra: controller.familyEmailList)
                         .push(context)
                         .then((value) => setState(() {}));
-                    // todo: controller出来たら引数もらってくる
                   },
                 ),
               )

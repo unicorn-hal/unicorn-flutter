@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
 import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
@@ -492,12 +493,18 @@ class ProfileFamilyEmailRegisterRoute extends GoRouteData {
 }
 
 class ProfileFamilyEmailSyncContactRoute extends GoRouteData {
-  const ProfileFamilyEmailSyncContactRoute({required this.from});
+  const ProfileFamilyEmailSyncContactRoute({
+    required this.from,
+    this.$extra,
+  });
   final String from;
+  final List<FamilyEmail>? $extra;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      FamilyEmailView(from: from);
+  Widget build(BuildContext context, GoRouterState state) => FamilyEmailView(
+        from: from,
+        registeredEmailList: $extra,
+      );
 }
 
 class ProfileMedicineRoute extends GoRouteData {
