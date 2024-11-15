@@ -125,7 +125,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                       maxLines: 1,
                       maxLength: 7,
                       keyboardType: TextInputType.number,
-                      controller: controller.postCode,
+                      controller: controller.postalCodeTextController,
                     ),
                     GestureDetector(
                       onTap: () async {
@@ -188,7 +188,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   hintText: '静岡市葵区追手町５－１',
                   width: deviceWidth * 0.85,
                   height: 44,
-                  controller: controller.municipalities,
+                  controller: controller.municipalitiesTextController,
                   maxLines: 1,
                   maxLength: 25,
                 ),
@@ -203,7 +203,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   hintText: 'ユニコーンビル１０３号',
                   width: deviceWidth * 0.85,
                   height: 44,
-                  controller: controller.addressDetail,
+                  controller: controller.addressDetailTextController,
                   maxLines: 1,
                   maxLength: 25,
                 ),

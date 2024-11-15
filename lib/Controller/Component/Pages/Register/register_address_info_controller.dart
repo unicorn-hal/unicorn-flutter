@@ -7,9 +7,12 @@ import 'package:unicorn_flutter/Service/Package/Location/location_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 
 class RegisterAddressInfoController extends ControllerCore {
-  final TextEditingController postCode = TextEditingController();
-  final TextEditingController municipalities = TextEditingController();
-  final TextEditingController addressDetail = TextEditingController();
+  final TextEditingController postalCodeTextController =
+      TextEditingController();
+  final TextEditingController municipalitiesTextController =
+      TextEditingController();
+  final TextEditingController addressDetailTextController =
+      TextEditingController();
 
   final List<String> entryItemStrings = ['未設定'] + Prefectures.list;
 
@@ -42,13 +45,13 @@ class RegisterAddressInfoController extends ControllerCore {
     final String town = currentPositionInfo.town;
     int selectedIndex = entryItemStrings.indexOf(prefecture);
     selectedPrefectureIndex = selectedIndex;
-    postCode.text = postalCode;
-    municipalities.text = city + town;
+    postalCodeTextController.text = postalCode;
+    municipalitiesTextController.text = city + town;
   }
 
   Future<void> postcodeSubmit() async {
     LocationAddressInfo? addressFromPostalCode =
-        await locate.getAddressFromPostalCode(postCode.text);
+        await locate.getAddressFromPostalCode(postalCodeTextController.text);
     if (addressFromPostalCode == null) {
       return;
     }
@@ -56,9 +59,13 @@ class RegisterAddressInfoController extends ControllerCore {
 
   bool validateField() {
     List<String> emptyMessageField = [];
-    postCode.text.isEmpty ? emptyMessageField.add("郵便番号") : null;
+    postalCodeTextController.text.isEmpty
+        ? emptyMessageField.add("郵便番号")
+        : null;
     entryItemStrings == ['未設定'] ? emptyMessageField.add('都道府県') : null;
-    municipalities.text.isEmpty ? emptyMessageField.add("市区町村") : null;
+    municipalitiesTextController.text.isEmpty
+        ? emptyMessageField.add("市区町村")
+        : null;
 
     if (emptyMessageField.isNotEmpty) {
       Fluttertoast.showToast(msg: "${emptyMessageField.join(',')}が入力されていません。");
