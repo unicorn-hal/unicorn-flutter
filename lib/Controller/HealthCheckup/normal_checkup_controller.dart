@@ -77,6 +77,7 @@ class NormalCheckupController extends ControllerCore {
 
   /// 健康ポイントを更新
   void updateHealthPoint(int selectedIndex) {
+    print('SHISHI');
     healthPoint += HealthCheckupQuestionData
         .questions[questionCount].answers![selectedIndex].healthPoint;
   }
@@ -85,9 +86,11 @@ class NormalCheckupController extends ControllerCore {
   void nextQuestion(int selectedIndex) {
     if (questionCount >= HealthCheckupQuestionData.questions.length - 1) {
       // 質問が終わったら結果画面へ移動
-      const CheckupResultRoute().push(context);
+      CheckupProgressRoute($extra: diseaseType, healthPoint: healthPoint)
+          .push(context);
       return;
     }
+    print("Question Count: $questionCount");
 
     if (HealthCheckupQuestionData.questions[questionCount].isMainQuestion) {
       getDiseaseType(selectedIndex);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Controller/HealthCheckup/normal_checkup_controller.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -23,6 +24,8 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
   late int selectedIndex;
   // 進捗バーの値　0.0~1.0
   late double progressValue = 0;
+
+  bool isSelected = false;
 
   //double型の値をパーセントに変換する
   String get progressText => '${(progressValue * 100).toStringAsFixed(0)}%';
@@ -103,7 +106,7 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
                       value: controller.checkupValue[index],
                       onChanged: () {
                         setState(() {
-                          // todo: controllerでindexに対応したvalueを変更する
+                          isSelected = true;
                           selectedIndex = index;
                           controller.updateCheckupValue(index);
                         });
@@ -136,7 +139,15 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
                 text: '次の項目へ',
                 onTap: () {
                   setState(() {
-                    controller.nextQuestion(selectedIndex);
+                    if (isSelected == false) {
+                      Fluttertoast.showToast(
+                        msg: '項目を選択してください',
+                        backgroundColor: Colors.red,
+                      );
+                    } else {
+                      isSelected = false;
+                      controller.nextQuestion(selectedIndex);
+                    }
                   });
                 },
               ),

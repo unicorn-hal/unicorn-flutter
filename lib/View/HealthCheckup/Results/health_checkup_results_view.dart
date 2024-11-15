@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
@@ -6,8 +7,11 @@ import 'package:unicorn_flutter/gen/colors.gen.dart';
 import '../../Component/CustomWidget/custom_scaffold.dart';
 
 class HealthCheckupResultsView extends StatelessWidget {
-  HealthCheckupResultsView({super.key});
+  HealthCheckupResultsView(
+      {super.key, required this.diseaseType, required this.healthPoint});
 
+  final HealthCheckupDiseaseEnum diseaseType;
+  final int healthPoint;
   // todo: 状態を5段階に分けたenumを作成し、それを元に表示を変える。
   final Color healthColor = Colors.blue;
   final String healthText = '放置すると危険な症状や病気があります。\n設定された住所にunicornを緊急要請しました。';

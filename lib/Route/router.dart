@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
+import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
@@ -234,13 +236,16 @@ class EmergencyRoute extends GoRouteData {
 class EmergencyProgressRoute extends GoRouteData {
   const EmergencyProgressRoute({
     required this.$extra,
+    required this.healthPoint,
   });
 
-  final ProgressViewEnum $extra;
+  final HealthCheckupDiseaseEnum $extra;
+  final int healthPoint;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => ProgressView(
-        progressType: $extra,
+        diseaseType: $extra,
+        healthPoint: healthPoint,
       );
 }
 
@@ -320,22 +325,34 @@ class NormalCheckupRoute extends GoRouteData {
 class CheckupProgressRoute extends GoRouteData {
   CheckupProgressRoute({
     required this.$extra,
+    required this.healthPoint,
   });
 
-  final ProgressViewEnum $extra;
+  final HealthCheckupDiseaseEnum $extra;
+  final int healthPoint;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => ProgressView(
-        progressType: $extra,
+        diseaseType: $extra,
+        healthPoint: healthPoint,
       );
 }
 
 class CheckupResultRoute extends GoRouteData {
-  const CheckupResultRoute();
+  const CheckupResultRoute({
+    required this.$extra,
+    required this.healthPoint,
+  });
+
+  final HealthCheckupDiseaseEnum $extra;
+  final int healthPoint;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      HealthCheckupResultsView();
+      HealthCheckupResultsView(
+        diseaseType: $extra,
+        healthPoint: healthPoint,
+      );
 }
 //////////////////////////////  healthCheckup  //////////////////////////////
 
