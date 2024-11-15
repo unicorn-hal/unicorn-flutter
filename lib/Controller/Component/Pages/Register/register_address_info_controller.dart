@@ -33,7 +33,7 @@ class RegisterAddressInfoController extends ControllerCore {
     return dropdownItems;
   }
 
-  Future<void> potisionSubmit() async {
+  Future<void> setAddressFromLocation() async {
     final LocationAddressInfo? currentPositionInfo =
         await locate.getAddressFromPosition();
     if (currentPositionInfo == null) {
@@ -49,7 +49,7 @@ class RegisterAddressInfoController extends ControllerCore {
     municipalitiesTextController.text = city + town;
   }
 
-  Future<void> postcodeSubmit() async {
+  Future<void> setAddressFromPostcode() async {
     LocationAddressInfo? addressFromPostalCode =
         await locate.getAddressFromPostalCode(postalCodeTextController.text);
     if (addressFromPostalCode == null) {
