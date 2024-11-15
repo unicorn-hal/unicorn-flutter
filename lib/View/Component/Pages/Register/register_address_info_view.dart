@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_address_info_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
-import 'package:unicorn_flutter/Service/Package/Location/location_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -19,7 +18,6 @@ class RegisterAddressInfoView extends StatefulWidget {
 
 class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
   late RegisterAddressInfoController controller;
-  late LocationService locate = LocationService();
 
   final FocusNode focusnode = FocusNode();
 
@@ -27,7 +25,6 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
   void initState() {
     super.initState();
     controller = RegisterAddressInfoController();
-    locate = LocationService();
   }
 
   @override
