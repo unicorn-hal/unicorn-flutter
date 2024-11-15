@@ -20,13 +20,13 @@ class NativeContactsService {
           ? nativeContact.emails!.first.value
           : '';
       final phoneNumber = nativeContact.phones!.isNotEmpty
-          ? nativeContact.phones!.first.value
+          ? nativeContact.phones!.first.value?.replaceAll(RegExp(r'[^0-9]'), '')
           : '';
-      Map<String, dynamic> contactMap = {
+      final Map<String, dynamic> contactMap = {
         'firstName': firstName,
         'lastName': lastName,
-        'email': email,
-        'phoneNumber': phoneNumber,
+        'email': '$email',
+        'phoneNumber': '$phoneNumber',
       };
       if (nativeContact.avatar != null) {
         contactMap['avatar'] = nativeContact.avatar;

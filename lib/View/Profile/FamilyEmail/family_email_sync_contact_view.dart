@@ -104,6 +104,7 @@ class _FamilyEmailSyncContactViewState
                               return;
                             }
                             await controller.updateFamilyEmail();
+                            setState(() {});
                           },
                           imageUrl: familyEmailRequestList[index].iconImageUrl,
                           userName:

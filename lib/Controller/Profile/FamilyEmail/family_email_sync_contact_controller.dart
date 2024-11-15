@@ -7,6 +7,7 @@ import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_request.da
 import 'package:unicorn_flutter/Service/Api/FamilyEmail/family_email_api.dart';
 import 'package:unicorn_flutter/Service/Package/NativeContacts/native_contacts_service.dart';
 import 'package:unicorn_flutter/Service/Package/PermissionHandler/permission_handler_service.dart';
+import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 class FamilyEmailSyncContactController extends ControllerCore {
   /// Serviceのインスタンス化
@@ -59,18 +60,22 @@ class FamilyEmailSyncContactController extends ControllerCore {
 
   /// 同期したメールアドレスを登録する関数
   Future<int> postFamilyEmail(FamilyEmailRequest email) async {
+    ProtectorNotifier().enableProtector();
     int res = await _familyEmailApi.postFamilyEmail(body: email);
     if (res != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
+    ProtectorNotifier().disableProtector();
     return res;
   }
 
   /// FamilyEmailListを更新する関数
   Future<void> updateFamilyEmail() async {
+    ProtectorNotifier().enableProtector();
     _familyEmailList = await _familyEmailApi.getFamilyEmailList();
     if (_familyEmailList == null) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
+    ProtectorNotifier().disableProtector();
   }
 }
