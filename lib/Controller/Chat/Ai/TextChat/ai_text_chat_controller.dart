@@ -69,6 +69,11 @@ class AiTextChatController extends ControllerCore {
 
   /// AIのへのメッセージ送信
   Future<void> postMessage([String? quickAction]) async {
+    // 思考中の場合は実行しない
+    if (_isThinking) {
+      Fluttertoast.showToast(msg: 'AIが思考中です');
+      return;
+    }
     // 追加するメッセージ
     late String postMessage;
 
