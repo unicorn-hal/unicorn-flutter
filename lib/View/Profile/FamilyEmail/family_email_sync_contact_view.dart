@@ -13,9 +13,9 @@ import 'package:unicorn_flutter/gen/colors.gen.dart';
 class FamilyEmailSyncContactView extends StatefulWidget {
   const FamilyEmailSyncContactView({
     super.key,
-    this.registeredEmailList,
+    this.familyEmailList,
   });
-  final List<FamilyEmail>? registeredEmailList;
+  final List<FamilyEmail>? familyEmailList;
 
   @override
   State<FamilyEmailSyncContactView> createState() =>
@@ -28,7 +28,7 @@ class _FamilyEmailSyncContactViewState
   @override
   void initState() {
     super.initState();
-    controller = FamilyEmailSyncContactController(widget.registeredEmailList);
+    controller = FamilyEmailSyncContactController(widget.familyEmailList);
   }
 
   @override
@@ -80,7 +80,8 @@ class _FamilyEmailSyncContactViewState
                     padding: EdgeInsets.only(
                       top: 100,
                     ),
-                    child: CustomText(text: 'メールアドレスが登録されていません'),
+                    child: CustomText(
+                        text: Strings.FAMILY_EMAIL_NOT_REGISTERED_TEXT),
                   );
                 }
                 return ListView.builder(

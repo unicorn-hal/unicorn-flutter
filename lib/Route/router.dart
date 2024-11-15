@@ -501,7 +501,7 @@ class ProfileFamilyEmailSyncContactRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      FamilyEmailSyncContactView(registeredEmailList: $extra);
+      FamilyEmailSyncContactView(familyEmailList: $extra);
 }
 
 class ProfileMedicineRoute extends GoRouteData {

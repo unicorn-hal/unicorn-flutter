@@ -100,7 +100,8 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
                         padding: EdgeInsets.only(
                           top: 100,
                         ),
-                        child: CustomText(text: 'メールアドレスが登録されていません'),
+                        child: CustomText(
+                            text: Strings.FAMILY_EMAIL_NOT_REGISTERED_TEXT),
                       );
                     }
                     return ListView.builder(

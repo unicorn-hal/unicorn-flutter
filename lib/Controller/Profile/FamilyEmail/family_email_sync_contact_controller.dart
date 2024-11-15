@@ -33,7 +33,7 @@ class FamilyEmailSyncContactController extends ControllerCore {
     bool requestPermission = await permissionHandlerService
         .checkAndRequestPermission(Permission.contacts);
     if (requestPermission == false) {
-      Fluttertoast.showToast(msg: '端末設定から連絡先へのアクセスを許可してください');
+      Fluttertoast.showToast(msg: Strings.REQUEST_PERMISSION_ERROR_TEXT);
       return null;
     }
     // FamilyEmailRequestモデルとして取得できる
