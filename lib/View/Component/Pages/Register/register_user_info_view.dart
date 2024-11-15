@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
@@ -7,7 +8,8 @@ import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class RegisterUserInfoView extends StatefulWidget {
-  const RegisterUserInfoView({super.key});
+  const RegisterUserInfoView({super.key, this.addressInfo});
+  final AddressInfo? addressInfo;
 
   @override
   State<RegisterUserInfoView> createState() => _RegisterUserInfoViewState();

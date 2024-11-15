@@ -53,10 +53,10 @@ class ProfileTopController extends ControllerCore {
           onTap: () {
             // return const ProfileRegisterAddressInfoRoute().push(context);
           }),
-      ProfileDetail(
-          title: 'ユーザー設定',
-          icon: Icons.manage_accounts,
-          onTap: () => const ProfileRegisterUserInfoRoute().push(context)),
+      // ProfileDetail(
+      //     title: 'ユーザー設定',
+      //     icon: Icons.manage_accounts,
+      //     onTap: () => const ProfileRegisterUserInfoRoute().push(context)),
     ];
   }
 
