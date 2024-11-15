@@ -3,6 +3,7 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_controller.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 
 class VoiceCallView extends StatefulWidget {
@@ -127,6 +128,20 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                           : RTCVideoView(_controller.localRenderer,
                               mirror: true),
                     ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 20,
+                  left: 20,
+                  child: ValueListenableBuilder<String>(
+                    valueListenable: _controller.elapsedTime,
+                    builder: (context, value, child) {
+                      return CustomText(
+                        text: value,
+                        color: Colors.white,
+                        fontSize: 16,
+                      );
+                    },
                   ),
                 ),
                 Positioned(

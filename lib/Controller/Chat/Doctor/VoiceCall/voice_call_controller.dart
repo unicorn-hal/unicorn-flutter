@@ -20,6 +20,10 @@ class VoiceCallController extends ControllerCore {
   bool isMuted = false;
   bool isCameraOff = false;
   ValueNotifier<bool> isCallConnected = ValueNotifier(false);
+  ValueNotifier<String> elapsedTime = ValueNotifier("00:00");
+
+  Timer? _timer;
+  int _secondsElapsed = 0;
 
   VoiceCallController({required this.calleeUid});
 
@@ -31,6 +35,29 @@ class VoiceCallController extends ControllerCore {
       peerConnection = pc;
       _startLocalStream();
     });
+
+    isCallConnected.addListener(() {
+      if (isCallConnected.value) {
+        _startTimer();
+      } else {
+        _stopTimer();
+      }
+    });
+  }
+
+  void _startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _secondsElapsed++;
+      final minutes = (_secondsElapsed ~/ 60).toString().padLeft(2, '0');
+      final seconds = (_secondsElapsed % 60).toString().padLeft(2, '0');
+      elapsedTime.value = "$minutes:$seconds";
+    });
+  }
+
+  void _stopTimer() {
+    _timer?.cancel();
+    _secondsElapsed = 0;
+    elapsedTime.value = "00:00";
   }
 
   Future<void> _initRenderers() async {
@@ -224,6 +251,9 @@ class VoiceCallController extends ControllerCore {
       track.stop();
     });
     localStream.dispose();
+
+    // Timerを停止
+    _stopTimer();
 
     // ピアコネクションを閉じる
     peerConnection.close();
