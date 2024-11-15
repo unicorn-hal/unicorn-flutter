@@ -21,6 +21,7 @@ class VoiceCallController extends ControllerCore {
   String userId = UserData().user!.userId; // ユーザー固有のID
   bool isMuted = false;
   bool isCameraOff = false;
+  bool isFrontCamera = true;
   ValueNotifier<bool> isCallConnected = ValueNotifier(false);
   ValueNotifier<String> elapsedTime = ValueNotifier("00:00");
 
@@ -45,6 +46,13 @@ class VoiceCallController extends ControllerCore {
       } else {
         _stopTimer();
       }
+    });
+  }
+
+  Future<void> switchCamera() async {
+    isFrontCamera = !isFrontCamera;
+    localStream.getVideoTracks().forEach((track) async {
+      await Helper.switchCamera(track);
     });
   }
 
