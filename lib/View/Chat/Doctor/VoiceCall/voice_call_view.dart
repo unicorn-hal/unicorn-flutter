@@ -17,7 +17,7 @@ class VoiceCallView extends StatefulWidget {
 
 class _VoiceCallViewState extends State<VoiceCallView> {
   late VoiceCallController _controller;
-  Offset _localVideoOffset = const Offset(20, 20);
+  Offset _localVideoOffset = const Offset(20, 100);
   bool _isSwapped = false;
 
   @override
@@ -133,17 +133,28 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                   ),
                 ),
                 Positioned(
-                  bottom: 20,
+                  top: 20,
                   left: 20,
-                  child: ValueListenableBuilder<String>(
-                    valueListenable: _controller.elapsedTime,
-                    builder: (context, value, child) {
-                      return CustomText(
-                        text: value,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text:
+                            '${_controller.doctor.firstName} ${_controller.doctor.lastName} 先生',
                         color: Colors.white,
-                        fontSize: 16,
-                      );
-                    },
+                        fontSize: 24,
+                      ),
+                      ValueListenableBuilder<String>(
+                        valueListenable: _controller.elapsedTime,
+                        builder: (context, value, child) {
+                          return CustomText(
+                            text: value,
+                            color: Colors.white,
+                            fontSize: 16,
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
                 Positioned(
