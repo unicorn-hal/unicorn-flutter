@@ -17,6 +17,7 @@ class VoiceCallView extends StatefulWidget {
 class _VoiceCallViewState extends State<VoiceCallView> {
   late VoiceCallController _controller;
   Offset _localVideoOffset = const Offset(20, 20);
+  bool _isSwapped = false;
 
   @override
   void initState() {
@@ -67,6 +68,12 @@ class _VoiceCallViewState extends State<VoiceCallView> {
     });
   }
 
+  void _onToggleSwap() {
+    setState(() {
+      _isSwapped = !_isSwapped;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!_controller.isCallConnected.value) {
@@ -89,7 +96,9 @@ class _VoiceCallViewState extends State<VoiceCallView> {
             child: Stack(
               children: [
                 Positioned.fill(
-                  child: RTCVideoView(_controller.remoteRenderer),
+                  child: _isSwapped
+                      ? RTCVideoView(_controller.localRenderer, mirror: true)
+                      : RTCVideoView(_controller.remoteRenderer),
                 ),
                 Positioned(
                   left: _localVideoOffset.dx,
@@ -99,6 +108,7 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                   child: GestureDetector(
                     onPanStart: _onDragStart,
                     onPanUpdate: _onDragUpdate,
+                    onTap: _onToggleSwap,
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.blueAccent, width: 4),
@@ -112,8 +122,10 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                           ),
                         ],
                       ),
-                      child:
-                          RTCVideoView(_controller.localRenderer, mirror: true),
+                      child: _isSwapped
+                          ? RTCVideoView(_controller.remoteRenderer)
+                          : RTCVideoView(_controller.localRenderer,
+                              mirror: true),
                     ),
                   ),
                 ),
