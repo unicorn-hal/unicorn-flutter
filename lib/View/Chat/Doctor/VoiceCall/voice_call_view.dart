@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_controller.dart';
 import 'package:unicorn_flutter/Route/router.dart';
-import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 
@@ -24,7 +23,7 @@ class _VoiceCallViewState extends State<VoiceCallView> {
     super.initState();
     _controller = VoiceCallController(calleeUid: widget.calleeUid);
     _controller.isCallConnected.addListener(() {
-      setState(() {}); // 通話状態が変化したら画面を更新
+      setState(() {});
     });
   }
 
@@ -51,10 +50,26 @@ class _VoiceCallViewState extends State<VoiceCallView> {
     const HomeRoute().go(context);
   }
 
+  void _onDragStart(DragStartDetails details) {}
+
+  void _onDragUpdate(DragUpdateDetails details) {
+    setState(() {
+      _localVideoOffset += details.delta;
+      final screenHeight = MediaQuery.of(context).size.height;
+      const bottomButtonHeight = 130.0;
+
+      if (_localVideoOffset.dy + 150 > screenHeight - bottomButtonHeight) {
+        _localVideoOffset = Offset(
+          _localVideoOffset.dx,
+          screenHeight - bottomButtonHeight - 150,
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!_controller.isCallConnected.value) {
-      // 通話待機画面
       return CustomScaffold(
         appBar: AppBar(
           title: Text('${widget.calleeUid} さんとの通話中...'),
@@ -64,7 +79,6 @@ class _VoiceCallViewState extends State<VoiceCallView> {
         ),
       );
     } else {
-      // ビデオ通話画面
       return CustomScaffold(
         appBar: AppBar(
           title: Text('ビデオ通話 - ${_controller.userId}'),
@@ -82,48 +96,9 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                   top: _localVideoOffset.dy,
                   width: 100,
                   height: 150,
-                  child: Draggable(
-                    feedback: Container(
-                      width: 100,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blueAccent, width: 4),
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child:
-                          RTCVideoView(_controller.localRenderer, mirror: true),
-                    ),
-                    childWhenDragging: Container(),
-                    onDragEnd: (details) {
-                      final dragDistance =
-                          (details.offset - _localVideoOffset).distance;
-                      if (dragDistance > 115) {
-                        // Threshold to ignore minor taps
-                        setState(() {
-                          final newOffset = details.offset;
-                          final screenHeight =
-                              MediaQuery.of(context).size.height;
-                          const bottomButtonHeight =
-                              130.0; // Adjust this value as needed
-
-                          if (newOffset.dy + 150 >
-                              screenHeight - bottomButtonHeight) {
-                            _localVideoOffset = Offset(newOffset.dx,
-                                screenHeight - bottomButtonHeight - 150);
-                          } else {
-                            _localVideoOffset = newOffset;
-                          }
-                        });
-                      }
-                    },
+                  child: GestureDetector(
+                    onPanStart: _onDragStart,
+                    onPanUpdate: _onDragUpdate,
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.blueAccent, width: 4),
