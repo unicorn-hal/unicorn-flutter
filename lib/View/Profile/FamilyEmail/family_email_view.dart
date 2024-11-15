@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/FamilyEmail/family_email_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
@@ -73,67 +74,129 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
                     ],
                   ),
                 ),
-                FutureBuilder<List<FamilyEmail>?>(
-                    future: controller.getFamilyEmail(),
-                    builder: (
-                      context,
-                      AsyncSnapshot<List<FamilyEmail>?> snapshot,
-                    ) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Padding(
-                          padding: EdgeInsets.only(top: 100),
-                          child: CustomLoadingAnimation(
-                            text: Strings.LOADING_TEXT,
-                            iconColor: Colors.grey,
-                            textColor: Colors.grey,
-                          ),
-                        );
-                      }
-                      if (!snapshot.hasData) {
-                        // todo: エラー時の処理
-                        return Container();
-                      }
-                      List<FamilyEmail>? familyEmailList = snapshot.data;
-                      if (familyEmailList!.isEmpty) {
-                        return const Padding(
-                          padding: EdgeInsets.only(
-                            top: 100,
-                          ),
-                          child: CustomText(text: 'メールアドレスが登録されていません'),
-                        );
-                      }
-                      return ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: familyEmailList.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            decoration: const BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  width: 1,
-                                  color: Colors.grey,
+                !controller.isSyncContact
+                    ? FutureBuilder<List<FamilyEmail>?>(
+                        future: controller.getFamilyEmail(),
+                        builder: (
+                          context,
+                          AsyncSnapshot<List<FamilyEmail>?> snapshot,
+                        ) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Padding(
+                              padding: EdgeInsets.only(top: 100),
+                              child: CustomLoadingAnimation(
+                                text: Strings.LOADING_TEXT,
+                                iconColor: Colors.grey,
+                                textColor: Colors.grey,
+                              ),
+                            );
+                          }
+                          if (!snapshot.hasData) {
+                            // todo: エラー時の処理
+                            return Container();
+                          }
+                          List<FamilyEmail>? familyEmailList = snapshot.data;
+                          if (familyEmailList!.isEmpty) {
+                            return const Padding(
+                              padding: EdgeInsets.only(
+                                top: 100,
+                              ),
+                              child: CustomText(text: 'メールアドレスが登録されていません'),
+                            );
+                          }
+                          return ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: familyEmailList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      width: 1,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 10),
-                              child: UserInfoTile(
-                                onTap: () {
-                                  ProfileFamilyEmailRegisterRoute()
-                                      .push(context)
-                                      .then((value) => setState(() {}));
-                                },
-                                imageUrl: familyEmailList[index].iconImageUrl,
-                                userName:
-                                    '${familyEmailList[index].lastName} ${familyEmailList[index].firstName}',
-                                description: familyEmailList[index].email,
-                              ),
-                            ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: UserInfoTile(
+                                    onTap: () {
+                                      ProfileFamilyEmailRegisterRoute()
+                                          .push(context)
+                                          .then((value) => setState(() {}));
+                                    },
+                                    imageUrl:
+                                        familyEmailList[index].iconImageUrl,
+                                    userName:
+                                        '${familyEmailList[index].lastName} ${familyEmailList[index].firstName}',
+                                    description: familyEmailList[index].email,
+                                  ),
+                                ),
+                              );
+                            },
                           );
-                        },
-                      );
-                    }),
+                        })
+                    : FutureBuilder<List<FamilyEmailRequest>>(
+                        future: controller.getFamilyEmailRequest(),
+                        builder: (context,
+                            AsyncSnapshot<List<FamilyEmailRequest>> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Padding(
+                              padding: EdgeInsets.only(top: 100),
+                              child: CustomLoadingAnimation(
+                                text: Strings.LOADING_TEXT,
+                                iconColor: Colors.grey,
+                                textColor: Colors.grey,
+                              ),
+                            );
+                          }
+                          if (!snapshot.hasData) {
+                            // todo: エラー時の処理
+                            return Container();
+                          }
+                          List<FamilyEmailRequest> familyEmailRequestList =
+                              snapshot.data!;
+                          if (familyEmailRequestList.isEmpty) {
+                            return const Padding(
+                              padding: EdgeInsets.only(
+                                top: 100,
+                              ),
+                              child: CustomText(text: 'メールアドレスが登録されていません'),
+                            );
+                          }
+                          return ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: familyEmailRequestList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                decoration: const BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      width: 1,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: UserInfoTile(
+                                    onTap: () {},
+                                    imageUrl: familyEmailRequestList[index]
+                                        .iconImageUrl,
+                                    userName:
+                                        '${familyEmailRequestList[index].lastName} ${familyEmailRequestList[index].firstName}',
+                                    description:
+                                        familyEmailRequestList[index].email,
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }),
                 const SizedBox(
                   height: 70,
                 ),
