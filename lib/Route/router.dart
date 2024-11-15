@@ -25,6 +25,7 @@ import 'package:unicorn_flutter/View/Profile/AppInformation/license_view.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/chronic_disease_view.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/disease_search_view.dart';
 import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_register_view.dart';
+import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_sync_contact_view.dart';
 import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_view.dart';
 import 'package:unicorn_flutter/View/Profile/Medicine/medicine_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/Medicine/medicine_view.dart';
@@ -494,17 +495,13 @@ class ProfileFamilyEmailRegisterRoute extends GoRouteData {
 
 class ProfileFamilyEmailSyncContactRoute extends GoRouteData {
   const ProfileFamilyEmailSyncContactRoute({
-    required this.from,
     this.$extra,
   });
-  final String from;
   final List<FamilyEmail>? $extra;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => FamilyEmailView(
-        from: from,
-        registeredEmailList: $extra,
-      );
+  Widget build(BuildContext context, GoRouterState state) =>
+      FamilyEmailSyncContactView(registeredEmailList: $extra);
 }
 
 class ProfileMedicineRoute extends GoRouteData {
