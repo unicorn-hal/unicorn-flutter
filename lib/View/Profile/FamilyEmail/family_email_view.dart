@@ -9,6 +9,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_anima
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_info_tile.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class FamilyEmailView extends StatefulWidget {
   const FamilyEmailView({
@@ -40,6 +41,8 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
         CustomScaffold(
           appBar: CustomAppBar(
             title: '家族メール設定',
+            foregroundColor: Colors.white,
+            backgroundColor: ColorName.mainColor,
           ),
           isScrollable: true,
           body: SizedBox(
