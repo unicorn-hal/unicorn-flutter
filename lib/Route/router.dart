@@ -11,6 +11,7 @@ import 'package:unicorn_flutter/View/Chat/Doctor/TextChat/doctor_text_chat_view.
 import 'package:unicorn_flutter/View/Chat/Doctor/Information/doctor_information_view.dart';
 import 'package:unicorn_flutter/View/Chat/Doctor/VoiceCall/Reserve/voice_call_reserve_view.dart';
 import 'package:unicorn_flutter/View/Chat/Doctor/Search/doctor_search_view.dart';
+import 'package:unicorn_flutter/View/Chat/Doctor/VoiceCall/voice_call_view.dart';
 import 'package:unicorn_flutter/View/Chat/chat_top_view.dart';
 import 'package:unicorn_flutter/View/Component/Pages/progress_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/Checkup/ai_checkup_view.dart';
@@ -279,6 +280,17 @@ class RegisterUserInfoRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const RegisterUserInfoView();
+}
+
+@TypedGoRoute<VideoCallRoute>(
+  path: Routes.chatVoiceCall,
+)
+class VideoCallRoute extends GoRouteData {
+  const VideoCallRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const VoiceCallView(calleeUid: 'user_a');
 }
 
 /////////////////////////////////  Root  //////////////////////////////
