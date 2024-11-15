@@ -30,11 +30,12 @@ class AiTextChatController extends ControllerCore {
 
   @override
   void initialize() {
+    // チャットリストには初期メッセージとしてsystem命令文を追加
     _chatList = ValueNotifier([
       ChatGPTChat(
         created: DateTime.now(),
         message: ChatGPTMessage(
-          content: '${AppDataConstant.appDescription}',
+          content: AppDataConstant.appDescription,
           role: ChatGPTRole.system,
         ),
       ),
@@ -77,13 +78,21 @@ class AiTextChatController extends ControllerCore {
     // フラグを思考終了に変更
     _changeIsThinking();
 
+    late ChatGPTChat responseMessage;
+
+    // 通信失敗などで返信がない場合はエラー内容をリストへ追加する
     if (response == null) {
-      Log.echo('response is null');
-      return;
+      responseMessage = ChatGPTChat(
+        created: DateTime.now(),
+        message: ChatGPTMessage(
+            role: ChatGPTRole.assistant,
+            content: '通信が不安定で回答を取得できませんでした。\nもう一度お試しください。'),
+      );
+    } else {
+      // AIからの返信メッセージの追加
+      responseMessage = ChatGPTChat.fromJson(response.toJson());
     }
 
-    // AIからの返信メッセージの追加
-    ChatGPTChat responseMessage = ChatGPTChat.fromJson(response.toJson());
     _chatList.value = [..._chatList.value, responseMessage];
   }
 
