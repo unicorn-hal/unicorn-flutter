@@ -25,19 +25,18 @@ class AiTextChatView extends StatefulWidget {
 
 class _AiTextChatViewState extends State<AiTextChatView> {
   late AiTextChatController controller;
+
   // フォーカス用のノード
   final focusNode = FocusNode();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     controller = AiTextChatController();
   }
 
   @override
   Widget build(BuildContext context) {
-    AiTextChatController controller = AiTextChatController();
     final Size size = MediaQuery.of(context).size;
     return CustomScaffold(
       focusNode: focusNode,
@@ -157,6 +156,9 @@ class _AiTextChatViewState extends State<AiTextChatView> {
                                                 myMessage: false,
                                                 postAt: '')
                                             : Container(),
+                                        const SizedBox(
+                                          height: 200,
+                                        )
                                       ],
                                     ),
                                   );
@@ -306,9 +308,11 @@ class _AiTextChatViewState extends State<AiTextChatView> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          // todo: チャットを送信するAPIを叩く
-                          controller.postMessage();
+                        onTap: () async {
+                          // メッセージを送信する際はスクロールを一番下に移動
+                          controller.scrollController.jumpTo(controller
+                              .scrollController.position.maxScrollExtent);
+                          await controller.postMessage();
                         },
                         child: SizedBox(
                           width: size.width * 0.1,
