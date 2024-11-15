@@ -1,11 +1,11 @@
 class AddressInfo {
-  final String postCode;
+  final String postalCode;
   final String prefectures;
   final String municipalities;
   final String addressDetail;
 
   AddressInfo({
-    required this.postCode,
+    required this.postalCode,
     required this.prefectures,
     required this.municipalities,
     required this.addressDetail,
