@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_address_info_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
@@ -7,6 +8,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
+import 'package:unicorn_flutter/View/Component/Parts/google_map_viewer.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -217,8 +219,9 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                     width: deviceWidth,
                     height: 170,
                     color: Colors.grey,
-                    child: Text('ここに地図入ります'),
-                    // todo: 地図でき次第ここに入れます。（とりあえずContainerだけ設けました）
+                    child: GoogleMapViewer(
+                      point: controller.point!
+                    )                                 
                   ),
                 ),
                 GestureDetector(

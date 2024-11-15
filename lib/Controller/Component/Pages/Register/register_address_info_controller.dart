@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:unicorn_flutter/Constants/prefectures.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
@@ -19,6 +20,8 @@ class RegisterAddressInfoController extends ControllerCore {
 
   LocationService locate = LocationService();
   int selectedPrefectureIndex = 0;
+
+  LatLng? point = LatLng(35.738566723050454, 140.10325321828262);
 
   void initialize() {}
 
@@ -47,6 +50,8 @@ class RegisterAddressInfoController extends ControllerCore {
     selectedPrefectureIndex = entryItemStrings.indexOf(prefecture);
     postalCodeTextController.text = postalCode;
     municipalitiesTextController.text = city + town;
+    LatLng? setLocation = await locate.getPositionFromAddress(prefecture + city + town);
+    point = setLocation;
   }
 
   AddressInfo? submit() {
@@ -62,14 +67,21 @@ class RegisterAddressInfoController extends ControllerCore {
     return addressInfo;
   }
 
-  
-
   Future<void> setAddressFromPostalCode() async {
     LocationAddressInfo? addressFromPostalCode =
         await locate.getAddressFromPostalCode(postalCodeTextController.text);
     if (addressFromPostalCode == null) {
       return;
     }
+    final String postalCode = addressFromPostalCode.postalCode;
+    final String prefecture = addressFromPostalCode.prefecture;
+    final String city = addressFromPostalCode.city;
+    final String town = addressFromPostalCode.town;
+    selectedPrefectureIndex = entryItemStrings.indexOf(prefecture);
+    postalCodeTextController.text = postalCode;
+    municipalitiesTextController.text = city + town;
+    LatLng? setLocation = await locate.getPositionFromAddress(prefecture + city + town);
+    point = setLocation;
   }
 
   bool validateField() {
