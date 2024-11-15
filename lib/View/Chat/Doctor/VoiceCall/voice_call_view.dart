@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_controller.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 
@@ -16,7 +17,7 @@ class VoiceCallView extends StatefulWidget {
 
 class _VoiceCallViewState extends State<VoiceCallView> {
   late VoiceCallController _controller;
-  Offset _localVideoOffset = const Offset(20, 100);
+  Offset _localVideoOffset = const Offset(20, 20);
 
   @override
   void initState() {
@@ -74,7 +75,6 @@ class _VoiceCallViewState extends State<VoiceCallView> {
             child: Stack(
               children: [
                 Positioned.fill(
-                  top: -100,
                   child: RTCVideoView(_controller.remoteRenderer),
                 ),
                 Positioned(
@@ -87,7 +87,7 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                       width: 100,
                       height: 150,
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.greenAccent, width: 4),
+                        border: Border.all(color: Colors.blueAccent, width: 4),
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
@@ -105,7 +105,7 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                     onDragEnd: (details) {
                       final dragDistance =
                           (details.offset - _localVideoOffset).distance;
-                      if (dragDistance > 10) {
+                      if (dragDistance > 115) {
                         // Threshold to ignore minor taps
                         setState(() {
                           final newOffset = details.offset;
@@ -126,7 +126,7 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all(color: Colors.greenAccent, width: 4),
+                        border: Border.all(color: Colors.blueAccent, width: 4),
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
