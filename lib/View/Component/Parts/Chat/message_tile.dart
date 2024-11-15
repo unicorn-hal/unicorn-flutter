@@ -8,17 +8,19 @@ class MessageTile extends StatelessWidget {
     required this.messageBody,
     required this.myMessage,
     required this.postAt,
+    this.actionWidget,
   });
 
   final String messageBody;
   final bool myMessage;
   final String postAt;
+  final Widget? actionWidget;
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment:
@@ -48,13 +50,20 @@ class MessageTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             constraints: BoxConstraints(
-              maxWidth: size.width * 0.6,
+              maxWidth: size.width * 0.7,
               minHeight: 30,
               minWidth: 30,
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: CustomText(text: messageBody),
+              child: actionWidget == null
+                  ? CustomText(text: messageBody)
+                  : Column(
+                      children: [
+                        CustomText(text: messageBody),
+                        actionWidget!,
+                      ],
+                    ),
             ),
           ),
           myMessage
