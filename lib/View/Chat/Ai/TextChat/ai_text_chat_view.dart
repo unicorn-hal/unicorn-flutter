@@ -277,7 +277,7 @@ class _AiTextChatViewState extends State<AiTextChatView> {
 
                         // ダイアログの返り値を待って処理を行う
                         if (action != null) {
-                          await controller.postMessage();
+                          await controller.postMessage(action);
                         }
                       },
                       icon: const Icon(
