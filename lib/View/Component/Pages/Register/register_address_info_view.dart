@@ -5,6 +5,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
+import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class RegisterAddressInfoView extends StatefulWidget {
@@ -71,8 +72,10 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                 ),
                 GestureDetector(
                   onTap: () async {
+                    ProtectorNotifier().enableProtector();
                     await controller.setAddressFromLocation();
                     setState(() {});
+                    ProtectorNotifier().disableProtector();
                   },
                   child: Align(
                     alignment: Alignment.center,
@@ -126,8 +129,10 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                     ),
                     GestureDetector(
                       onTap: () async {
+                        ProtectorNotifier().enableProtector();
                         await controller.setAddressFromPostcode();
                         setState(() {});
+                        ProtectorNotifier().disableProtector();
                       },
                       child: Align(
                         alignment: Alignment.center,
