@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/FamilyEmail/family_email_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
@@ -28,16 +27,12 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
   @override
   void initState() {
     super.initState();
-    controller = FamilyEmailController();
+    controller = FamilyEmailController(from: widget.from);
   }
 
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
-    String title = '登録済み';
-    bool isImportContact = true;
-    // todo: controller出来たら変更
-
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
@@ -59,9 +54,9 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CustomText(text: title),
+                      CustomText(text: controller.title),
                       Visibility(
-                        visible: isImportContact,
+                        visible: !controller.isSyncContact,
                         child: IconButton(
                           onPressed: () {
                             const ProfileFamilyEmailRegisterRoute()
@@ -107,7 +102,6 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
                           child: CustomText(text: 'メールアドレスが登録されていません'),
                         );
                       }
-
                       return ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -147,7 +141,7 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
             ),
           ),
         ),
-        isImportContact
+        !controller.isSyncContact
             ? Container(
                 padding: const EdgeInsets.only(
                   bottom: 10,
@@ -160,7 +154,8 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
                   onTap: () {
                     const ProfileFamilyEmailSyncContactRoute(
                             from: Routes.profileFamilyEmail)
-                        .push(context);
+                        .push(context)
+                        .then((value) => setState(() {}));
                     // todo: controller出来たら引数もらってくる
                   },
                 ),
