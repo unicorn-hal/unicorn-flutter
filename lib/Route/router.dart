@@ -286,11 +286,15 @@ class RegisterUserInfoRoute extends GoRouteData {
   path: Routes.chatVoiceCall,
 )
 class VideoCallRoute extends GoRouteData {
-  const VideoCallRoute();
+  VideoCallRoute({
+    required this.$extra,
+  });
+  final Doctor $extra;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      const VoiceCallView(calleeUid: 'user_a');
+  Widget build(BuildContext context, GoRouterState state) => VoiceCallView(
+        doctor: $extra,
+      );
 }
 
 /////////////////////////////////  Root  //////////////////////////////

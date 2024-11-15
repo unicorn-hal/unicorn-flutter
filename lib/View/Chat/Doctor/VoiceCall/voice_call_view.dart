@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_controller.dart';
+import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 
 class VoiceCallView extends StatefulWidget {
-  final String calleeUid;
-
-  const VoiceCallView({super.key, required this.calleeUid});
+  final Doctor doctor;
+  const VoiceCallView({super.key, required this.doctor});
 
   @override
   State<VoiceCallView> createState() => _VoiceCallViewState();
@@ -23,7 +23,7 @@ class _VoiceCallViewState extends State<VoiceCallView> {
   @override
   void initState() {
     super.initState();
-    _controller = VoiceCallController(calleeUid: widget.calleeUid);
+    _controller = VoiceCallController(doctor: widget.doctor);
     _controller.isCallConnected.addListener(() {
       setState(() {});
     });
@@ -80,7 +80,8 @@ class _VoiceCallViewState extends State<VoiceCallView> {
     if (!_controller.isCallConnected.value) {
       return CustomScaffold(
         appBar: AppBar(
-          title: Text('${widget.calleeUid} さんとの通話中...'),
+          title: Text(
+              '${_controller.doctor.firstName} ${_controller.doctor.lastName} さんとの通話中...'),
         ),
         body: const Center(
           child: Text('通話接続を待っています...'),
@@ -88,6 +89,7 @@ class _VoiceCallViewState extends State<VoiceCallView> {
       );
     } else {
       return CustomScaffold(
+        isAppbar: false,
         appBar: AppBar(
           title: Text('ビデオ通話 - ${_controller.userId}'),
         ),

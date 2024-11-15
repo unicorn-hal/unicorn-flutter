@@ -5,12 +5,14 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
+import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:flutter/foundation.dart';
 
 class VoiceCallController extends ControllerCore {
-  final String calleeUid;
+  final Doctor doctor;
+  late String calleeUid;
   late RTCPeerConnection peerConnection;
   late MediaStream localStream;
   late WebSocketChannel channel;
@@ -25,10 +27,11 @@ class VoiceCallController extends ControllerCore {
   Timer? _timer;
   int _secondsElapsed = 0;
 
-  VoiceCallController({required this.calleeUid});
+  VoiceCallController({required this.doctor});
 
   @override
   void initialize() {
+    calleeUid = doctor.doctorId;
     _initRenderers();
     _connectToSignalingServer();
     _createPeerConnection().then((pc) {
