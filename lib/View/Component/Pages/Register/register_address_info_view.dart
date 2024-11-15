@@ -129,6 +129,10 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                       maxLength: 7,
                       keyboardType: TextInputType.number,
                       controller: controller.postalCodeTextController,
+                      onTapOutside: (p0) async {
+                        await controller.updateMapPinPosition();
+                        setState(() {});
+                      },
                     ),
                     GestureDetector(
                       onTap: () async {
@@ -178,8 +182,10 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   dropdownItems: controller.countryList(),
                   selectIndex: controller.selectedPrefectureIndex,
                   height: 44,
-                  onChanged: (int? index) {
-                    index = controller.selectedPrefectureIndex;
+                  onChanged: (int? index) async {
+                    controller.selectedPrefectureIndex = index ?? 0;
+                    await controller.updateMapPinPosition();
+                    setState(() {});
                   },
                 ),
                 const Padding(
@@ -196,6 +202,10 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   controller: controller.municipalitiesTextController,
                   maxLines: 1,
                   maxLength: 25,
+                  onTapOutside: (p0) async {
+                    await controller.updateMapPinPosition();
+                    setState(() {});
+                  },
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 20, bottom: 10),
@@ -211,6 +221,10 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   controller: controller.addressDetailTextController,
                   maxLines: 1,
                   maxLength: 25,
+                  onTapOutside: (p0) async {
+                    await controller.updateMapPinPosition();
+                    setState(() {});
+                  },
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
