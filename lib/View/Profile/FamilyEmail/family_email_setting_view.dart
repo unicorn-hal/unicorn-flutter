@@ -6,8 +6,8 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_info_tile.dart';
 
-class FamilyEmailSettingView extends StatelessWidget {
-  const FamilyEmailSettingView({super.key});
+class FamilyEmailView extends StatelessWidget {
+  const FamilyEmailView({super.key});
 
   @override
   Widget build(BuildContext context) {

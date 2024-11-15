@@ -479,7 +479,7 @@ class ProfileFamilyEmailRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const FamilyEmailSettingView();
+      const FamilyEmailView();
 }
 
 class ProfileFamilyEmailRegisterRoute extends GoRouteData {
@@ -495,7 +495,7 @@ class ProfileFamilyEmailSyncContactRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const FamilyEmailSettingView();
+      const FamilyEmailView();
 }
 
 class ProfileMedicineRoute extends GoRouteData {
