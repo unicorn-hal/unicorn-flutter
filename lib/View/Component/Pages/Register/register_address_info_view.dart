@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_address_info_controller.dart';
+import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -220,7 +222,13 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    AddressInfo? addressInfo = controller.submit();
+                    if (addressInfo == null) {
+                      return;
+                    }
+                    ProfileRegisterUserInfoRoute($extra: addressInfo).push(context);
+                  },
                   child: Align(
                     alignment: Alignment.center,
                     child: Padding(

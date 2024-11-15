@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Constants/prefectures.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
 import 'package:unicorn_flutter/Model/Entity/location_address_info.dart';
 import 'package:unicorn_flutter/Service/Package/Location/location_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -17,7 +18,7 @@ class RegisterAddressInfoController extends ControllerCore {
   final List<String> entryItemStrings = ['未設定'] + Prefectures.list;
 
   LocationService locate = LocationService();
-  int? selectedPrefectureIndex = 0;
+  int selectedPrefectureIndex = 0;
 
   void initialize() {}
 
@@ -47,6 +48,21 @@ class RegisterAddressInfoController extends ControllerCore {
     postalCodeTextController.text = postalCode;
     municipalitiesTextController.text = city + town;
   }
+
+  AddressInfo? submit() {
+    if (validateField() == false) {
+      return null;
+    }
+    AddressInfo addressInfo = AddressInfo (
+      postalCode: postalCodeTextController.text,
+      prefectures: entryItemStrings[selectedPrefectureIndex],
+      municipalities: municipalitiesTextController.text,
+      addressDetail: addressDetailTextController.text
+    );
+    return addressInfo;
+  }
+
+  
 
   Future<void> setAddressFromPostalCode() async {
     LocationAddressInfo? addressFromPostalCode =
