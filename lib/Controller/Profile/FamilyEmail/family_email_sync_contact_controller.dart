@@ -17,8 +17,6 @@ class FamilyEmailSyncContactController extends ControllerCore {
   FamilyEmailSyncContactController(this._familyEmailList);
   List<FamilyEmail>? _familyEmailList;
 
-  /// 変数の定義
-
   /// initialize()
   @override
   void initialize() {}
