@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Constants/Enum/chatgpt_role.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_response.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 
 import '../../../../Constants/app_data_constants.dart';
 import '../../../../Model/Entity/ChatGPT/chatgpt_chat.dart';
 import '../../../../Model/Entity/ChatGPT/chatgpt_message.dart';
+import '../../../../Model/Entity/User/user.dart';
 import '../../../../Service/ChatGPT/chatgpt_service.dart';
 
 class AiTextChatController extends ControllerCore {
@@ -25,6 +27,9 @@ class AiTextChatController extends ControllerCore {
   // スクロールコントローラー
   final ScrollController scrollController = ScrollController();
 
+  // ユーザー情報
+  final User _user = UserData().user!;
+
   // AIが思考中のフラグ
   bool _isThinking = false;
 
@@ -35,7 +40,17 @@ class AiTextChatController extends ControllerCore {
       ChatGPTChat(
         created: DateTime.now(),
         message: ChatGPTMessage(
-          content: AppDataConstant.appDescription,
+          content: '''
+                    ${AppDataConstant.appDescription}
+
+                    # ユーザーの情報を以下に記載します
+                    名前: ${_user.firstName + _user.lastName}
+                    生年月日: ${_user.birthDate}
+                    身長: ${_user.bodyHeight}
+                    体重: ${_user.bodyWeight}
+                    性別: ${_user.gender}
+
+                    ''',
           role: ChatGPTRole.system,
         ),
       ),
