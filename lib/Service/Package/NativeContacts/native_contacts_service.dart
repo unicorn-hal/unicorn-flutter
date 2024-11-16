@@ -14,8 +14,8 @@ class NativeContactsService {
     final List<package.Contact> nativeContacts = await getNativeContacts();
     final List<FamilyEmailRequest> familyEmailRequests = <FamilyEmailRequest>[];
     for (final package.Contact nativeContact in nativeContacts) {
-      final firstName = nativeContact.givenName;
-      final lastName = nativeContact.familyName;
+      final firstName = nativeContact.givenName ?? '';
+      final lastName = nativeContact.familyName ?? '';
       final email = nativeContact.emails!.isNotEmpty
           ? nativeContact.emails!.first.value
           : '';
