@@ -51,7 +51,6 @@ class FamilyEmailSyncContactController extends ControllerCore {
   bool checkDuplicate(FamilyEmailRequest syncFamilyEmail) {
     return _familyEmailList!.any((registeredEmail) =>
         (registeredEmail.email == syncFamilyEmail.email) &&
-        (registeredEmail.phoneNumber == syncFamilyEmail.phoneNumber) &&
         (registeredEmail.firstName + registeredEmail.lastName ==
             syncFamilyEmail.firstName + syncFamilyEmail.lastName));
   }
