@@ -3,7 +3,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class MessageTile extends StatelessWidget {
-  MessageTile({
+  const MessageTile({
     super.key,
     this.messageBody,
     required this.myMessage,
@@ -16,7 +16,7 @@ class MessageTile extends StatelessWidget {
   final bool myMessage;
   final String postAt;
   final Widget? actionWidget;
-  Color? postAtColor;
+  final Color? postAtColor;
 
   @override
   Widget build(BuildContext context) {
