@@ -1,7 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:unicorn_flutter/Service/Log/log_service.dart';
+import 'package:intl/intl.dart';
+import 'package:unicorn_flutter/Constants/Enum/chatgpt_role.dart';
+import 'package:unicorn_flutter/Controller/Chat/Ai/TextChat/ai_text_chat_controller.dart';
+import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_chat.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
@@ -13,24 +15,24 @@ import '../../../Component/CustomWidget/custom_text.dart';
 import '../../../Component/CustomWidget/custom_textfield.dart';
 import '../../../Component/Parts/Chat/message_tile.dart';
 
-class AiTextChatView extends StatelessWidget {
-  AiTextChatView({super.key});
+class AiTextChatView extends StatefulWidget {
+  const AiTextChatView({super.key});
 
   @override
-  final List<Map<String, bool>> chatList = [
-    {
-      'ああああ': true,
-    },
-    {
-      'あああああああ': false,
-    },
-  ];
+  State<AiTextChatView> createState() => _AiTextChatViewState();
+}
 
-  //　チャット用のコントローラー
-  final TextEditingController controller = TextEditingController();
+class _AiTextChatViewState extends State<AiTextChatView> {
+  late AiTextChatController controller;
 
   // フォーカス用のノード
   final focusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AiTextChatController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,22 +104,64 @@ class AiTextChatView extends StatelessWidget {
                       topHeight: 4,
                       bottomHeight: 4,
                     ),
-                    chatList.isNotEmpty
+                    controller.chatList.value.isNotEmpty
                         // メッセージがあるときは表示
                         ? Expanded(
-                            child: ListView.builder(
-                              itemCount: chatList.length,
-                              shrinkWrap: true,
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              itemBuilder: (BuildContext context, int index) {
-                                // todo: モデルに変更して当てはめる
-                                return MessageTile(
-                                  messageBody: chatList[index].keys.first,
-                                  myMessage: chatList[index].values.first,
-                                  postAt: '12:00',
-                                );
-                              },
-                            ),
+                            child: ValueListenableBuilder<List<ChatGPTChat>>(
+                                valueListenable: controller.chatList,
+                                builder: (context, value, child) {
+                                  return SingleChildScrollView(
+                                    controller: controller.scrollController,
+                                    child: Column(
+                                      children: [
+                                        ListView.builder(
+                                          itemCount: value.length,
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            final ChatGPTChat chat =
+                                                value[index];
+                                            // システムメッセージは表示しない
+                                            if (chat.message.role ==
+                                                ChatGPTRole.system) {
+                                              return Container();
+                                            }
+
+                                            return MessageTile(
+                                              messageBody: chat.message.content,
+                                              myMessage: chat.message.role ==
+                                                  ChatGPTRole.user,
+                                              postAt: DateFormat('HH:mm')
+                                                  .format(chat.created),
+                                              postAtColor: Colors.black,
+                                            );
+                                          },
+                                        ),
+                                        controller.isThinking
+                                            ? MessageTile(
+                                                actionWidget: SizedBox(
+                                                  width: size.width * 0.5,
+                                                  height: 50,
+                                                  child: const FittedBox(
+                                                    child: Padding(
+                                                      padding:
+                                                          EdgeInsets.all(8.0),
+                                                      child: CustomIndicator(),
+                                                    ),
+                                                  ),
+                                                ),
+                                                myMessage: false,
+                                                postAt: '')
+                                            : Container(),
+                                        const SizedBox(
+                                          height: 200,
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }),
                           )
                         // メッセージがないときはAIからのメッセージを表示
                         : SizedBox(
@@ -152,7 +196,6 @@ class AiTextChatView extends StatelessWidget {
                       buttonSize: 60,
                       buttonColor: ColorName.mainColor,
                       onTap: () async {
-                        // todo: クイックアクションの内容を変更する
                         final action = await showDialog(
                             context: context,
                             builder: (context) {
@@ -186,10 +229,12 @@ class AiTextChatView extends StatelessWidget {
                                       SizedBox(
                                         width: 250,
                                         height: 250,
-                                        // todo: 最終的にクイックアクションの数と内容を変更する
                                         child: ListView.builder(
-                                          itemCount: 5,
+                                          itemCount:
+                                              controller.quickActionList.length,
                                           itemBuilder: (context, index) {
+                                            final String action = controller
+                                                .quickActionList[index];
                                             return ListTile(
                                               contentPadding: EdgeInsets.zero,
                                               title: Container(
@@ -208,16 +253,15 @@ class AiTextChatView extends StatelessWidget {
                                                   alignment:
                                                       Alignment.centerLeft,
                                                   child: CustomText(
-                                                    text: 'クイックアクション$indexについて',
+                                                    text: action,
                                                     fontSize: 14,
                                                   ),
                                                 ),
                                               ),
                                               onTap: () {
-                                                // todo: タップしたときの処理
                                                 Navigator.pop(
                                                   context,
-                                                  'クイックアクション$index',
+                                                  action,
                                                 );
                                               },
                                             );
@@ -232,7 +276,7 @@ class AiTextChatView extends StatelessWidget {
 
                         // ダイアログの返り値を待って処理を行う
                         if (action != null) {
-                          Log.echo(action);
+                          await controller.postMessage(action);
                         }
                       },
                       icon: const Icon(
@@ -257,14 +301,17 @@ class AiTextChatView extends StatelessWidget {
                         ),
                         child: CustomTextfield(
                           hintText: 'メッセージを入力',
-                          controller: controller,
+                          controller: controller.messageController,
                           width: size.width * 0.85,
                           height: 44,
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          // todo: チャットを送信するAPIを叩く
+                        onTap: () async {
+                          // メッセージを送信する際はスクロールを一番下に移動
+                          controller.scrollController.jumpTo(controller
+                              .scrollController.position.maxScrollExtent);
+                          await controller.postMessage();
                         },
                         child: SizedBox(
                           width: size.width * 0.1,
