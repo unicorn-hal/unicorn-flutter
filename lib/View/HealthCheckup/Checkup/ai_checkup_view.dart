@@ -6,8 +6,6 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-import '../../Component/Parts/circle_button.dart';
-
 class AiCheckupView extends StatefulWidget {
   const AiCheckupView({super.key});
 
@@ -64,13 +62,17 @@ class _AiCheckupViewState extends State<AiCheckupView> {
                 child: SizedBox(
                   width: size.width,
                   child: Center(
-                    child: CustomText(
-                      text: controller.aiText,
-                      fontSize: 18,
-                      color: ColorName.textGray,
-                      textOverflow: TextOverflow.ellipsis,
-                      maxLine: 5,
-                    ),
+                    child: ValueListenableBuilder<String>(
+                        valueListenable: controller.aiText,
+                        builder: (context, value, child) {
+                          return CustomText(
+                            text: value,
+                            fontSize: 18,
+                            color: ColorName.textGray,
+                            textOverflow: TextOverflow.ellipsis,
+                            maxLine: 5,
+                          );
+                        }),
                   ),
                 ),
               ),
@@ -91,11 +93,11 @@ class _AiCheckupViewState extends State<AiCheckupView> {
                       glowRadiusFactor: 0.4,
                       child: GestureDetector(
                         // 音声認識の開始と停止
-                        onTapDown: (_) {
+                        onTapDown: (value) {
                           controller.startListening();
                           setState(() {});
                         },
-                        onTapUp: (_) {
+                        onTapUp: (value) {
                           controller.stopListening();
                           setState(() {});
                         },
