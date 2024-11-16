@@ -58,6 +58,11 @@ class FamilyEmailSyncContactController extends ControllerCore {
   /// 同期したメールアドレスを登録する関数
   Future<int> postFamilyEmail(FamilyEmailRequest email) async {
     ProtectorNotifier().enableProtector();
+    if (email.email == '' || (email.firstName == '' || email.lastName == '')) {
+      Fluttertoast.showToast(msg: Strings.FAMILY_EMAIL_VALIDATE_TEXT);
+      ProtectorNotifier().disableProtector();
+      return 400;
+    }
     int res = await _familyEmailApi.postFamilyEmail(body: email);
     if (res != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
