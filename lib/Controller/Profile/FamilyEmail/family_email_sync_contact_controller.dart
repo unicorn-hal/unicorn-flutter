@@ -23,6 +23,10 @@ class FamilyEmailSyncContactController extends ControllerCore {
 
   /// 連絡先を同期させる関数
   Future<List<FamilyEmailRequest>?> getFamilyEmailRequest() async {
+    if (_familyEmailList == null) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      return null;
+    }
     // パーミッションの許可確認は最初に必須
     PermissionHandlerService permissionHandlerService =
         PermissionHandlerService();
@@ -36,10 +40,6 @@ class FamilyEmailSyncContactController extends ControllerCore {
     NativeContactsService nativeContactsService = NativeContactsService();
     List<FamilyEmailRequest> res =
         await nativeContactsService.getFamilyEmailRequests();
-    if (_familyEmailList == null) {
-      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-      return null;
-    }
     List<FamilyEmailRequest> familyEmailRequestList =
         res.where((res) => !checkDuplicate(res)).toList();
     return familyEmailRequestList;
