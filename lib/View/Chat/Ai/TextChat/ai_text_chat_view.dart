@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/Enum/chatgpt_role.dart';
 import 'package:unicorn_flutter/Controller/Chat/Ai/TextChat/ai_text_chat_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_chat.dart';
-import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
