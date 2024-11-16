@@ -60,7 +60,7 @@ class AiCheckupController extends ControllerCore {
   }
 
   // 認識した音声をChatGPTに送信してEnumを返す
-  Future<void> get() async {
+  Future<String?> _getDiseaseEnumString() async {
     final ChatGPTMessage message = ChatGPTMessage(
       role: ChatGPTRole.user,
       content: '''
@@ -82,7 +82,20 @@ class AiCheckupController extends ControllerCore {
     final ChatGPTResponse? response =
         await _chatGPTService.postChatGPTMessage([message]);
 
-    print(response!.toJson());
+    if (response == null) {
+      return null;
+    }
+
+    // 返答が規定のものでなければnullを返す
+    if (response.message.content != 'highFever' &&
+        response.message.content != 'badFeel' &&
+        response.message.content != 'painfulChest' &&
+        response.message.content != 'painfulStomach' &&
+        response.message.content != 'painfulHead') {
+      return null;
+    }
+
+    return response.message.content;
   }
 
   // 音声認識中かを取得
