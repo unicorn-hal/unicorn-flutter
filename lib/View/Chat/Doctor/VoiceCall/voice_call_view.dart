@@ -184,29 +184,76 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      CircleButton(
-                        icon: Icon(
-                            _controller.isMuted ? Icons.mic_off : Icons.mic),
-                        onTap: _onToggleMute,
-                        buttonColor: Colors.white,
-                        buttonSize: 64,
-                        borderColor: Colors.grey,
+                      SizedBox(
+                        width: 64,
+                        child: Column(
+                          children: [
+                            CircleButton(
+                              icon: Icon(_controller.isMuted
+                                  ? Icons.mic_off
+                                  : Icons.mic),
+                              onTap: _onToggleMute,
+                              buttonColor: Colors.white,
+                              buttonSize: 64,
+                              borderColor: Colors.grey,
+                            ),
+                            const SizedBox(
+                              height: 6,
+                            ),
+                            CustomText(
+                              text: _controller.isMuted ? 'ミュート解除' : 'ミュート',
+                              color: Colors.white,
+                              fontSize: 10,
+                            ),
+                          ],
+                        ),
                       ),
-                      CircleButton(
-                        icon: Icon(_controller.isCameraOff
-                            ? Icons.videocam_off
-                            : Icons.videocam),
-                        onTap: _onToggleCamera,
-                        buttonColor: Colors.white,
-                        buttonSize: 64,
-                        borderColor: Colors.grey,
+                      SizedBox(
+                        width: 64,
+                        child: Column(
+                          children: [
+                            CircleButton(
+                              icon: const Icon(Icons.call_end,
+                                  color: Colors.white),
+                              onTap: _onEndCall,
+                              buttonColor: Colors.red,
+                              buttonSize: 64,
+                              borderColor: Colors.grey,
+                            ),
+                            const SizedBox(
+                              height: 6,
+                            ),
+                            const CustomText(
+                              text: '通話終了',
+                              color: Colors.white,
+                              fontSize: 10,
+                            ),
+                          ],
+                        ),
                       ),
-                      CircleButton(
-                        icon: const Icon(Icons.call_end),
-                        onTap: _onEndCall,
-                        buttonColor: Colors.red,
-                        buttonSize: 64,
-                        borderColor: Colors.grey,
+                      SizedBox(
+                        width: 64,
+                        child: Column(
+                          children: [
+                            CircleButton(
+                              icon: Icon(_controller.isCameraOff
+                                  ? Icons.videocam_off
+                                  : Icons.videocam),
+                              onTap: _onToggleCamera,
+                              buttonColor: Colors.white,
+                              buttonSize: 64,
+                              borderColor: Colors.grey,
+                            ),
+                            const SizedBox(
+                              height: 6,
+                            ),
+                            CustomText(
+                              text: _controller.isCameraOff ? 'カメラオン' : 'カメラオフ',
+                              color: Colors.white,
+                              fontSize: 10,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

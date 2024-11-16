@@ -24,6 +24,8 @@ class VoiceCallController extends ControllerCore {
   bool isFrontCamera = true;
   ValueNotifier<bool> isCallConnected = ValueNotifier(false);
   ValueNotifier<String> elapsedTime = ValueNotifier("00:00");
+  ValueNotifier<bool> isMutedNotifier = ValueNotifier(false);
+  ValueNotifier<bool> isCameraOffNotifier = ValueNotifier(false);
 
   Timer? _timer;
   int _secondsElapsed = 0;
