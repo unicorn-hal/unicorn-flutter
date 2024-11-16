@@ -6,7 +6,6 @@ class FamilyEmailRequest {
   final String lastName;
   String? iconImageUrl;
   Uint8List? avatar;
-  final String phoneNumber;
 
   FamilyEmailRequest({
     required this.email,
@@ -14,7 +13,6 @@ class FamilyEmailRequest {
     required this.lastName,
     this.iconImageUrl,
     this.avatar,
-    required this.phoneNumber,
   });
 
   factory FamilyEmailRequest.fromJson(Map<String, dynamic> json) {
@@ -22,7 +20,6 @@ class FamilyEmailRequest {
       email: json['email'],
       firstName: json['firstName'],
       lastName: json['lastName'],
-      phoneNumber: json['phoneNumber'],
     );
     if (json['avatar'] != null) {
       request.avatar = json['avatar'];
@@ -39,7 +36,6 @@ class FamilyEmailRequest {
       'lastName': lastName,
       'iconImageUrl': iconImageUrl,
       'avatar': avatar,
-      'phoneNumber': phoneNumber,
     };
   }
 }
