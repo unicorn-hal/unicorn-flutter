@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
@@ -11,6 +12,11 @@ import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 
 class RegisterUserInfoController extends ControllerCore {
+
+  final TextEditingController phoneNumberTextController = TextEditingController();
+  final TextEditingController emailTextController = TextEditingController();
+  final TextEditingController occupationTextController = TextEditingController();
+
   FirebaseCloudStorageService get _cloudStorageService =>
       FirebaseCloudStorageService();
   ImageUtilsService get _imageUtilsService => ImageUtilsService();
@@ -59,5 +65,22 @@ class RegisterUserInfoController extends ControllerCore {
       await _uploadImage();
     }
     // todo: APIでユーザー情報を登録する処理を追加
+  }
+
+  bool validateField() {
+    List<String> emptyMessageField = [];
+    phoneNumberTextController.text.isEmpty
+        ? emptyMessageField.add("電話番号")
+        : null;
+    emailTextController.text.isEmpty
+        ? emptyMessageField.add("メールアドレス")
+        : null;
+    occupationTextController.text.isEmpty ? emptyMessageField.add("性別") : null;
+
+    if (emptyMessageField.isNotEmpty) {
+      Fluttertoast.showToast(msg: "${emptyMessageField.join(',')}が入力されていません。");
+      return false;
+    }
+    return true;
   }
 }
