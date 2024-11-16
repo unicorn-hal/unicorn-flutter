@@ -20,7 +20,7 @@ class AiTextChatController extends ControllerCore {
   // 変数の定義
   late ValueNotifier<List<ChatGPTChat>> _chatList;
 
-  //　チャット用のコントローラー
+  // チャット用のコントローラー
   final TextEditingController messageController = TextEditingController();
 
   // スクロールコントローラー
