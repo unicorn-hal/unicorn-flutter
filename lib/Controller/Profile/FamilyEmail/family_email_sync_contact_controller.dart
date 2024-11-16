@@ -21,8 +21,6 @@ class FamilyEmailSyncContactController extends ControllerCore {
   @override
   void initialize() {}
 
-  /// 各関数の実装
-
   /// 連絡先を同期させる関数
   Future<List<FamilyEmailRequest>?> getFamilyEmailRequest() async {
     // パーミッションの許可確認は最初に必須
