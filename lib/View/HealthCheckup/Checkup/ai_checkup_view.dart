@@ -1,12 +1,28 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Controller/HealthCheckup/Checkup/ai_checkup_controller.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
-import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-class AiCheckupView extends StatelessWidget {
+import '../../Component/Parts/circle_button.dart';
+
+class AiCheckupView extends StatefulWidget {
   const AiCheckupView({super.key});
+
+  @override
+  State<AiCheckupView> createState() => _AiCheckupViewState();
+}
+
+class _AiCheckupViewState extends State<AiCheckupView> {
+  late AiCheckupController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AiCheckupController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +63,9 @@ class AiCheckupView extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: SizedBox(
                   width: size.width,
-                  child: const Center(
+                  child: Center(
                     child: CustomText(
-                      // todo: 音声認識したテキストを表示する
-                      text:
-                          'あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ',
+                      text: controller.aiText,
                       fontSize: 18,
                       color: ColorName.textGray,
                       textOverflow: TextOverflow.ellipsis,
@@ -65,25 +79,35 @@ class AiCheckupView extends StatelessWidget {
               flex: 2,
               child: Container(
                 width: size.width,
-                decoration: const BoxDecoration(
-                  // todo: できれば音声波形で大きさを変化させたい、無理なら没
-                  color: ColorName.shadowGray,
-                  shape: BoxShape.circle,
-                ),
+                decoration: const BoxDecoration(),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     vertical: 20,
                   ),
                   child: Center(
-                    child: CircleButton(
-                      buttonSize: 80,
-                      buttonColor: Colors.red,
-                      onTap: () {
-                        // todo: 音声認識を開始する処理
-                      },
-                      icon: const Icon(
-                        Icons.mic,
-                        color: Colors.white,
+                    child: AvatarGlow(
+                      animate: controller.isListening,
+                      glowColor: Colors.red,
+                      glowRadiusFactor: 0.4,
+                      child: GestureDetector(
+                        // 音声認識の開始と停止
+                        onTapDown: (_) {
+                          controller.startListening();
+                          setState(() {});
+                        },
+                        onTapUp: (_) {
+                          controller.stopListening();
+                          setState(() {});
+                        },
+                        child: const CircleAvatar(
+                          backgroundColor: Colors.red,
+                          radius: 48,
+                          child: Icon(
+                            Icons.mic,
+                            color: Colors.white,
+                            size: 40,
+                          ),
+                        ),
                       ),
                     ),
                   ),
