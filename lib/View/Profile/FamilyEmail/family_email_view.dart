@@ -12,13 +12,7 @@ import 'package:unicorn_flutter/View/Component/Parts/user_info_tile.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class FamilyEmailView extends StatefulWidget {
-  const FamilyEmailView({
-    super.key,
-    required this.from,
-    this.registeredEmailList,
-  });
-  final String from;
-  final List<FamilyEmail>? registeredEmailList;
+  const FamilyEmailView({super.key});
 
   @override
   State<FamilyEmailView> createState() => _FamilyEmailViewState();

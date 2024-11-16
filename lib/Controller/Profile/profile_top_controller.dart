@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Entity/Profile/profile_detail.dart';
 import 'package:unicorn_flutter/Route/router.dart';
-import 'package:unicorn_flutter/Route/routes.dart';
 
 class ProfileTopController extends ControllerCore {
   /// Serviceのインスタンス化
@@ -31,8 +30,7 @@ class ProfileTopController extends ControllerCore {
       ProfileDetail(
           title: '家族メール',
           icon: Icons.mail,
-          onTap: () => const ProfileFamilyEmailRoute(from: Routes.profile)
-              .push(context)),
+          onTap: () => const ProfileFamilyEmailRoute().push(context)),
       ProfileDetail(
           title: 'セキュリティ',
           icon: Icons.lock,
