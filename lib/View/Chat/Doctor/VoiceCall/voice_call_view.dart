@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -18,8 +20,6 @@ class VoiceCallView extends StatefulWidget {
 
 class _VoiceCallViewState extends State<VoiceCallView> {
   late VoiceCallController _controller;
-  Offset _localVideoOffset = const Offset(20, 100);
-  bool _isSwapped = false;
 
   @override
   void initState() {
@@ -62,17 +62,20 @@ class _VoiceCallViewState extends State<VoiceCallView> {
     );
   }
 
-  void _onDragStart(DragStartDetails details) {}
+  void _onDragStart(DragStartDetails details) {
+    /// tips: ドラッグ開始時の処理が必要な場合はここに記述
+  }
 
   void _onDragUpdate(DragUpdateDetails details) {
     setState(() {
-      _localVideoOffset += details.delta;
+      _controller.localVideoOffset += details.delta;
       final screenHeight = MediaQuery.of(context).size.height;
       const bottomButtonHeight = 130.0;
 
-      if (_localVideoOffset.dy + 150 > screenHeight - bottomButtonHeight) {
-        _localVideoOffset = Offset(
-          _localVideoOffset.dx,
+      if (_controller.localVideoOffset.dy + 150 >
+          screenHeight - bottomButtonHeight) {
+        _controller.localVideoOffset = Offset(
+          _controller.localVideoOffset.dx,
           screenHeight - bottomButtonHeight - 150,
         );
       }
@@ -81,7 +84,7 @@ class _VoiceCallViewState extends State<VoiceCallView> {
 
   void _onToggleSwap() {
     setState(() {
-      _isSwapped = !_isSwapped;
+      _controller.toggleSwap();
     });
   }
 
@@ -89,12 +92,21 @@ class _VoiceCallViewState extends State<VoiceCallView> {
   Widget build(BuildContext context) {
     if (!_controller.isCallConnected.value) {
       return CustomScaffold(
-        appBar: AppBar(
-          title: Text(
-              '${_controller.doctor.firstName} ${_controller.doctor.lastName} さんとの通話中...'),
-        ),
-        body: const Center(
-          child: Text('通話接続を待っています...'),
+        appBar: CustomAppBar(
+            title:
+                '${_controller.doctor.firstName} ${_controller.doctor.lastName} 先生との通話待機中...'),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              LoadingAnimationWidget.fourRotatingDots(
+                color: Colors.amber,
+                size: 54,
+              ),
+              const SizedBox(height: 16),
+              const CustomText(text: '通話接続を待っています...'),
+            ],
+          ),
         ),
       );
     } else {
@@ -109,13 +121,14 @@ class _VoiceCallViewState extends State<VoiceCallView> {
             child: Stack(
               children: [
                 Positioned.fill(
-                  child: _isSwapped
-                      ? RTCVideoView(_controller.localRenderer, mirror: true)
+                  child: _controller.isSwapped
+                      ? RTCVideoView(_controller.localRenderer,
+                          mirror: _controller.isFrontCamera)
                       : RTCVideoView(_controller.remoteRenderer),
                 ),
                 Positioned(
-                  left: _localVideoOffset.dx,
-                  top: _localVideoOffset.dy,
+                  left: _controller.localVideoOffset.dx,
+                  top: _controller.localVideoOffset.dy,
                   width: 100,
                   height: 150,
                   child: GestureDetector(
@@ -135,10 +148,10 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                           ),
                         ],
                       ),
-                      child: _isSwapped
+                      child: _controller.isSwapped
                           ? RTCVideoView(_controller.remoteRenderer)
                           : RTCVideoView(_controller.localRenderer,
-                              mirror: true),
+                              mirror: _controller.isFrontCamera),
                     ),
                   ),
                 ),

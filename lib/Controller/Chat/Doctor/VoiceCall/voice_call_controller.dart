@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
@@ -16,17 +17,20 @@ class VoiceCallController extends ControllerCore {
   late RTCPeerConnection peerConnection;
   late MediaStream localStream;
   late WebSocketChannel channel;
-  final remoteRenderer = RTCVideoRenderer();
-  final localRenderer = RTCVideoRenderer();
-  String userId = UserData().user!.userId; // ユーザー固有のID
+  final RTCVideoRenderer remoteRenderer = RTCVideoRenderer();
+  final RTCVideoRenderer localRenderer = RTCVideoRenderer();
+  final String userId = UserData().user!.userId; // ユーザー固有のID
+
   bool isMuted = false;
   bool isCameraOff = false;
   bool isFrontCamera = true;
-  ValueNotifier<bool> isCallConnected = ValueNotifier(false);
-  ValueNotifier<String> elapsedTime = ValueNotifier("00:00");
-  ValueNotifier<bool> isMutedNotifier = ValueNotifier(false);
-  ValueNotifier<bool> isCameraOffNotifier = ValueNotifier(false);
+  bool isSwapped = false;
+  final ValueNotifier<bool> isCallConnected = ValueNotifier(false);
+  final ValueNotifier<String> elapsedTime = ValueNotifier("00:00");
+  final ValueNotifier<bool> isMutedNotifier = ValueNotifier(false);
+  final ValueNotifier<bool> isCameraOffNotifier = ValueNotifier(false);
 
+  Offset localVideoOffset = const Offset(20, 100);
   Timer? _timer;
   int _secondsElapsed = 0;
 
@@ -232,6 +236,10 @@ class VoiceCallController extends ControllerCore {
       'targetId': calleeUid,
       'userId': userId,
     });
+  }
+
+  void toggleSwap() {
+    isSwapped = !isSwapped;
   }
 
   void toggleMute() {
