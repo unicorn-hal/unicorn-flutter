@@ -12,33 +12,51 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:flutter/foundation.dart';
 
 class VoiceCallController extends ControllerCore {
-  final Doctor doctor;
+  final Doctor _doctor;
   late String calleeUid;
   late RTCPeerConnection peerConnection;
   late MediaStream localStream;
   late WebSocketChannel channel;
-  final RTCVideoRenderer remoteRenderer = RTCVideoRenderer();
-  final RTCVideoRenderer localRenderer = RTCVideoRenderer();
-  final String userId = UserData().user!.userId; // ユーザー固有のID
+  final RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
+  final RTCVideoRenderer _localRenderer = RTCVideoRenderer();
+  final String _userId = UserData().user!.userId; // ユーザー固有のID
 
   bool isMuted = false;
   bool isCameraOff = false;
   bool isFrontCamera = true;
   bool isSwapped = false;
-  final ValueNotifier<bool> isCallConnected = ValueNotifier(false);
-  final ValueNotifier<String> elapsedTime = ValueNotifier("00:00");
-  final ValueNotifier<bool> isMutedNotifier = ValueNotifier(false);
-  final ValueNotifier<bool> isCameraOffNotifier = ValueNotifier(false);
+
+  final ValueNotifier<bool> _isCallConnected = ValueNotifier(false);
+  final ValueNotifier<String> _elapsedTime = ValueNotifier("00:00");
+  final ValueNotifier<bool> _isMutedNotifier = ValueNotifier(false);
+  final ValueNotifier<bool> _isCameraOffNotifier = ValueNotifier(false);
 
   Offset localVideoOffset = const Offset(20, 100);
   Timer? _timer;
   int _secondsElapsed = 0;
 
-  VoiceCallController({required this.doctor});
+  VoiceCallController({required Doctor doctor}) : _doctor = doctor;
+
+  // Getters and Setters
+  Doctor get doctor => _doctor;
+
+  RTCVideoRenderer get remoteRenderer => _remoteRenderer;
+
+  RTCVideoRenderer get localRenderer => _localRenderer;
+
+  String get userId => _userId;
+
+  ValueNotifier<bool> get isCallConnected => _isCallConnected;
+
+  ValueNotifier<String> get elapsedTime => _elapsedTime;
+
+  ValueNotifier<bool> get isMutedNotifier => _isMutedNotifier;
+
+  ValueNotifier<bool> get isCameraOffNotifier => _isCameraOffNotifier;
 
   @override
   void initialize() {
-    calleeUid = doctor.doctorId;
+    calleeUid = _doctor.doctorId;
     _initRenderers();
     _connectToSignalingServer();
     _createPeerConnection().then((pc) {
@@ -46,8 +64,8 @@ class VoiceCallController extends ControllerCore {
       _startLocalStream();
     });
 
-    isCallConnected.addListener(() {
-      if (isCallConnected.value) {
+    _isCallConnected.addListener(() {
+      if (_isCallConnected.value) {
         _startTimer();
       } else {
         _stopTimer();
@@ -67,19 +85,19 @@ class VoiceCallController extends ControllerCore {
       _secondsElapsed++;
       final minutes = (_secondsElapsed ~/ 60).toString().padLeft(2, '0');
       final seconds = (_secondsElapsed % 60).toString().padLeft(2, '0');
-      elapsedTime.value = "$minutes:$seconds";
+      _elapsedTime.value = "$minutes:$seconds";
     });
   }
 
   void _stopTimer() {
     _timer?.cancel();
     _secondsElapsed = 0;
-    elapsedTime.value = "00:00";
+    _elapsedTime.value = "00:00";
   }
 
   Future<void> _initRenderers() async {
-    await localRenderer.initialize();
-    await remoteRenderer.initialize();
+    await _localRenderer.initialize();
+    await _remoteRenderer.initialize();
   }
 
   Future<void> _startLocalStream() async {
@@ -91,7 +109,7 @@ class VoiceCallController extends ControllerCore {
     };
 
     localStream = await navigator.mediaDevices.getUserMedia(mediaConstraints);
-    localRenderer.srcObject = localStream;
+    _localRenderer.srcObject = localStream;
 
     // ビデオトラックを有効化
     localStream.getVideoTracks().forEach((track) {
@@ -118,21 +136,21 @@ class VoiceCallController extends ControllerCore {
         'type': 'candidate',
         'candidate': candidate.toMap(),
         'targetId': calleeUid,
-        'userId': userId,
+        'userId': _userId,
       });
     };
 
     pc.onConnectionState = (RTCPeerConnectionState state) {
       if (state == RTCPeerConnectionState.RTCPeerConnectionStateConnected) {
         // 通話が接続されたらフラグを更新
-        isCallConnected.value = true;
+        _isCallConnected.value = true;
       }
     };
 
     pc.onTrack = (RTCTrackEvent event) {
       if (event.track.kind == 'video') {
         Log.echo('Received remote video track');
-        remoteRenderer.srcObject = event.streams.first;
+        _remoteRenderer.srcObject = event.streams.first;
       }
     };
 
@@ -178,7 +196,7 @@ class VoiceCallController extends ControllerCore {
 
     _sendSignalingMessage({
       'type': 'register',
-      'userId': userId,
+      'userId': _userId,
     });
   }
 
@@ -197,7 +215,7 @@ class VoiceCallController extends ControllerCore {
       'type': 'answer',
       'sdp': answer.sdp,
       'targetId': data['userId'],
-      'userId': userId,
+      'userId': _userId,
     });
   }
 
@@ -234,7 +252,7 @@ class VoiceCallController extends ControllerCore {
       'type': 'offer',
       'sdp': offer.sdp,
       'targetId': calleeUid,
-      'userId': userId,
+      'userId': _userId,
     });
   }
 
@@ -247,6 +265,7 @@ class VoiceCallController extends ControllerCore {
     localStream.getAudioTracks().forEach((track) {
       track.enabled = !isMuted;
     });
+    _isMutedNotifier.value = isMuted;
   }
 
   void toggleCamera() {
@@ -254,6 +273,7 @@ class VoiceCallController extends ControllerCore {
     localStream.getVideoTracks().forEach((track) {
       track.enabled = !isCameraOff;
     });
+    _isCameraOffNotifier.value = isCameraOff;
   }
 
   void endCall() {
@@ -261,9 +281,9 @@ class VoiceCallController extends ControllerCore {
     localStream.getTracks().forEach((track) {
       track.stop();
     });
-    localRenderer.srcObject = null;
-    remoteRenderer.srcObject = null;
-    isCallConnected.value = false;
+    _localRenderer.srcObject = null;
+    _remoteRenderer.srcObject = null;
+    _isCallConnected.value = false;
   }
 
   void dispose() {
@@ -279,10 +299,10 @@ class VoiceCallController extends ControllerCore {
     // ピアコネクションを閉じる
     peerConnection.close();
 
-    localRenderer.dispose();
-    remoteRenderer.dispose();
+    _localRenderer.dispose();
+    _remoteRenderer.dispose();
     peerConnection.close();
     channel.sink.close();
-    isCallConnected.dispose();
+    _isCallConnected.dispose();
   }
 }
