@@ -3,6 +3,7 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
@@ -48,8 +49,17 @@ class _VoiceCallViewState extends State<VoiceCallView> {
   }
 
   void _onEndCall() {
-    _controller.endCall();
-    const HomeRoute().go(context);
+    showDialog(
+      context: context,
+      builder: (context) => CustomDialog(
+        title: '確認',
+        bodyText: '医師との通話を終了しますか？',
+        onTap: () {
+          _controller.endCall();
+          const HomeRoute().go(context);
+        },
+      ),
+    );
   }
 
   void _onDragStart(DragStartDetails details) {}
