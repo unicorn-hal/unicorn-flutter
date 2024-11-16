@@ -5,6 +5,7 @@ import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_cont
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -105,6 +106,14 @@ class _VoiceCallViewState extends State<VoiceCallView> {
               ),
               const SizedBox(height: 16),
               const CustomText(text: '通話接続を待っています...'),
+              const SizedBox(height: 256),
+              CustomButton(
+                text: 'キャンセル',
+                onTap: () {
+                  _controller.endCall();
+                  const HomeRoute().go(context);
+                },
+              ),
             ],
           ),
         ),
