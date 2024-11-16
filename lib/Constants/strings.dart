@@ -60,4 +60,7 @@ class Strings {
 
   // メールアドレスが未登録に表示するテキスト
   static const String FAMILY_EMAIL_NOT_REGISTERED_TEXT = 'メールアドレスが登録されていません';
+
+  // メールアドレス登録時のvalidateに使うテキスト
+  static const String FAMILY_EMAIL_VALIDATE_TEXT = 'メールアドレスおよび姓と名の登録が必要です';
 }
