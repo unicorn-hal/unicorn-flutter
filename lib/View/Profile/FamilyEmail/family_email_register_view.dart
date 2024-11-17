@@ -28,8 +28,6 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
-    String imageUrl = 'aaaaaaaaaaaaaaaaaaaaaa';
-    // todo: todo: controller出来たら削除
     return CustomScaffold(
       isScrollable: true,
       focusNode: focusNode,
@@ -47,7 +45,8 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
                 children: [
                   UserImageCircle(
                     imageSize: 150,
-                    imageUrl: imageUrl,
+                    localImage: controller.image,
+                    // imageUrl: imageUrl,
                   ),
                   Positioned(
                     bottom: 0,
@@ -57,7 +56,10 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
                       borderWidth: 1.0,
                       buttonSize: 35,
                       buttonColor: Colors.white,
-                      onTap: () {},
+                      onTap: () async {
+                        await controller.selectImage();
+                        setState(() {});
+                      },
                       icon: const Icon(Icons.edit),
                     ),
                   ),
@@ -155,7 +157,12 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
               height: 100,
               child: CustomButton(
                 text: '登録する',
-                onTap: () {
+                onTap: () async {
+                  int res = await controller.postFamilyEmail();
+                  if (res != 200) {
+                    return;
+                  }
+                  // ignore: use_build_context_synchronously
                   Navigator.pop(context);
                 },
                 isFilledColor: true,
