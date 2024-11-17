@@ -14,6 +14,7 @@ class FamilyEmailSyncContactController extends ControllerCore {
   FamilyEmailApi get _familyEmailApi => FamilyEmailApi();
   PermissionHandlerService get _permissionHandlerService =>
       PermissionHandlerService();
+  NativeContactsService get _nativeContactsService => NativeContactsService();
 
   /// コンストラクタ
   FamilyEmailSyncContactController(this._familyEmailList);
@@ -37,9 +38,8 @@ class FamilyEmailSyncContactController extends ControllerCore {
       return null;
     }
     // FamilyEmailRequestモデルとして取得できる
-    NativeContactsService nativeContactsService = NativeContactsService();
     List<FamilyEmailRequest> res =
-        await nativeContactsService.getFamilyEmailRequests();
+        await _nativeContactsService.getFamilyEmailRequests();
     List<FamilyEmailRequest> familyEmailRequestList =
         res.where((res) => !checkDuplicate(res)).toList();
     return familyEmailRequestList;
