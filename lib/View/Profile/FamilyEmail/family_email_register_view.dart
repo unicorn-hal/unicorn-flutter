@@ -19,7 +19,6 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  TextEditingController telephoneNumberController = TextEditingController();
   // todo: todo: controller出来たらcontrollerに移動
   final focusNode = FocusNode();
   @override
@@ -51,6 +50,8 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
                     bottom: 0,
                     right: 0,
                     child: CircleButton(
+                      borderColor: Colors.grey,
+                      borderWidth: 1.0,
                       buttonSize: 35,
                       buttonColor: Colors.white,
                       onTap: () {},
@@ -137,35 +138,6 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
                       controller: emailController,
                       height: 50,
                       maxLines: 1,
-                      width: deviceWidth * 0.9,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              width: deviceWidth * 0.9,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(
-                      top: 20,
-                      bottom: 10,
-                      left: 10,
-                    ),
-                    child: CustomText(text: '電話番号'),
-                  ),
-                  SizedBox(
-                    width: deviceWidth * 0.9,
-                    height: 60,
-                    child: CustomTextfield(
-                      hintText: 'ハイフンなしで入力',
-                      controller: telephoneNumberController,
-                      height: 50,
-                      maxLines: 1,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       width: deviceWidth * 0.9,
                     ),
                   ),
