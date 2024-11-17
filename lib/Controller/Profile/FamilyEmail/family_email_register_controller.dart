@@ -78,9 +78,6 @@ class FamilyEmailRegisterController extends ControllerCore {
   }
 
   Future<int> postFamilyEmail() async {
-    if (!validateField()) {
-      return 400;
-    }
     ProtectorNotifier().enableProtector();
     FamilyEmailRequest body = FamilyEmailRequest(
       email: emailController.text,
@@ -88,6 +85,22 @@ class FamilyEmailRegisterController extends ControllerCore {
       lastName: lastNameController.text,
     );
     int res = await _familyEmailApi.postFamilyEmail(body: body);
+    if (res != 200) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+    }
+    ProtectorNotifier().disableProtector();
+    return res;
+  }
+
+  Future<int> putFamilyEmail() async {
+    ProtectorNotifier().enableProtector();
+    FamilyEmailRequest body = FamilyEmailRequest(
+      email: emailController.text,
+      firstName: firstNameController.text,
+      lastName: lastNameController.text,
+    );
+    int res = await _familyEmailApi.putFamilyEmail(
+        body: body, familyEmailId: _familyEmail!.familyEmailId);
     if (res != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }

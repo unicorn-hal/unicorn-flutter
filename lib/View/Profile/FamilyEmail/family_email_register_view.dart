@@ -163,7 +163,12 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
               child: CustomButton(
                 text: '登録する',
                 onTap: () async {
-                  int res = await controller.postFamilyEmail();
+                  if (!controller.validateField()) {
+                    return;
+                  }
+                  int res = widget.familyEmail == null
+                      ? await controller.postFamilyEmail()
+                      : await controller.putFamilyEmail();
                   if (res != 200) {
                     return;
                   }
