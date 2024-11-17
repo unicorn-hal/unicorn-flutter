@@ -9,7 +9,7 @@ class FamilyEmailController extends ControllerCore {
   FamilyEmailApi get _familyEmailApi => FamilyEmailApi();
 
   /// 変数の定義
-  late List<FamilyEmail>? _familyEmailList;
+  List<FamilyEmail>? _familyEmailList;
 
   /// initialize()
   @override

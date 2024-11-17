@@ -12,6 +12,8 @@ import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 class FamilyEmailSyncContactController extends ControllerCore {
   /// Serviceのインスタンス化
   FamilyEmailApi get _familyEmailApi => FamilyEmailApi();
+  PermissionHandlerService get _permissionHandlerService =>
+      PermissionHandlerService();
 
   /// コンストラクタ
   FamilyEmailSyncContactController(this._familyEmailList);
@@ -28,9 +30,7 @@ class FamilyEmailSyncContactController extends ControllerCore {
       return null;
     }
     // パーミッションの許可確認は最初に必須
-    PermissionHandlerService permissionHandlerService =
-        PermissionHandlerService();
-    bool requestPermission = await permissionHandlerService
+    bool requestPermission = await _permissionHandlerService
         .checkAndRequestPermission(Permission.contacts);
     if (requestPermission == false) {
       Fluttertoast.showToast(msg: Strings.REQUEST_PERMISSION_ERROR_TEXT);
@@ -54,15 +54,20 @@ class FamilyEmailSyncContactController extends ControllerCore {
   }
 
   /// 同期したメールアドレスを登録する関数
-  Future<int> postFamilyEmail(FamilyEmailRequest email) async {
+  Future<int> postFamilyEmail(FamilyEmailRequest syncFamilyEmail) async {
     ProtectorNotifier().enableProtector();
-    if (email.email == '' || (email.firstName == '' || email.lastName == '')) {
+    if (syncFamilyEmail.email == '' ||
+        (syncFamilyEmail.firstName == '' || syncFamilyEmail.lastName == '')) {
       Fluttertoast.showToast(msg: Strings.FAMILY_EMAIL_VALIDATE_TEXT);
       ProtectorNotifier().disableProtector();
       return 400;
     }
-    int res = await _familyEmailApi.postFamilyEmail(body: email);
-    if (res != 200) {
+    int res = await _familyEmailApi.postFamilyEmail(body: syncFamilyEmail);
+    if (res == 200) {
+      Fluttertoast.showToast(
+          msg:
+              '${syncFamilyEmail.lastName} ${syncFamilyEmail.firstName}さんを家族メールに設定しました');
+    } else {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
     ProtectorNotifier().disableProtector();

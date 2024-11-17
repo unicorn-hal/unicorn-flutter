@@ -36,7 +36,7 @@ class _FamilyEmailSyncContactViewState
     double deviceWidth = MediaQuery.of(context).size.width;
     return CustomScaffold(
       appBar: CustomAppBar(
-        title: '家族メール設定',
+        title: '連絡先から追加',
         foregroundColor: Colors.white,
         backgroundColor: ColorName.mainColor,
       ),
@@ -113,7 +113,9 @@ class _FamilyEmailSyncContactViewState
                           imageUrl: familyEmailRequestList[index].iconImageUrl,
                           userName:
                               '${familyEmailRequestList[index].lastName} ${familyEmailRequestList[index].firstName}',
-                          description: familyEmailRequestList[index].email,
+                          description: familyEmailRequestList[index].email == ''
+                              ? 'メールアドレス未設定'
+                              : familyEmailRequestList[index].email,
                         ),
                       ),
                     );
