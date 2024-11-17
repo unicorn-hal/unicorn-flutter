@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
 import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
 import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
@@ -24,7 +25,8 @@ import 'package:unicorn_flutter/View/Profile/AppInformation/license_view.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/chronic_disease_view.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/disease_search_view.dart';
 import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_register_view.dart';
-import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_setting_view.dart';
+import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_sync_contact_view.dart';
+import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_view.dart';
 import 'package:unicorn_flutter/View/Profile/Medicine/medicine_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/Medicine/medicine_view.dart';
 import 'package:unicorn_flutter/View/Component/Pages/Register/register_physical_info_view.dart';
@@ -480,7 +482,7 @@ class ProfileFamilyEmailRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const FamilyEmailSettingView();
+      const FamilyEmailView();
 }
 
 class ProfileFamilyEmailRegisterRoute extends GoRouteData {
@@ -492,11 +494,14 @@ class ProfileFamilyEmailRegisterRoute extends GoRouteData {
 }
 
 class ProfileFamilyEmailSyncContactRoute extends GoRouteData {
-  const ProfileFamilyEmailSyncContactRoute();
+  const ProfileFamilyEmailSyncContactRoute({
+    this.$extra,
+  });
+  final List<FamilyEmail>? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const FamilyEmailSettingView();
+      FamilyEmailSyncContactView(familyEmailList: $extra);
 }
 
 class ProfileMedicineRoute extends GoRouteData {

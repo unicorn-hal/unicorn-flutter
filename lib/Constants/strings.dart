@@ -53,4 +53,14 @@ class Strings {
 
   // ローディング中に表示するテキスト
   static const String LOADING_TEXT = 'ロード中';
+
+  // 連絡先へのアクセスが未許可のときに使うテキスト
+  static const String REQUEST_PERMISSION_ERROR_TEXT =
+      '端末設定から連絡先へのアクセスを許可してください';
+
+  // メールアドレスが未登録に表示するテキスト
+  static const String FAMILY_EMAIL_NOT_REGISTERED_TEXT = 'メールアドレスが登録されていません';
+
+  // メールアドレス登録時のvalidateに使うテキスト
+  static const String FAMILY_EMAIL_VALIDATE_TEXT = 'メールアドレスおよび姓と名の登録が必要です';
 }
