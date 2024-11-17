@@ -23,62 +23,75 @@ class _NotificationSettingViewState extends State<NotificationSettingView> {
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
-    return CustomScaffold(
-      body: SizedBox(
-        width: deviceWidth,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.only(
-                left: 5,
-                top: 20,
-                bottom: 20,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) {
+          return;
+        }
+        controller.userNotification == null
+            ? await controller.postUserNotification()
+            : await controller.putUserNotification();
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).pop(true);
+      },
+      child: CustomScaffold(
+        body: SizedBox(
+          width: deviceWidth,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.only(
+                  left: 5,
+                  top: 20,
+                  bottom: 20,
+                ),
+                width: deviceWidth * 0.9,
+                child: const CustomText(text: '通知設定'),
               ),
-              width: deviceWidth * 0.9,
-              child: const CustomText(text: '通知設定'),
-            ),
-            CommonItemTile(
-              title: 'おくすり通知',
-              action: CupertinoSwitch(
-                value: controller.medicineNotificationValue,
-                onChanged: (value) => setState(
-                    () => controller.setMedicineNotificationValue(value)),
+              CommonItemTile(
+                title: 'おくすり通知',
+                action: CupertinoSwitch(
+                  value: controller.medicineNotificationValue,
+                  onChanged: (value) => setState(
+                      () => controller.setMedicineNotificationValue(value)),
+                ),
+                onTap: () {
+                  controller.setMedicineNotificationValue(
+                      !controller.medicineNotificationValue);
+                  setState(() {});
+                },
               ),
-              onTap: () {
-                controller.setMedicineNotificationValue(
-                    !controller.medicineNotificationValue);
-                setState(() {});
-              },
-            ),
-            CommonItemTile(
-              title: '定時検診',
-              action: CupertinoSwitch(
-                value: controller.healthCheckupValue,
-                onChanged: (value) =>
-                    setState(() => controller.setHealthCheckupValue(value)),
+              CommonItemTile(
+                title: '定時検診',
+                action: CupertinoSwitch(
+                  value: controller.healthCheckupValue,
+                  onChanged: (value) =>
+                      setState(() => controller.setHealthCheckupValue(value)),
+                ),
+                onTap: () {
+                  controller
+                      .setHealthCheckupValue(!controller.healthCheckupValue);
+                  setState(() {});
+                },
               ),
-              onTap: () {
-                controller
-                    .setHealthCheckupValue(!controller.healthCheckupValue);
-                setState(() {});
-              },
-            ),
-            CommonItemTile(
-              title: '新着病院お知らせ',
-              action: CupertinoSwitch(
-                value: controller.hospitalNotificationValue,
-                onChanged: (value) => setState(
-                    () => controller.setHospitalNotificationValue(value)),
+              CommonItemTile(
+                title: '新着病院お知らせ',
+                action: CupertinoSwitch(
+                  value: controller.hospitalNotificationValue,
+                  onChanged: (value) => setState(
+                      () => controller.setHospitalNotificationValue(value)),
+                ),
+                onTap: () {
+                  controller.setHospitalNotificationValue(
+                      !controller.hospitalNotificationValue);
+                  setState(() {});
+                },
               ),
-              onTap: () {
-                controller.setHospitalNotificationValue(
-                    !controller.hospitalNotificationValue);
-                setState(() {});
-              },
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
