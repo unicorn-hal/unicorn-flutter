@@ -122,6 +122,17 @@ class FamilyEmailRegisterController extends ControllerCore {
     return res;
   }
 
+  /// メールアドレスを削除する関数
+  Future<void> deleteFamilyEmail() async {
+    ProtectorNotifier().enableProtector();
+    int res =
+        await _familyEmailApi.deleteFamilyEmail(familyEmailId: _familyEmailId);
+    if (res != 204) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+    }
+    ProtectorNotifier().disableProtector();
+  }
+
   /// TextEditingControllerが空文字でないかチェックする関数
   bool validateField() {
     if ((lastNameController.text == '') ||

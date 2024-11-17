@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/FamilyEmail/family_email_register_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class FamilyEmailRegisterView extends StatefulWidget {
   const FamilyEmailRegisterView({
@@ -36,6 +40,36 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
     return CustomScaffold(
       isScrollable: true,
       focusNode: focusNode,
+      appBar: CustomAppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: ColorName.mainColor,
+        actions: widget.familyEmail != null
+            ? [
+                IconButton(
+                  onPressed: () {
+                    showDialog<void>(
+                      context: context,
+                      builder: (_) {
+                        return CustomDialog(
+                          title: Strings.DIALOG_TITLE_CAVEAT,
+                          bodyText: Strings.DIALOG_BODY_TEXT_DELETE,
+                          onTap: () async {
+                            await controller.deleteFamilyEmail();
+                            // ignore: use_build_context_synchronously
+                            Navigator.pop(context);
+                          },
+                        );
+                      },
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Colors.white,
+                  ),
+                ),
+              ]
+            : null,
+      ),
       body: SizedBox(
         width: deviceWidth,
         height: deviceHeight,
