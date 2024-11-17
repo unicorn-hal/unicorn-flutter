@@ -32,6 +32,8 @@ class FamilyEmailRegisterController extends ControllerCore {
   TextEditingController emailController = TextEditingController();
   File? _imageFile;
   Image? _image;
+  String? _iconImageUrl;
+  late String _familyEmailId;
 
   /// initialize()
   @override
@@ -40,6 +42,8 @@ class FamilyEmailRegisterController extends ControllerCore {
       lastNameController.text = _familyEmail.lastName;
       firstNameController.text = _familyEmail.firstName;
       emailController.text = _familyEmail.email;
+      _iconImageUrl = _familyEmail.iconImageUrl;
+      _familyEmailId = _familyEmail.familyEmailId;
     }
   }
 
@@ -66,8 +70,9 @@ class FamilyEmailRegisterController extends ControllerCore {
         return;
       }
       ProtectorNotifier().enableProtector();
-      await _cloudStorageService.uploadUserAvatar(
+      _iconImageUrl = await _cloudStorageService.uploadFamilyEmailAvatar(
         UserData().user!.userId,
+        _familyEmailId,
         _imageFile!,
       );
     } catch (e) {
@@ -77,13 +82,19 @@ class FamilyEmailRegisterController extends ControllerCore {
     }
   }
 
+  /// メールアドレスを登録する関数
   Future<int> postFamilyEmail() async {
     ProtectorNotifier().enableProtector();
+    // todo: ここにuuidを取得する処理
+    _familyEmailId = 'const Uuid().v4()';
+    await _uploadImage();
     FamilyEmailRequest body = FamilyEmailRequest(
       email: emailController.text,
       firstName: firstNameController.text,
       lastName: lastNameController.text,
+      iconImageUrl: _iconImageUrl,
     );
+    // todo: postFamilyEmail()の引数にfamilyEmailIdが追加される予定
     int res = await _familyEmailApi.postFamilyEmail(body: body);
     if (res != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
@@ -92,15 +103,18 @@ class FamilyEmailRegisterController extends ControllerCore {
     return res;
   }
 
+  /// メールアドレスを更新する関数
   Future<int> putFamilyEmail() async {
     ProtectorNotifier().enableProtector();
+    await _uploadImage();
     FamilyEmailRequest body = FamilyEmailRequest(
       email: emailController.text,
       firstName: firstNameController.text,
       lastName: lastNameController.text,
+      iconImageUrl: _iconImageUrl,
     );
     int res = await _familyEmailApi.putFamilyEmail(
-        body: body, familyEmailId: _familyEmail!.familyEmailId);
+        body: body, familyEmailId: _familyEmailId);
     if (res != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
