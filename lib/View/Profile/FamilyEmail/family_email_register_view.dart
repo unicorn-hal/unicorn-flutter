@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:unicorn_flutter/Controller/Profile/FamilyEmail/family_email_register_controller.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -16,11 +16,14 @@ class FamilyEmailRegisterView extends StatefulWidget {
 }
 
 class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  // todo: todo: controller出来たらcontrollerに移動
+  late FamilyEmailRegisterController controller;
   final focusNode = FocusNode();
+  @override
+  void initState() {
+    super.initState();
+    controller = FamilyEmailRegisterController();
+  }
+
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -82,7 +85,7 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
                         height: 60,
                         child: CustomTextfield(
                           hintText: '山田',
-                          controller: lastNameController,
+                          controller: controller.lastNameController,
                           height: 50,
                           maxLines: 1,
                           width: deviceWidth * 0.43,
@@ -106,7 +109,7 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
                         height: 60,
                         child: CustomTextfield(
                           hintText: '太郎',
-                          controller: firstNameController,
+                          controller: controller.firstNameController,
                           height: 50,
                           maxLines: 1,
                           width: deviceWidth * 0.43,
@@ -135,7 +138,7 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
                     height: 60,
                     child: CustomTextfield(
                       hintText: 'sample@sample.com',
-                      controller: emailController,
+                      controller: controller.emailController,
                       height: 50,
                       maxLines: 1,
                       width: deviceWidth * 0.9,
