@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Profile/FamilyEmail/family_email_register_controller.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -8,7 +9,11 @@ import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 
 class FamilyEmailRegisterView extends StatefulWidget {
-  const FamilyEmailRegisterView({super.key});
+  const FamilyEmailRegisterView({
+    super.key,
+    this.familyEmail,
+  });
+  final FamilyEmail? familyEmail;
 
   @override
   State<FamilyEmailRegisterView> createState() =>
@@ -21,7 +26,7 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
   @override
   void initState() {
     super.initState();
-    controller = FamilyEmailRegisterController();
+    controller = FamilyEmailRegisterController(widget.familyEmail);
   }
 
   @override

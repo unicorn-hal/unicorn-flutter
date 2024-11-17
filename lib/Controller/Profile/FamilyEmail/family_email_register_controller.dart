@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_request.dart';
 import 'package:unicorn_flutter/Service/Api/FamilyEmail/family_email_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudStorage/cloud_storage_service.dart';
@@ -22,7 +23,8 @@ class FamilyEmailRegisterController extends ControllerCore {
   FamilyEmailApi get _familyEmailApi => FamilyEmailApi();
 
   /// コンストラクタ
-  FamilyEmailRegisterController();
+  FamilyEmailRegisterController(this._familyEmail);
+  final FamilyEmail? _familyEmail;
 
   /// 変数の定義
   TextEditingController lastNameController = TextEditingController();
@@ -33,7 +35,13 @@ class FamilyEmailRegisterController extends ControllerCore {
 
   /// initialize()
   @override
-  void initialize() {}
+  void initialize() {
+    if (_familyEmail != null) {
+      lastNameController.text = _familyEmail.lastName;
+      firstNameController.text = _familyEmail.firstName;
+      emailController.text = _familyEmail.email;
+    }
+  }
 
   /// 各関数の実装
   Image get image => _image ?? Assets.images.icons.defaultUserIcon.image();
