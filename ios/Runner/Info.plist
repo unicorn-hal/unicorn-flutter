@@ -42,6 +42,10 @@
 	<string>ユーザーがパーソナライズされた情報を取得するために位置情報を使用することを許可します。</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>ユーザーが写真にアクセスするために使用されます。</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>アプリの音声認識に利用します。</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>アプリの音声認識に利用します。</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

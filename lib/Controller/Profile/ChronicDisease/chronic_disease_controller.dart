@@ -25,7 +25,7 @@ class ChronicDiseaseController extends ControllerCore {
     int res = await _chronicDiseaseApi.deleteChronicDisease(
         chronicDiseaseId: chronicDiseaseId);
     if (res != 204) {
-      Fluttertoast.showToast(msg: Strings.MEDICINE_ERROR_RESPONSE_TEXT);
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
   }
 }
