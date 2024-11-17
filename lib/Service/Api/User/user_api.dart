@@ -30,7 +30,6 @@ class UserApi extends ApiCore with Endpoint {
     try {
       useParameter(parameter: '/$userId/health_checkups');
       final ApiResponse response = await get();
-      print(response.data);
       return (response.data['data'] as List)
           .map((e) => HealthCheckup.fromJson(e))
           .toList();

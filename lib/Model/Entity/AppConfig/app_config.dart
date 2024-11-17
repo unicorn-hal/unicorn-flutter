@@ -1,6 +1,8 @@
+import 'package:unicorn_flutter/Constants/Enum/stun_server_enum.dart';
+
 class AppConfig {
   final bool available;
-  final String stunServerType;
+  final STUNServerEnum stunServerType;
 
   AppConfig({
     required this.available,
@@ -10,14 +12,7 @@ class AppConfig {
   factory AppConfig.fromJson(Map<String, dynamic> json) {
     return AppConfig(
       available: json['available'],
-      stunServerType: json['stunServerType'],
+      stunServerType: STUNServerType.fromString(json['stunServerType']),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'available': available,
-      'stunServerType': stunServerType,
-    };
   }
 }
