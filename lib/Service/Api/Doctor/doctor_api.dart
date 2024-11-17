@@ -1,3 +1,4 @@
+import 'package:unicorn_flutter/Model/Entity/Call/call.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Model/Entity/api_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
@@ -51,6 +52,21 @@ class DoctorApi extends ApiCore with Endpoint {
       useParameter(parameter: '/$doctorId');
       final ApiResponse response = await get();
       return Doctor.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// GET
+  /// 医師の通話予約一覧取得
+  /// [doctorId] 医師ID
+  Future<List<Call>?> getDoctorCallList({required String doctorId}) async {
+    try {
+      useParameter(parameter: '/$doctorId/calls');
+      final ApiResponse response = await get();
+      return (response.data['data'] as List)
+          .map((e) => Call.fromJson(e))
+          .toList();
     } catch (e) {
       return null;
     }
