@@ -89,7 +89,6 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                           UserImageCircle(
                             imageSize: 200,
                             localImage: _controller.image,
-                            // todo: Controllerができ次第、処理分岐させます。
                           ),
                           Align(
                             alignment: Alignment.bottomRight,
@@ -113,18 +112,18 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                 const Padding(
                   padding: EdgeInsets.only(bottom: 10),
                   child: CustomText(
-                    text: '電話番号（ハイフンあり）',
+                    text: '電話番号（ハイフンなし）',
                     fontSize: 20,
                   ),
                 ),
                 CustomTextfield(
-                  hintText: '0120-999-9999',
+                  hintText: '01201234567',
                   width: deviceWidth * 0.85,
                   height: 44,
                   keyboardType: TextInputType.phone,
                   controller: _controller.phoneNumberTextController,
                   maxLines: 1,
-                  maxLength: 14,
+                  maxLength: 12,
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 20, bottom: 10),
@@ -158,8 +157,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                 ),
                 GestureDetector(
                   onTap: () async {
-                    await _controller.uploadImageSubmit();
-                    UserInfo? userInfo = _controller.submit();
+                    UserInfo? userInfo = await _controller.submit();
                     if (userInfo == null) {
                       return;
                     }
