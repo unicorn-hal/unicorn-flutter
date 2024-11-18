@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:unicorn_flutter/Constants/regexp_constants.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
@@ -142,6 +143,10 @@ class FamilyEmailRegisterController extends ControllerCore {
         (firstNameController.text == '') ||
         (emailController.text == '')) {
       Fluttertoast.showToast(msg: Strings.FAMILY_EMAIL_VALIDATE_TEXT);
+      return false;
+    }
+    if (!RegExpConstants.emailRegExp.hasMatch(emailController.text)) {
+      Fluttertoast.showToast(msg: 'メールアドレスの形式が正しくありません');
       return false;
     }
     return true;

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:unicorn_flutter/Constants/regexp_constants.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
@@ -69,13 +70,16 @@ class FamilyEmailSyncContactController extends ControllerCore {
 
   /// 同期したメールアドレスを登録する関数
   Future<int> postFamilyEmail(FamilyEmailPostRequest syncFamilyEmail) async {
-    ProtectorNotifier().enableProtector();
     if (syncFamilyEmail.email == '' ||
         (syncFamilyEmail.firstName == '' || syncFamilyEmail.lastName == '')) {
       Fluttertoast.showToast(msg: Strings.FAMILY_EMAIL_VALIDATE_TEXT);
-      ProtectorNotifier().disableProtector();
       return 400;
     }
+    if (!RegExpConstants.emailRegExp.hasMatch(syncFamilyEmail.email)) {
+      Fluttertoast.showToast(msg: 'メールアドレスの形式が正しくありません');
+      return 400;
+    }
+    ProtectorNotifier().enableProtector();
     String? iconImageUrl;
     if (syncFamilyEmail.avatar != null && syncFamilyEmail.avatar!.isNotEmpty) {
       String fileName = syncFamilyEmail.familyEmailId;
