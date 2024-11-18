@@ -88,7 +88,7 @@ class RegisterUserInfoController extends ControllerCore {
         ? emptyMessageField.add("電話番号")
         : null;
     emailTextController.text.isEmpty ? emptyMessageField.add("メールアドレス") : null;
-    occupationTextController.text.isEmpty ? emptyMessageField.add("性別") : null;
+    occupationTextController.text.isEmpty ? emptyMessageField.add("職業") : null;
 
     if (emptyMessageField.isNotEmpty) {
       Fluttertoast.showToast(msg: "${emptyMessageField.join(',')}が入力されていません。");
