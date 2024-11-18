@@ -85,7 +85,7 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
                   UserImageCircle(
                     imageSize: 150,
                     localImage: controller.image,
-                    // imageUrl: imageUrl,
+                    imageUrl: controller.iconImageUrl,
                   ),
                   Positioned(
                     bottom: 0,

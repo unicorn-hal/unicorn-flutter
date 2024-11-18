@@ -50,9 +50,12 @@ class FamilyEmailRegisterController extends ControllerCore {
   }
 
   /// 各関数の実装
-  Image get image => _image ?? Assets.images.icons.defaultUserIcon.image();
+  Image? get image => (_image == null) && (_iconImageUrl == null)
+      ? Assets.images.icons.defaultUserIcon.image()
+      : _image;
+  String? get iconImageUrl => _iconImageUrl;
 
-  /// 端末のギャラリーから画像を選択する
+  /// 端末のギャラリーから画像を選択する関数
   Future<void> selectImage() async {
     try {
       _imageFile = await _imageUtilsService.getImageFile(ImageSource.gallery);
@@ -65,7 +68,7 @@ class FamilyEmailRegisterController extends ControllerCore {
     }
   }
 
-  /// 画像をCloud Storageにアップロードする
+  /// 画像をCloud Storageにアップロードする関数
   Future<void> _uploadImage() async {
     try {
       if (_imageFile == null) {
