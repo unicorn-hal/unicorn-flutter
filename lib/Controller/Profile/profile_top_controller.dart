@@ -56,7 +56,7 @@ class ProfileTopController extends ControllerCore {
       ProfileDetail(
           title: 'ユーザー設定',
           icon: Icons.manage_accounts,
-          onTap: () => const ProfileRegisterUserInfoRoute().push(context)),
+          onTap: () => ProfileRegisterUserInfoRoute().push(context)),
     ];
   }
 
