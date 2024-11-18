@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -63,6 +62,7 @@ class RegisterUserInfoController extends ControllerCore {
     } finally {
       ProtectorNotifier().disableProtector();
     }
+    return null;
   }
 
   Future<UserInfo?> submit() async {
