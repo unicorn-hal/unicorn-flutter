@@ -1,14 +1,12 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_physical_info_controller.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
-import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
-import 'package:unicorn_flutter/Model/Entity/User/user.dart';
-import 'package:unicorn_flutter/Model/Entity/address_info.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_info.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudStorage/cloud_storage_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/Service/Package/ImageUtils/image_utils_service.dart';
@@ -21,15 +19,6 @@ class RegisterUserInfoController extends ControllerCore {
   final TextEditingController emailTextController = TextEditingController();
   final TextEditingController occupationTextController =
       TextEditingController();
-
-  final RegisterPhysicalInfoController registerPhysicalInfoController =
-      RegisterPhysicalInfoController();
-  final RegisterAddressInfoController registerAddressInfoController =
-      RegisterAddressInfoController();
-
-  // RegisterUserInfoController(
-  //     {required this.registerPhysicalInfoController,
-  //     required this.registerAddressInfoController});
 
   FirebaseCloudStorageService get _cloudStorageService =>
       FirebaseCloudStorageService();
@@ -74,34 +63,23 @@ class RegisterUserInfoController extends ControllerCore {
     }
   }
 
-  User submit() {
+  Future<void> uploadImageSubmit() async {
     if (_imageFile != null) {
-      _uploadImage();
+      await _uploadImage();
     }
+  }
 
-    final AddressInfo? addressInfoSubmitValue =
-        registerAddressInfoController.submit();
-    final PhysicalInfo? physicalInfoSubmitValue =
-        registerPhysicalInfoController.submit();
-
-    User? user = User(
-      userId: '',
-      firstName: physicalInfoSubmitValue!.firstName,
-      lastName: physicalInfoSubmitValue.lastName,
-      email: emailTextController.text.trim(),
-      gender: physicalInfoSubmitValue.gender,
-      birthDate: physicalInfoSubmitValue.birthDate,
-      address:
-          "${addressInfoSubmitValue!.prefecture} ${addressInfoSubmitValue.city} ${addressInfoSubmitValue.town}",
-      postalCode: addressInfoSubmitValue.postalCode,
-      phoneNumber: phoneNumberTextController.text.trim(),
-      iconImageUrl: '',
-      bodyHeight: physicalInfoSubmitValue.bodyHeight,
-      bodyWeight: physicalInfoSubmitValue.bodyWeight,
-      occupation: occupationTextController.text.trim(),
+  UserInfo? submit() {
+    if (validateField() == false) {
+      return null;
+    }
+    UserInfo userInfo = UserInfo(
+      image: image,
+      phoneNumber: phoneNumberTextController.text,
+      email: emailTextController.text,
+      occupation: occupationTextController.text,
     );
-
-    return user;
+    return userInfo;
   }
 
   bool validateField() {

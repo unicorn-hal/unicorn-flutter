@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_user_info_controller.dart';
+import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_info.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
@@ -8,7 +10,8 @@ import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class RegisterUserInfoView extends StatefulWidget {
-  const RegisterUserInfoView({super.key});
+  const RegisterUserInfoView({super.key, this.addressInfo});
+  final AddressInfo? addressInfo;
 
   @override
   State<RegisterUserInfoView> createState() => _RegisterUserInfoViewState();
@@ -154,10 +157,14 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                   maxLength: 15,
                 ),
                 GestureDetector(
-                  onTap: () async {
-                    await _controller.submit();
+                  onTap: () {
+                    _controller.uploadImageSubmit();
+                    UserInfo? userInfo = _controller.submit();
+                    if (userInfo == null) {
+                      return;
+                    }
+                    // todo: 次のViewができ次第ルーティングします。
                   },
-                  // todo: 次のViewができ次第ルーティングします。
                   child: Align(
                     alignment: Alignment.center,
                     child: Padding(
