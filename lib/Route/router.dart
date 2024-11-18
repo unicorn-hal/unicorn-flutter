@@ -285,7 +285,7 @@ class RegisterUserInfoRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const RegisterUserInfoView();
+      RegisterUserInfoView();
 }
 
 /////////////////////////////////  Root  //////////////////////////////
@@ -440,7 +440,9 @@ class ProfileRegisterUserInfoRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      RegisterUserInfoView(addressInfo: $extra);
+      RegisterUserInfoView(
+        addressInfo: $extra,
+      );
 }
 
 class ProfileLocalAuthRoute extends GoRouteData {
