@@ -1,10 +1,17 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_post_request.dart';
 import 'package:unicorn_flutter/Service/Api/FamilyEmail/family_email_api.dart';
+import 'package:unicorn_flutter/Service/Firebase/CloudStorage/cloud_storage_service.dart';
+import 'package:unicorn_flutter/Service/Package/ImageUtils/image_utils_service.dart';
 import 'package:unicorn_flutter/Service/Package/NativeContacts/native_contacts_service.dart';
 import 'package:unicorn_flutter/Service/Package/PermissionHandler/permission_handler_service.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
@@ -15,6 +22,9 @@ class FamilyEmailSyncContactController extends ControllerCore {
   PermissionHandlerService get _permissionHandlerService =>
       PermissionHandlerService();
   NativeContactsService get _nativeContactsService => NativeContactsService();
+  ImageUtilsService get _imageUtilsService => ImageUtilsService();
+  FirebaseCloudStorageService get _cloudStorageService =>
+      FirebaseCloudStorageService();
 
   /// コンストラクタ
   FamilyEmailSyncContactController(this._familyEmailList);
@@ -23,6 +33,10 @@ class FamilyEmailSyncContactController extends ControllerCore {
   /// initialize()
   @override
   void initialize() {}
+
+  Image uint8ListToImage(Uint8List? avatar) {
+    return _imageUtilsService.uint8ListToImage(avatar!);
+  }
 
   /// 連絡先を同期させる関数
   Future<List<FamilyEmailPostRequest>?> getFamilyEmailRequest() async {
@@ -62,8 +76,25 @@ class FamilyEmailSyncContactController extends ControllerCore {
       ProtectorNotifier().disableProtector();
       return 400;
     }
+    String? iconImageUrl;
+    if (syncFamilyEmail.avatar!.isNotEmpty) {
+      File imageFile =
+          _imageUtilsService.uint8listToFile(syncFamilyEmail.avatar!);
+      iconImageUrl = await _cloudStorageService.uploadFamilyEmailAvatar(
+        UserData().user!.userId,
+        syncFamilyEmail.familyEmailId,
+        imageFile,
+      );
+    }
+    FamilyEmailPostRequest body = FamilyEmailPostRequest(
+      iconImageUrl: iconImageUrl,
+      familyEmailId: syncFamilyEmail.familyEmailId,
+      firstName: syncFamilyEmail.firstName,
+      lastName: syncFamilyEmail.lastName,
+      email: syncFamilyEmail.email,
+    );
     int res = await _familyEmailApi.postFamilyEmail(
-      body: syncFamilyEmail,
+      body: body,
     );
     if (res == 200) {
       Fluttertoast.showToast(

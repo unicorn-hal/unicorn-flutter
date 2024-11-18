@@ -3,6 +3,7 @@ import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/FamilyEmail/family_email_sync_contact_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_post_request.dart';
+import 'package:unicorn_flutter/Service/Package/ImageUtils/image_utils_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -110,7 +111,11 @@ class _FamilyEmailSyncContactViewState
                             await controller.updateFamilyEmail();
                             setState(() {});
                           },
-                          imageUrl: familyEmailRequestList[index].iconImageUrl,
+                          localImage:
+                              familyEmailRequestList[index].avatar!.isNotEmpty
+                                  ? controller.uint8ListToImage(
+                                      familyEmailRequestList[index].avatar!)
+                                  : null,
                           userName:
                               '${familyEmailRequestList[index].lastName} ${familyEmailRequestList[index].firstName}',
                           description: familyEmailRequestList[index].email == ''
