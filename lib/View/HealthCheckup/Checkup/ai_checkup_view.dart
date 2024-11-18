@@ -20,7 +20,7 @@ class _AiCheckupViewState extends State<AiCheckupView> {
   @override
   void initState() {
     super.initState();
-    controller = AiCheckupController();
+    controller = AiCheckupController(context);
   }
 
   @override
@@ -124,7 +124,8 @@ class _AiCheckupViewState extends State<AiCheckupView> {
                                   child: CustomButton(
                                     text: '検診結果へ',
                                     onTap: () {
-                                      controller.textValidate();
+                                      //controller.textValidate();
+                                      controller.navigateToCheckupResult();
                                     },
                                     isFilledColor: true,
                                   ),

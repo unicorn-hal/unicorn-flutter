@@ -5,11 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Constants/Enum/chatgpt_role.dart';
+import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_chat.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_message.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_response.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/ChatGPT/chatgpt_service.dart';
 import 'package:unicorn_flutter/Service/Package/SpeechToText/speech_to_text_service.dart';
+import '../../../View/bottom_navigation_bar_view.dart';
 import '../../Core/controller_core.dart';
 
 class AiCheckupController extends ControllerCore {
@@ -17,7 +20,9 @@ class AiCheckupController extends ControllerCore {
   ChatGPTService get _chatGPTService => ChatGPTService();
 
   // コンストラクタ
-  AiCheckupController();
+  AiCheckupController(this.context);
+
+  BuildContext context;
 
   // 変数の定義
   late ValueNotifier<String> _aiText;
@@ -27,8 +32,6 @@ class AiCheckupController extends ControllerCore {
   // オーディオを初期化
   final _audioPlayer = AudioPlayer();
 
-  late String diseaseType;
-
   late bool finish;
 
   @override
@@ -36,7 +39,6 @@ class AiCheckupController extends ControllerCore {
     _aiText = ValueNotifier<String>(_aiTextDefault);
     _isListening = false;
     finish = false;
-    diseaseType = '';
     await _speechToTextService.initialize();
   }
 
@@ -68,7 +70,22 @@ class AiCheckupController extends ControllerCore {
     finish = true;
   }
 
-  // 認識した音声をChatGPTに送信してEnumを返す
+  /// 検診結果へ必要な情報をまとめて画面遷移する
+  Future<void> navigateToCheckupResult() async {
+    ProtectorNotifier().enableProtector();
+    String? result = await getDiseaseEnumString();
+    if (result == null) {
+      Fluttertoast.showToast(msg: '適切な回答をしてください');
+      return;
+    }
+
+    ProtectorNotifier()..disableProtector();
+
+    CheckupProgressRoute($extra: ProgressViewEnum.bodyTemperature)
+        .push(context);
+  }
+
+  /// 認識した音声をChatGPTに送信してEnumを返す
   Future<String?> getDiseaseEnumString() async {
     final ChatGPTMessage message = ChatGPTMessage(
       role: ChatGPTRole.user,
@@ -103,8 +120,6 @@ class AiCheckupController extends ControllerCore {
         response.message.content != 'painfulHead') {
       return null;
     }
-
-    diseaseType = response.message.content;
 
     return response.message.content;
   }
