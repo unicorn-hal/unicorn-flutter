@@ -157,8 +157,8 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                   maxLength: 15,
                 ),
                 GestureDetector(
-                  onTap: () {
-                    _controller.uploadImageSubmit();
+                  onTap: () async {
+                    await _controller.uploadImageSubmit();
                     UserInfo? userInfo = _controller.submit();
                     if (userInfo == null) {
                       return;
