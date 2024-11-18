@@ -146,7 +146,7 @@ class FamilyEmailRegisterController extends ControllerCore {
       return false;
     }
     if (!RegExpConstants.emailRegExp.hasMatch(emailController.text)) {
-      Fluttertoast.showToast(msg: Strings.FAMILY_EMAIL_VALIDATE_fORMAT_TEXT);
+      Fluttertoast.showToast(msg: Strings.FAMILY_EMAIL_VALIDATE_FORMAT_TEXT);
       return false;
     }
     return true;

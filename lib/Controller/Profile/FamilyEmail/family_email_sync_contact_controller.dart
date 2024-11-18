@@ -78,7 +78,7 @@ class FamilyEmailSyncContactController extends ControllerCore {
       return 400;
     }
     if (!RegExpConstants.emailRegExp.hasMatch(syncFamilyEmail.email)) {
-      Fluttertoast.showToast(msg: Strings.FAMILY_EMAIL_VALIDATE_fORMAT_TEXT);
+      Fluttertoast.showToast(msg: Strings.FAMILY_EMAIL_VALIDATE_FORMAT_TEXT);
       return 400;
     }
     ProtectorNotifier().enableProtector();
