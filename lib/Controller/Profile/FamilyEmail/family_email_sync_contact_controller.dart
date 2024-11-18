@@ -77,9 +77,10 @@ class FamilyEmailSyncContactController extends ControllerCore {
       return 400;
     }
     String? iconImageUrl;
-    if (syncFamilyEmail.avatar!.isNotEmpty) {
-      File imageFile =
-          _imageUtilsService.uint8listToFile(syncFamilyEmail.avatar!);
+    if (syncFamilyEmail.avatar != null && syncFamilyEmail.avatar!.isNotEmpty) {
+      String fileName = syncFamilyEmail.familyEmailId;
+      File imageFile = await _imageUtilsService.uint8listToFile(
+          syncFamilyEmail.avatar!, fileName);
       iconImageUrl = await _cloudStorageService.uploadFamilyEmailAvatar(
         UserData().user!.userId,
         syncFamilyEmail.familyEmailId,
