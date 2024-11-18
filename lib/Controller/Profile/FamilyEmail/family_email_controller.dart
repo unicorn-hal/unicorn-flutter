@@ -24,6 +24,8 @@ class FamilyEmailController extends ControllerCore {
     if (_familyEmailList == null) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
+    _familyEmailList!.sort((a, b) =>
+        (a.lastName + a.firstName).compareTo(b.lastName + b.firstName));
     return _familyEmailList;
   }
 }

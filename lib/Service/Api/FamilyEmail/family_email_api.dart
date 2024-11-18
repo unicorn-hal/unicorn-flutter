@@ -1,5 +1,6 @@
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
-import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_request.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_post_request.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_put_request.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
 import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 
@@ -22,7 +23,7 @@ class FamilyEmailApi extends ApiCore with Endpoint {
   /// POST
   /// 家族メールアドレス登録
   /// [body] FamilyEmailRequest
-  Future<int> postFamilyEmail({required FamilyEmailRequest body}) async {
+  Future<int> postFamilyEmail({required FamilyEmailPostRequest body}) async {
     try {
       final response = await post(body.toJson());
       return response.statusCode;
@@ -36,7 +37,7 @@ class FamilyEmailApi extends ApiCore with Endpoint {
   /// [familyEmailId] 家族メールアドレスID
   /// [body] FamilyEmailRequest
   Future<int> putFamilyEmail({
-    required FamilyEmailRequest body,
+    required FamilyEmailPutRequest body,
     required String familyEmailId,
   }) async {
     try {

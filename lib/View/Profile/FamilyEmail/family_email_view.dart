@@ -116,7 +116,8 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
                             padding: const EdgeInsets.only(left: 10),
                             child: UserInfoTile(
                               onTap: () {
-                                ProfileFamilyEmailRegisterRoute()
+                                ProfileFamilyEmailRegisterRoute(
+                                        $extra: familyEmailList[index])
                                     .push(context)
                                     .then((value) => setState(() {}));
                               },

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/FamilyEmail/family_email_sync_contact_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
-import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_request.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_post_request.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -55,10 +55,10 @@ class _FamilyEmailSyncContactViewState
                 child: CustomText(text: '未登録'),
               ),
             ),
-            FutureBuilder<List<FamilyEmailRequest>?>(
+            FutureBuilder<List<FamilyEmailPostRequest>?>(
               future: controller.getFamilyEmailRequest(),
-              builder:
-                  (context, AsyncSnapshot<List<FamilyEmailRequest>?> snapshot) {
+              builder: (context,
+                  AsyncSnapshot<List<FamilyEmailPostRequest>?> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Padding(
                     padding: EdgeInsets.only(top: 100),
@@ -73,7 +73,7 @@ class _FamilyEmailSyncContactViewState
                   // todo: エラー時の処理
                   return Container();
                 }
-                List<FamilyEmailRequest> familyEmailRequestList =
+                List<FamilyEmailPostRequest> familyEmailRequestList =
                     snapshot.data!;
                 if (familyEmailRequestList.isEmpty) {
                   return const Padding(
@@ -110,7 +110,14 @@ class _FamilyEmailSyncContactViewState
                             await controller.updateFamilyEmail();
                             setState(() {});
                           },
-                          imageUrl: familyEmailRequestList[index].iconImageUrl,
+                          localImage:
+                              familyEmailRequestList[index].avatar != null &&
+                                      familyEmailRequestList[index]
+                                          .avatar!
+                                          .isNotEmpty
+                                  ? controller.uint8ListToImage(
+                                      familyEmailRequestList[index].avatar!)
+                                  : null,
                           userName:
                               '${familyEmailRequestList[index].lastName} ${familyEmailRequestList[index].firstName}',
                           description: familyEmailRequestList[index].email == ''
