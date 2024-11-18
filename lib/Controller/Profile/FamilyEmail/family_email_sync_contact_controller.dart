@@ -27,7 +27,7 @@ class FamilyEmailSyncContactController extends ControllerCore {
   void initialize() {}
 
   /// 連絡先を同期させる関数
-  Future<List<FamilyEmailRequest>?> getFamilyEmailRequest() async {
+  Future<List<FamilyEmailPutRequest>?> getFamilyEmailRequest() async {
     if (_familyEmailList == null) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
       return null;
@@ -40,15 +40,15 @@ class FamilyEmailSyncContactController extends ControllerCore {
       return null;
     }
     // FamilyEmailRequestモデルとして取得できる
-    List<FamilyEmailRequest> res =
+    List<FamilyEmailPutRequest> res =
         await _nativeContactsService.getFamilyEmailRequests();
-    List<FamilyEmailRequest> familyEmailRequestList =
+    List<FamilyEmailPutRequest> familyEmailRequestList =
         res.where((res) => !checkDuplicate(res)).toList();
     return familyEmailRequestList;
   }
 
   /// 登録されているアドレスと同じアドレスかをチェックする関数
-  bool checkDuplicate(FamilyEmailRequest syncFamilyEmail) {
+  bool checkDuplicate(FamilyEmailPutRequest syncFamilyEmail) {
     return _familyEmailList!.any((registeredEmail) =>
         (registeredEmail.email == syncFamilyEmail.email) &&
         (registeredEmail.firstName + registeredEmail.lastName ==
@@ -56,7 +56,7 @@ class FamilyEmailSyncContactController extends ControllerCore {
   }
 
   /// 同期したメールアドレスを登録する関数
-  Future<int> postFamilyEmail(FamilyEmailRequest syncFamilyEmail) async {
+  Future<int> postFamilyEmail(FamilyEmailPutRequest syncFamilyEmail) async {
     ProtectorNotifier().enableProtector();
     if (syncFamilyEmail.email == '' ||
         (syncFamilyEmail.firstName == '' || syncFamilyEmail.lastName == '')) {

@@ -10,9 +10,10 @@ class NativeContactsService {
   }
 
   /// iOSのみ考慮: Nativeの連絡先を取得し、FamilyEmailRequestに変換
-  Future<List<FamilyEmailRequest>> getFamilyEmailRequests() async {
+  Future<List<FamilyEmailPutRequest>> getFamilyEmailRequests() async {
     final List<package.Contact> nativeContacts = await getNativeContacts();
-    final List<FamilyEmailRequest> familyEmailRequests = <FamilyEmailRequest>[];
+    final List<FamilyEmailPutRequest> familyEmailRequests =
+        <FamilyEmailPutRequest>[];
     for (final package.Contact nativeContact in nativeContacts) {
       final firstName = nativeContact.givenName ?? '';
       final lastName = nativeContact.familyName ?? '';
@@ -27,8 +28,8 @@ class NativeContactsService {
       if (nativeContact.avatar != null) {
         contactMap['avatar'] = nativeContact.avatar;
       }
-      final FamilyEmailRequest contactUser =
-          FamilyEmailRequest.fromJson(contactMap);
+      final FamilyEmailPutRequest contactUser =
+          FamilyEmailPutRequest.fromJson(contactMap);
       familyEmailRequests.add(contactUser);
     }
     return familyEmailRequests;

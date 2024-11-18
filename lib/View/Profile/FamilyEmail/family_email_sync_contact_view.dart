@@ -55,10 +55,10 @@ class _FamilyEmailSyncContactViewState
                 child: CustomText(text: '未登録'),
               ),
             ),
-            FutureBuilder<List<FamilyEmailRequest>?>(
+            FutureBuilder<List<FamilyEmailPutRequest>?>(
               future: controller.getFamilyEmailRequest(),
-              builder:
-                  (context, AsyncSnapshot<List<FamilyEmailRequest>?> snapshot) {
+              builder: (context,
+                  AsyncSnapshot<List<FamilyEmailPutRequest>?> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Padding(
                     padding: EdgeInsets.only(top: 100),
@@ -73,7 +73,7 @@ class _FamilyEmailSyncContactViewState
                   // todo: エラー時の処理
                   return Container();
                 }
-                List<FamilyEmailRequest> familyEmailRequestList =
+                List<FamilyEmailPutRequest> familyEmailRequestList =
                     snapshot.data!;
                 if (familyEmailRequestList.isEmpty) {
                   return const Padding(

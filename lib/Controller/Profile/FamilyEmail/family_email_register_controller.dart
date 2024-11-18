@@ -74,7 +74,6 @@ class FamilyEmailRegisterController extends ControllerCore {
       if (_imageFile == null) {
         return;
       }
-      ProtectorNotifier().enableProtector();
       _iconImageUrl = await _cloudStorageService.uploadFamilyEmailAvatar(
         UserData().user!.userId,
         _familyEmailId,
@@ -82,8 +81,6 @@ class FamilyEmailRegisterController extends ControllerCore {
       );
     } catch (e) {
       Log.echo('Failed to upload image: $e');
-    } finally {
-      ProtectorNotifier().disableProtector();
     }
   }
 
@@ -113,7 +110,7 @@ class FamilyEmailRegisterController extends ControllerCore {
   Future<int> putFamilyEmail() async {
     ProtectorNotifier().enableProtector();
     await _uploadImage();
-    FamilyEmailRequest body = FamilyEmailRequest(
+    FamilyEmailPutRequest body = FamilyEmailPutRequest(
       email: emailController.text,
       firstName: firstNameController.text,
       lastName: lastNameController.text,

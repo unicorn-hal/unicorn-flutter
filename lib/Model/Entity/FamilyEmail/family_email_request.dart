@@ -1,13 +1,13 @@
 import 'dart:typed_data';
 
-class FamilyEmailRequest {
+class FamilyEmailPutRequest {
   final String email;
   final String firstName;
   final String lastName;
   String? iconImageUrl;
   Uint8List? avatar;
 
-  FamilyEmailRequest({
+  FamilyEmailPutRequest({
     required this.email,
     required this.firstName,
     required this.lastName,
@@ -15,8 +15,8 @@ class FamilyEmailRequest {
     this.avatar,
   });
 
-  factory FamilyEmailRequest.fromJson(Map<String, dynamic> json) {
-    final request = FamilyEmailRequest(
+  factory FamilyEmailPutRequest.fromJson(Map<String, dynamic> json) {
+    final request = FamilyEmailPutRequest(
       email: json['email'],
       firstName: json['firstName'],
       lastName: json['lastName'],

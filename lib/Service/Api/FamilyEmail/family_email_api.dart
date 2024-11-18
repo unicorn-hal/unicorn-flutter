@@ -37,7 +37,7 @@ class FamilyEmailApi extends ApiCore with Endpoint {
   /// [familyEmailId] 家族メールアドレスID
   /// [body] FamilyEmailRequest
   Future<int> putFamilyEmail({
-    required FamilyEmailRequest body,
+    required FamilyEmailPutRequest body,
     required String familyEmailId,
   }) async {
     try {

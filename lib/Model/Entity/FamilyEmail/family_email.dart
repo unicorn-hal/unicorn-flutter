@@ -35,7 +35,7 @@ class FamilyEmail {
     };
   }
 
-  FamilyEmailRequest toRequest() {
-    return FamilyEmailRequest.fromJson(toJson());
+  FamilyEmailPutRequest toRequest() {
+    return FamilyEmailPutRequest.fromJson(toJson());
   }
 }
