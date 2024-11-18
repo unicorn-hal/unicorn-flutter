@@ -14,15 +14,15 @@ import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 
 class RegisterUserInfoController extends ControllerCore {
+  FirebaseCloudStorageService get _cloudStorageService =>
+      FirebaseCloudStorageService();
+  ImageUtilsService get _imageUtilsService => ImageUtilsService();
+
   final TextEditingController phoneNumberTextController =
       TextEditingController();
   final TextEditingController emailTextController = TextEditingController();
   final TextEditingController occupationTextController =
       TextEditingController();
-
-  FirebaseCloudStorageService get _cloudStorageService =>
-      FirebaseCloudStorageService();
-  ImageUtilsService get _imageUtilsService => ImageUtilsService();
 
   File? _imageFile;
   Image? _image;
