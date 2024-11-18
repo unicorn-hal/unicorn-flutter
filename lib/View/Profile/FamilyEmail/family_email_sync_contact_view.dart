@@ -111,7 +111,10 @@ class _FamilyEmailSyncContactViewState
                             setState(() {});
                           },
                           localImage:
-                              familyEmailRequestList[index].avatar!.isNotEmpty
+                              familyEmailRequestList[index].avatar != null &&
+                                      familyEmailRequestList[index]
+                                          .avatar!
+                                          .isNotEmpty
                                   ? controller.uint8ListToImage(
                                       familyEmailRequestList[index].avatar!)
                                   : null,
