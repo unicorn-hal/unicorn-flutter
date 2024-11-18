@@ -1,6 +1,6 @@
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_post_request.dart';
-import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_request.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_put_request.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
 import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 

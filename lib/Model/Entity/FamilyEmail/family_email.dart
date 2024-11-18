@@ -1,4 +1,4 @@
-import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_request.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_put_request.dart';
 
 class FamilyEmail {
   final String familyEmailId;

@@ -8,7 +8,7 @@ import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_post_request.dart';
-import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_request.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_put_request.dart';
 import 'package:unicorn_flutter/Service/Api/FamilyEmail/family_email_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudStorage/cloud_storage_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
