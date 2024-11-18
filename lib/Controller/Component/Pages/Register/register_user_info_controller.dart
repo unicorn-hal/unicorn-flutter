@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -46,16 +47,17 @@ class RegisterUserInfoController extends ControllerCore {
   }
 
   /// 画像をCloud Storageにアップロードする
-  Future<void> _uploadImage() async {
+  Future<String?> _uploadImage() async {
     try {
       if (_imageFile == null) {
-        return;
+        return null;
       }
       ProtectorNotifier().enableProtector();
-      await _cloudStorageService.uploadUserAvatar(
+      String getUrl = await _cloudStorageService.uploadUserAvatar(
         UserData().user!.userId,
         _imageFile!,
       );
+      return getUrl;
     } catch (e) {
       Log.echo('Failed to upload image: $e');
     } finally {
@@ -63,22 +65,23 @@ class RegisterUserInfoController extends ControllerCore {
     }
   }
 
-  Future<void> uploadImageSubmit() async {
+  Future<UserInfo?> submit() async {
+    String? iconImageUrl = '';
     if (_imageFile != null) {
-      await _uploadImage();
+      iconImageUrl = await _uploadImage();
     }
-  }
 
-  UserInfo? submit() {
     if (validateField() == false) {
       return null;
     }
-    UserInfo userInfo = UserInfo(
-      image: image,
+
+    UserInfo? userInfo = UserInfo(
+      iconImageUrl: iconImageUrl!,
       phoneNumber: phoneNumberTextController.text,
       email: emailTextController.text,
       occupation: occupationTextController.text,
     );
+
     return userInfo;
   }
 
