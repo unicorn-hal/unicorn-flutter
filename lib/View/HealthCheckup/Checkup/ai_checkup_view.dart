@@ -1,6 +1,7 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/HealthCheckup/Checkup/ai_checkup_controller.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
@@ -42,10 +43,16 @@ class _AiCheckupViewState extends State<AiCheckupView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircleAvatar(
-                      radius: size.width * 0.15,
-                      backgroundColor: Colors.white,
-                      child: Assets.images.icons.aiIcon.image(),
+                    GestureDetector(
+                      onTap: () async {
+                        await controller.getDiseaseEnumString();
+                        setState(() {});
+                      },
+                      child: CircleAvatar(
+                        radius: size.width * 0.15,
+                        backgroundColor: Colors.white,
+                        child: Assets.images.icons.aiIcon.image(),
+                      ),
                     ),
                     const Padding(
                       padding: EdgeInsets.all(8.0),
@@ -87,31 +94,69 @@ class _AiCheckupViewState extends State<AiCheckupView> {
                     vertical: 20,
                   ),
                   child: Center(
-                    child: AvatarGlow(
-                      animate: controller.isListening,
-                      glowColor: Colors.red,
-                      glowRadiusFactor: 0.4,
-                      child: GestureDetector(
-                        // 音声認識の開始と停止
-                        onTapDown: (value) {
-                          controller.startListening();
-                          setState(() {});
-                        },
-                        onTapUp: (value) {
-                          controller.stopListening();
-                          setState(() {});
-                        },
-                        child: const CircleAvatar(
-                          backgroundColor: Colors.red,
-                          radius: 48,
-                          child: Icon(
-                            Icons.mic,
-                            color: Colors.white,
-                            size: 40,
+                    child: controller.finish
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                ),
+                                child: SizedBox(
+                                  height: 50,
+                                  width: 150,
+                                  child: CustomButton(
+                                    text: 'もう一度',
+                                    onTap: () {
+                                      controller.changeFinish();
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                ),
+                                child: SizedBox(
+                                  height: 50,
+                                  width: 150,
+                                  child: CustomButton(
+                                    text: '検診結果へ',
+                                    onTap: () {
+                                      controller.textValidate();
+                                    },
+                                    isFilledColor: true,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : AvatarGlow(
+                            animate: controller.isListening,
+                            glowColor: Colors.red,
+                            glowRadiusFactor: 0.4,
+                            child: GestureDetector(
+                              // 音声認識の開始と停止
+                              onTapDown: (value) {
+                                controller.startListening();
+                                setState(() {});
+                              },
+                              onTapUp: (value) {
+                                controller.stopListening();
+                                setState(() {});
+                              },
+                              child: const CircleAvatar(
+                                backgroundColor: Colors.red,
+                                radius: 48,
+                                child: Icon(
+                                  Icons.mic,
+                                  color: Colors.white,
+                                  size: 40,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
                   ),
                 ),
               ),

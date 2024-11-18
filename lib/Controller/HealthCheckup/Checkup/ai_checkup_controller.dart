@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Constants/Enum/chatgpt_role.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_chat.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_message.dart';
@@ -20,15 +21,22 @@ class AiCheckupController extends ControllerCore {
 
   // 変数の定義
   late ValueNotifier<String> _aiText;
+  final String _aiTextDefault = 'なんでも聞いてください';
   late bool _isListening;
 
   // オーディオを初期化
   final _audioPlayer = AudioPlayer();
 
+  late String diseaseType;
+
+  late bool finish;
+
   @override
   void initialize() async {
-    _aiText = ValueNotifier<String>('なんでも聞いてください');
+    _aiText = ValueNotifier<String>(_aiTextDefault);
     _isListening = false;
+    finish = false;
+    diseaseType = '';
     await _speechToTextService.initialize();
   }
 
@@ -57,10 +65,11 @@ class AiCheckupController extends ControllerCore {
     _audioPlayer.stop();
     _isListening = false;
     _speechToTextService.stopListening();
+    finish = true;
   }
 
   // 認識した音声をChatGPTに送信してEnumを返す
-  Future<String?> _getDiseaseEnumString() async {
+  Future<String?> getDiseaseEnumString() async {
     final ChatGPTMessage message = ChatGPTMessage(
       role: ChatGPTRole.user,
       content: '''
@@ -95,7 +104,26 @@ class AiCheckupController extends ControllerCore {
       return null;
     }
 
+    diseaseType = response.message.content;
+
     return response.message.content;
+  }
+
+  /// 音声認識の終了状態を変更する
+  void changeFinish() {
+    finish = !finish;
+  }
+
+  /// 音声認識結果のバリデート
+  bool textValidate() {
+    if (_aiText.value.length < 10) {
+      Fluttertoast.showToast(msg: '最低10文字以上は音声入力をしてください');
+      return false;
+    } else if (_aiText.value == _aiTextDefault) {
+      Fluttertoast.showToast(msg: '音声入力をしてください');
+      return false;
+    }
+    return true;
   }
 
   // 音声認識中かを取得
