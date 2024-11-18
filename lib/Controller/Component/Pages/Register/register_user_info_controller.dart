@@ -66,7 +66,7 @@ class RegisterUserInfoController extends ControllerCore {
   }
 
   Future<UserInfo?> submit() async {
-    String? iconImageUrl = '';
+    String? iconImageUrl;
     if (_imageFile != null) {
       iconImageUrl = await _uploadImage();
     }
@@ -75,8 +75,8 @@ class RegisterUserInfoController extends ControllerCore {
       return null;
     }
 
-    UserInfo? userInfo = UserInfo(
-      iconImageUrl: iconImageUrl!,
+    UserInfo userInfo = UserInfo(
+      iconImageUrl: iconImageUrl,
       phoneNumber: phoneNumberTextController.text,
       email: emailTextController.text,
       occupation: occupationTextController.text,
