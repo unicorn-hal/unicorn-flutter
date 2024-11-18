@@ -1,13 +1,11 @@
-import 'package:flutter/material.dart';
-
 class UserInfo {
-  final Image image;
+  final String iconImageUrl;
   final String phoneNumber;
   final String email;
   final String occupation;
 
   UserInfo(
-      {required this.image,
+      {required this.iconImageUrl,
       required this.phoneNumber,
       required this.email,
       required this.occupation});
