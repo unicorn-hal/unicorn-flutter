@@ -1,4 +1,4 @@
-import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_request.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_put_request.dart';
 
 class FamilyEmail {
   final String familyEmailId;
@@ -6,7 +6,6 @@ class FamilyEmail {
   final String firstName;
   final String lastName;
   final String? iconImageUrl;
-  final String phoneNumber;
 
   FamilyEmail({
     required this.familyEmailId,
@@ -14,7 +13,6 @@ class FamilyEmail {
     required this.firstName,
     required this.lastName,
     this.iconImageUrl,
-    required this.phoneNumber,
   });
 
   factory FamilyEmail.fromJson(Map<String, dynamic> json) {
@@ -24,7 +22,6 @@ class FamilyEmail {
       firstName: json['firstName'],
       lastName: json['lastName'],
       iconImageUrl: json['iconImageUrl'],
-      phoneNumber: json['phoneNumber'],
     );
   }
 
@@ -35,11 +32,10 @@ class FamilyEmail {
       'firstName': firstName,
       'lastName': lastName,
       'iconImageUrl': iconImageUrl,
-      'phoneNumber': phoneNumber,
     };
   }
 
-  FamilyEmailRequest toRequest() {
-    return FamilyEmailRequest.fromJson(toJson());
+  FamilyEmailPutRequest toRequest() {
+    return FamilyEmailPutRequest.fromJson(toJson());
   }
 }

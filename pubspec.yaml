@@ -44,8 +44,14 @@ dependencies:
   google_maps_flutter: ^2.2.8
   flutter_config: ^2.0.2
   firebase_messaging: ^15.1.0
+  uuid: ^4.5.1
   firebase_storage: ^12.2.0
   image: ^4.3.0
+  stomp_dart_client: ^2.0.0
+  in_app_review: ^2.0.9
+  shared_preferences: ^2.2.3
+  speech_to_text: ^6.6.2
+  avatar_glow: ^3.0.1
 
 dev_dependencies:
   flutter_test:

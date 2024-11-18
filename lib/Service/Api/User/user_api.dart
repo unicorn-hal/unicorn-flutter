@@ -1,6 +1,7 @@
 import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup.dart';
 import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup_request.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Model/Entity/api_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
@@ -29,7 +30,6 @@ class UserApi extends ApiCore with Endpoint {
     try {
       useParameter(parameter: '/$userId/health_checkups');
       final ApiResponse response = await get();
-      print(response.data);
       return (response.data['data'] as List)
           .map((e) => HealthCheckup.fromJson(e))
           .toList();
@@ -55,6 +55,17 @@ class UserApi extends ApiCore with Endpoint {
     }
   }
 
+  Future<UserNotification?> getUserNotification(
+      {required String userId}) async {
+    try {
+      useParameter(parameter: '/$userId/notification');
+      final ApiResponse response = await get();
+      return UserNotification.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
   /// POST
   /// ユーザー登録
   /// [body] UserRequest
@@ -64,6 +75,19 @@ class UserApi extends ApiCore with Endpoint {
       return response.statusCode;
     } catch (e) {
       return 500;
+    }
+  }
+
+  Future<UserNotification?> postUserNotification({
+    required String userId,
+    required UserNotification body,
+  }) async {
+    try {
+      useParameter(parameter: '/$userId/notification');
+      final ApiResponse response = await post(body.toJson());
+      return UserNotification.fromJson(response.data);
+    } catch (e) {
+      return null;
     }
   }
 
@@ -100,6 +124,27 @@ class UserApi extends ApiCore with Endpoint {
       return response.statusCode;
     } catch (e) {
       return 500;
+    }
+  }
+
+  /// PUT
+  /// ユーザー通知設定更新
+  /// [userId] ユーザーID
+  /// [body] UserNotification
+  Future<UserNotification> putUserNotification({
+    required String userId,
+    required UserNotification body,
+  }) async {
+    try {
+      useParameter(parameter: '/$userId/notification');
+      final ApiResponse response = await put(body.toJson());
+      return UserNotification.fromJson(response.data);
+    } catch (e) {
+      return UserNotification(
+        isMedicineReminder: false,
+        isRegularHealthCheckup: false,
+        isHospitalNews: false,
+      );
     }
   }
 

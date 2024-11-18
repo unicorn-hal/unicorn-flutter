@@ -5,20 +5,24 @@ import 'package:unicorn_flutter/gen/colors.gen.dart';
 class MessageTile extends StatelessWidget {
   const MessageTile({
     super.key,
-    required this.messageBody,
+    this.messageBody,
     required this.myMessage,
     required this.postAt,
+    this.postAtColor,
+    this.actionWidget,
   });
 
-  final String messageBody;
+  final String? messageBody;
   final bool myMessage;
   final String postAt;
+  final Widget? actionWidget;
+  final Color? postAtColor;
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment:
@@ -33,7 +37,7 @@ class MessageTile extends StatelessWidget {
                       text: postAt,
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
-                      color: Colors.white,
+                      color: postAtColor ?? Colors.white,
                     ),
                   ),
                 )
@@ -48,13 +52,22 @@ class MessageTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
             constraints: BoxConstraints(
-              maxWidth: size.width * 0.6,
+              maxWidth: size.width * 0.7,
               minHeight: 30,
               minWidth: 30,
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: CustomText(text: messageBody),
+              child: actionWidget == null
+                  ? CustomText(text: messageBody!)
+                  : Column(
+                      children: [
+                        messageBody != null
+                            ? CustomText(text: messageBody!)
+                            : Container(),
+                        actionWidget!,
+                      ],
+                    ),
             ),
           ),
           myMessage
@@ -69,7 +82,7 @@ class MessageTile extends StatelessWidget {
                       text: postAt,
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
-                      color: Colors.white,
+                      color: postAtColor ?? Colors.white,
                     ),
                   ),
                 ),

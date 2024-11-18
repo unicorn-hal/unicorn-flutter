@@ -51,7 +51,7 @@ class ProfileTopController extends ControllerCore {
           title: '住所設定',
           icon: Icons.home,
           onTap: () {
-            // return const ProfileRegisterAddressInfoRoute().push(context);
+            return ProfileRegisterAddressInfoRoute().push(context);
           }),
       ProfileDetail(
           title: 'ユーザー設定',

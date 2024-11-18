@@ -39,4 +39,30 @@ class Strings {
       '血圧が平均値から外れています。体調が優れない場合は医師との通話やAIチャットを利用してください。';
   static const String HEALTH_CHECKUP_RESULT_DESCRIPTION_DANGER =
       '体温・血圧ともに平均値から外れています。緊急時は医師との通話やAIチャットを利用してください。';
+  static const String CHAT_POST_RESPONSE_ERROR = 'メッセージの送信に失敗しました。';
+
+  // おくすり登録・修正時のvalidateに使うテキスト
+  static const String MEDICINE_VALIDATE_TEXT = 'おくすりの名称とおくすりの量は必須の入力項目です';
+  static const String MEDICINE_VALIDATE_COUNT_TEXT =
+      'おくすりの量には100以下の数値を入力してください';
+  static const String MEDICINE_VALIDATE_DOSAGE_TEXT =
+      '1回の服用量がおくすりの量よりも多く設定されています';
+
+  // 通信エラー発生時に使うテキスト
+  static const String ERROR_RESPONSE_TEXT = '通信エラーが発生しました';
+
+  // ローディング中に表示するテキスト
+  static const String LOADING_TEXT = 'ロード中';
+
+  // 連絡先へのアクセスが未許可のときに使うテキスト
+  static const String REQUEST_PERMISSION_ERROR_TEXT =
+      '端末設定から連絡先へのアクセスを許可してください';
+
+  // メールアドレスが未登録に表示するテキスト
+  static const String FAMILY_EMAIL_NOT_REGISTERED_TEXT = 'メールアドレスが登録されていません';
+
+  // メールアドレス登録時のvalidateに使うテキスト
+  static const String FAMILY_EMAIL_VALIDATE_FIELD_TEXT =
+      'メールアドレスおよび姓と名の登録が必要です';
+  static const String FAMILY_EMAIL_VALIDATE_FORMAT_TEXT = 'メールアドレスの形式が正しくありません';
 }
