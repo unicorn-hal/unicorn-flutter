@@ -57,6 +57,8 @@ class FamilyEmailSyncContactController extends ControllerCore {
         await _nativeContactsService.getFamilyEmailRequests();
     List<FamilyEmailPostRequest> familyEmailRequestList =
         res.where((res) => !checkDuplicate(res)).toList();
+    familyEmailRequestList.sort((a, b) =>
+        (a.lastName + a.firstName).compareTo(b.lastName + b.firstName));
     return familyEmailRequestList;
   }
 
