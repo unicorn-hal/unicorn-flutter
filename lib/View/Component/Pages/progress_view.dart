@@ -17,23 +17,27 @@ class ProgressView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ProgressController controller = ProgressController();
+    ProgressController controller = ProgressController(context, diseaseType);
 
     return CustomScaffold(
       body: Center(
         child: StreamBuilder<String>(
           stream: controller.progressStream,
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasData) {
-              return CustomLoadingAnimation(
-                text: snapshot.data!,
-                iconColor: ColorName.textGray,
-                textColor: ColorName.textGray,
+            if (snapshot.hasData) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  CustomLoadingAnimation(
+                    text: snapshot.data!,
+                    iconColor: ColorName.textGray,
+                    textColor: ColorName.textGray,
+                  ),
+                  const SizedBox(height: 20),
+                ],
               );
             } else {
-              return const Text('Loading failed');
+              return const CircularProgressIndicator();
             }
           },
         ),

@@ -1,13 +1,16 @@
-import 'package:unicorn_flutter/Constants/Enum/health_checkup_type_enum.dart';
+import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 
 class ProgressController extends ControllerCore {
   /// Serviceのインスタンス化
 
   /// コンストラクタ
-  ProgressController();
+  BuildContext context;
+  ProgressController(this.context, this._diseaseType);
 
   /// 変数の定義
   final List<ProgressViewEnum> _progressTypes = [
@@ -18,8 +21,8 @@ class ProgressController extends ControllerCore {
   ];
 
   int _currentIndex = 0;
-  int _healthPoint = 0;
-  late HealthCheckupDiseaseEnum _diseaseType;
+  final int _healthPoint = 0;
+  final HealthCheckupDiseaseEnum _diseaseType;
 
   int get healthPoint => _healthPoint;
   HealthCheckupDiseaseEnum get diseaseType => _diseaseType;
@@ -53,11 +56,13 @@ class ProgressController extends ControllerCore {
       await Future.delayed(const Duration(seconds: 4));
       _currentIndex++;
 
-      // 全て表示し終えたら次の画面へ遷移
       if (_currentIndex >= _progressTypes.length) {
-        // CheckupResultRoute(
-        //   $extra: _
-        // ).push();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          CheckupResultRoute(
+            $extra: _diseaseType,
+            healthPoint: _healthPoint,
+          ).push(context);
+        });
       }
     }
   }
