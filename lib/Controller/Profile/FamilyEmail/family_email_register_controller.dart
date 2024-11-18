@@ -7,6 +7,7 @@ import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_post_request.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_request.dart';
 import 'package:unicorn_flutter/Service/Api/FamilyEmail/family_email_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudStorage/cloud_storage_service.dart';
@@ -14,6 +15,7 @@ import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/Service/Package/ImageUtils/image_utils_service.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
+import 'package:uuid/uuid.dart';
 
 class FamilyEmailRegisterController extends ControllerCore {
   /// Serviceのインスタンス化
@@ -85,17 +87,18 @@ class FamilyEmailRegisterController extends ControllerCore {
   /// メールアドレスを登録する関数
   Future<int> postFamilyEmail() async {
     ProtectorNotifier().enableProtector();
-    // todo: ここにuuidを取得する処理
-    _familyEmailId = 'const Uuid().v4()';
+    _familyEmailId = const Uuid().v4();
     await _uploadImage();
-    FamilyEmailRequest body = FamilyEmailRequest(
+    FamilyEmailPostRequest body = FamilyEmailPostRequest(
+      familyEmailId: _familyEmailId,
       email: emailController.text,
       firstName: firstNameController.text,
       lastName: lastNameController.text,
       iconImageUrl: _iconImageUrl,
     );
-    // todo: postFamilyEmail()の引数にfamilyEmailIdが追加される予定
-    int res = await _familyEmailApi.postFamilyEmail(body: body);
+    int res = await _familyEmailApi.postFamilyEmail(
+      body: body,
+    );
     if (res != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }

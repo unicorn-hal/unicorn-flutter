@@ -3,11 +3,13 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_post_request.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email_request.dart';
 import 'package:unicorn_flutter/Service/Api/FamilyEmail/family_email_api.dart';
 import 'package:unicorn_flutter/Service/Package/NativeContacts/native_contacts_service.dart';
 import 'package:unicorn_flutter/Service/Package/PermissionHandler/permission_handler_service.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
+import 'package:uuid/uuid.dart';
 
 class FamilyEmailSyncContactController extends ControllerCore {
   /// Serviceのインスタンス化
@@ -62,7 +64,17 @@ class FamilyEmailSyncContactController extends ControllerCore {
       ProtectorNotifier().disableProtector();
       return 400;
     }
-    int res = await _familyEmailApi.postFamilyEmail(body: syncFamilyEmail);
+    String familyEmailId = const Uuid().v4();
+    FamilyEmailPostRequest body = FamilyEmailPostRequest(
+      familyEmailId: familyEmailId,
+      email: syncFamilyEmail.email,
+      firstName: syncFamilyEmail.firstName,
+      lastName: syncFamilyEmail.lastName,
+      iconImageUrl: syncFamilyEmail.iconImageUrl,
+    );
+    int res = await _familyEmailApi.postFamilyEmail(
+      body: body,
+    );
     if (res == 200) {
       Fluttertoast.showToast(
           msg:
