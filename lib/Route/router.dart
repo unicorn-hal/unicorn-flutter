@@ -422,7 +422,7 @@ class ProfileRegisterAddressInfoRoute extends GoRouteData {
 }
 
 class ProfileRegisterUserInfoRoute extends GoRouteData {
-  ProfileRegisterUserInfoRoute({required this.$extra});
+  ProfileRegisterUserInfoRoute({this.$extra});
   AddressInfo? $extra;
 
   @override
