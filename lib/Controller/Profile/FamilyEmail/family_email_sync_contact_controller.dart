@@ -72,11 +72,11 @@ class FamilyEmailSyncContactController extends ControllerCore {
   Future<int> postFamilyEmail(FamilyEmailPostRequest syncFamilyEmail) async {
     if (syncFamilyEmail.email == '' ||
         (syncFamilyEmail.firstName == '' || syncFamilyEmail.lastName == '')) {
-      Fluttertoast.showToast(msg: Strings.FAMILY_EMAIL_VALIDATE_TEXT);
+      Fluttertoast.showToast(msg: Strings.FAMILY_EMAIL_VALIDATE_FIELD_TEXT);
       return 400;
     }
     if (!RegExpConstants.emailRegExp.hasMatch(syncFamilyEmail.email)) {
-      Fluttertoast.showToast(msg: 'メールアドレスの形式が正しくありません');
+      Fluttertoast.showToast(msg: Strings.FAMILY_EMAIL_VALIDATE_fORMAT_TEXT);
       return 400;
     }
     ProtectorNotifier().enableProtector();

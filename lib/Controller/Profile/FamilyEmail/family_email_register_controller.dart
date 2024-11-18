@@ -137,16 +137,16 @@ class FamilyEmailRegisterController extends ControllerCore {
     ProtectorNotifier().disableProtector();
   }
 
-  /// TextEditingControllerが空文字でないかチェックする関数
+  /// TextEditingControllerをvalidateする関数
   bool validateField() {
     if ((lastNameController.text == '') ||
         (firstNameController.text == '') ||
         (emailController.text == '')) {
-      Fluttertoast.showToast(msg: Strings.FAMILY_EMAIL_VALIDATE_TEXT);
+      Fluttertoast.showToast(msg: Strings.FAMILY_EMAIL_VALIDATE_FIELD_TEXT);
       return false;
     }
     if (!RegExpConstants.emailRegExp.hasMatch(emailController.text)) {
-      Fluttertoast.showToast(msg: 'メールアドレスの形式が正しくありません');
+      Fluttertoast.showToast(msg: Strings.FAMILY_EMAIL_VALIDATE_fORMAT_TEXT);
       return false;
     }
     return true;

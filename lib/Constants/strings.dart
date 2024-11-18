@@ -62,5 +62,7 @@ class Strings {
   static const String FAMILY_EMAIL_NOT_REGISTERED_TEXT = 'メールアドレスが登録されていません';
 
   // メールアドレス登録時のvalidateに使うテキスト
-  static const String FAMILY_EMAIL_VALIDATE_TEXT = 'メールアドレスおよび姓と名の登録が必要です';
+  static const String FAMILY_EMAIL_VALIDATE_FIELD_TEXT =
+      'メールアドレスおよび姓と名の登録が必要です';
+  static const String FAMILY_EMAIL_VALIDATE_fORMAT_TEXT = 'メールアドレスの形式が正しくありません';
 }
