@@ -98,21 +98,17 @@ class NotificationSettingController extends ControllerCore {
     );
     if (res != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      ProtectorNotifier().disableProtector();
+      return;
     }
-
-    if (_formatedUserNotification.value.isRegularHealthCheckup) {
-      await _firebaseCloudMessagingService
-          .subscribeToTopics(['regularHealthCheckup']);
-    } else {
-      await _firebaseCloudMessagingService
-          .unsubscribeFromTopics(['regularHealthCheckup']);
-    }
-    if (_formatedUserNotification.value.isRegularHealthCheckup) {
-      await _firebaseCloudMessagingService.subscribeToTopics(['hospitalNews']);
-    } else {
-      await _firebaseCloudMessagingService
-          .unsubscribeFromTopics(['hospitalNews']);
-    }
+    await updateSubscription(
+      isSubscribed: _formatedUserNotification.value.isRegularHealthCheckup,
+      topics: ['regularHealthCheckup'],
+    );
+    await updateSubscription(
+      isSubscribed: _formatedUserNotification.value.isHospitalNews,
+      topics: ['hospitalNews'],
+    );
     Fluttertoast.showToast(msg: '設定を反映しました');
     ProtectorNotifier().disableProtector();
   }
@@ -130,8 +126,28 @@ class NotificationSettingController extends ControllerCore {
     );
     if (res != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      ProtectorNotifier().disableProtector();
+      return;
     }
+    await updateSubscription(
+      isSubscribed: _formatedUserNotification.value.isRegularHealthCheckup,
+      topics: ['regularHealthCheckup'],
+    );
+    await updateSubscription(
+      isSubscribed: _formatedUserNotification.value.isHospitalNews,
+      topics: ['hospitalNews'],
+    );
     Fluttertoast.showToast(msg: '設定を反映しました');
     ProtectorNotifier().disableProtector();
+  }
+
+  Future<void> updateSubscription({
+    required bool isSubscribed,
+    required List<String> topics,
+  }) async {
+    /// topics : ['regularHealthCheckup'],['hospitalNews']
+    isSubscribed
+        ? await _firebaseCloudMessagingService.subscribeToTopics(topics)
+        : await _firebaseCloudMessagingService.unsubscribeFromTopics(topics);
   }
 }
