@@ -16,13 +16,7 @@ class ProgressCheckupController extends ControllerCore {
   final String diseaseEnumString;
   @override
   void initialize() {
-    print('initialize');
-    print(super.from);
-    navigation();
-  }
-
-  Future<void> navigation() async {
-    await delayEvent(super.from!);
+    delayEvent(from!);
   }
 
   Future<void> delayEvent(String from) async {
