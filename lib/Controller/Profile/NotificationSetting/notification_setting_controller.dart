@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
@@ -14,31 +17,56 @@ class NotificationSettingController extends ControllerCore {
   NotificationSettingController();
 
   /// 変数の定義
-  bool _medicineNotificationValue = false;
-  bool _healthCheckupValue = false;
-  bool _hospitalNotificationValue = false;
   UserNotification? _userNotification;
+  ValueNotifier<UserNotification> _formatedUserNotification = ValueNotifier(
+    UserNotification(
+      isHospitalNews: true,
+      isMedicineReminder: true,
+      isRegularHealthCheckup: true,
+    ),
+  );
 
   /// initialize()
   @override
-  void initialize() {}
+  void initialize() {
+    getUserNotification();
+  }
 
   /// 各関数の実装
   UserNotification? get userNotification => _userNotification;
+  ValueNotifier<UserNotification> get formatedUserNotification =>
+      _formatedUserNotification;
 
-  bool get medicineNotificationValue => _medicineNotificationValue;
   void setMedicineNotificationValue(bool value) {
-    _medicineNotificationValue = value;
+    _formatedUserNotification = ValueNotifier(
+      UserNotification(
+        isHospitalNews: _formatedUserNotification.value.isHospitalNews,
+        isMedicineReminder: value,
+        isRegularHealthCheckup:
+            _formatedUserNotification.value.isRegularHealthCheckup,
+      ),
+    );
   }
 
-  bool get healthCheckupValue => _healthCheckupValue;
   void setHealthCheckupValue(bool value) {
-    _healthCheckupValue = value;
+    _formatedUserNotification = ValueNotifier(
+      UserNotification(
+        isHospitalNews: _formatedUserNotification.value.isHospitalNews,
+        isMedicineReminder: _formatedUserNotification.value.isMedicineReminder,
+        isRegularHealthCheckup: value,
+      ),
+    );
   }
 
-  bool get hospitalNotificationValue => _hospitalNotificationValue;
   void setHospitalNotificationValue(bool value) {
-    _hospitalNotificationValue = value;
+    _formatedUserNotification = ValueNotifier(
+      UserNotification(
+        isHospitalNews: value,
+        isMedicineReminder: _formatedUserNotification.value.isMedicineReminder,
+        isRegularHealthCheckup:
+            _formatedUserNotification.value.isRegularHealthCheckup,
+      ),
+    );
   }
 
   Future<void> getUserNotification() async {
@@ -47,9 +75,11 @@ class NotificationSettingController extends ControllerCore {
     if (_userNotification == null) {
       return;
     }
-    setHealthCheckupValue(_userNotification!.isRegularHealthCheckup);
-    setHospitalNotificationValue(_userNotification!.isHospitalNews);
-    setMedicineNotificationValue(_userNotification!.isMedicineReminder);
+    _formatedUserNotification.value = UserNotification(
+      isHospitalNews: _userNotification!.isHospitalNews,
+      isMedicineReminder: _userNotification!.isMedicineReminder,
+      isRegularHealthCheckup: _userNotification!.isRegularHealthCheckup,
+    );
   }
 
   Future<void> putUserNotification() async {
@@ -57,9 +87,10 @@ class NotificationSettingController extends ControllerCore {
     int res = await _userApi.putUserNotification(
       userId: UserData().user!.userId,
       body: UserNotification(
-        isHospitalNews: _hospitalNotificationValue,
-        isMedicineReminder: _medicineNotificationValue,
-        isRegularHealthCheckup: _healthCheckupValue,
+        isHospitalNews: _formatedUserNotification.value.isHospitalNews,
+        isMedicineReminder: _formatedUserNotification.value.isMedicineReminder,
+        isRegularHealthCheckup:
+            _formatedUserNotification.value.isRegularHealthCheckup,
       ),
     );
     if (res != 200) {
@@ -74,9 +105,10 @@ class NotificationSettingController extends ControllerCore {
     int res = await _userApi.postUserNotification(
       userId: UserData().user!.userId,
       body: UserNotification(
-        isHospitalNews: _hospitalNotificationValue,
-        isMedicineReminder: _medicineNotificationValue,
-        isRegularHealthCheckup: _healthCheckupValue,
+        isHospitalNews: _formatedUserNotification.value.isHospitalNews,
+        isMedicineReminder: _formatedUserNotification.value.isMedicineReminder,
+        isRegularHealthCheckup:
+            _formatedUserNotification.value.isRegularHealthCheckup,
       ),
     );
     if (res != 200) {

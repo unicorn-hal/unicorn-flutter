@@ -38,60 +38,68 @@ class _NotificationSettingViewState extends State<NotificationSettingView> {
       child: CustomScaffold(
         body: SizedBox(
           width: deviceWidth,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.only(
-                  left: 5,
-                  top: 20,
-                  bottom: 20,
-                ),
-                width: deviceWidth * 0.9,
-                child: const CustomText(text: '通知設定'),
-              ),
-              CommonItemTile(
-                title: 'おくすり通知',
-                action: CupertinoSwitch(
-                  value: controller.medicineNotificationValue,
-                  onChanged: (value) => setState(
-                      () => controller.setMedicineNotificationValue(value)),
-                ),
-                onTap: () {
-                  controller.setMedicineNotificationValue(
-                      !controller.medicineNotificationValue);
-                  setState(() {});
-                },
-              ),
-              CommonItemTile(
-                title: '定時検診',
-                action: CupertinoSwitch(
-                  value: controller.healthCheckupValue,
-                  onChanged: (value) =>
-                      setState(() => controller.setHealthCheckupValue(value)),
-                ),
-                onTap: () {
-                  controller
-                      .setHealthCheckupValue(!controller.healthCheckupValue);
-                  setState(() {});
-                },
-              ),
-              CommonItemTile(
-                title: '新着病院お知らせ',
-                action: CupertinoSwitch(
-                  value: controller.hospitalNotificationValue,
-                  onChanged: (value) => setState(
-                      () => controller.setHospitalNotificationValue(value)),
-                ),
-                onTap: () {
-                  controller.setHospitalNotificationValue(
-                      !controller.hospitalNotificationValue);
-                  setState(() {});
-                },
-              ),
-            ],
-          ),
+          child: ValueListenableBuilder(
+              valueListenable: controller.formatedUserNotification,
+              builder: (
+                context,
+                value,
+                child,
+              ) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.only(
+                        left: 5,
+                        top: 20,
+                        bottom: 20,
+                      ),
+                      width: deviceWidth * 0.9,
+                      child: const CustomText(text: '通知設定'),
+                    ),
+                    CommonItemTile(
+                      title: 'おくすり通知',
+                      action: CupertinoSwitch(
+                        value: value.isMedicineReminder,
+                        onChanged: (value) => setState(() =>
+                            controller.setMedicineNotificationValue(value)),
+                      ),
+                      onTap: () {
+                        controller.setMedicineNotificationValue(
+                            !value.isMedicineReminder);
+                        setState(() {});
+                      },
+                    ),
+                    CommonItemTile(
+                      title: '定時検診',
+                      action: CupertinoSwitch(
+                        value: value.isRegularHealthCheckup,
+                        onChanged: (value) => setState(
+                            () => controller.setHealthCheckupValue(value)),
+                      ),
+                      onTap: () {
+                        controller.setHealthCheckupValue(
+                            !value.isRegularHealthCheckup);
+                        setState(() {});
+                      },
+                    ),
+                    CommonItemTile(
+                      title: '新着病院お知らせ',
+                      action: CupertinoSwitch(
+                        value: value.isHospitalNews,
+                        onChanged: (value) => setState(() =>
+                            controller.setHospitalNotificationValue(value)),
+                      ),
+                      onTap: () {
+                        controller.setHospitalNotificationValue(
+                            !value.isHospitalNews);
+                        setState(() {});
+                      },
+                    ),
+                  ],
+                );
+              }),
         ),
       ),
     );
