@@ -7,11 +7,14 @@ import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
+import 'package:unicorn_flutter/Service/Firebase/CloudMessaging/cloud_messaging_service.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 class NotificationSettingController extends ControllerCore {
   /// Serviceのインスタンス化
   UserApi get _userApi => UserApi();
+  FirebaseCloudMessagingService get _firebaseCloudMessagingService =>
+      FirebaseCloudMessagingService();
 
   /// コンストラクタ
   NotificationSettingController();
@@ -95,6 +98,20 @@ class NotificationSettingController extends ControllerCore {
     );
     if (res != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+    }
+
+    if (_formatedUserNotification.value.isRegularHealthCheckup) {
+      await _firebaseCloudMessagingService
+          .subscribeToTopics(['regularHealthCheckup']);
+    } else {
+      await _firebaseCloudMessagingService
+          .unsubscribeFromTopics(['regularHealthCheckup']);
+    }
+    if (_formatedUserNotification.value.isRegularHealthCheckup) {
+      await _firebaseCloudMessagingService.subscribeToTopics(['hospitalNews']);
+    } else {
+      await _firebaseCloudMessagingService
+          .unsubscribeFromTopics(['hospitalNews']);
     }
     Fluttertoast.showToast(msg: '設定を反映しました');
     ProtectorNotifier().disableProtector();
