@@ -72,6 +72,7 @@ class NotificationSettingController extends ControllerCore {
     );
   }
 
+  /// 通知設定を取得する関数
   Future<void> getUserNotification() async {
     _userNotification =
         await _userApi.getUserNotification(userId: UserData().user!.userId);
@@ -85,6 +86,7 @@ class NotificationSettingController extends ControllerCore {
     );
   }
 
+  /// 通知設定を更新する関数
   Future<void> putUserNotification() async {
     ProtectorNotifier().enableProtector();
     int res = await _userApi.putUserNotification(
@@ -113,6 +115,7 @@ class NotificationSettingController extends ControllerCore {
     ProtectorNotifier().disableProtector();
   }
 
+  /// 通知設定を登録する関数
   Future<void> postUserNotification() async {
     ProtectorNotifier().enableProtector();
     int res = await _userApi.postUserNotification(
@@ -141,6 +144,7 @@ class NotificationSettingController extends ControllerCore {
     ProtectorNotifier().disableProtector();
   }
 
+  /// 実際にSubscriptionの購読の有無を更新する関数
   Future<void> updateSubscription({
     required bool isSubscribed,
     required List<String> topics,
