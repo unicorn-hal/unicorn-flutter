@@ -1,4 +1,5 @@
 enum HealthCheckupDiseaseEnum {
+  goodHealth,
   highFever,
   badFeel,
   painfulChest,
@@ -9,6 +10,8 @@ enum HealthCheckupDiseaseEnum {
 class HealthCheckupDiseaseType {
   static HealthCheckupDiseaseEnum fromString(String value) {
     switch (value) {
+      case 'goodHealth':
+        return HealthCheckupDiseaseEnum.goodHealth;
       case 'highFever':
         return HealthCheckupDiseaseEnum.highFever;
       case 'badFeel':
@@ -26,6 +29,8 @@ class HealthCheckupDiseaseType {
 
   static String toStringValue(HealthCheckupDiseaseEnum value) {
     switch (value) {
+      case HealthCheckupDiseaseEnum.goodHealth:
+        return '健康';
       case HealthCheckupDiseaseEnum.highFever:
         return '高熱';
       case HealthCheckupDiseaseEnum.badFeel:

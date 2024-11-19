@@ -5,7 +5,7 @@ import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 
 class NormalCheckupController extends ControllerCore {
-  final BuildContext context;
+  BuildContext context;
   NormalCheckupController(this.context);
 
   // 質問の進行状態とポイントの管理

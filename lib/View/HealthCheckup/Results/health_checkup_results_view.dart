@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
+import 'package:unicorn_flutter/Controller/HealthCheckup/health_checkup_result.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
@@ -8,10 +9,17 @@ import '../../Component/CustomWidget/custom_scaffold.dart';
 
 class HealthCheckupResultsView extends StatelessWidget {
   HealthCheckupResultsView(
-      {super.key, required this.diseaseType, required this.healthPoint});
+      {super.key,
+      required this.diseaseType,
+      required this.healthPoint,
+      required this.bloodPressure,
+      required this.bodyTemperature});
 
   final HealthCheckupDiseaseEnum diseaseType;
   final int healthPoint;
+  final String bloodPressure;
+  final String bodyTemperature;
+
   // todo: 状態を5段階に分けたenumを作成し、それを元に表示を変える。
   final Color healthColor = Colors.blue;
   final String healthText = '放置すると危険な症状や病気があります。\n設定された住所にunicornを緊急要請しました。';
@@ -31,6 +39,13 @@ class HealthCheckupResultsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HealthCheckupResultController controller = HealthCheckupResultController(
+      context,
+      diseaseType,
+      healthPoint,
+      bloodPressure,
+      bodyTemperature,
+    );
     final Size size = MediaQuery.of(context).size;
     return CustomScaffold(
       isScrollable: true,
@@ -53,17 +68,17 @@ class HealthCheckupResultsView extends StatelessWidget {
                     SizedBox(
                       width: size.width,
                       height: 50,
-                      child: const Column(
+                      child: Column(
                         // todo: controllerから取得
                         children: [
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                 horizontal: 10,
                               ),
                               child: CustomText(
-                                text: '10/10(土)',
+                                text: controller.formattedDate,
                               ),
                             ),
                           ),

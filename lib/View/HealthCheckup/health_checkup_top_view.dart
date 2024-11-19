@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_result_enum.dart';
 import 'package:unicorn_flutter/Controller/HealthCheckup/health_checkup_top_contoller.dart';
 import 'package:unicorn_flutter/Model/Data/HealthCheckup/health_checkup_data.dart';
@@ -235,7 +236,12 @@ class HealthCheckupTopView extends ConsumerWidget {
                     items: [
                       HealthCheckButton(
                         onTap: () {
-                          const NormalCheckupRoute().push(context);
+                          const CheckupResultRoute(
+                                  $extra: HealthCheckupDiseaseEnum.badFeel,
+                                  healthPoint: 4,
+                                  bloodPressure: '145/63',
+                                  bodyTemperature: '36.5')
+                              .push(context);
                         },
                       ),
                       Stack(
