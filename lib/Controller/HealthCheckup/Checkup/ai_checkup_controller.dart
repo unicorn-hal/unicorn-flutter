@@ -1,15 +1,14 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Constants/Enum/chatgpt_role.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
-import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_chat.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_message.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_response.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/ChatGPT/chatgpt_service.dart';
 import 'package:unicorn_flutter/Service/Package/SpeechToText/speech_to_text_service.dart';
 import '../../../View/bottom_navigation_bar_view.dart';
@@ -75,14 +74,22 @@ class AiCheckupController extends ControllerCore {
     ProtectorNotifier().enableProtector();
     String? result = await getDiseaseEnumString();
     if (result == null) {
+      ProtectorNotifier().disableProtector();
       Fluttertoast.showToast(msg: '適切な回答をしてください');
       return;
     }
 
-    ProtectorNotifier()..disableProtector();
+    ProtectorNotifier().disableProtector();
 
-    CheckupProgressRoute($extra: ProgressViewEnum.bodyTemperature)
-        .push(context);
+    /// 音声認識結果を元に画面遷移
+    /// [$extra] はProgressViewEnumのbodyTemperatureを指定
+    /// [from] は遷移元のRouteを指定
+    /// [diseaseEnumString] は音声認識結果を指定
+    CheckupProgressRoute(
+      $extra: ProgressViewEnum.bodyTemperature,
+      from: Routes.healthCheckupAi,
+      diseaseEnumString: result,
+    ).push(context);
   }
 
   /// 認識した音声をChatGPTに送信してEnumを返す
@@ -126,6 +133,7 @@ class AiCheckupController extends ControllerCore {
 
   /// 音声認識の終了状態を変更する
   void changeFinish() {
+    _aiText.value = _aiTextDefault;
     finish = !finish;
   }
 

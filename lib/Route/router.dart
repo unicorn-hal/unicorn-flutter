@@ -239,13 +239,16 @@ class EmergencyRoute extends GoRouteData {
 class EmergencyProgressRoute extends GoRouteData {
   const EmergencyProgressRoute({
     required this.$extra,
+    required this.from,
   });
 
   final ProgressViewEnum $extra;
+  final String from;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => ProgressView(
         progressType: $extra,
+        from: from,
       );
 }
 
@@ -325,13 +328,19 @@ class NormalCheckupRoute extends GoRouteData {
 class CheckupProgressRoute extends GoRouteData {
   CheckupProgressRoute({
     required this.$extra,
+    required this.from,
+    required this.diseaseEnumString,
   });
 
   final ProgressViewEnum $extra;
+  final String diseaseEnumString;
+  final String from;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => ProgressView(
         progressType: $extra,
+        from: from,
+        diseaseEnumString: diseaseEnumString,
       );
 }
 

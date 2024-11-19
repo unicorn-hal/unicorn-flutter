@@ -124,8 +124,9 @@ class _AiCheckupViewState extends State<AiCheckupView> {
                                   child: CustomButton(
                                     text: '検診結果へ',
                                     onTap: () {
-                                      //controller.textValidate();
-                                      controller.navigateToCheckupResult();
+                                      if (controller.textValidate()) {
+                                        controller.navigateToCheckupResult();
+                                      }
                                     },
                                     isFilledColor: true,
                                   ),
