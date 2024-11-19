@@ -16,10 +16,10 @@ class ProgressCheckupController extends ControllerCore {
   final String diseaseEnumString;
   @override
   void initialize() {
-    delayEvent(from!);
+    _delayEvent(from!);
   }
 
-  Future<void> delayEvent(String from) async {
+  Future<void> _delayEvent(String from) async {
     await Future.delayed(const Duration(seconds: 3));
     if (from == Routes.healthCheckupProgress) {
       // todo: のり塩作業分があるので渡す直前まで記述、後で修正
