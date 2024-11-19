@@ -2,19 +2,19 @@ import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
 
 class UserRequest {
-  final String userId;
-  final String firstName;
-  final String lastName;
-  final String email;
-  final UserGenderEnum gender;
-  final DateTime birthDate;
-  final String address;
-  final String postalCode;
-  final String phoneNumber;
+  final String? userId;
+  final String? firstName;
+  final String? lastName;
+  final String? email;
+  final UserGenderEnum? gender;
+  final DateTime? birthDate;
+  final String? address;
+  final String? postalCode;
+  final String? phoneNumber;
   final String? iconImageUrl;
-  final double bodyHeight;
-  final double bodyWeight;
-  final String occupation;
+  final double? bodyHeight;
+  final double? bodyWeight;
+  final String? occupation;
 
   UserRequest({
     required this.userId,
