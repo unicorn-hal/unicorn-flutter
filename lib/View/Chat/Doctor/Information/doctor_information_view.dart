@@ -130,7 +130,7 @@ class DoctorInformationView extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           // todo: 通話予約画面へ遷移
-                          const ChatDoctorVoiceCallReserveRoute().push(context);
+                          ChatDoctorVoiceCallReserveRoute(doctor).push(context);
                         },
                         child: Container(
                           width: 160,

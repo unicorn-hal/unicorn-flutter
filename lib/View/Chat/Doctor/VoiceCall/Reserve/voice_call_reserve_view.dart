@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_reserve_controller.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
@@ -7,14 +8,22 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
+import '../../../../../Model/Entity/Doctor/doctor.dart';
+
 class VoiceCallReserveView extends StatefulWidget {
-  const VoiceCallReserveView({super.key});
+  const VoiceCallReserveView({
+    super.key,
+    required this.doctor,
+  });
+
+  final Doctor doctor;
 
   @override
   State<VoiceCallReserveView> createState() => _VoiceCallReserveViewState();
 }
 
 class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
+  late VoiceCallReserveController controller;
   // todo: controllerへ移植する
   final String doctorName = '長谷川';
 
@@ -24,6 +33,11 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
 
   DateTime selectedDate = DateTime.now();
   DateTime selectedTime = DateTime.now();
+  @override
+  void initState() {
+    super.initState();
+    controller = VoiceCallReserveController(widget.doctor.doctorId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +63,8 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomText(
-                        text: '"$doctorName先生"',
+                        text:
+                            '"${widget.doctor.lastName + widget.doctor.firstName}先生"',
                         fontSize: 30,
                       ),
                       const CustomText(
@@ -88,7 +103,8 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                       vertical: 8.0,
                       horizontal: 16.0,
                     ),
-                    child: CustomText(text: 'チャット: $chatSupportHours'),
+                    child: CustomText(
+                        text: 'チャット: ${widget.doctor.chatSupportHours}'),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -96,7 +112,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                       horizontal: 16.0,
                     ),
                     child: CustomText(
-                      text: '通話: $callSupportHours',
+                      text: '通話: ${widget.doctor.callSupportHours}',
                     ),
                   ),
                 ],
@@ -196,6 +212,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                     selectedTime.minute,
                   );
                   Log.echo('reserveDateTime: $reserveDateTime');
+                  controller.reserveCall();
                 },
                 child: Center(
                   child: Container(
