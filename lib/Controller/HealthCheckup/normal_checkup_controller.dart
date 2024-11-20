@@ -8,100 +8,137 @@ class NormalCheckupController extends ControllerCore {
   BuildContext context;
   NormalCheckupController(this.context);
 
-  // 質問の進行状態とポイントの管理
-  int questionCount = 0;
-  int healthPoint = 0;
+  int _questionCount = 0;
+  int _healthPoint = 0;
+  List<String> _checkupName = [];
+  double _progressValue = 0.0;
+  String _progressText = '0%';
 
-  // チェックアップ情報
-  String checkupTitle = '';
-  List<String> checkupName = [];
-  List<bool> checkupValue = [];
+  late String _checkupTitle;
+  late List<bool> _checkupValue;
+  late HealthCheckupDiseaseEnum _diseaseType;
 
-  // プログレス状態
-  double progressValue = 0.0;
-  String progressText = '0%';
-
-  late HealthCheckupDiseaseEnum diseaseType;
-
+  /// 初期化
   @override
   void initialize() {
-    print('Controller Init');
     loadQuestionData();
   }
 
   /// 質問データの読み込み
   void loadQuestionData() {
-    checkupTitle = HealthCheckupQuestionData.questions[questionCount].question;
-    loadQuestionOptions();
-    initializeAnswerOptions();
+    _checkupTitle = loadQuestionTitle();
+    _checkupName = loadQuestionOptions();
+    _checkupValue = initializeAnswerOptions();
   }
 
   /// 選択肢データの読み込み
-  void loadQuestionOptions() {
-    checkupName.clear();
-    final currentQuestion = HealthCheckupQuestionData.questions[questionCount];
+  List<String> loadQuestionOptions() {
+    /// 選択肢の初期化
+    _checkupName.clear();
+
+    /// 現在の質問を取得
+    final currentQuestion = HealthCheckupQuestionData.questions[_questionCount];
+
+    /// メイン質問かどうかで分岐
+    /// メイン質問の場合は病気タイプを取得
+    /// それ以外は回答を取得
     if (currentQuestion.isMainQuestion) {
-      checkupName = currentQuestion.diseaseType!
+      _checkupName = currentQuestion.diseaseType!
           .map((type) => HealthCheckupDiseaseType.toStringValue(type))
           .toList();
     } else {
-      checkupName =
+      _checkupName =
           currentQuestion.answers!.map((answer) => answer.answer).toList();
     }
-    print("Options: $checkupName");
+    return _checkupName;
   }
+
+  List<String> get checkupName => _checkupName;
+
+  /// 質問データの読み込み
+  String loadQuestionTitle() {
+    final currentQuestion = HealthCheckupQuestionData.questions[_questionCount];
+    return currentQuestion.question;
+  }
+
+  String get checkupTitle => _checkupTitle;
 
   /// 回答オプションの初期化
-  void initializeAnswerOptions() {
-    checkupValue = List.filled(checkupName.length, false);
+  List<bool> initializeAnswerOptions() {
+    return _checkupValue = List.filled(_checkupName.length, false);
   }
 
-  /// チェックボックスの選択を更新（ラジオボタンのように一つだけを選択）
-  void updateCheckupValue(int selectedIndex) {
-    for (int i = 0; i < checkupValue.length; i++) {
-      checkupValue[i] = (i == selectedIndex);
-    }
-  }
-
-  /// プログレスバーの更新
-  void updateProgressValue() {
-    progressValue += 0.1;
-    progressText = '${(progressValue * 100).toStringAsFixed(0)}%';
-  }
-
-  /// 選択したインデックスから病気タイプを取得
-  void getDiseaseType(int selectedIndex) {
-    diseaseType = HealthCheckupQuestionData
-        .questions[questionCount].diseaseType![selectedIndex];
-  }
-
-  /// 健康ポイントを更新
-  void updateHealthPoint(int selectedIndex) {
-    print('SHISHI');
-    healthPoint += HealthCheckupQuestionData
-        .questions[questionCount].answers![selectedIndex].healthPoint;
-  }
+  List<bool> get checkupValue => _checkupValue;
 
   /// 次の質問に移動
+  /// [selectedIndex] 選択されたインデックス
   void nextQuestion(int selectedIndex) {
-    if (questionCount >= HealthCheckupQuestionData.questions.length - 1) {
-      // 質問が終わったら結果画面へ移動
-      CheckupProgressRoute($extra: diseaseType, healthPoint: healthPoint)
+    if (_questionCount >= HealthCheckupQuestionData.questions.length - 1) {
+      /// 質問が終わったら結果画面へ移動
+      /// todo: bloodPressureとbodyTemperatureは仮の値
+      CheckupResultRoute(
+              $extra: _diseaseType,
+              healthPoint: _healthPoint,
+              bloodPressure: '145/63',
+              bodyTemperature: '36.5')
           .push(context);
       return;
     }
-    print("Question Count: $questionCount");
 
-    if (HealthCheckupQuestionData.questions[questionCount].isMainQuestion) {
-      getDiseaseType(selectedIndex);
-      print("Disease Type: $diseaseType");
+    /// メイン質問かどうかで分岐
+    /// メイン質問の場合は病気タイプを取得
+    /// それ以外は健康ポイントを取得
+    if (HealthCheckupQuestionData.questions[_questionCount].isMainQuestion) {
+      _diseaseType = getDiseaseType(selectedIndex);
     } else {
-      updateHealthPoint(selectedIndex);
-      print("Health Point: $healthPoint");
+      _healthPoint = updateHealthPoint(selectedIndex);
     }
 
-    questionCount++;
+    _questionCount++;
     loadQuestionData();
-    updateProgressValue();
+    _progressText = updateProgressText();
+  }
+
+  /// 健康ポイントを更新
+  /// [selectedIndex] 選択されたインデックス
+  int updateHealthPoint(int selectedIndex) {
+    /// 選択されたインデックスの健康ポイントを取得
+    return _healthPoint += HealthCheckupQuestionData
+        .questions[_questionCount].answers![selectedIndex].healthPoint;
+  }
+
+  int get healthPoint => _healthPoint;
+
+  /// 選択したインデックスから病気タイプを取得
+  /// [selectedIndex] 選択されたインデックス
+  HealthCheckupDiseaseEnum getDiseaseType(int selectedIndex) {
+    /// 選択されたインデックスの病気タイプを取得
+    return _diseaseType = HealthCheckupQuestionData
+        .questions[_questionCount].diseaseType![selectedIndex];
+  }
+
+  HealthCheckupDiseaseEnum get diseaseType => _diseaseType;
+
+  /// プログレスバーの更新
+  String updateProgressText() {
+    _progressValue = updateProgressValue();
+    return _progressText = '${(_progressValue * 100).toStringAsFixed(0)}%';
+  }
+
+  /// プログレスバーの値を更新
+  double updateProgressValue() {
+    return _progressValue += 0.1;
+  }
+
+  double get progressValue => _progressValue;
+
+  String get progressText => _progressText;
+
+  /// チェックボックスの選択を更新（ラジオボタンのように一つだけを選択）
+  /// [selectedIndex] 選択されたインデックス]
+  void updateCheckupValue(int selectedIndex) {
+    for (int i = 0; i < _checkupValue.length; i++) {
+      _checkupValue[i] = (i == selectedIndex);
+    }
   }
 }

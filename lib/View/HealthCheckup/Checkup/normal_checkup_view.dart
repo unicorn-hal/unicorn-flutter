@@ -17,18 +17,8 @@ class NormalCheckupView extends StatefulWidget {
 class _NormalCheckupViewState extends State<NormalCheckupView> {
   late NormalCheckupController controller;
 
-  /// todo: 検診項目をListでもらう
-  late String checkupTitle;
-  late List<String> checkupName;
-  late List<bool> checkupValue;
   late int selectedIndex;
-  // 進捗バーの値　0.0~1.0
-  late double progressValue = 0;
-
   bool isSelected = false;
-
-  //double型の値をパーセントに変換する
-  String get progressText => '${(progressValue * 100).toStringAsFixed(0)}%';
 
   @override
   void initState() {
@@ -78,8 +68,6 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
                 ),
               ),
 
-              /// 検診項目の表示部
-              /// todo: 検診項部分を動的に変更したい
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(

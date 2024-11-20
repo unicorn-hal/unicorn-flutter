@@ -9,6 +9,7 @@ class HealthCheckupQuestionData {
         question: '現在、体に違和感がありますか？',
         isMainQuestion: true,
         diseaseType: [
+          HealthCheckupDiseaseEnum.goodHealth,
           HealthCheckupDiseaseEnum.highFever,
           HealthCheckupDiseaseEnum.badFeel,
           HealthCheckupDiseaseEnum.painfulChest,
@@ -143,7 +144,7 @@ class HealthCheckupQuestionData {
           ),
           HealthCheckupAnswer(
             answer: 'ジャンクフード中心の食事',
-            healthPoint: 4,
+            healthPoint: 3,
           ),
         ]),
     HealthCheckupQuestion(

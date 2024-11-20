@@ -39,4 +39,10 @@ class Strings {
       '血圧が平均値から外れています。体調が優れない場合は医師との通話やAIチャットを利用してください。';
   static const String HEALTH_CHECKUP_RESULT_DESCRIPTION_DANGER =
       '体温・血圧ともに平均値から外れています。緊急時は医師との通話やAIチャットを利用してください。';
+  static const String HEALTH_CHECKUP_RESULT_RISK_LEVEL_LOW =
+      '特に大きな問題はありませんが、\n日頃の健康管理を心掛けてください。';
+  static const String HEALTH_CHECKUP_RESULT_RISK_LEVEL_MEDIUM =
+      '注意が必要な症状が見られます。症状が続く場合は\n医師との通話やAIチャットを利用してください。';
+  static const String HEALTH_CHECKUP_RESULT_RISK_LEVEL_HIGH =
+      '放置すると危険な症状や病気があります。\n今すぐunicornを要請してください';
 }

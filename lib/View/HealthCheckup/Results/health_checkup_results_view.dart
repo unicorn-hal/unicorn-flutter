@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
-import 'package:unicorn_flutter/Controller/HealthCheckup/health_checkup_result.dart';
+import 'package:unicorn_flutter/Controller/HealthCheckup/health_checkup_result_controller.dart';
+import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Service/Package/UrlLauncher/url_launcher_service.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
-import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 import '../../Component/CustomWidget/custom_scaffold.dart';
 
 class HealthCheckupResultsView extends StatelessWidget {
-  HealthCheckupResultsView(
+  const HealthCheckupResultsView(
       {super.key,
       required this.diseaseType,
       required this.healthPoint,
@@ -19,23 +21,6 @@ class HealthCheckupResultsView extends StatelessWidget {
   final int healthPoint;
   final String bloodPressure;
   final String bodyTemperature;
-
-  // todo: 状態を5段階に分けたenumを作成し、それを元に表示を変える。
-  final Color healthColor = Colors.blue;
-  final String healthText = '放置すると危険な症状や病気があります。\n設定された住所にunicornを緊急要請しました。';
-  final List<String> sicks = [
-    '頭痛の症状持続時間(1週間超)',
-    '頭痛の出現時期',
-    '頭痛の程度(日常生活に支障が出るレベル)',
-  ];
-  // todo: 病気のリストを取得する
-  final List<String> diseases = [
-    '脳腫瘍',
-    '脳梗塞',
-    '脳出血',
-    '脳炎',
-    '脳脊髄液減少症',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +46,7 @@ class HealthCheckupResultsView extends StatelessWidget {
               child: Container(
                 width: size.width,
                 height: 300,
-                color: healthColor.withOpacity(0.5),
+                color: controller.healthColor.withOpacity(0.5),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -85,10 +70,19 @@ class HealthCheckupResultsView extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              CustomText(
-                                text: 'のりた しおき',
-                              ),
-                              CustomText(
+                              FutureBuilder(
+                                  future: controller.getUserName(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return CustomText(
+                                        text: snapshot.data!,
+                                        fontSize: 14,
+                                      );
+                                    } else {
+                                      return const SizedBox();
+                                    }
+                                  }),
+                              const CustomText(
                                 text: 'さんの検診結果',
                                 fontSize: 14,
                               ),
@@ -108,14 +102,13 @@ class HealthCheckupResultsView extends StatelessWidget {
                           child: Container(
                             height: 80,
                             decoration: BoxDecoration(
-                              color: healthColor,
+                              color: controller.healthColor,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             // todo: 症状によって文言を変えるor段階を５段階とかに分けてenumから表示する。
-                            child: const Center(
+                            child: Center(
                               child: CustomText(
-                                text:
-                                    '放置すると危険な症状や病気があります。\n設定された住所にunicornを緊急要請しました。',
+                                text: controller.healthText,
                                 color: Colors.white,
                                 fontSize: 14,
                               ),
@@ -124,13 +117,15 @@ class HealthCheckupResultsView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
-                      child: SpacerAndDivider(
-                        topHeight: 10,
-                        bottomHeight: 10,
-                      ),
-                    ),
+                    Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: CustomButton(
+                          text: 'unicorn要請',
+                          onTap: () {
+                            const EmergencyRoute().push(context);
+                          },
+                          primaryColor: Colors.red,
+                        )),
                     SizedBox(
                       width: size.width * 0.9,
                       height: 100,
@@ -152,10 +147,10 @@ class HealthCheckupResultsView extends StatelessWidget {
                             child: ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              itemCount: sicks.length,
+                              itemCount: controller.diseaseTextList.length,
                               itemBuilder: (context, index) {
                                 return CustomText(
-                                  text: '・${sicks[index]}',
+                                  text: '・${controller.diseaseTextList[index]}',
                                   fontSize: 12,
                                 );
                               },
@@ -186,14 +181,14 @@ class HealthCheckupResultsView extends StatelessWidget {
                 minHeight: 100,
               ),
               child: ListView.builder(
-                itemCount: diseases.length,
+                itemCount: controller.diseaseExampleNameList.length,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      //todo: ここは簡単に病気名を検索するみたいな遷移(外部)
-                      //例) https://ja.wikipedia.org/wiki/病気名
+                      UrlLauncherService().launchUrl(
+                          'https://ja.wikipedia.org/wiki/${controller.diseaseExampleNameList[index]}');
                     },
                     child: Center(
                       child: Padding(
@@ -215,7 +210,8 @@ class HealthCheckupResultsView extends StatelessWidget {
                                   horizontal: 16.0,
                                 ),
                                 child: CustomText(
-                                  text: diseases[index],
+                                  text:
+                                      controller.diseaseExampleNameList[index],
                                 ),
                               ),
                               const Padding(
