@@ -37,7 +37,6 @@ class HealthCheckupResultsView extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            /// 検診結果を表示する部分
             Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 20,
@@ -54,7 +53,6 @@ class HealthCheckupResultsView extends StatelessWidget {
                       width: size.width,
                       height: 50,
                       child: Column(
-                        // todo: controllerから取得
                         children: [
                           Align(
                             alignment: Alignment.centerLeft,
@@ -105,7 +103,6 @@ class HealthCheckupResultsView extends StatelessWidget {
                               color: controller.healthColor,
                               borderRadius: BorderRadius.circular(20),
                             ),
-                            // todo: 症状によって文言を変えるor段階を５段階とかに分けてenumから表示する。
                             child: Center(
                               child: CustomText(
                                 text: controller.healthText,
@@ -142,8 +139,6 @@ class HealthCheckupResultsView extends StatelessWidget {
                           ),
                           SizedBox(
                             height: 70,
-
-                            ///　最大でも3つくらいまでにする→多すぎると見づらい
                             child: ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -163,8 +158,6 @@ class HealthCheckupResultsView extends StatelessWidget {
                 ),
               ),
             ),
-
-            /// 関連する病気を表示する部分
             const Align(
               alignment: Alignment.centerLeft,
               child: Padding(
