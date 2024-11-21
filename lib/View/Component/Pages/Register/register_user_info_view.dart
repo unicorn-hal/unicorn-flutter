@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_user_info_controller.dart';
-import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
-import 'package:unicorn_flutter/Model/Entity/User/user_info.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
@@ -10,8 +9,8 @@ import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class RegisterUserInfoView extends StatefulWidget {
-  const RegisterUserInfoView({super.key, this.addressInfo});
-  final AddressInfo? addressInfo;
+  const RegisterUserInfoView({super.key, this.userRequest});
+  final UserRequest? userRequest;
 
   @override
   State<RegisterUserInfoView> createState() => _RegisterUserInfoViewState();
@@ -157,8 +156,8 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                 ),
                 GestureDetector(
                   onTap: () async {
-                    UserInfo? userInfo = await _controller.submit();
-                    if (userInfo == null) {
+                    UserRequest? userRequest = await _controller.submit();
+                    if (userRequest == null) {
                       return;
                     }
                     // todo: 次のViewができ次第ルーティングします。

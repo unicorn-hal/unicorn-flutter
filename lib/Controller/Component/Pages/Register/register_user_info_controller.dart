@@ -6,7 +6,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_info.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudStorage/cloud_storage_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/Service/Package/ImageUtils/image_utils_service.dart';
@@ -23,6 +25,8 @@ class RegisterUserInfoController extends ControllerCore {
   final TextEditingController emailTextController = TextEditingController();
   final TextEditingController occupationTextController =
       TextEditingController();
+
+  UserData userData = UserData();
 
   File? _imageFile;
   Image? _image;
@@ -65,7 +69,7 @@ class RegisterUserInfoController extends ControllerCore {
     return null;
   }
 
-  Future<UserInfo?> submit() async {
+  Future<UserRequest?> submit() async {
     String? iconImageUrl;
     if (_imageFile != null) {
       iconImageUrl = await _uploadImage();
@@ -75,6 +79,7 @@ class RegisterUserInfoController extends ControllerCore {
       return null;
     }
 
+    // todo: 編集処理でき次第、修正加えます。
     UserInfo userInfo = UserInfo(
       iconImageUrl: iconImageUrl,
       phoneNumber: phoneNumberTextController.text,
@@ -82,7 +87,14 @@ class RegisterUserInfoController extends ControllerCore {
       occupation: occupationTextController.text,
     );
 
-    return userInfo;
+    UserRequest userRequest = UserRequest(
+      iconImageUrl: userInfo.iconImageUrl,
+      phoneNumber: userInfo.phoneNumber,
+      email: userInfo.email,
+      occupation: userInfo.occupation,
+    );
+
+    return userRequest;
   }
 
   bool validateField() {
