@@ -6,7 +6,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
-import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_info.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudStorage/cloud_storage_service.dart';
@@ -69,7 +68,7 @@ class RegisterUserInfoController extends ControllerCore {
     return null;
   }
 
-  Future<UserRequest?> submit() async {
+  Future<UserRequest?> submit(UserRequest userRequest) async {
     String? iconImageUrl;
     if (_imageFile != null) {
       iconImageUrl = await _uploadImage();
@@ -87,12 +86,11 @@ class RegisterUserInfoController extends ControllerCore {
       occupation: occupationTextController.text,
     );
 
-    UserRequest userRequest = UserRequest(
-      iconImageUrl: userInfo.iconImageUrl,
-      phoneNumber: userInfo.phoneNumber,
-      email: userInfo.email,
-      occupation: userInfo.occupation,
-    );
+    userRequest.userId = UserData().user!.userId;
+    userRequest.iconImageUrl = userInfo.iconImageUrl;
+    userRequest.phoneNumber = userInfo.phoneNumber;
+    userRequest.email = userInfo.email;
+    userRequest.occupation = userInfo.occupation;
 
     return userRequest;
   }

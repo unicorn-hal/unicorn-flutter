@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_user_info_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
+import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
@@ -156,10 +157,12 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                 ),
                 GestureDetector(
                   onTap: () async {
-                    UserRequest? userRequest = await _controller.submit();
+                    UserRequest? userRequest =
+                        await _controller.submit(widget.userRequest!);
                     if (userRequest == null) {
                       return;
                     }
+                    await UserApi().postUser(body: userRequest);
                     // todo: 次のViewができ次第ルーティングします。
                   },
                   child: Align(
