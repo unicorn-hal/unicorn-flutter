@@ -82,11 +82,8 @@ class AiCheckupController extends ControllerCore {
     /// [$extra] はProgressViewEnumのbodyTemperatureを指定
     /// [from] は遷移元のRouteを指定
     /// [diseaseEnumString] は音声認識結果を指定
-    CheckupProgressRoute(
-      $extra: ProgressViewEnum.bodyTemperature,
-      from: Routes.healthCheckupAi,
-      diseaseEnumString: result,
-    ).push(context);
+    ProgressRoute(from: Routes.healthCheckupAi, diseaseEnumString: result)
+        .go(context);
   }
 
   /// 認識した音声をChatGPTに送信してEnumを返す
