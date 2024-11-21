@@ -68,7 +68,7 @@ class DoctorInformationView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       CustomText(
-                        text: doctor.firstName + doctor.lastName,
+                        text: doctor.lastName + doctor.firstName,
                         fontSize: 26,
                       ),
                       const CustomText(
@@ -88,7 +88,7 @@ class DoctorInformationView extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           final String doctorName =
-                              doctor.firstName + doctor.lastName;
+                              doctor.lastName + doctor.firstName;
                           // todo: チャット画面へ遷移
                           ChatDoctorTextChatRoute(doctorId, doctorName)
                               .push(context);

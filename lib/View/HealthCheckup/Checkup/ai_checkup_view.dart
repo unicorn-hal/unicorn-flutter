@@ -31,7 +31,7 @@ class AiCheckupView extends StatelessWidget {
                     CircleAvatar(
                       radius: size.width * 0.15,
                       backgroundColor: Colors.white,
-                      child: Assets.images.icons.aiIcon.image(),
+                      child: Assets.images.icons.uniIcon.image(),
                     ),
                     const Padding(
                       padding: EdgeInsets.all(8.0),
