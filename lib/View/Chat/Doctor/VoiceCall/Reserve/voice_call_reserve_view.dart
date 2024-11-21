@@ -27,7 +27,8 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
   @override
   void initState() {
     super.initState();
-    controller = VoiceCallReserveController(widget.doctor.doctorId);
+    controller = VoiceCallReserveController(context, widget.doctor.doctorId,
+        widget.doctor.lastName + widget.doctor.firstName);
   }
 
   @override
