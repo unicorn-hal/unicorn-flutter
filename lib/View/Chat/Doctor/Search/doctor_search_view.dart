@@ -304,7 +304,7 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                                 ChatDoctorInformationRoute(doctor.doctorId)
                                     .push(context);
                               },
-                              userName: doctor.lastName + doctor.firstName,
+                              userName: doctor.firstName + doctor.lastName,
                               description:
                                   '病院: ${doctor.hospital.hospitalName} 診療科: ${doctor.departments.map((e) => e.departmentName).join(',')}',
                             ),

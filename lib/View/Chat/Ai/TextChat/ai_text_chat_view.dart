@@ -72,7 +72,7 @@ class _AiTextChatViewState extends State<AiTextChatView> {
                             radius: 40,
                             backgroundColor: ColorName.mainColor,
                             backgroundImage: AssetImage(
-                              Assets.images.icons.uniIcon.path,
+                              Assets.images.icons.aiIcon.path,
                             ),
                           ),
                         ),
