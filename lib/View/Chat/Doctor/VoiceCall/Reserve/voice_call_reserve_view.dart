@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_reserve_controller.dart';
-import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -24,15 +23,7 @@ class VoiceCallReserveView extends StatefulWidget {
 
 class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
   late VoiceCallReserveController controller;
-  // todo: controllerへ移植する
-  final String doctorName = '長谷川';
 
-  final String chatSupportHours = '平日9:00~12:00';
-
-  final String callSupportHours = '平日14:00~22:00';
-
-  DateTime selectedDate = DateTime.now();
-  DateTime selectedTime = DateTime.now();
   @override
   void initState() {
     super.initState();
@@ -149,7 +140,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                             child: CustomDrumRoll(
                               drumRollType: DrumRollType.date,
                               onConfirm: (DateTime date) {
-                                selectedDate = date;
+                                controller.changeDate(date);
                                 setState(() {});
                               },
                               minDate: DateTime.now(),
@@ -182,7 +173,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                             child: CustomDrumRoll(
                               drumRollType: DrumRollType.time,
                               onConfirm: (DateTime time) {
-                                selectedTime = time;
+                                controller.changeTime(time);
                                 setState(() {});
                               },
                               splitMinute: 5,
@@ -203,15 +194,6 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
               height: 200,
               child: GestureDetector(
                 onTap: () {
-                  // todo: 予約処理 > controllerへ移植する
-                  DateTime reserveDateTime = DateTime(
-                    selectedDate.year,
-                    selectedDate.month,
-                    selectedDate.day,
-                    selectedTime.hour,
-                    selectedTime.minute,
-                  );
-                  Log.echo('reserveDateTime: $reserveDateTime');
                   controller.reserveCall();
                 },
                 child: Center(
