@@ -95,9 +95,10 @@ class AiCheckupController extends ControllerCore {
       role: ChatGPTRole.user,
       content: '''
       **重要**
-      下記に健康診断の音声認識結果を入力するので、症状を推測してhighFever,badFeel,painfulChest,painfulStomach,painfulHead,のいずれか1つを答えてください。
-      回答に解説は含めないでください。5つの選択肢のうち、最も適切なものを選択してください。
-      
+      下記に健康診断の音声認識結果を入力するので、症状を推測してgoodHealth,highFever,badFeel,painfulChest,painfulStomach,painfulHead,のいずれか1つを答えてください。
+      回答に解説は含めないでください。6つの選択肢のうち、最も適切なものを選択してください。
+
+      # goodHealthは健康という意味です。特に症状がない場合に選択してください。
       # highFeverは高熱という意味です。体温が高い場合や、熱が出ている場合に選択してください。
       # badFeelは体調が悪いという意味です。体調が悪い場合に選択してください。
       # painfulChestは胸が痛いという意味です。胸に関する内容がある場合に選択してください。
@@ -117,7 +118,8 @@ class AiCheckupController extends ControllerCore {
     }
 
     // 返答が規定のものでなければnullを返す
-    if (response.message.content != 'highFever' &&
+    if (response.message.content != 'goodHealth' &&
+        response.message.content != 'highFever' &&
         response.message.content != 'badFeel' &&
         response.message.content != 'painfulChest' &&
         response.message.content != 'painfulStomach' &&
