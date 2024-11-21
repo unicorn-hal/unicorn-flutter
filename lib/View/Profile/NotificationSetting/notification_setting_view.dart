@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:unicorn_flutter/Controller/Profile/NotificationSetting/notification_setting_controller.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
 
 class NotificationSettingView extends StatefulWidget {
-  const NotificationSettingView({super.key});
+  const NotificationSettingView({
+    super.key,
+    this.userNotification,
+  });
+  final UserNotification? userNotification;
 
   @override
   State<NotificationSettingView> createState() =>

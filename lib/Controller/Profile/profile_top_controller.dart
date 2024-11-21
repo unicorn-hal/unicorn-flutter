@@ -1,11 +1,19 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Profile/profile_detail.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 class ProfileTopController extends ControllerCore {
   /// Serviceのインスタンス化
+  UserApi get _userApi => UserApi();
 
   /// コンストラクタ
   ProfileTopController(
@@ -15,6 +23,7 @@ class ProfileTopController extends ControllerCore {
 
   /// 変数の定義
   late List<ProfileDetail> _cellData;
+  UserNotification? _userNotification;
 
   /// initialize()
   @override
@@ -43,8 +52,12 @@ class ProfileTopController extends ControllerCore {
       ProfileDetail(
         title: '通知設定',
         icon: Icons.notifications,
-        onTap: () {
+        onTap: () async {
           ProtectorNotifier().enableProtector();
+          await getUserNotification();
+          if (_userNotification == null) {
+            return;
+          }
           const ProfileNotificationSettingRoute().push(context);
         },
       ),
@@ -63,6 +76,15 @@ class ProfileTopController extends ControllerCore {
           icon: Icons.manage_accounts,
           onTap: () => const ProfileRegisterUserInfoRoute().push(context)),
     ];
+  }
+
+  /// 通知設定を取得する関数
+  Future<void> getUserNotification() async {
+    _userNotification =
+        await _userApi.getUserNotification(userId: UserData().user!.userId);
+    if (_userNotification == null) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+    }
   }
 
   /// 各関数の実装
