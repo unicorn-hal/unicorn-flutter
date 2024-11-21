@@ -108,7 +108,7 @@ class _AiCheckupViewState extends State<AiCheckupView> {
                                   child: CustomButton(
                                     text: 'もう一度',
                                     onTap: () {
-                                      controller.changeFinish();
+                                      controller.resetRecording();
                                       setState(() {});
                                     },
                                   ),

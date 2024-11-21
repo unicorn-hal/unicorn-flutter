@@ -128,10 +128,10 @@ class AiCheckupController extends ControllerCore {
     return response.message.content;
   }
 
-  /// 音声認識の終了状態を変更する
-  void changeFinish() {
+  /// 音声認識の終了状態を初期値に戻す
+  void resetRecording() {
     _aiText.value = _aiTextDefault;
-    _isDone = !_isDone;
+    _isDone = false;
   }
 
   /// 音声認識結果のバリデート
