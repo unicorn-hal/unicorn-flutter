@@ -238,7 +238,8 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    UserRequest? userRequest = controller.submit();
+                    UserRequest? userRequest =
+                        controller.submit(widget.userRequest!);
                     if (userRequest == null) {
                       return;
                     }

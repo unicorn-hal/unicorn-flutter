@@ -122,7 +122,7 @@ class RegisterAddressInfoController extends ControllerCore {
     await updateMapPinPosition();
   }
 
-  UserRequest? submit() {
+  UserRequest? submit(UserRequest userRequest) {
     if (validateField() == false) {
       return null;
     }
@@ -135,10 +135,10 @@ class RegisterAddressInfoController extends ControllerCore {
       addressDetail: addressDetailTextController.text,
     );
 
-    UserRequest userRequest = UserRequest(
-        postalCode: addressInfo.postalCode,
-        address:
-            "${addressInfo.prefectures} ${addressInfo.municipalities} ${addressInfo.addressDetail}");
+    userRequest.postalCode = addressInfo.postalCode;
+    userRequest.address =
+        "${addressInfo.prefectures}${addressInfo.municipalities}${addressInfo.addressDetail}";
+
     return userRequest;
   }
 
