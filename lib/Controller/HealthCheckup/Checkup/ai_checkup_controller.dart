@@ -78,10 +78,6 @@ class AiCheckupController extends ControllerCore {
 
     ProtectorNotifier().disableProtector();
 
-    /// 音声認識結果を元に画面遷移
-    /// [$extra] はProgressViewEnumのbodyTemperatureを指定
-    /// [from] は遷移元のRouteを指定
-    /// [diseaseEnumString] は音声認識結果を指定
     ProgressRoute(from: Routes.healthCheckupAi, diseaseEnumString: result)
         .go(context);
   }
