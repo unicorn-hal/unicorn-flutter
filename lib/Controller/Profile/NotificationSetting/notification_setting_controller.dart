@@ -42,34 +42,28 @@ class NotificationSettingController extends ControllerCore {
       _formatedUserNotification;
 
   void setMedicineNotificationValue(bool value) {
-    _formatedUserNotification = ValueNotifier(
-      UserNotification(
-        isHospitalNews: _formatedUserNotification.value.isHospitalNews,
-        isMedicineReminder: value,
-        isRegularHealthCheckup:
-            _formatedUserNotification.value.isRegularHealthCheckup,
-      ),
+    _formatedUserNotification.value = UserNotification(
+      isHospitalNews: _formatedUserNotification.value.isHospitalNews,
+      isMedicineReminder: value,
+      isRegularHealthCheckup:
+          _formatedUserNotification.value.isRegularHealthCheckup,
     );
   }
 
   void setHealthCheckupValue(bool value) {
-    _formatedUserNotification = ValueNotifier(
-      UserNotification(
-        isHospitalNews: _formatedUserNotification.value.isHospitalNews,
-        isMedicineReminder: _formatedUserNotification.value.isMedicineReminder,
-        isRegularHealthCheckup: value,
-      ),
+    _formatedUserNotification.value = UserNotification(
+      isHospitalNews: _formatedUserNotification.value.isHospitalNews,
+      isMedicineReminder: _formatedUserNotification.value.isMedicineReminder,
+      isRegularHealthCheckup: value,
     );
   }
 
   void setHospitalNotificationValue(bool value) {
-    _formatedUserNotification = ValueNotifier(
-      UserNotification(
-        isHospitalNews: value,
-        isMedicineReminder: _formatedUserNotification.value.isMedicineReminder,
-        isRegularHealthCheckup:
-            _formatedUserNotification.value.isRegularHealthCheckup,
-      ),
+    _formatedUserNotification.value = UserNotification(
+      isHospitalNews: value,
+      isMedicineReminder: _formatedUserNotification.value.isMedicineReminder,
+      isRegularHealthCheckup:
+          _formatedUserNotification.value.isRegularHealthCheckup,
     );
   }
 
