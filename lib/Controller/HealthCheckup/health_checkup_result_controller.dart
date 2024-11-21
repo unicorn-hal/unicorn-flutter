@@ -3,9 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/Enum/day_of_week_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_risk_level_enum.dart';
-import 'package:unicorn_flutter/Constants/disease_example_name_list.dart';
-import 'package:unicorn_flutter/Constants/disease_text_list.dart';
-import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
@@ -89,20 +86,8 @@ class HealthCheckupResultController extends ControllerCore {
 
   /// 健康リスクレベルに応じたテキストとカラーを設定
   void setHealthRiskLevelView(HealthRiskLevelEnum healthRiskLevel) {
-    switch (healthRiskLevel) {
-      case HealthRiskLevelEnum.high:
-        _healthText = Strings.HEALTH_CHECKUP_RESULT_RISK_LEVEL_HIGH;
-        _healthColor = Colors.red;
-        break;
-      case HealthRiskLevelEnum.medium:
-        _healthText = Strings.HEALTH_CHECKUP_RESULT_RISK_LEVEL_MEDIUM;
-        _healthColor = Colors.orange;
-        break;
-      case HealthRiskLevelEnum.low:
-        _healthText = Strings.HEALTH_CHECKUP_RESULT_RISK_LEVEL_LOW;
-        _healthColor = Colors.blue;
-        break;
-    }
+    _healthText = HealthRiskLevelType.getHealthRiskLevelString(healthRiskLevel);
+    _healthColor = HealthRiskLevelType.getHealthRiskLevelColor(healthRiskLevel);
   }
 
   Color get healthColor => _healthColor;
@@ -111,37 +96,9 @@ class HealthCheckupResultController extends ControllerCore {
 
   /// 疾患タイプに応じたテキストリストと疾患例名リストを設定
   void setDiseaseTypeView(HealthCheckupDiseaseEnum diseaseType) {
-    switch (diseaseType) {
-      case HealthCheckupDiseaseEnum.goodHealth:
-        _diseaseTextList = DiseaseTextList.goodHealthTextList;
-        _diseaseExampleNameList =
-            DiseaseExampleNameList.goodHealthExampleNameList;
-        break;
-      case HealthCheckupDiseaseEnum.highFever:
-        _diseaseTextList = DiseaseTextList.highFeverTextList;
-        _diseaseExampleNameList =
-            DiseaseExampleNameList.highFeverExampleNameList;
-        break;
-      case HealthCheckupDiseaseEnum.badFeel:
-        _diseaseTextList = DiseaseTextList.badFeelTextList;
-        _diseaseExampleNameList = DiseaseExampleNameList.badFeelExampleNameList;
-        break;
-      case HealthCheckupDiseaseEnum.painfulChest:
-        _diseaseTextList = DiseaseTextList.painfulChestTextList;
-        _diseaseExampleNameList =
-            DiseaseExampleNameList.painfulChestExampleNameList;
-        break;
-      case HealthCheckupDiseaseEnum.painfulStomach:
-        _diseaseTextList = DiseaseTextList.painfulStomachTextList;
-        _diseaseExampleNameList =
-            DiseaseExampleNameList.painfulStomachExampleNameList;
-        break;
-      case HealthCheckupDiseaseEnum.painfulHead:
-        _diseaseTextList = DiseaseTextList.painfulHeadTextList;
-        _diseaseExampleNameList =
-            DiseaseExampleNameList.painfulHeadExampleNameList;
-        break;
-    }
+    _diseaseTextList = HealthCheckupDiseaseType.getDiseaseTextList(diseaseType);
+    _diseaseExampleNameList =
+        HealthCheckupDiseaseType.getDiseaseExampleNameList(diseaseType);
   }
 
   List<String> get diseaseTextList => _diseaseTextList;

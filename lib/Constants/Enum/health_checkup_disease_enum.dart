@@ -1,3 +1,6 @@
+import 'package:unicorn_flutter/Constants/disease_example_name_list.dart';
+import 'package:unicorn_flutter/Constants/disease_text_list.dart';
+
 enum HealthCheckupDiseaseEnum {
   goodHealth,
   highFever,
@@ -41,6 +44,45 @@ class HealthCheckupDiseaseType {
         return 'お腹が痛い';
       case HealthCheckupDiseaseEnum.painfulHead:
         return '頭が痛い';
+      default:
+        throw Exception('Unknown HealthCheckupDiseaseEnum value: $value');
+    }
+  }
+
+  static List<String> getDiseaseTextList(HealthCheckupDiseaseEnum value) {
+    switch (value) {
+      case HealthCheckupDiseaseEnum.goodHealth:
+        return DiseaseTextList.goodHealthTextList;
+      case HealthCheckupDiseaseEnum.highFever:
+        return DiseaseTextList.highFeverTextList;
+      case HealthCheckupDiseaseEnum.badFeel:
+        return DiseaseTextList.badFeelTextList;
+      case HealthCheckupDiseaseEnum.painfulChest:
+        return DiseaseTextList.painfulChestTextList;
+      case HealthCheckupDiseaseEnum.painfulStomach:
+        return DiseaseTextList.painfulStomachTextList;
+      case HealthCheckupDiseaseEnum.painfulHead:
+        return DiseaseTextList.painfulHeadTextList;
+      default:
+        throw Exception('Unknown HealthCheckupDiseaseEnum value: $value');
+    }
+  }
+
+  static List<String> getDiseaseExampleNameList(
+      HealthCheckupDiseaseEnum value) {
+    switch (value) {
+      case HealthCheckupDiseaseEnum.goodHealth:
+        return DiseaseExampleNameList.goodHealthExampleNameList;
+      case HealthCheckupDiseaseEnum.highFever:
+        return DiseaseExampleNameList.highFeverExampleNameList;
+      case HealthCheckupDiseaseEnum.badFeel:
+        return DiseaseExampleNameList.badFeelExampleNameList;
+      case HealthCheckupDiseaseEnum.painfulChest:
+        return DiseaseExampleNameList.painfulChestExampleNameList;
+      case HealthCheckupDiseaseEnum.painfulStomach:
+        return DiseaseExampleNameList.painfulStomachExampleNameList;
+      case HealthCheckupDiseaseEnum.painfulHead:
+        return DiseaseExampleNameList.painfulHeadExampleNameList;
       default:
         throw Exception('Unknown HealthCheckupDiseaseEnum value: $value');
     }
