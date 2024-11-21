@@ -3,13 +3,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:unicorn_flutter/Constants/prefectures.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Model/Entity/location_address_info.dart';
 import 'package:unicorn_flutter/Service/Package/Location/location_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 
 class RegisterAddressInfoController extends ControllerCore {
   LocationService get _locationService => LocationService();
+
+  UserData userData = UserData();
 
   late List<String> _entryItemStrings;
   late LatLng _mapPinPosition;
@@ -73,6 +77,13 @@ class RegisterAddressInfoController extends ControllerCore {
     if (prefecture != null) {
       selectedPrefectureIndex = _entryItemStrings.indexOf(prefecture);
     }
+
+    AddressInfo(
+      postalCode: postalCode!,
+      prefectures: prefecture!,
+      municipalities: "${city}${town}",
+      addressDetail: addressDetailTextController.text,
+    );
   }
 
   /// 現在位置から住所を取得し、入力欄にセットする
@@ -111,16 +122,24 @@ class RegisterAddressInfoController extends ControllerCore {
     await updateMapPinPosition();
   }
 
-  AddressInfo? submit() {
+  UserRequest? submit() {
     if (validateField() == false) {
       return null;
     }
+
+    // todo: 編集処理でき次第、修正加えます。
     AddressInfo addressInfo = AddressInfo(
-        postalCode: postalCodeTextController.text,
-        prefectures: _entryItemStrings[selectedPrefectureIndex],
-        municipalities: municipalitiesTextController.text,
-        addressDetail: addressDetailTextController.text);
-    return addressInfo;
+      postalCode: postalCodeTextController.text,
+      prefectures: _entryItemStrings[selectedPrefectureIndex],
+      municipalities: municipalitiesTextController.text,
+      addressDetail: addressDetailTextController.text,
+    );
+
+    UserRequest userRequest = UserRequest(
+        postalCode: addressInfo.postalCode,
+        address:
+            "${addressInfo.prefectures} ${addressInfo.municipalities} ${addressInfo.addressDetail}");
+    return userRequest;
   }
 
   bool validateField() {
@@ -128,7 +147,9 @@ class RegisterAddressInfoController extends ControllerCore {
     postalCodeTextController.text.isEmpty
         ? emptyMessageField.add("郵便番号")
         : null;
-    _entryItemStrings == ['未設定'] ? emptyMessageField.add('都道府県') : null;
+    _entryItemStrings[selectedPrefectureIndex] == '未設定'
+        ? emptyMessageField.add('都道府県')
+        : null;
     municipalitiesTextController.text.isEmpty
         ? emptyMessageField.add("市区町村")
         : null;

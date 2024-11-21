@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_address_info_controller.dart';
-import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
-import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -12,8 +11,8 @@ import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class RegisterAddressInfoView extends StatefulWidget {
-  const RegisterAddressInfoView({super.key, this.physicalInfo});
-  final PhysicalInfo? physicalInfo;
+  const RegisterAddressInfoView({super.key, this.userRequest});
+  final UserRequest? userRequest;
 
   @override
   State<RegisterAddressInfoView> createState() =>
@@ -239,11 +238,11 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    AddressInfo? addressInfo = controller.submit();
-                    if (addressInfo == null) {
+                    UserRequest? userRequest = controller.submit();
+                    if (userRequest == null) {
                       return;
                     }
-                    ProfileRegisterUserInfoRoute($extra: addressInfo)
+                    ProfileRegisterUserInfoRoute($extra: userRequest)
                         .push(context);
                   },
                   child: Align(
