@@ -29,6 +29,11 @@ class _NotificationSettingViewState extends State<NotificationSettingView> {
         if (didPop) {
           return;
         }
+        if (controller.userNotification ==
+            controller.formatedUserNotification.value) {
+          Navigator.of(context).pop(true);
+          return;
+        }
         controller.userNotification == null
             ? await controller.postUserNotification()
             : await controller.putUserNotification();

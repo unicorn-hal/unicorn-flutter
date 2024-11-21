@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Entity/Profile/profile_detail.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 class ProfileTopController extends ControllerCore {
   /// Serviceのインスタンス化
@@ -40,9 +41,13 @@ class ProfileTopController extends ControllerCore {
           icon: Icons.medical_services,
           onTap: () => const ProfileMedicineRoute().push(context)),
       ProfileDetail(
-          title: '通知設定',
-          icon: Icons.notifications,
-          onTap: () => const ProfileNotificationSettingRoute().push(context)),
+        title: '通知設定',
+        icon: Icons.notifications,
+        onTap: () {
+          ProtectorNotifier().enableProtector();
+          const ProfileNotificationSettingRoute().push(context);
+        },
+      ),
       ProfileDetail(
           title: '身体情報',
           icon: Icons.man,

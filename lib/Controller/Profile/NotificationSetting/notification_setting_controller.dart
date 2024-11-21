@@ -31,8 +31,9 @@ class NotificationSettingController extends ControllerCore {
 
   /// initialize()
   @override
-  void initialize() {
-    getUserNotification();
+  void initialize() async {
+    await getUserNotification();
+    ProtectorNotifier().disableProtector();
   }
 
   /// 各関数の実装
@@ -79,11 +80,7 @@ class NotificationSettingController extends ControllerCore {
     if (_userNotification == null) {
       return;
     }
-    _formatedUserNotification.value = UserNotification(
-      isHospitalNews: _userNotification!.isHospitalNews,
-      isMedicineReminder: _userNotification!.isMedicineReminder,
-      isRegularHealthCheckup: _userNotification!.isRegularHealthCheckup,
-    );
+    _formatedUserNotification.value = _userNotification!;
   }
 
   /// 通知設定を更新する関数
