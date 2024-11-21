@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dar
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
+import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 import '../../../../../Model/Entity/Call/call.dart';
@@ -121,8 +123,11 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                   right: 10,
                   child: GestureDetector(
                     onTap: () async {
+                      // APIからのデータ取得を都度行う
+                      ProtectorNotifier().enableProtector();
                       final Map<DateTime, List<Call>>? events =
                           await controller.getDoctorReservation();
+                      ProtectorNotifier().disableProtector();
 
                       if (events == null) {
                         return;
@@ -131,14 +136,14 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                       showDialog(
                           context: context,
                           builder: (_) {
-                            return Column(
-                              children: [
-                                Dialog(
-                                  backgroundColor: Colors.white,
-                                  surfaceTintColor: Colors.white,
-                                  child: StatefulBuilder(
-                                      builder: (context, setState) {
-                                    return TableCalendar(
+                            return StatefulBuilder(
+                                builder: (context, setState) {
+                              return Column(
+                                children: [
+                                  Dialog(
+                                    backgroundColor: Colors.white,
+                                    surfaceTintColor: Colors.white,
+                                    child: TableCalendar(
                                       currentDay: controller.calendarDate,
                                       focusedDay: DateTime.now(),
                                       firstDay: DateTime.now().add(
@@ -176,35 +181,115 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                                         );
                                         return events[targetDate] ?? [];
                                       },
-                                    );
-                                  }),
-                                ),
-                                Expanded(
-                                    child: ListView.builder(
-                                        itemCount: events[controller
-                                                    .normalizeDate(controller
-                                                        .calendarDate)]
-                                                ?.length ??
-                                            0,
-                                        itemBuilder: (context, index) {
-                                          return Container(
-                                            width: 100,
-                                            height: 50,
-                                            color: Colors.red,
-                                          );
-                                        }))
-                              ],
-                            );
+                                    ),
+                                  ),
+                                  SizedBox(
+                                      width: size.width * 0.9,
+                                      height: 300,
+                                      child: events[controller.normalizeDate(
+                                                  controller.calendarDate)] ==
+                                              null
+                                          ? Align(
+                                              alignment: Alignment.topCenter,
+                                              child: Container(
+                                                color: Colors.white,
+                                                height: 100,
+                                                child: const Center(
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.check,
+                                                        size: 30,
+                                                        color: Colors.green,
+                                                      ),
+                                                      CustomText(
+                                                          text:
+                                                              'この日時の通話予約はありません。'),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          : ListView.builder(
+                                              itemCount: events[controller
+                                                      .normalizeDate(controller
+                                                          .calendarDate)]!
+                                                  .length,
+                                              itemBuilder: (context, index) {
+                                                final Call call = events[
+                                                        controller.normalizeDate(
+                                                            controller
+                                                                .calendarDate)]![
+                                                    index];
+
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    width: 100,
+                                                    height: 60,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      color: Colors.white,
+                                                      border: Border.all(
+                                                        color: ColorName
+                                                            .shadowGray,
+                                                        width: 2,
+                                                      ),
+                                                    ),
+                                                    child: Center(
+                                                      child: Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          const Icon(
+                                                            Icons.cancel,
+                                                            color: Colors.red,
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .symmetric(
+                                                              horizontal: 8.0,
+                                                            ),
+                                                            child: CustomText(
+                                                              text:
+                                                                  '${DateFormat('H時mm分').format(call.callStartTime)}〜${DateFormat('H時mm分').format(call.callEndTime)}',
+                                                              fontSize: 20,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              }))
+                                ],
+                              );
+                            });
                           });
                     },
                     child: Container(
                       width: 50,
                       height: 50,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: ColorName.mainColor),
-                      child: const Icon(Icons.calendar_month,
-                          color: Colors.white, size: 30),
+                        borderRadius: BorderRadius.circular(10),
+                        color: ColorName.mainColor,
+                      ),
+                      child: const Icon(
+                        Icons.calendar_month,
+                        color: Colors.white,
+                        size: 30,
+                      ),
                     ),
                   ),
                 )
