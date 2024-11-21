@@ -55,10 +55,12 @@ class ProfileTopController extends ControllerCore {
         onTap: () async {
           ProtectorNotifier().enableProtector();
           await getUserNotification();
+          ProtectorNotifier().disableProtector();
           if (_userNotification == null) {
             return;
           }
-          const ProfileNotificationSettingRoute().push(context);
+          ProfileNotificationSettingRoute($extra: _userNotification)
+              .push(context);
         },
       ),
       ProfileDetail(
