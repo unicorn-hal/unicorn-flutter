@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_physical_info_controller.dart';
-import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
@@ -274,11 +274,11 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                     ),
                   ),
                   onTap: () {
-                    PhysicalInfo? physicalInfo = controller.submit();
-                    if (physicalInfo == null) {
+                    UserRequest? userRequest = controller.submit();
+                    if (userRequest == null) {
                       return;
                     }
-                    ProfileRegisterAddressInfoRoute($extra: physicalInfo)
+                    ProfileRegisterAddressInfoRoute($extra: userRequest)
                         .push(context);
                   },
                 )
