@@ -26,18 +26,15 @@ class AiCheckupController extends ControllerCore {
   // 変数の定義
   late ValueNotifier<String> _aiText;
   final String _aiTextDefault = 'なんでも聞いてください';
-  late bool _isListening;
+  bool _isListening = false;
+  bool _isDone = false;
 
   // オーディオを初期化
   final _audioPlayer = AudioPlayer();
 
-  late bool _isDone;
-
   @override
   void initialize() async {
     _aiText = ValueNotifier<String>(_aiTextDefault);
-    _isListening = false;
-    _isDone = false;
     await _speechToTextService.initialize();
   }
 
