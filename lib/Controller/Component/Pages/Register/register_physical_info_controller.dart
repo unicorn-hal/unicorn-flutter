@@ -45,13 +45,6 @@ class RegisterPhysicalInfoController extends ControllerCore {
       birthDate: physicalInfo.birthDate,
       bodyHeight: physicalInfo.bodyHeight,
       bodyWeight: physicalInfo.bodyWeight,
-      userId: userData.user!.userId,
-      postalCode: userData.user!.postalCode,
-      address: userData.user!.address,
-      iconImageUrl: userData.user!.iconImageUrl,
-      phoneNumber: userData.user!.phoneNumber,
-      email: userData.user!.email,
-      occupation: userData.user!.occupation,
     );
 
     return userRequest;
