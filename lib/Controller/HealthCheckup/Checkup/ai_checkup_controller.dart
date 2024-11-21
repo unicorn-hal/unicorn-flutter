@@ -139,8 +139,8 @@ class AiCheckupController extends ControllerCore {
 
   /// 音声認識結果のバリデート
   bool textValidate() {
-    if (_aiText.value.length < 10) {
-      Fluttertoast.showToast(msg: '最低10文字以上は音声入力をしてください');
+    if (_aiText.value.length < 3) {
+      Fluttertoast.showToast(msg: '最低3文字以上は音声入力をしてください');
       return false;
     } else if (_aiText.value == _aiTextDefault) {
       Fluttertoast.showToast(msg: '音声入力をしてください');
