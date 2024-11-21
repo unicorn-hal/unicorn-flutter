@@ -17,19 +17,19 @@ class UserRequest {
   final String? occupation;
 
   UserRequest({
-    required this.userId,
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.gender,
-    required this.birthDate,
-    required this.address,
-    required this.postalCode,
-    required this.phoneNumber,
-    required this.iconImageUrl,
-    required this.bodyHeight,
-    required this.bodyWeight,
-    required this.occupation,
+    this.userId,
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.gender,
+    this.birthDate,
+    this.address,
+    this.postalCode,
+    this.phoneNumber,
+    this.iconImageUrl,
+    this.bodyHeight,
+    this.bodyWeight,
+    this.occupation,
   });
 
   factory UserRequest.fromJson(Map<String, dynamic> json) {
@@ -56,8 +56,8 @@ class UserRequest {
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
-      'gender': UserGenderType.toStringValue(gender),
-      'birthDate': DateFormat('yyyy-MM-dd').format(birthDate),
+      'gender': UserGenderType.toStringValue(gender!),
+      'birthDate': DateFormat('yyyy-MM-dd').format(birthDate!),
       'address': address,
       'postalCode': postalCode,
       'phoneNumber': phoneNumber,
