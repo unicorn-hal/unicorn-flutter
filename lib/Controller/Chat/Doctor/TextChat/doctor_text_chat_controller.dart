@@ -24,11 +24,13 @@ class DoctorTextChatController extends ControllerCore {
 
   DoctorTextChatController(
     this._doctorId,
+    this._reserveMessage,
   );
 
   late bool _firstMessage;
   late String _chatId;
   final String _doctorId;
+  final String? _reserveMessage;
 
   late ValueNotifier<List<Message>> _messageHistory;
 
@@ -64,6 +66,11 @@ class DoctorTextChatController extends ControllerCore {
 
     // メッセージの受信を開始
     _listenNewMessage();
+
+    // 予約メッセージがある場合は送信
+    if (_reserveMessage != null) {
+      await sendReserveMessage();
+    }
   }
 
   /// 該当医師とのチャット履歴があるかチェックする
@@ -171,6 +178,20 @@ class DoctorTextChatController extends ControllerCore {
       content: chatController.text,
     );
     chatController.text = '';
+    final response = await _chatApi.postMessage(body: message, chatId: _chatId);
+
+    // 200以外の場合はエラーを表示
+    if (response.hashCode != 200) {
+      Fluttertoast.showToast(msg: Strings.CHAT_POST_RESPONSE_ERROR);
+    }
+  }
+
+  /// 予約メッセージを送信
+  Future<void> sendReserveMessage() async {
+    MessageRequest message = MessageRequest(
+      senderId: AccountData().account!.uid,
+      content: _reserveMessage!,
+    );
     final response = await _chatApi.postMessage(body: message, chatId: _chatId);
 
     // 200以外の場合はエラーを表示

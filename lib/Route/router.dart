@@ -370,17 +370,20 @@ class ChatDoctorInformationRoute extends GoRouteData {
 }
 
 class ChatDoctorTextChatRoute extends GoRouteData {
-  ChatDoctorTextChatRoute(
-    this.doctorId,
-    this.doctorName,
-  );
+  ChatDoctorTextChatRoute({
+    required this.doctorId,
+    required this.doctorName,
+    this.reserveMessage,
+  });
   String doctorId;
   String doctorName;
+  String? reserveMessage;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => DoctorTextChatView(
         doctorId: doctorId,
         doctorName: doctorName,
+        reserveMessage: reserveMessage,
       );
 }
 

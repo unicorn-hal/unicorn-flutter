@@ -14,10 +14,12 @@ class DoctorTextChatView extends StatefulWidget {
     super.key,
     required this.doctorId,
     required this.doctorName,
+    this.reserveMessage,
   });
 
   final String doctorId;
   final String doctorName;
+  final String? reserveMessage;
   @override
   State<DoctorTextChatView> createState() => _DoctorTextChatViewState();
 }
@@ -36,7 +38,8 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
     super.initState();
 
     // doctorIdを元にチャットコントローラーを初期化
-    controller = DoctorTextChatController(widget.doctorId);
+    controller =
+        DoctorTextChatController(widget.doctorId, widget.reserveMessage);
 
     //スクロール位置が最下部になかったらscrollButtonを表示する
     controller.scrollController.addListener(() {

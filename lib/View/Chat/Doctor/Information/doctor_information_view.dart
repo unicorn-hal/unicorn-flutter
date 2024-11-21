@@ -90,7 +90,9 @@ class DoctorInformationView extends StatelessWidget {
                           final String doctorName =
                               doctor.firstName + doctor.lastName;
                           // todo: チャット画面へ遷移
-                          ChatDoctorTextChatRoute(doctorId, doctorName)
+                          ChatDoctorTextChatRoute(
+                                  doctorId: doctor.doctorId,
+                                  doctorName: doctorName)
                               .push(context);
                         },
                         child: Container(
