@@ -31,13 +31,13 @@ class AiCheckupController extends ControllerCore {
   // オーディオを初期化
   final _audioPlayer = AudioPlayer();
 
-  late bool finish;
+  late bool _isDone;
 
   @override
   void initialize() async {
     _aiText = ValueNotifier<String>(_aiTextDefault);
     _isListening = false;
-    finish = false;
+    _isDone = false;
     await _speechToTextService.initialize();
   }
 
@@ -66,7 +66,7 @@ class AiCheckupController extends ControllerCore {
     _audioPlayer.stop();
     _isListening = false;
     _speechToTextService.stopListening();
-    finish = true;
+    _isDone = true;
   }
 
   /// 検診結果へ必要な情報をまとめて画面遷移する
@@ -134,7 +134,7 @@ class AiCheckupController extends ControllerCore {
   /// 音声認識の終了状態を変更する
   void changeFinish() {
     _aiText.value = _aiTextDefault;
-    finish = !finish;
+    _isDone = !_isDone;
   }
 
   /// 音声認識結果のバリデート
@@ -154,4 +154,7 @@ class AiCheckupController extends ControllerCore {
 
   // 音声認識結果を取得
   ValueNotifier<String> get aiText => _aiText;
+
+  // 音声認識が終了したかを取得
+  bool get isDone => _isDone;
 }

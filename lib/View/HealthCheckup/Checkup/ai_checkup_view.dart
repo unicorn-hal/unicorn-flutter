@@ -94,7 +94,7 @@ class _AiCheckupViewState extends State<AiCheckupView> {
                     vertical: 20,
                   ),
                   child: Center(
-                    child: controller.finish
+                    child: controller.isDone
                         ? Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
