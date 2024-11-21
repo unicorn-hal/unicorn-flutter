@@ -3,9 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
-import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
-import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/Ai/TextChat/ai_text_chat_view.dart';
@@ -236,16 +234,13 @@ class EmergencyRoute extends GoRouteData {
 class EmergencyProgressRoute extends GoRouteData {
   const EmergencyProgressRoute({
     required this.$extra,
-    required this.healthPoint,
   });
 
-  final HealthCheckupDiseaseEnum $extra;
-  final int healthPoint;
+  final ProgressViewEnum $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => ProgressView(
-        diseaseType: $extra,
-        healthPoint: healthPoint,
+        progressType: $extra,
       );
 }
 
@@ -325,16 +320,13 @@ class NormalCheckupRoute extends GoRouteData {
 class CheckupProgressRoute extends GoRouteData {
   CheckupProgressRoute({
     required this.$extra,
-    required this.healthPoint,
   });
 
-  final HealthCheckupDiseaseEnum $extra;
-  final int healthPoint;
+  final ProgressViewEnum $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => ProgressView(
-        diseaseType: $extra,
-        healthPoint: healthPoint,
+        progressType: $extra,
       );
 }
 
