@@ -1,4 +1,5 @@
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unicorn_flutter/Constants/Enum/fcm_topic_enum.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
@@ -15,7 +16,7 @@ class NotificationSettingController extends ControllerCore {
 
   /// コンストラクタ
   NotificationSettingController(this._userNotification);
-  UserNotification? _userNotification;
+  UserNotification _userNotification;
 
   /// initialize()
   @override
@@ -26,16 +27,16 @@ class NotificationSettingController extends ControllerCore {
 
   void setMedicineNotificationValue(bool value) {
     _userNotification = UserNotification(
-      isHospitalNews: _userNotification!.isHospitalNews,
+      isHospitalNews: _userNotification.isHospitalNews,
       isMedicineReminder: value,
-      isRegularHealthCheckup: _userNotification!.isRegularHealthCheckup,
+      isRegularHealthCheckup: _userNotification.isRegularHealthCheckup,
     );
   }
 
   void setHealthCheckupValue(bool value) {
     _userNotification = UserNotification(
-      isHospitalNews: _userNotification!.isHospitalNews,
-      isMedicineReminder: _userNotification!.isMedicineReminder,
+      isHospitalNews: _userNotification.isHospitalNews,
+      isMedicineReminder: _userNotification.isMedicineReminder,
       isRegularHealthCheckup: value,
     );
   }
@@ -43,8 +44,8 @@ class NotificationSettingController extends ControllerCore {
   void setHospitalNotificationValue(bool value) {
     _userNotification = UserNotification(
       isHospitalNews: value,
-      isMedicineReminder: _userNotification!.isMedicineReminder,
-      isRegularHealthCheckup: _userNotification!.isRegularHealthCheckup,
+      isMedicineReminder: _userNotification.isMedicineReminder,
+      isRegularHealthCheckup: _userNotification.isRegularHealthCheckup,
     );
   }
 
@@ -52,21 +53,21 @@ class NotificationSettingController extends ControllerCore {
   Future<void> putUserNotification() async {
     ProtectorNotifier().enableProtector();
     int res = await _userApi.putUserNotification(
-        userId: UserData().user!.userId, body: _userNotification!);
+        userId: UserData().user!.userId, body: _userNotification);
     if (res != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
       ProtectorNotifier().disableProtector();
       return;
     }
     await updateSubscription(
-      isSubscribed: _userNotification!.isRegularHealthCheckup,
-      topics: ['regularHealthCheckup'],
+      isSubscribed: _userNotification.isRegularHealthCheckup,
+      topics: [FCMTopicType.toStringValue(FCMTopicEnum.regularHealthCheckup)],
     );
     await updateSubscription(
-      isSubscribed: _userNotification!.isHospitalNews,
-      topics: ['hospitalNews'],
+      isSubscribed: _userNotification.isHospitalNews,
+      topics: [FCMTopicType.toStringValue(FCMTopicEnum.hospitalNews)],
     );
-    Fluttertoast.showToast(msg: '設定を反映しました');
+    Fluttertoast.showToast(msg: Strings.SETTING_REFLECTED_TEXT);
     ProtectorNotifier().disableProtector();
   }
 
@@ -74,21 +75,21 @@ class NotificationSettingController extends ControllerCore {
   Future<void> postUserNotification() async {
     ProtectorNotifier().enableProtector();
     int res = await _userApi.postUserNotification(
-        userId: UserData().user!.userId, body: _userNotification!);
+        userId: UserData().user!.userId, body: _userNotification);
     if (res != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
       ProtectorNotifier().disableProtector();
       return;
     }
     await updateSubscription(
-      isSubscribed: _userNotification!.isRegularHealthCheckup,
-      topics: ['regularHealthCheckup'],
+      isSubscribed: _userNotification.isRegularHealthCheckup,
+      topics: [FCMTopicType.toStringValue(FCMTopicEnum.regularHealthCheckup)],
     );
     await updateSubscription(
-      isSubscribed: _userNotification!.isHospitalNews,
-      topics: ['hospitalNews'],
+      isSubscribed: _userNotification.isHospitalNews,
+      topics: [FCMTopicType.toStringValue(FCMTopicEnum.hospitalNews)],
     );
-    Fluttertoast.showToast(msg: '設定を反映しました');
+    Fluttertoast.showToast(msg: Strings.SETTING_REFLECTED_TEXT);
     ProtectorNotifier().disableProtector();
   }
 
