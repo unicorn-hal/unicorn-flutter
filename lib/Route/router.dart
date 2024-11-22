@@ -7,6 +7,7 @@ import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/Ai/TextChat/ai_text_chat_view.dart';
 import 'package:unicorn_flutter/View/Chat/Doctor/TextChat/doctor_text_chat_view.dart';
@@ -459,11 +460,16 @@ class ProfileAppInformationLicenseRoute extends GoRouteData {
 }
 
 class ProfileNotificationSettingRoute extends GoRouteData {
-  const ProfileNotificationSettingRoute();
+  const ProfileNotificationSettingRoute({
+    required this.$extra,
+  });
+  final UserNotification $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const NotificationSettingView();
+      NotificationSettingView(
+        userNotification: $extra,
+      );
 }
 
 class ProfileFamilyEmailRoute extends GoRouteData {
