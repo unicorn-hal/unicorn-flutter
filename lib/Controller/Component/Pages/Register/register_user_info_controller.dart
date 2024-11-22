@@ -97,7 +97,8 @@ class RegisterUserInfoController extends ControllerCore {
 
     Future<int> responceCode = UserApi().postUser(body: userRequest);
     if (await responceCode == 200) {
-      Fluttertoast.showToast(msg: "ユーザーが正常に登録されました");
+      Fluttertoast.showToast(
+          msg: Strings.PROFILE_REGISTRATION_COMPLETED_MESSAGE);
     }
     if (await responceCode == 400) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
