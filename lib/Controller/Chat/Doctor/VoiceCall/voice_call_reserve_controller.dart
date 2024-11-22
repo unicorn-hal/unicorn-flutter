@@ -63,6 +63,7 @@ class VoiceCallReserveController extends ControllerCore {
 
     if (response != 200) {
       // todo: エラー処理
+      print(response);
       Fluttertoast.showToast(msg: '通話予約に失敗しました');
       return;
     }

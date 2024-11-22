@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_reserve_controller.dart';
-import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -144,8 +141,9 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                                     backgroundColor: Colors.white,
                                     surfaceTintColor: Colors.white,
                                     child: TableCalendar(
+                                      locale: 'ja_JP',
                                       currentDay: controller.calendarDate,
-                                      focusedDay: DateTime.now(),
+                                      focusedDay: controller.calendarDate,
                                       firstDay: DateTime.now().add(
                                         const Duration(days: -365),
                                       ),
@@ -153,6 +151,12 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                                           .add(const Duration(days: 365)),
                                       calendarFormat: CalendarFormat.month,
                                       headerStyle: const HeaderStyle(
+                                        titleTextStyle: TextStyle(
+                                          color: ColorName.textBlack,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Noto_Sans_JP',
+                                        ),
                                         formatButtonVisible: false,
                                         leftChevronIcon: Icon(
                                           Icons.chevron_left,
