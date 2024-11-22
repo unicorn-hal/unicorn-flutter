@@ -8,9 +8,9 @@ import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.da
 class NotificationSettingView extends StatefulWidget {
   const NotificationSettingView({
     super.key,
-    this.userNotification,
+    required this.userNotification,
   });
-  final UserNotification? userNotification;
+  final UserNotification userNotification;
 
   @override
   State<NotificationSettingView> createState() =>

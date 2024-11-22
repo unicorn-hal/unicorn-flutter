@@ -23,7 +23,6 @@ class ProfileTopController extends ControllerCore {
 
   /// 変数の定義
   late List<ProfileDetail> _cellData;
-  UserNotification? _userNotification;
 
   /// initialize()
   @override
@@ -54,12 +53,12 @@ class ProfileTopController extends ControllerCore {
         icon: Icons.notifications,
         onTap: () async {
           ProtectorNotifier().enableProtector();
-          await getUserNotification();
+          UserNotification? userNotification = await getUserNotification();
           ProtectorNotifier().disableProtector();
-          if (_userNotification == null) {
+          if (userNotification == null) {
             return;
           }
-          ProfileNotificationSettingRoute($extra: _userNotification)
+          ProfileNotificationSettingRoute($extra: userNotification)
               .push(context);
         },
       ),
@@ -81,12 +80,13 @@ class ProfileTopController extends ControllerCore {
   }
 
   /// 通知設定を取得する関数
-  Future<void> getUserNotification() async {
-    _userNotification =
+  Future<UserNotification?> getUserNotification() async {
+    UserNotification? userNotification =
         await _userApi.getUserNotification(userId: UserData().user!.userId);
-    if (_userNotification == null) {
+    if (userNotification == null) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
+    return userNotification;
   }
 
   /// 各関数の実装

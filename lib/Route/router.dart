@@ -469,9 +469,9 @@ class ProfileAppInformationLicenseRoute extends GoRouteData {
 
 class ProfileNotificationSettingRoute extends GoRouteData {
   const ProfileNotificationSettingRoute({
-    this.$extra,
+    required this.$extra,
   });
-  final UserNotification? $extra;
+  final UserNotification $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
