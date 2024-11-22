@@ -68,4 +68,8 @@ class Strings {
   static const String FAMILY_EMAIL_VALIDATE_FIELD_TEXT =
       'メールアドレスおよび姓と名の登録が必要です';
   static const String FAMILY_EMAIL_VALIDATE_FORMAT_TEXT = 'メールアドレスの形式が正しくありません';
+
+  // ユーザープロフィール登録完了時に表示するテキスト
+  static const String PROFILE_REGISTRATION_COMPLETED_MESSAGE =
+      'ユーザーが正常に登録されました';
 }

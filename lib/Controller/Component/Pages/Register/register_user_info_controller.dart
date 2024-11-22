@@ -4,9 +4,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:unicorn_flutter/Constants/regexp_constants.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_info.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
+import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudStorage/cloud_storage_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/Service/Package/ImageUtils/image_utils_service.dart';
@@ -23,6 +27,8 @@ class RegisterUserInfoController extends ControllerCore {
   final TextEditingController emailTextController = TextEditingController();
   final TextEditingController occupationTextController =
       TextEditingController();
+
+  UserData userData = UserData();
 
   File? _imageFile;
   Image? _image;
@@ -65,16 +71,17 @@ class RegisterUserInfoController extends ControllerCore {
     return null;
   }
 
-  Future<UserInfo?> submit() async {
+  Future<void> submit(UserRequest userRequest) async {
     String? iconImageUrl;
     if (_imageFile != null) {
       iconImageUrl = await _uploadImage();
     }
 
     if (validateField() == false) {
-      return null;
+      return;
     }
 
+    // todo: 編集処理でき次第、修正加えます。
     UserInfo userInfo = UserInfo(
       iconImageUrl: iconImageUrl,
       phoneNumber: phoneNumberTextController.text,
@@ -82,7 +89,23 @@ class RegisterUserInfoController extends ControllerCore {
       occupation: occupationTextController.text,
     );
 
-    return userInfo;
+    userRequest.userId = UserData().user!.userId;
+    userRequest.iconImageUrl = userInfo.iconImageUrl;
+    userRequest.phoneNumber = userInfo.phoneNumber;
+    userRequest.email = userInfo.email;
+    userRequest.occupation = userInfo.occupation;
+
+    Future<int> responceCode = UserApi().postUser(body: userRequest);
+    if (await responceCode == 200) {
+      Fluttertoast.showToast(
+          msg: Strings.PROFILE_REGISTRATION_COMPLETED_MESSAGE);
+    }
+    if (await responceCode == 400) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+    }
+    if (await responceCode == 500) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+    }
   }
 
   bool validateField() {
@@ -96,6 +119,9 @@ class RegisterUserInfoController extends ControllerCore {
     if (emptyMessageField.isNotEmpty) {
       Fluttertoast.showToast(msg: "${emptyMessageField.join(',')}が入力されていません。");
       return false;
+    }
+    if (!RegExpConstants.emailRegExp.hasMatch(emailTextController.text)) {
+      Fluttertoast.showToast(msg: "メールアドレスの形式が正しくありません");
     }
     return true;
   }
