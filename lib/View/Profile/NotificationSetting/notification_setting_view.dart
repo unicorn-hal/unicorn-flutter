@@ -38,9 +38,7 @@ class _NotificationSettingViewState extends State<NotificationSettingView> {
           Navigator.of(context).pop(true);
           return;
         }
-        controller.userNotification == null
-            ? await controller.postUserNotification()
-            : await controller.putUserNotification();
+        await controller.putUserNotification();
         // ignore: use_build_context_synchronously
         Navigator.of(context).pop(true);
       },

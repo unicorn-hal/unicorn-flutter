@@ -71,28 +71,6 @@ class NotificationSettingController extends ControllerCore {
     ProtectorNotifier().disableProtector();
   }
 
-  /// 通知設定を登録する関数
-  Future<void> postUserNotification() async {
-    ProtectorNotifier().enableProtector();
-    int res = await _userApi.postUserNotification(
-        userId: UserData().user!.userId, body: _userNotification);
-    if (res != 200) {
-      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-      ProtectorNotifier().disableProtector();
-      return;
-    }
-    await updateSubscription(
-      isSubscribed: _userNotification.isRegularHealthCheckup,
-      topics: [FCMTopicEnum.regularHealthCheckup.name],
-    );
-    await updateSubscription(
-      isSubscribed: _userNotification.isHospitalNews,
-      topics: [FCMTopicEnum.hospitalNews.name],
-    );
-    Fluttertoast.showToast(msg: Strings.SETTING_REFLECTED_TEXT);
-    ProtectorNotifier().disableProtector();
-  }
-
   /// 実際にSubscriptionの購読の有無を更新する関数
   Future<void> updateSubscription({
     required bool isSubscribed,
