@@ -78,16 +78,19 @@ class UserApi extends ApiCore with Endpoint {
     }
   }
 
-  Future<int> postUserNotification({
+  /// POST
+  /// ユーザー通知設定登録
+  /// [body] UserNotification
+  Future<UserNotification?> postUserNotification({
     required String userId,
     required UserNotification body,
   }) async {
     try {
       useParameter(parameter: '/$userId/notification');
       final ApiResponse response = await post(body.toJson());
-      return response.statusCode;
+      return UserNotification.fromJson(response.data);
     } catch (e) {
-      return 500;
+      return null;
     }
   }
 
