@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Controller/HealthCheckup/health_checkup_result_controller.dart';
+import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Route/router.dart';
-import 'package:unicorn_flutter/Service/Package/UrlLauncher/url_launcher_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
-
 import '../../Component/CustomWidget/custom_scaffold.dart';
 
 class HealthCheckupResultsView extends StatelessWidget {
@@ -68,18 +67,11 @@ class HealthCheckupResultsView extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              FutureBuilder(
-                                  future: controller.getUserName(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      return CustomText(
-                                        text: snapshot.data!,
-                                        fontSize: 14,
-                                      );
-                                    } else {
-                                      return const SizedBox();
-                                    }
-                                  }),
+                              CustomText(
+                                text: UserData().user!.lastName +
+                                    UserData().user!.firstName,
+                                fontSize: 14,
+                              ),
                               const CustomText(
                                 text: 'さんの検診結果',
                                 fontSize: 14,
@@ -179,9 +171,9 @@ class HealthCheckupResultsView extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {
-                      UrlLauncherService().launchUrl(
-                          'https://ja.wikipedia.org/wiki/${controller.diseaseExampleNameList[index]}');
+                    onTap: () async {
+                      await controller.getDiseaseUrl(
+                          controller.diseaseExampleNameList[index]);
                     },
                     child: Center(
                       child: Padding(

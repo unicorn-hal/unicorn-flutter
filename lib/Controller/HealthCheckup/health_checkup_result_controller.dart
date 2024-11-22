@@ -4,9 +4,7 @@ import 'package:unicorn_flutter/Constants/Enum/day_of_week_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_risk_level_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
-import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
-import 'package:unicorn_flutter/Model/Entity/User/user.dart';
-import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
+import 'package:unicorn_flutter/Service/Package/UrlLauncher/url_launcher_service.dart';
 
 class HealthCheckupResultController extends ControllerCore {
   /// Serviceのインスタンス化
@@ -64,15 +62,6 @@ class HealthCheckupResultController extends ControllerCore {
 
   String get formattedDate => _formattedDate;
 
-  /// ユーザー名を取得
-  Future<String?> getUserName() async {
-    User? user = await UserApi().getUser(userId: AccountData().account!.uid);
-    if (user == null) {
-      return null;
-    }
-    return '${user.lastName} ${user.firstName}';
-  }
-
   /// 健康リスクレベルを取得
   HealthRiskLevelEnum getHealthRiskLevel() {
     if (healthPoint > deadLine) {
@@ -85,6 +74,7 @@ class HealthCheckupResultController extends ControllerCore {
   }
 
   /// 健康リスクレベルに応じたテキストとカラーを設定
+  /// [healthRiskLevel] 健康リスクレベル
   void setHealthRiskLevelView(HealthRiskLevelEnum healthRiskLevel) {
     _healthText = HealthRiskLevelType.getHealthRiskLevelString(healthRiskLevel);
     _healthColor = HealthRiskLevelType.getHealthRiskLevelColor(healthRiskLevel);
@@ -95,6 +85,7 @@ class HealthCheckupResultController extends ControllerCore {
   String get healthText => _healthText;
 
   /// 疾患タイプに応じたテキストリストと疾患例名リストを設定
+  /// [diseaseType] 疾患タイプ
   void setDiseaseTypeView(HealthCheckupDiseaseEnum diseaseType) {
     _diseaseTextList = HealthCheckupDiseaseType.getDiseaseTextList(diseaseType);
     _diseaseExampleNameList =
@@ -104,4 +95,12 @@ class HealthCheckupResultController extends ControllerCore {
   List<String> get diseaseTextList => _diseaseTextList;
 
   List<String> get diseaseExampleNameList => _diseaseExampleNameList;
+
+  /// 疾患名をクリックした際の処理
+  /// 疾患名をクリックするとWikipediaのページに遷移
+  /// [diseaseName] 疾患名
+  Future<void> getDiseaseUrl(String diseaseName) {
+    return UrlLauncherService()
+        .launchUrl('https://ja.wikipedia.org/wiki/$diseaseName');
+  }
 }
