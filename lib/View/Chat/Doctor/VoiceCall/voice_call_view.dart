@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_controller.dart';
-import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
+import 'package:unicorn_flutter/Model/Entity/Call/call.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
@@ -11,8 +12,8 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 
 class VoiceCallView extends StatefulWidget {
-  final Doctor doctor;
-  const VoiceCallView({super.key, required this.doctor});
+  final Call call;
+  const VoiceCallView({super.key, required this.call});
 
   @override
   State<VoiceCallView> createState() => _VoiceCallViewState();
@@ -24,8 +25,13 @@ class _VoiceCallViewState extends State<VoiceCallView> {
   @override
   void initState() {
     super.initState();
-    _controller = VoiceCallController(doctor: widget.doctor);
+    _controller = VoiceCallController(call: widget.call, context: context);
+    _controller.isChannelJoined.addListener(() {
+      Log.echo('isChannelJoined: ${_controller.isChannelJoined.value}');
+      setState(() {});
+    });
     _controller.isCallConnected.addListener(() {
+      Log.echo('isCallConnected: ${_controller.isCallConnected.value}');
       setState(() {});
     });
   }
@@ -56,7 +62,6 @@ class _VoiceCallViewState extends State<VoiceCallView> {
         bodyText: '医師との通話を終了しますか？',
         onTap: () {
           _controller.endCall();
-          const HomeRoute().go(context);
         },
       ),
     );
@@ -70,11 +75,11 @@ class _VoiceCallViewState extends State<VoiceCallView> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_controller.isCallConnected.value) {
+    if (!_controller.isChannelJoined.value) {
       return CustomScaffold(
-        appBar: CustomAppBar(
-            title:
-                '${_controller.doctor.firstName} ${_controller.doctor.lastName} 先生との通話待機中...'),
+        // appBar: CustomAppBar(
+        //     title:
+        //         '${_controller.doctor.firstName} ${_controller.doctor.lastName} 先生との通話待機中...'),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -105,13 +110,21 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                       controller: VideoViewController(
                         rtcEngine: _controller.engine,
                         canvas: const VideoCanvas(uid: 0),
+                        useFlutterTexture: true,
+                        useAndroidSurfaceView: true,
                       ),
+                      onAgoraVideoViewCreated: (viewId) {
+                        _controller.engine.startPreview();
+                      },
                     )
                   : AgoraVideoView(
                       controller: VideoViewController.remote(
                         rtcEngine: _controller.engine,
                         canvas: VideoCanvas(uid: _controller.remoteUid),
-                        connection: const RtcConnection(channelId: 'test'),
+                        useFlutterTexture: true,
+                        useAndroidSurfaceView: true,
+                        connection:
+                            const RtcConnection(channelId: 'test_channel'),
                       ),
                     ),
               Positioned(
@@ -130,15 +143,22 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                             controller: VideoViewController.remote(
                               rtcEngine: _controller.engine,
                               canvas: VideoCanvas(uid: _controller.remoteUid),
-                              connection:
-                                  const RtcConnection(channelId: 'test'),
+                              useFlutterTexture: true,
+                              useAndroidSurfaceView: true,
+                              connection: const RtcConnection(
+                                  channelId: 'test_channel'),
                             ),
                           )
                         : AgoraVideoView(
                             controller: VideoViewController(
                               rtcEngine: _controller.engine,
                               canvas: const VideoCanvas(uid: 0),
+                              useFlutterTexture: true,
+                              useAndroidSurfaceView: true,
                             ),
+                            onAgoraVideoViewCreated: (viewId) {
+                              _controller.engine.startPreview();
+                            },
                           ),
                   ),
                 ),
