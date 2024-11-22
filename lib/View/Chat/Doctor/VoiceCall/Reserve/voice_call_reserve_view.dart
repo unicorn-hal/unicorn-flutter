@@ -263,7 +263,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                                                             ),
                                                             child: CustomText(
                                                               text:
-                                                                  '${DateFormat('H時mm分').format(call.callStartTime)}〜${DateFormat('H時mm分').format(call.callEndTime)}',
+                                                                  '${DateFormat('HH時mm分').format(call.callStartTime.toLocal())}〜${DateFormat('H時mm分').format(call.callEndTime.toLocal())}',
                                                               fontSize: 20,
                                                             ),
                                                           ),

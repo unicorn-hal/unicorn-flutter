@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 import '../../../../Model/Data/Account/account_data.dart';
@@ -14,6 +15,7 @@ import '../../../Core/controller_core.dart';
 
 class VoiceCallReserveController extends ControllerCore {
   CallApi get _callApi => CallApi();
+  DoctorApi get _doctorApi => DoctorApi();
 
   VoiceCallReserveController(this.context, this.doctor);
 
@@ -93,8 +95,8 @@ class VoiceCallReserveController extends ControllerCore {
   }
 
   Future<Map<DateTime, List<Call>>?> getDoctorReservation() async {
-    final List<Call>? callList = await _callApi.getCall(
-        doctorId: doctor.doctorId, userId: AccountData().account!.uid);
+    final List<Call>? callList =
+        await _doctorApi.getDoctorCallList(doctorId: doctor.doctorId);
 
     if (callList == null) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
