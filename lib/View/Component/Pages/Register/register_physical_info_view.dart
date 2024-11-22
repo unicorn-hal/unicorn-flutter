@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_physical_info_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
@@ -240,6 +241,9 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                         controller: controller.bodyHeightTextController,
                         width: deviceWidth * 0.4,
                         keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                       ),
                     ),
                     SizedBox(
@@ -251,6 +255,9 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                         controller: controller.bodyWeightTextController,
                         width: deviceWidth * 0.4,
                         keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                       ),
                     ),
                   ],
