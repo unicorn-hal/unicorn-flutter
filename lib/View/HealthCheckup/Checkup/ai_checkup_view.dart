@@ -43,16 +43,10 @@ class _AiCheckupViewState extends State<AiCheckupView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onTap: () async {
-                        await controller.getDiseaseEnumString();
-                        setState(() {});
-                      },
-                      child: CircleAvatar(
-                        radius: size.width * 0.15,
-                        backgroundColor: Colors.white,
-                        child: Assets.images.icons.aiIcon.image(),
-                      ),
+                    CircleAvatar(
+                      radius: size.width * 0.15,
+                      backgroundColor: Colors.white,
+                      child: Assets.images.icons.uniIcon.image(),
                     ),
                     const Padding(
                       padding: EdgeInsets.all(8.0),
