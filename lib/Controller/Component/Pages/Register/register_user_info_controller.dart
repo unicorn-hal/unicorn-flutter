@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:unicorn_flutter/Constants/regexp_constants.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_info.dart';
@@ -107,6 +108,9 @@ class RegisterUserInfoController extends ControllerCore {
       Fluttertoast.showToast(msg: "${emptyMessageField.join(',')}が入力されていません。");
       return false;
     }
+    !RegExpConstants.emailRegExp.hasMatch(emailTextController.text)
+        ? Fluttertoast.showToast(msg: "メールアドレスの形式が正しくありません")
+        : null;
     return true;
   }
 }
