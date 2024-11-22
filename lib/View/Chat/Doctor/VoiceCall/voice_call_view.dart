@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Route/router.dart';
@@ -43,9 +42,9 @@ class _VoiceCallViewState extends State<VoiceCallView> {
     });
   }
 
-  void _onToggleCamera() {
+  void _onSwitchCamera() {
     setState(() {
-      _controller.toggleCamera();
+      _controller.switchCamera();
     });
   }
 
@@ -61,26 +60,6 @@ class _VoiceCallViewState extends State<VoiceCallView> {
         },
       ),
     );
-  }
-
-  void _onDragStart(DragStartDetails details) {
-    /// tips: ドラッグ開始時の処理が必要な場合はここに記述
-  }
-
-  void _onDragUpdate(DragUpdateDetails details) {
-    setState(() {
-      _controller.localVideoOffset += details.delta;
-      final screenHeight = MediaQuery.of(context).size.height;
-      const bottomButtonHeight = 130.0;
-
-      if (_controller.localVideoOffset.dy + 150 >
-          screenHeight - bottomButtonHeight) {
-        _controller.localVideoOffset = Offset(
-          _controller.localVideoOffset.dx,
-          screenHeight - bottomButtonHeight - 150,
-        );
-      }
-    });
   }
 
   void _onToggleSwap() {
@@ -100,10 +79,7 @@ class _VoiceCallViewState extends State<VoiceCallView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              LoadingAnimationWidget.fourRotatingDots(
-                color: Colors.amber,
-                size: 54,
-              ),
+              const CircularProgressIndicator(),
               const SizedBox(height: 16),
               const CustomText(text: '通話接続を待っています...'),
               const SizedBox(height: 256),
@@ -121,177 +97,84 @@ class _VoiceCallViewState extends State<VoiceCallView> {
     } else {
       return CustomScaffold(
         isAppbar: false,
-        appBar: AppBar(
-          title: Text('ビデオ通話 - ${_controller.userId}'),
-        ),
         body: SafeArea(
-          child: Container(
-            color: Colors.black.withOpacity(0.75),
-            child: Stack(
-              children: [
-                Positioned.fill(
-                  child: _controller.isSwapped
-                      ? RTCVideoView(_controller.localRenderer,
-                          mirror: _controller.isFrontCamera)
-                      : RTCVideoView(_controller.remoteRenderer),
-                ),
-                Positioned(
-                  left: _controller.localVideoOffset.dx,
-                  top: _controller.localVideoOffset.dy,
-                  width: 100,
-                  height: 150,
-                  child: GestureDetector(
-                    onPanStart: _onDragStart,
-                    onPanUpdate: _onDragUpdate,
-                    onTap: _onToggleSwap,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blueAccent, width: 4),
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: const Offset(0, 3),
+          child: Stack(
+            children: [
+              _controller.isSwapped
+                  ? AgoraVideoView(
+                      controller: VideoViewController(
+                        rtcEngine: _controller.engine,
+                        canvas: const VideoCanvas(uid: 0),
+                      ),
+                    )
+                  : AgoraVideoView(
+                      controller: VideoViewController.remote(
+                        rtcEngine: _controller.engine,
+                        canvas: VideoCanvas(uid: _controller.remoteUid),
+                        connection: const RtcConnection(channelId: 'test'),
+                      ),
+                    ),
+              Positioned(
+                left: 20,
+                top: 100,
+                width: 100,
+                height: 150,
+                child: GestureDetector(
+                  onTap: _onToggleSwap,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                    ),
+                    child: _controller.isSwapped
+                        ? AgoraVideoView(
+                            controller: VideoViewController.remote(
+                              rtcEngine: _controller.engine,
+                              canvas: VideoCanvas(uid: _controller.remoteUid),
+                              connection:
+                                  const RtcConnection(channelId: 'test'),
+                            ),
+                          )
+                        : AgoraVideoView(
+                            controller: VideoViewController(
+                              rtcEngine: _controller.engine,
+                              canvas: const VideoCanvas(uid: 0),
+                            ),
                           ),
-                        ],
-                      ),
-                      child: _controller.isSwapped
-                          ? RTCVideoView(_controller.remoteRenderer)
-                          : RTCVideoView(_controller.localRenderer,
-                              mirror: _controller.isFrontCamera),
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 30,
+                left: 20,
+                right: 20,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CircleButton(
+                      icon: _controller.isMuted
+                          ? const Icon(Icons.mic_off)
+                          : const Icon(Icons.mic),
+                      onTap: _onToggleMute,
+                      buttonColor:
+                          _controller.isMuted ? Colors.red : Colors.blueAccent,
+                      buttonSize: 48,
                     ),
-                  ),
-                ),
-                Positioned(
-                  top: 20,
-                  left: 20,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        text:
-                            '${_controller.doctor.firstName} ${_controller.doctor.lastName} 先生',
-                        color: Colors.white,
-                        fontSize: 24,
-                      ),
-                      ValueListenableBuilder<String>(
-                        valueListenable: _controller.elapsedTime,
-                        builder: (context, value, child) {
-                          return CustomText(
-                            text: value,
-                            color: Colors.white,
-                            fontSize: 16,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Positioned(
-                  top: 20,
-                  right: 20,
-                  child: GestureDetector(
-                    child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: Icon(
-                        _controller.isFrontCamera
-                            ? Icons.camera_front
-                            : Icons.camera_rear,
-                        color: Colors.white,
-                      ),
+                    CircleButton(
+                      icon: const Icon(Icons.call_end),
+                      onTap: _onEndCall,
+                      buttonColor: Colors.red,
+                      buttonSize: 48,
                     ),
-                    onTap: () {
-                      _controller.switchCamera();
-                      setState(() {});
-                    },
-                  ),
+                    CircleButton(
+                      icon: const Icon(Icons.switch_camera),
+                      onTap: _onSwitchCamera,
+                      buttonColor: Colors.blueAccent,
+                      buttonSize: 48,
+                    ),
+                  ],
                 ),
-                Positioned(
-                  bottom: 30,
-                  left: 20,
-                  right: 20,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                        width: 64,
-                        child: Column(
-                          children: [
-                            CircleButton(
-                              icon: Icon(_controller.isMuted
-                                  ? Icons.mic_off
-                                  : Icons.mic),
-                              onTap: _onToggleMute,
-                              buttonColor: Colors.white,
-                              buttonSize: 64,
-                              borderColor: Colors.grey,
-                            ),
-                            const SizedBox(
-                              height: 6,
-                            ),
-                            CustomText(
-                              text: _controller.isMuted ? 'ミュート解除' : 'ミュート',
-                              color: Colors.white,
-                              fontSize: 10,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 64,
-                        child: Column(
-                          children: [
-                            CircleButton(
-                              icon: const Icon(Icons.call_end,
-                                  color: Colors.white),
-                              onTap: _onEndCall,
-                              buttonColor: Colors.red,
-                              buttonSize: 64,
-                              borderColor: Colors.grey,
-                            ),
-                            const SizedBox(
-                              height: 6,
-                            ),
-                            const CustomText(
-                              text: '通話終了',
-                              color: Colors.white,
-                              fontSize: 10,
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 64,
-                        child: Column(
-                          children: [
-                            CircleButton(
-                              icon: Icon(_controller.isCameraOff
-                                  ? Icons.videocam_off
-                                  : Icons.videocam),
-                              onTap: _onToggleCamera,
-                              buttonColor: Colors.white,
-                              buttonSize: 64,
-                              borderColor: Colors.grey,
-                            ),
-                            const SizedBox(
-                              height: 6,
-                            ),
-                            CustomText(
-                              text: _controller.isCameraOff ? 'カメラオン' : 'カメラオフ',
-                              color: Colors.white,
-                              fontSize: 10,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );
