@@ -119,9 +119,9 @@ class RegisterUserInfoController extends ControllerCore {
       Fluttertoast.showToast(msg: "${emptyMessageField.join(',')}が入力されていません。");
       return false;
     }
-    !RegExpConstants.emailRegExp.hasMatch(emailTextController.text)
-        ? Fluttertoast.showToast(msg: "メールアドレスの形式が正しくありません")
-        : null;
+    if (!RegExpConstants.emailRegExp.hasMatch(emailTextController.text)) {
+      Fluttertoast.showToast(msg: "メールアドレスの形式が正しくありません");
+    }
     return true;
   }
 }
