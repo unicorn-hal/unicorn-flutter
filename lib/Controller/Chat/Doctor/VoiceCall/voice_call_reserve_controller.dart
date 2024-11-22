@@ -24,8 +24,11 @@ class VoiceCallReserveController extends ControllerCore {
 
   late DateTime _reserveDate;
   late DateTime _reserveTime;
+
   DateTime _calendarDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+
+  List<String> get _timeSlots => generateHalfHourSlots(doctor.callSupportHours);
 
   @override
   void initialize() async {
@@ -132,4 +135,68 @@ class VoiceCallReserveController extends ControllerCore {
   }
 
   DateTime get calendarDate => _calendarDate;
+
+  /// 通話対応可能時間の文字列を30分ごとのリストに変換する関数
+  List<String> generateHalfHourSlots(String timeRange) {
+    // 例: '10:00-17:00'
+
+    // 文字列を '-' で分割して開始時間と終了時間を取得
+    List<String> parts = timeRange.split('-');
+    if (parts.length != 2) {
+      throw FormatException("時間帯のフォーマットが正しくありません。");
+    }
+
+    // 開始時間と終了時間をパース
+    DateTime startTime = _parseTime(parts[0]);
+    DateTime endTime = _parseTime(parts[1]);
+
+    // 開始時間が終了時間より後の場合はエラー
+    if (startTime.isAfter(endTime)) {
+      throw FormatException("開始時間が終了時間より後です。");
+    }
+
+    List<String> slots = [];
+    DateTime current = startTime;
+
+    while (current.isBefore(endTime)) {
+      DateTime slotEnd = current.add(Duration(minutes: 30));
+
+      // スロットの終了時間が全体の終了時間を超えないように調整
+      if (slotEnd.isAfter(endTime)) {
+        slotEnd = endTime;
+      }
+
+      // スロットのフォーマットを 'HH:mm〜HH:mm' に変換
+      String slot =
+          '${_formatTime(current)}〜${_formatTime(slotEnd.subtract(Duration(minutes: 1)))}';
+      slots.add(slot);
+
+      // 次のスロットへ進む
+      current = current.add(Duration(minutes: 30));
+    }
+
+    return slots;
+  }
+
+  /// 'HH:mm' 形式の時間文字列をDateTimeオブジェクトに変換
+  DateTime _parseTime(String timeStr) {
+    List<String> parts = timeStr.split(':');
+    if (parts.length != 2) {
+      throw FormatException("時間のフォーマットが正しくありません。");
+    }
+
+    int hour = int.parse(parts[0]);
+    int minute = int.parse(parts[1]);
+
+    // 今日の日付に時間を設定
+    DateTime now = DateTime.now();
+    return DateTime(now.year, now.month, now.day, hour, minute);
+  }
+
+  /// DateTimeオブジェクトを 'HH:mm' 形式の文字列に変換
+  String _formatTime(DateTime time) {
+    return DateFormat('HH:mm').format(time);
+  }
+
+  List<String> get timeSlots => _timeSlots;
 }
