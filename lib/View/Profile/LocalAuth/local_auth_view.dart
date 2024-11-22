@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Controller/Profile/LocalAuth/local_auth_controller.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
@@ -12,7 +13,15 @@ class LocalAuthView extends StatefulWidget {
 }
 
 class _LocalAuthViewState extends State<LocalAuthView> {
+  late LocalAuthController controller;
   bool isBiometrics = true;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = LocalAuthController();
+  }
+
   // todo: controller出来たら移動
   @override
   Widget build(BuildContext context) {

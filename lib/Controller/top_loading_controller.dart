@@ -59,6 +59,9 @@ class TopLoadingController extends ControllerCore {
     bool? appInitialized = await _sharedPreferencesService
         .getBool(SharedPreferencesKeysEnum.appInitialized.name);
 
+    /// SharedPreferences: useLocalAuth フラグを設定
+    await _sharedPreferencesService.setBool('useLocalAuth', false);
+
     /// ユーザー情報を取得
     firebase_auth.User? authUser = _authService.getUser();
     if (authUser == null) {
