@@ -63,7 +63,6 @@ class VoiceCallReserveController extends ControllerCore {
 
     if (response != 200) {
       // todo: エラー処理
-      print(response);
       Fluttertoast.showToast(msg: '通話予約に失敗しました');
       return;
     }
@@ -126,6 +125,7 @@ class VoiceCallReserveController extends ControllerCore {
     return events;
   }
 
+  /// DateTimeを日付のみに変換(キーとして使用するため)
   DateTime normalizeDate(DateTime date) {
     final localDate = date.toLocal();
     return DateTime(localDate.year, localDate.month, localDate.day);
