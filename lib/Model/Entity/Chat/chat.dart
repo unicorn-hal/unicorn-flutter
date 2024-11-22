@@ -7,15 +7,15 @@ class Chat {
   final String chatId;
   final ChatDoctor doctor;
   final ChatUser user;
-  final String latestMessageText;
-  final DateTime latestMessageSentAt;
+  final String? latestMessageText;
+  final DateTime? latestMessageSentAt;
 
   Chat({
     required this.chatId,
     required this.doctor,
     required this.user,
-    required this.latestMessageText,
-    required this.latestMessageSentAt,
+    this.latestMessageText,
+    this.latestMessageSentAt,
   });
 
   factory Chat.fromJson(Map<String, dynamic> json) {
@@ -23,8 +23,10 @@ class Chat {
       chatId: json['chatID'],
       doctor: ChatDoctor.fromJson(json['doctor']),
       user: ChatUser.fromJson(json['user']),
-      latestMessageText: json['latestMessageText'],
-      latestMessageSentAt: DateTime.parse(json['latestMessageSentAt']),
+      latestMessageText: json['latestMessageText'] ?? '',
+      latestMessageSentAt: json['latestMessageSentAt'] != null
+          ? DateTime.parse(json['latestMessageSentAt'])
+          : null,
     );
   }
 
@@ -34,8 +36,9 @@ class Chat {
       'doctor': doctor.toJson(),
       'user': user.toJson(),
       'latestMessageText': latestMessageText,
-      'latestMessageSentAt':
-          DateFormat('yyyy-MM-dd').format(latestMessageSentAt),
+      'latestMessageSentAt': latestMessageSentAt != null
+          ? DateFormat('yyyy-MM-dd').format(latestMessageSentAt!)
+          : null,
     };
   }
 
