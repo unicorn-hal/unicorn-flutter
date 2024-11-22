@@ -61,11 +61,11 @@ class NotificationSettingController extends ControllerCore {
     }
     await updateSubscription(
       isSubscribed: _userNotification.isRegularHealthCheckup,
-      topics: [FCMTopicType.toStringValue(FCMTopicEnum.regularHealthCheckup)],
+      topics: [FCMTopicEnum.regularHealthCheckup.name],
     );
     await updateSubscription(
       isSubscribed: _userNotification.isHospitalNews,
-      topics: [FCMTopicType.toStringValue(FCMTopicEnum.hospitalNews)],
+      topics: [FCMTopicEnum.hospitalNews.name],
     );
     Fluttertoast.showToast(msg: Strings.SETTING_REFLECTED_TEXT);
     ProtectorNotifier().disableProtector();
@@ -83,11 +83,11 @@ class NotificationSettingController extends ControllerCore {
     }
     await updateSubscription(
       isSubscribed: _userNotification.isRegularHealthCheckup,
-      topics: [FCMTopicType.toStringValue(FCMTopicEnum.regularHealthCheckup)],
+      topics: [FCMTopicEnum.regularHealthCheckup.name],
     );
     await updateSubscription(
       isSubscribed: _userNotification.isHospitalNews,
-      topics: [FCMTopicType.toStringValue(FCMTopicEnum.hospitalNews)],
+      topics: [FCMTopicEnum.hospitalNews.name],
     );
     Fluttertoast.showToast(msg: Strings.SETTING_REFLECTED_TEXT);
     ProtectorNotifier().disableProtector();
