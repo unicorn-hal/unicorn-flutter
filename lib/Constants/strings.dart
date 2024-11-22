@@ -56,4 +56,16 @@ class Strings {
 
   // 設定反映時に使うテキスト
   static const String SETTING_REFLECTED_TEXT = '設定を反映しました';
+
+  // 連絡先へのアクセスが未許可のときに使うテキスト
+  static const String REQUEST_PERMISSION_ERROR_TEXT =
+      '端末設定から連絡先へのアクセスを許可してください';
+
+  // メールアドレスが未登録に表示するテキスト
+  static const String FAMILY_EMAIL_NOT_REGISTERED_TEXT = 'メールアドレスが登録されていません';
+
+  // メールアドレス登録時のvalidateに使うテキスト
+  static const String FAMILY_EMAIL_VALIDATE_FIELD_TEXT =
+      'メールアドレスおよび姓と名の登録が必要です';
+  static const String FAMILY_EMAIL_VALIDATE_FORMAT_TEXT = 'メールアドレスの形式が正しくありません';
 }

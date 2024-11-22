@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
+import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
 import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart';
+import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
-import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
@@ -25,7 +26,8 @@ import 'package:unicorn_flutter/View/Profile/AppInformation/license_view.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/chronic_disease_view.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/disease_search_view.dart';
 import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_register_view.dart';
-import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_setting_view.dart';
+import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_sync_contact_view.dart';
+import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_view.dart';
 import 'package:unicorn_flutter/View/Profile/Medicine/medicine_setting_view.dart';
 import 'package:unicorn_flutter/View/Profile/Medicine/medicine_view.dart';
 import 'package:unicorn_flutter/View/Component/Pages/Register/register_physical_info_view.dart';
@@ -78,9 +80,6 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<NormalCheckupRoute>(
           path: Routes.healthCheckupNormal,
-        ),
-        TypedGoRoute<CheckupProgressRoute>(
-          path: Routes.healthCheckupProgress,
         ),
         TypedGoRoute<CheckupResultRoute>(
           path: Routes.healthCheckupResults,
@@ -234,19 +233,22 @@ class EmergencyRoute extends GoRouteData {
       const EmergencyView();
 }
 
-@TypedGoRoute<EmergencyProgressRoute>(
+@TypedGoRoute<ProgressRoute>(
   path: Routes.emergencyProgress,
 )
-class EmergencyProgressRoute extends GoRouteData {
-  const EmergencyProgressRoute({
-    required this.$extra,
+class ProgressRoute extends GoRouteData {
+  const ProgressRoute({
+    required this.from,
+    this.diseaseEnumString,
   });
 
-  final ProgressViewEnum $extra;
+  final String from;
+  final String? diseaseEnumString;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => ProgressView(
-        progressType: $extra,
+        from: from,
+        diseaseEnumString: diseaseEnumString,
       );
 }
 
@@ -284,7 +286,7 @@ class RegisterUserInfoRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const RegisterUserInfoView();
+      RegisterUserInfoView();
 }
 
 /////////////////////////////////  Root  //////////////////////////////
@@ -321,19 +323,6 @@ class NormalCheckupRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const NormalCheckupView();
-}
-
-class CheckupProgressRoute extends GoRouteData {
-  CheckupProgressRoute({
-    required this.$extra,
-  });
-
-  final ProgressViewEnum $extra;
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) => ProgressView(
-        progressType: $extra,
-      );
 }
 
 class CheckupResultRoute extends GoRouteData {
@@ -423,8 +412,8 @@ class ProfileRegisterPhysicalInfoRoute extends GoRouteData {
 }
 
 class ProfileRegisterAddressInfoRoute extends GoRouteData {
-  ProfileRegisterAddressInfoRoute({required this.$extra});
-  PhysicalInfo $extra;
+  ProfileRegisterAddressInfoRoute({this.$extra});
+  PhysicalInfo? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
@@ -434,11 +423,14 @@ class ProfileRegisterAddressInfoRoute extends GoRouteData {
 }
 
 class ProfileRegisterUserInfoRoute extends GoRouteData {
-  const ProfileRegisterUserInfoRoute();
+  ProfileRegisterUserInfoRoute({this.$extra});
+  AddressInfo? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const RegisterUserInfoView();
+      RegisterUserInfoView(
+        addressInfo: $extra,
+      );
 }
 
 class ProfileLocalAuthRoute extends GoRouteData {
@@ -485,23 +477,33 @@ class ProfileFamilyEmailRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const FamilyEmailSettingView();
+      const FamilyEmailView();
 }
 
 class ProfileFamilyEmailRegisterRoute extends GoRouteData {
-  const ProfileFamilyEmailRegisterRoute();
+  const ProfileFamilyEmailRegisterRoute({
+    this.$extra,
+  });
+  final FamilyEmail? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const FamilyEmailRegisterView();
+      FamilyEmailRegisterView(
+        familyEmail: $extra,
+      );
 }
 
 class ProfileFamilyEmailSyncContactRoute extends GoRouteData {
-  const ProfileFamilyEmailSyncContactRoute();
+  const ProfileFamilyEmailSyncContactRoute({
+    this.$extra,
+  });
+  final List<FamilyEmail>? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const FamilyEmailSettingView();
+      FamilyEmailSyncContactView(
+        familyEmailList: $extra,
+      );
 }
 
 class ProfileMedicineRoute extends GoRouteData {

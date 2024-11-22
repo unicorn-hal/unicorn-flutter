@@ -172,10 +172,7 @@ class MedicineSettingController extends ControllerCore {
   }
 
   /// Medicineの情報を更新する関数
-  Future<void> putMedicine() async {
-    if (!validateField()) {
-      return;
-    }
+  Future<int> putMedicine() async {
     MedicineRequest body = MedicineRequest(
       medicineName: nameController.text,
       count: _medicine!.count,
@@ -188,13 +185,11 @@ class MedicineSettingController extends ControllerCore {
     if (res != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
+    return res;
   }
 
   /// Medicineの情報を登録する関数
-  Future<void> postMedicine() async {
-    if (!validateField()) {
-      return;
-    }
+  Future<int> postMedicine() async {
     MedicineRequest body = MedicineRequest(
       medicineName: nameController.text,
       count: int.parse(countController.text),
@@ -206,6 +201,7 @@ class MedicineSettingController extends ControllerCore {
     if (res != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
+    return res;
   }
 
   /// Medicineの情報を削除する関数
