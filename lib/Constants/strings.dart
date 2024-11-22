@@ -54,6 +54,9 @@ class Strings {
   // ローディング中に表示するテキスト
   static const String LOADING_TEXT = 'ロード中';
 
+  // 設定反映時に使うテキスト
+  static const String SETTING_REFLECTED_TEXT = '設定を反映しました';
+
   // 連絡先へのアクセスが未許可のときに使うテキスト
   static const String REQUEST_PERMISSION_ERROR_TEXT =
       '端末設定から連絡先へのアクセスを許可してください';

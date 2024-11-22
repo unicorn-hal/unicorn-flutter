@@ -7,6 +7,7 @@ import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/Ai/TextChat/ai_text_chat_view.dart';
 import 'package:unicorn_flutter/View/Chat/Doctor/TextChat/doctor_text_chat_view.dart';
@@ -79,9 +80,6 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<NormalCheckupRoute>(
           path: Routes.healthCheckupNormal,
-        ),
-        TypedGoRoute<CheckupProgressRoute>(
-          path: Routes.healthCheckupProgress,
         ),
         TypedGoRoute<CheckupResultRoute>(
           path: Routes.healthCheckupResults,
@@ -235,19 +233,22 @@ class EmergencyRoute extends GoRouteData {
       const EmergencyView();
 }
 
-@TypedGoRoute<EmergencyProgressRoute>(
+@TypedGoRoute<ProgressRoute>(
   path: Routes.emergencyProgress,
 )
-class EmergencyProgressRoute extends GoRouteData {
-  const EmergencyProgressRoute({
-    required this.$extra,
+class ProgressRoute extends GoRouteData {
+  const ProgressRoute({
+    required this.from,
+    this.diseaseEnumString,
   });
 
-  final ProgressViewEnum $extra;
+  final String from;
+  final String? diseaseEnumString;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => ProgressView(
-        progressType: $extra,
+        from: from,
+        diseaseEnumString: diseaseEnumString,
       );
 }
 
@@ -328,19 +329,6 @@ class NormalCheckupRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const NormalCheckupView();
-}
-
-class CheckupProgressRoute extends GoRouteData {
-  CheckupProgressRoute({
-    required this.$extra,
-  });
-
-  final ProgressViewEnum $extra;
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) => ProgressView(
-        progressType: $extra,
-      );
 }
 
 class CheckupResultRoute extends GoRouteData {
@@ -478,11 +466,16 @@ class ProfileAppInformationLicenseRoute extends GoRouteData {
 }
 
 class ProfileNotificationSettingRoute extends GoRouteData {
-  const ProfileNotificationSettingRoute();
+  const ProfileNotificationSettingRoute({
+    required this.$extra,
+  });
+  final UserNotification $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const NotificationSettingView();
+      NotificationSettingView(
+        userNotification: $extra,
+      );
 }
 
 class ProfileFamilyEmailRoute extends GoRouteData {
