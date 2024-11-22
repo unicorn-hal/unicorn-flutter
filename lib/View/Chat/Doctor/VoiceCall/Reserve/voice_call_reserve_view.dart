@@ -48,6 +48,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            // 他のウィジェット部分は省略
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
@@ -131,26 +132,29 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                       }
 
                       showDialog(
-                          context: context,
-                          builder: (_) {
-                            return StatefulBuilder(
-                                builder: (context, setState) {
+                        // ignore: use_build_context_synchronously
+                        context: context,
+                        builder: (_) {
+                          return StatefulBuilder(
+                            builder: (context, setState) {
                               return Column(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Dialog(
                                     backgroundColor: Colors.white,
                                     surfaceTintColor: Colors.white,
                                     child: TableCalendar(
                                       locale: 'ja_JP',
-                                      currentDay: controller.calendarDate,
-                                      focusedDay: controller.calendarDate,
-                                      firstDay: DateTime.now().add(
-                                        const Duration(days: -365),
-                                      ),
+                                      firstDay: DateTime.now(),
                                       lastDay: DateTime.now()
                                           .add(const Duration(days: 365)),
+                                      focusedDay: controller.calendarDate,
+                                      currentDay: controller.calendarDate,
                                       calendarFormat: CalendarFormat.month,
                                       headerStyle: const HeaderStyle(
+                                        headerMargin: EdgeInsets.symmetric(
+                                          horizontal: 20,
+                                        ),
                                         titleTextStyle: TextStyle(
                                           color: ColorName.textBlack,
                                           fontSize: 16,
@@ -158,10 +162,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                                           fontFamily: 'Noto_Sans_JP',
                                         ),
                                         formatButtonVisible: false,
-                                        leftChevronIcon: Icon(
-                                          Icons.chevron_left,
-                                          color: ColorName.mainColor,
-                                        ),
+                                        leftChevronVisible: false,
                                         rightChevronIcon: Icon(
                                           Icons.chevron_right,
                                           color: ColorName.mainColor,
@@ -185,102 +186,229 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                                         );
                                         return events[targetDate] ?? [];
                                       },
+                                      calendarStyle: const CalendarStyle(
+                                        tablePadding: EdgeInsets.all(2.0),
+                                        todayDecoration: BoxDecoration(
+                                          color: ColorName.mainColor,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        selectedDecoration: BoxDecoration(
+                                          color: ColorName.mainColor,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        todayTextStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                        selectedTextStyle: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      calendarBuilders: CalendarBuilders(
+                                        // 曜日のヘッダーをカスタマイズ
+                                        dowBuilder: (context, day) {
+                                          TextStyle textStyle = const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold);
+
+                                          if (day.weekday ==
+                                              DateTime.saturday) {
+                                            textStyle = const TextStyle(
+                                                color: Colors.blue,
+                                                fontWeight: FontWeight.bold);
+                                          } else if (day.weekday ==
+                                              DateTime.sunday) {
+                                            textStyle = const TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.bold);
+                                          }
+
+                                          return Center(
+                                            child: Text(
+                                              DateFormat.E('ja_JP')
+                                                  .format(day), // 日本語の曜日名
+                                              style: textStyle,
+                                            ),
+                                          );
+                                        },
+                                        // 日付セルをカスタマイズ
+                                        defaultBuilder:
+                                            (context, day, focusedDay) {
+                                          TextStyle textStyle = const TextStyle(
+                                              color: Colors.black);
+
+                                          if (day.weekday ==
+                                              DateTime.saturday) {
+                                            textStyle = const TextStyle(
+                                                color: Colors.blue);
+                                          } else if (day.weekday ==
+                                              DateTime.sunday) {
+                                            textStyle = const TextStyle(
+                                                color: Colors.red);
+                                          }
+
+                                          return Center(
+                                            child: Text(
+                                              '${day.day}',
+                                              style: textStyle,
+                                            ),
+                                          );
+                                        },
+                                        todayBuilder:
+                                            (context, day, focusedDay) {
+                                          TextStyle textStyle = const TextStyle(
+                                              color: Colors.white);
+
+                                          if (day.weekday ==
+                                              DateTime.saturday) {
+                                            textStyle = const TextStyle(
+                                                color: Colors.blue);
+                                          } else if (day.weekday ==
+                                              DateTime.sunday) {
+                                            textStyle = const TextStyle(
+                                                color: Colors.red);
+                                          }
+
+                                          return Container(
+                                            decoration: const BoxDecoration(
+                                              color: ColorName.mainColor,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                '${day.day}',
+                                                style: textStyle,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        selectedBuilder:
+                                            (context, day, focusedDay) {
+                                          TextStyle textStyle = const TextStyle(
+                                              color: Colors.white);
+
+                                          if (day.weekday ==
+                                              DateTime.saturday) {
+                                            textStyle = const TextStyle(
+                                                color: Colors.blue);
+                                          } else if (day.weekday ==
+                                              DateTime.sunday) {
+                                            textStyle = const TextStyle(
+                                                color: Colors.red);
+                                          }
+
+                                          return Container(
+                                            decoration: const BoxDecoration(
+                                              color: ColorName.mainColor,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                '${day.day}',
+                                                style: textStyle,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                   SizedBox(
-                                      width: size.width * 0.9,
-                                      height: 300,
-                                      child: events[controller.normalizeDate(
-                                                  controller.calendarDate)] ==
-                                              null
-                                          ? Align(
-                                              alignment: Alignment.topCenter,
-                                              child: Container(
-                                                color: Colors.white,
-                                                height: 100,
-                                                child: const Center(
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.check,
-                                                        size: 30,
-                                                        color: Colors.green,
-                                                      ),
-                                                      CustomText(
-                                                          text:
-                                                              'この日時の通話予約はありません。'),
-                                                    ],
-                                                  ),
+                                    width: size.width * 0.9,
+                                    height: 300,
+                                    child: events[controller.normalizeDate(
+                                                controller.calendarDate)] ==
+                                            null
+                                        ? Align(
+                                            alignment: Alignment.topCenter,
+                                            child: Container(
+                                              color: Colors.white,
+                                              height: 100,
+                                              child: const Center(
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.check,
+                                                      size: 30,
+                                                      color: Colors.green,
+                                                    ),
+                                                    CustomText(
+                                                        text:
+                                                            'この日時の通話予約はありません。'),
+                                                  ],
                                                 ),
                                               ),
-                                            )
-                                          : ListView.builder(
-                                              itemCount: events[controller
-                                                      .normalizeDate(controller
-                                                          .calendarDate)]!
-                                                  .length,
-                                              itemBuilder: (context, index) {
-                                                final Call call = events[
-                                                        controller.normalizeDate(
-                                                            controller
-                                                                .calendarDate)]![
-                                                    index];
+                                            ),
+                                          )
+                                        : ListView.builder(
+                                            itemCount: events[controller
+                                                    .normalizeDate(controller
+                                                        .calendarDate)]!
+                                                .length,
+                                            itemBuilder: (context, index) {
+                                              final Call call = events[
+                                                      controller.normalizeDate(
+                                                          controller
+                                                              .calendarDate)]![
+                                                  index];
 
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Container(
-                                                    width: 100,
-                                                    height: 60,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      color: Colors.white,
-                                                      border: Border.all(
-                                                        color: ColorName
-                                                            .shadowGray,
-                                                        width: 2,
-                                                      ),
-                                                    ),
-                                                    child: Center(
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          const SizedBox(
-                                                            width: 10,
-                                                          ),
-                                                          const Icon(
-                                                            Icons.cancel,
-                                                            color: Colors.red,
-                                                          ),
-                                                          Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                              horizontal: 8.0,
-                                                            ),
-                                                            child: CustomText(
-                                                              text:
-                                                                  '${DateFormat('HH時mm分').format(call.callStartTime.toLocal())}〜${DateFormat('H時mm分').format(call.callEndTime.toLocal())}',
-                                                              fontSize: 20,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  width: 100,
+                                                  height: 60,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    color: Colors.white,
+                                                    border: Border.all(
+                                                      color:
+                                                          ColorName.shadowGray,
+                                                      width: 2,
                                                     ),
                                                   ),
-                                                );
-                                              }))
+                                                  child: Center(
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        const SizedBox(
+                                                          width: 10,
+                                                        ),
+                                                        const Icon(
+                                                          Icons.cancel,
+                                                          color: Colors.red,
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                            horizontal: 8.0,
+                                                          ),
+                                                          child: CustomText(
+                                                            text:
+                                                                '${DateFormat('HH時mm分').format(call.callStartTime.toLocal())}〜${DateFormat('H時mm分').format(call.callEndTime.toLocal())}',
+                                                            fontSize: 20,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                  ),
                                 ],
                               );
-                            });
-                          });
+                            },
+                          );
+                        },
+                      );
                     },
                     child: Container(
                       width: 50,
