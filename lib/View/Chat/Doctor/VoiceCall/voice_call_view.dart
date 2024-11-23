@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call.dart';
-import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
@@ -73,14 +73,15 @@ class _VoiceCallViewState extends State<VoiceCallView> {
   Widget build(BuildContext context) {
     if (!_controller.isUserJoined.value) {
       return CustomScaffold(
-        // appBar: CustomAppBar(
-        //     title:
-        //         '${_controller.doctor.firstName} ${_controller.doctor.lastName} 先生との通話待機中...'),
+        appBar: CustomAppBar(title: '通話待機中...'),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircularProgressIndicator(),
+              LoadingAnimationWidget.fourRotatingDots(
+                color: Colors.amber,
+                size: 54,
+              ),
               const SizedBox(height: 16),
               const CustomText(text: '通話接続を待っています...'),
               const SizedBox(height: 256),
@@ -88,7 +89,6 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                 text: 'キャンセル',
                 onTap: () {
                   _controller.endCall();
-                  const HomeRoute().go(context);
                 },
               ),
             ],
