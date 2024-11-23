@@ -9,16 +9,16 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dar
 import 'package:unicorn_flutter/View/Component/Parts/Chat/message_tile.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
+import '../../../../Model/Entity/Doctor/doctor.dart';
+
 class DoctorTextChatView extends StatefulWidget {
   const DoctorTextChatView({
     super.key,
-    required this.doctorId,
-    required this.doctorName,
+    required this.doctor,
     this.reserveMessage,
   });
 
-  final String doctorId;
-  final String doctorName;
+  final Doctor doctor;
   final String? reserveMessage;
   @override
   State<DoctorTextChatView> createState() => _DoctorTextChatViewState();
@@ -38,8 +38,7 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
     super.initState();
 
     // doctorIdを元にチャットコントローラーを初期化
-    controller =
-        DoctorTextChatController(widget.doctorId, widget.reserveMessage);
+    controller = DoctorTextChatController(widget.doctor, widget.reserveMessage);
 
     //スクロール位置が最下部になかったらscrollButtonを表示する
     controller.scrollController.addListener(() {
@@ -60,7 +59,7 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
       focusNode: focusNode,
       appBar: CustomAppBar(
         backgroundColor: ColorName.mainColor,
-        title: '${widget.doctorName}先生',
+        title: '${widget.doctor.lastName}${widget.doctor.firstName}先生',
         foregroundColor: Colors.white,
       ),
       body: Stack(
