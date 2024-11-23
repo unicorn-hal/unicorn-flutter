@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_reserve_controller.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
-import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -173,6 +173,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                             ),
                             onDaySelected:
                                 (DateTime selectedDay, DateTime focusedDay) {
+                              controller.setReserveDate(null, null);
                               controller.changeCalendarDate(selectedDay);
                               setState(() {});
                             },
@@ -318,34 +319,81 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                               ),
                               itemCount: controller.timeSlots.length,
                               itemBuilder: (context, index) {
-                                // final Call call = events[
-                                //     controller.normalizeDate(
-                                //         controller.calendarDate)]![index];
+                                bool isAvailableTime =
+                                    controller.isAvailableTimeSlot(
+                                        events![controller.normalizeDate(
+                                            controller.calendarDate)],
+                                        controller.timeSlots[index]);
 
-                                return Container(
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(
-                                      color: ColorName.shadowGray,
-                                      width: 1,
+                                return GestureDetector(
+                                  onTap: () {
+                                    if (!isAvailableTime) {
+                                      Fluttertoast.showToast(
+                                        msg: 'この時間は予約できません。',
+                                      );
+                                      return;
+                                    }
+                                    // 選択した時間を予約日時に設定
+                                    final DateTime selectedTime = DateTime(
+                                      controller.calendarDate.year,
+                                      controller.calendarDate.month,
+                                      controller.calendarDate.day,
+                                      int.parse(controller.timeSlots[index]
+                                          .split('〜')[0]
+                                          .split(':')[0]),
+                                      int.parse(controller.timeSlots[index]
+                                          .split('〜')[0]
+                                          .split(':')[1]),
+                                    );
+
+                                    controller.setReserveDate(
+                                        selectedTime, index);
+                                    setState(() {});
+                                  },
+                                  child: Container(
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      color: controller.selectedTimeSlotIndex ==
+                                              index
+                                          ? ColorName.mainColor
+                                          : Colors.white,
+                                      borderRadius: BorderRadius.circular(5),
+                                      border: Border.all(
+                                        color: ColorName.shadowGray,
+                                        width: 1,
+                                      ),
                                     ),
-                                  ),
-                                  child: Center(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Icon(
-                                          Icons.cancel,
-                                          color: Colors.red,
-                                          size: 16,
-                                        ),
-                                        CustomText(
-                                          text: controller.timeSlots[index],
-                                          fontSize: 14,
-                                        ),
-                                      ],
+                                    child: Center(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          isAvailableTime
+                                              ? Icon(
+                                                  Icons.circle_outlined,
+                                                  color: controller
+                                                              .selectedTimeSlotIndex ==
+                                                          index
+                                                      ? Colors.white
+                                                      : Colors.green,
+                                                  size: 18,
+                                                )
+                                              : const Icon(
+                                                  Icons.close,
+                                                  color: Colors.red,
+                                                  size: 18,
+                                                ),
+                                          CustomText(
+                                            text: controller.timeSlots[index],
+                                            color: controller
+                                                        .selectedTimeSlotIndex ==
+                                                    index
+                                                ? Colors.white
+                                                : null,
+                                            fontSize: 14,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );
@@ -357,45 +405,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                     );
                   });
                 }),
-            SizedBox(
-              height: 90,
-              width: size.width * 0.9,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    width: 150,
-                    height: 90,
-                    child: Column(
-                      children: [
-                        const Align(
-                          alignment: Alignment.centerLeft,
-                          child: CustomText(
-                            text: '時間',
-                            fontSize: 20,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 150,
-                          height: 60,
-                          child: FittedBox(
-                            alignment: Alignment.centerLeft,
-                            child: CustomDrumRoll(
-                              drumRollType: DrumRollType.time,
-                              onConfirm: (DateTime time) {
-                                controller.changeTime(time);
-                                setState(() {});
-                              },
-                              splitMinute: 5,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+
             const SizedBox(
               height: 10,
             ),

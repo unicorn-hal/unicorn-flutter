@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
+import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 import '../../../../Model/Data/Account/account_data.dart';
@@ -22,8 +23,8 @@ class VoiceCallReserveController extends ControllerCore {
   BuildContext? context;
   final Doctor doctor;
 
-  late DateTime _reserveDate;
-  late DateTime _reserveTime;
+  late DateTime? reserveDate;
+  int? selectedTimeSlotIndex;
 
   DateTime _calendarDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -33,29 +34,21 @@ class VoiceCallReserveController extends ControllerCore {
   @override
   void initialize() async {
     // 初期値は現在時刻
-    _reserveDate = DateTime.now();
-    _reserveTime = DateTime.now();
+    reserveDate = DateTime.now();
   }
 
   /// 通話予約を行う
   Future<void> reserveCall() async {
     ProtectorNotifier().enableProtector();
     // 予約日時を結合
-    final DateTime reserveDateTime = DateTime(
-      _reserveDate.year,
-      _reserveDate.month,
-      _reserveDate.day,
-      _reserveTime.hour,
-      _reserveTime.minute,
-    );
 
     CallRequest body = CallRequest(
       doctorId: doctor.doctorId,
       userId: AccountData().account!.uid,
-      callStartTime: reserveDateTime,
+      callStartTime: reserveDate!,
       // 一旦固定で30分間に設定
-      callEndTime: reserveDateTime.add(
-        const Duration(minutes: 10),
+      callEndTime: reserveDate!.add(
+        const Duration(minutes: 30),
       ),
     );
 
@@ -72,7 +65,7 @@ class VoiceCallReserveController extends ControllerCore {
 
     // 通話予約に成功した場合
     final String reserveMessage =
-        '通話予約が完了しました！ \n\n■予約内容\n${DateFormat('yyyy年MM月dd日').format(reserveDateTime)}\n\n■時間\n${DateFormat('HH:mm').format(reserveDateTime)}〜${DateFormat('HH:mm').format(reserveDateTime.add(const Duration(minutes: 10)))}\n\n■医師名\n${doctor.lastName + doctor.firstName}\n\n■その他\n通話・予約に関してのお問い合わせはアプリ内「プロフィール > お問い合わせ」からお申し上げください。';
+        '通話予約が完了しました！ \n\n■予約内容\n${DateFormat('yyyy年MM月dd日').format(reserveDate!)}\n\n■時間\n${DateFormat('HH:mm').format(reserveDate!)}〜${DateFormat('HH:mm').format(reserveDate!.add(const Duration(minutes: 30)))}\n\n■医師名\n${doctor.lastName + doctor.firstName}\n\n■その他\n通話・予約に関してのお問い合わせはアプリ内「プロフィール > お問い合わせ」からお申し上げください。';
 
     ChatDoctorTextChatRoute(
             doctorId: doctor.doctorId,
@@ -82,14 +75,10 @@ class VoiceCallReserveController extends ControllerCore {
     return;
   }
 
-  // 日付の変更
-  void changeDate(DateTime date) {
-    _reserveDate = date;
-  }
-
-  // 時間の変更
-  void changeTime(DateTime time) {
-    _reserveTime = time;
+  // 選択された日時をセット
+  void setReserveDate(DateTime? date, int? index) {
+    reserveDate = date;
+    selectedTimeSlotIndex = index;
   }
 
   // カレンダーの日付変更
@@ -196,6 +185,26 @@ class VoiceCallReserveController extends ControllerCore {
   /// DateTimeオブジェクトを 'HH:mm' 形式の文字列に変換
   String _formatTime(DateTime time) {
     return DateFormat('HH:mm').format(time);
+  }
+
+  /// 取得した通話対応可能時間のリストと比較してboolを返す
+  bool isAvailableTimeSlot(
+    List<Call>? reservedCalls,
+    String targetTimeSlot,
+  ) {
+    if (reservedCalls == null) {
+      return true;
+    }
+
+    String targetStartTime = (targetTimeSlot.split('〜').first);
+    for (Call call in reservedCalls) {
+      final String reservedString =
+          call.callStartTime.toLocal().toString().substring(11, 16);
+      if (reservedString == targetStartTime) {
+        return false;
+      }
+    }
+    return true;
   }
 
   List<String> get timeSlots => _timeSlots;
