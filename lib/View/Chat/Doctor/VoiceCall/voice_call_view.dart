@@ -26,12 +26,8 @@ class _VoiceCallViewState extends State<VoiceCallView> {
   void initState() {
     super.initState();
     _controller = VoiceCallController(call: widget.call, context: context);
-    _controller.isChannelJoined.addListener(() {
-      Log.echo('isChannelJoined: ${_controller.isChannelJoined.value}');
-      setState(() {});
-    });
-    _controller.isCallConnected.addListener(() {
-      Log.echo('isCallConnected: ${_controller.isCallConnected.value}');
+    _controller.isUserJoined.addListener(() {
+      Log.echo('isChannelJoined: ${_controller.isUserJoined.value}');
       setState(() {});
     });
   }
@@ -75,7 +71,7 @@ class _VoiceCallViewState extends State<VoiceCallView> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_controller.isChannelJoined.value) {
+    if (!_controller.isUserJoined.value) {
       return CustomScaffold(
         // appBar: CustomAppBar(
         //     title:
@@ -120,11 +116,11 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                   : AgoraVideoView(
                       controller: VideoViewController.remote(
                         rtcEngine: _controller.engine,
-                        canvas: VideoCanvas(uid: _controller.remoteUid),
+                        canvas: VideoCanvas(uid: _controller.uid),
                         useFlutterTexture: true,
                         useAndroidSurfaceView: true,
-                        connection:
-                            const RtcConnection(channelId: 'test_channel'),
+                        connection: RtcConnection(
+                            channelId: _controller.call.callReservationId),
                       ),
                     ),
               Positioned(
@@ -142,11 +138,12 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                         ? AgoraVideoView(
                             controller: VideoViewController.remote(
                               rtcEngine: _controller.engine,
-                              canvas: VideoCanvas(uid: _controller.remoteUid),
+                              canvas: VideoCanvas(uid: _controller.uid),
                               useFlutterTexture: true,
                               useAndroidSurfaceView: true,
-                              connection: const RtcConnection(
-                                  channelId: 'test_channel'),
+                              connection: RtcConnection(
+                                  channelId:
+                                      _controller.call.callReservationId),
                             ),
                           )
                         : AgoraVideoView(
