@@ -10,7 +10,7 @@ class MessageTile extends StatelessWidget {
     required this.postAt,
     this.postAtColor,
     this.actionWidget,
-    this.onLongTap,
+    this.onLongPress,
   });
 
   final String? messageBody;
@@ -18,13 +18,13 @@ class MessageTile extends StatelessWidget {
   final String postAt;
   final Widget? actionWidget;
   final Color? postAtColor;
-  final Function? onLongTap;
+  final Function? onLongPress;
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return GestureDetector(
-      onLongPress: () => onLongTap?.call(),
+      onLongPress: () => onLongPress?.call(),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: Row(

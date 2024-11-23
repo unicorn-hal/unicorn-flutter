@@ -106,7 +106,7 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
                                   postAt: DateFormat('HH:mm').format(
                                     message.sentAt.toLocal(),
                                   ),
-                                  onLongTap: () async {
+                                  onLongPress: () async {
                                     showCupertinoModalPopup(
                                         context: context,
                                         builder: (BuildContext context) {
