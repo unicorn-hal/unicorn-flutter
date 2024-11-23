@@ -28,7 +28,8 @@ class VoiceCallReserveController extends ControllerCore {
   DateTime _calendarDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
-  List<String> get _timeSlots => generateHalfHourSlots(doctor.callSupportHours);
+  List<String> get _timeSlots =>
+      _generateHalfHourSlots(doctor.callSupportHours);
 
   @override
   void initialize() async {
@@ -92,6 +93,7 @@ class VoiceCallReserveController extends ControllerCore {
     _calendarDate = date;
   }
 
+  /// 医師の通話予約一覧を取得
   Future<Map<DateTime, List<Call>>?> getDoctorReservation() async {
     final List<Call>? callList =
         await _doctorApi.getDoctorCallList(doctorId: doctor.doctorId);
@@ -132,7 +134,7 @@ class VoiceCallReserveController extends ControllerCore {
   DateTime get calendarDate => _calendarDate;
 
   /// 通話対応可能時間の文字列を30分ごとのリストに変換する関数
-  List<String> generateHalfHourSlots(String timeRange) {
+  List<String> _generateHalfHourSlots(String timeRange) {
     // 例: '10:00-17:00'
 
     // 文字列を '-' で分割して開始時間と終了時間を取得
