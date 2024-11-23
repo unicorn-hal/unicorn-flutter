@@ -39,7 +39,7 @@ class VoiceCallReserveController extends ControllerCore {
   /// 通話予約を行う
   Future<void> reserveCall() async {
     if (reserveDate == null || selectedTimeSlotIndex == null) {
-      Fluttertoast.showToast(msg: '予約日時を選択してください');
+      Fluttertoast.showToast(msg: Strings.VOICE_CALL_SET_ERROR_TEXT);
       return;
     }
     ProtectorNotifier().enableProtector();
@@ -61,7 +61,7 @@ class VoiceCallReserveController extends ControllerCore {
 
     if (response != 200) {
       // todo: エラー処理
-      Fluttertoast.showToast(msg: '通話予約に失敗しました');
+      Fluttertoast.showToast(msg: Strings.VOICE_CALL_RESERVE_ERROR_TEXT);
       return;
     }
 
@@ -138,7 +138,7 @@ class VoiceCallReserveController extends ControllerCore {
     // 文字列を '-' で分割して開始時間と終了時間を取得
     List<String> parts = timeRange.split('-');
     if (parts.length != 2) {
-      throw FormatException("時間帯のフォーマットが正しくありません。");
+      throw const FormatException("時間帯のフォーマットが正しくありません。");
     }
 
     // 開始時間と終了時間をパース
@@ -147,14 +147,14 @@ class VoiceCallReserveController extends ControllerCore {
 
     // 開始時間が終了時間より後の場合はエラー
     if (startTime.isAfter(endTime)) {
-      throw FormatException("開始時間が終了時間より後です。");
+      throw const FormatException("開始時間が終了時間より後です。");
     }
 
     List<String> slots = [];
     DateTime current = startTime;
 
     while (current.isBefore(endTime)) {
-      DateTime slotEnd = current.add(Duration(minutes: 30));
+      DateTime slotEnd = current.add(const Duration(minutes: 30));
 
       // スロットの終了時間が全体の終了時間を超えないように調整
       if (slotEnd.isAfter(endTime)) {
@@ -163,11 +163,11 @@ class VoiceCallReserveController extends ControllerCore {
 
       // スロットのフォーマットを 'HH:mm〜HH:mm' に変換
       String slot =
-          '${_formatTime(current)}〜${_formatTime(slotEnd.subtract(Duration(minutes: 1)))}';
+          '${_formatTime(current)}〜${_formatTime(slotEnd.subtract(const Duration(minutes: 1)))}';
       slots.add(slot);
 
       // 次のスロットへ進む
-      current = current.add(Duration(minutes: 30));
+      current = current.add(const Duration(minutes: 30));
     }
 
     return slots;
@@ -177,7 +177,7 @@ class VoiceCallReserveController extends ControllerCore {
   DateTime _parseTime(String timeStr) {
     List<String> parts = timeStr.split(':');
     if (parts.length != 2) {
-      throw FormatException("時間のフォーマットが正しくありません。");
+      throw const FormatException("時間のフォーマットが正しくありません。");
     }
 
     int hour = int.parse(parts[0]);

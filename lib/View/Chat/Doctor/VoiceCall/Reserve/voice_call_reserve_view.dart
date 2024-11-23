@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_reserve_controller.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
@@ -329,7 +330,8 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                                   onTap: () {
                                     if (!isAvailableTime) {
                                       Fluttertoast.showToast(
-                                        msg: 'この時間は予約できません。',
+                                        msg: Strings
+                                            .VOICE_CALL_DISABLE_ERROR_TEXT,
                                       );
                                       return;
                                     }
