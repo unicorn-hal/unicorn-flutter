@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
-import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 import '../../../../Model/Data/Account/account_data.dart';
@@ -39,9 +38,12 @@ class VoiceCallReserveController extends ControllerCore {
 
   /// 通話予約を行う
   Future<void> reserveCall() async {
+    if (reserveDate == null || selectedTimeSlotIndex == null) {
+      Fluttertoast.showToast(msg: '予約日時を選択してください');
+      return;
+    }
     ProtectorNotifier().enableProtector();
     // 予約日時を結合
-
     CallRequest body = CallRequest(
       doctorId: doctor.doctorId,
       userId: AccountData().account!.uid,
@@ -65,7 +67,11 @@ class VoiceCallReserveController extends ControllerCore {
 
     // 通話予約に成功した場合
     final String reserveMessage =
-        '通話予約が完了しました！ \n\n■予約内容\n${DateFormat('yyyy年MM月dd日').format(reserveDate!)}\n\n■時間\n${DateFormat('HH:mm').format(reserveDate!)}〜${DateFormat('HH:mm').format(reserveDate!.add(const Duration(minutes: 30)))}\n\n■医師名\n${doctor.lastName + doctor.firstName}\n\n■その他\n通話・予約に関してのお問い合わせはアプリ内「プロフィール > お問い合わせ」からお申し上げください。';
+        '通話予約が完了しました！ \n\n■予約内容\n${DateFormat('yyyy年MM月dd日').format(reserveDate!)}\n\n■時間\n${DateFormat('HH:mm').format(reserveDate!)}〜${DateFormat('HH:mm').format(reserveDate!.add(const Duration(minutes: 29)))}\n\n■医師名\n${doctor.lastName + doctor.firstName}\n\n■その他\n通話・予約に関してのお問い合わせはアプリ内「プロフィール > お問い合わせ」からお申し上げください。';
+
+    // 予約日時を初期化
+    selectedTimeSlotIndex = null;
+    reserveDate = null;
 
     ChatDoctorTextChatRoute(
             doctorId: doctor.doctorId,

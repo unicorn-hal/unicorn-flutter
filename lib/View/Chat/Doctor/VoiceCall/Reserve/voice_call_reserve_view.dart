@@ -356,7 +356,9 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                                       color: controller.selectedTimeSlotIndex ==
                                               index
                                           ? ColorName.mainColor
-                                          : Colors.white,
+                                          : isAvailableTime
+                                              ? Colors.white
+                                              : ColorName.shadowGray,
                                       borderRadius: BorderRadius.circular(5),
                                       border: Border.all(
                                         color: ColorName.shadowGray,
