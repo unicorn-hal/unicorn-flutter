@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
@@ -20,30 +22,44 @@ class VoiceCallController extends ControllerCore {
   AgoraCertificateApi get _agoraApi => AgoraCertificateApi();
   DoctorApi get _doctorApi => DoctorApi();
 
+  late RtcEngine _engine;
+
   final Call _call;
   Doctor? _doctor;
 
-  late RtcEngine _engine;
-  bool isMuted = false;
-  bool isSwapped = false;
+  bool _isMuted = false;
+  bool _isSwapped = false;
+  bool _useFrontCamera = true;
+  Timer? _timer;
+  int _elapsedTimeSec = 0;
 
   int? _uid;
   String? _token;
 
   final ValueNotifier<bool> _isUserJoined = ValueNotifier(false);
+  final ValueNotifier<bool> _isLocalCameraEnabled = ValueNotifier(true);
+  final ValueNotifier<bool> _isRemoteCameraEnabled = ValueNotifier(true);
+  final ValueNotifier<String> _elapsedTime = ValueNotifier('00:00');
 
   VoiceCallController({required Call call, required this.context})
       : _call = call;
   BuildContext context;
 
+  RtcEngine get engine => _engine;
+
   Call get call => _call;
   Doctor? get doctor => _doctor;
 
-  RtcEngine get engine => _engine;
+  bool get isMuted => _isMuted;
+  bool get isSwapped => _isSwapped;
+  bool get useFrontCamera => _useFrontCamera;
 
   int? get uid => _uid;
 
   ValueNotifier<bool> get isUserJoined => _isUserJoined;
+  ValueNotifier<bool> get isLocalCameraEnabled => _isLocalCameraEnabled;
+  ValueNotifier<bool> get isRemoteCameraEnabled => _isRemoteCameraEnabled;
+  ValueNotifier<String> get elapsedTime => _elapsedTime;
 
   @override
   Future<void> initialize() async {
@@ -61,6 +77,7 @@ class VoiceCallController extends ControllerCore {
     await _joinChannel();
   }
 
+  /// Agoraエンジンの初期化
   Future<void> _initAgoraEngine() async {
     _engine = createAgoraRtcEngine();
     await _engine.initialize(RtcEngineContext(
@@ -79,6 +96,7 @@ class VoiceCallController extends ControllerCore {
         },
         onUserJoined: (connection, uid, elapsed) {
           Log.echo('User joined: $uid');
+          startTimer();
           _uid = uid;
           _isUserJoined.value = true;
         },
@@ -93,8 +111,11 @@ class VoiceCallController extends ControllerCore {
           elapsed,
         ) {
           Log.echo('Remote video state changed: $state');
+          if (state == RemoteVideoState.remoteVideoStateDecoding) {
+            isRemoteCameraEnabled.value = true;
+          }
           if (state == RemoteVideoState.remoteVideoStateStopped) {
-            endCall();
+            isRemoteCameraEnabled.value = false;
           }
         },
         onRequestToken: (connection) {
@@ -107,6 +128,7 @@ class VoiceCallController extends ControllerCore {
     await _engine.startPreview();
   }
 
+  /// トークン取得
   Future<void> _fetchToken() async {
     AgoraCertificateRequest request = AgoraCertificateRequest(
       channelName: _call.callReservationId,
@@ -122,6 +144,7 @@ class VoiceCallController extends ControllerCore {
     }
   }
 
+  /// 医師情報取得
   Future<void> _fetchDoctor() async {
     Doctor? res = await _doctorApi.getDoctor(doctorId: _call.doctorId);
     if (res != null) {
@@ -129,6 +152,7 @@ class VoiceCallController extends ControllerCore {
     }
   }
 
+  /// チャンネル参加
   Future<void> _joinChannel() async {
     Log.echo('Joining channel...: $_token');
     await _engine.joinChannel(
@@ -142,17 +166,39 @@ class VoiceCallController extends ControllerCore {
     );
   }
 
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _elapsedTimeSec++;
+      int minutes = _elapsedTimeSec ~/ 60;
+      int seconds = _elapsedTimeSec % 60;
+      _elapsedTime.value = '${minutes.toString().padLeft(2, '0')}'
+          ':${seconds.toString().padLeft(2, '0')}';
+    });
+  }
+
+  void stopTimer() {
+    _timer?.cancel();
+    _elapsedTimeSec = 0;
+    _elapsedTime.value = '00:00';
+  }
+
   void toggleMute() {
-    isMuted = !isMuted;
-    _engine.muteLocalAudioStream(isMuted);
+    _isMuted = !_isMuted;
+    _engine.muteLocalAudioStream(_isMuted);
+  }
+
+  void toggleCamera() {
+    _isLocalCameraEnabled.value = !_isLocalCameraEnabled.value;
+    _engine.enableLocalVideo(_isLocalCameraEnabled.value);
   }
 
   void switchCamera() {
+    _useFrontCamera = !_useFrontCamera;
     _engine.switchCamera();
   }
 
   void toggleSwap() {
-    isSwapped = !isSwapped;
+    _isSwapped = !_isSwapped;
   }
 
   void endCall() {
@@ -162,8 +208,11 @@ class VoiceCallController extends ControllerCore {
   }
 
   void dispose() {
-    _engine.leaveChannel();
-    _engine.release();
     _isUserJoined.dispose();
+    _isLocalCameraEnabled.dispose();
+    _isRemoteCameraEnabled.dispose();
+    _elapsedTime.dispose();
+    _elapsedTimeSec = 0;
+    _timer?.cancel();
   }
 }

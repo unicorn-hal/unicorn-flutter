@@ -44,6 +44,12 @@ class _VoiceCallViewState extends State<VoiceCallView> {
     });
   }
 
+  void _onToggleCamera() {
+    setState(() {
+      _controller.toggleCamera();
+    });
+  }
+
   void _onSwitchCamera() {
     setState(() {
       _controller.switchCamera();
@@ -69,6 +75,123 @@ class _VoiceCallViewState extends State<VoiceCallView> {
     });
   }
 
+  /// カメラがオフの場合のビュー
+  /// [isLocal] 自分のカメラか
+  /// [isMinimized] ミニマイズビューか
+  Widget _cameraDisabledView({
+    required bool isLocal,
+    required bool isMinimized,
+  }) {
+    return Container(
+      color: Colors.black.withOpacity(0.5),
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.videocam_off_rounded,
+              color: Colors.white,
+              size: isMinimized ? 24 : 48,
+            ),
+            if (!isMinimized) ...[
+              const SizedBox(height: 8),
+              CustomText(
+                text: '${isLocal ? 'カメラ' : '相手の映像'}がオフになっています',
+                color: Colors.white,
+              ),
+            ]
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// 自分のカメラビュー
+  /// [isMinimized] ミニマイズビューか
+  Widget _buildAgoraVideoLocal({bool isMinimized = false}) {
+    return ValueListenableBuilder(
+      valueListenable: _controller.isLocalCameraEnabled,
+      builder: (context, value, child) {
+        if (!value) {
+          return _cameraDisabledView(isLocal: true, isMinimized: isMinimized);
+        }
+
+        return AgoraVideoView(
+          controller: VideoViewController(
+            rtcEngine: _controller.engine,
+            canvas: const VideoCanvas(uid: 0),
+            useFlutterTexture: true,
+            useAndroidSurfaceView: true,
+          ),
+          onAgoraVideoViewCreated: (viewId) {
+            _controller.engine.startPreview();
+          },
+        );
+      },
+    );
+  }
+
+  /// 相手のカメラビュー
+  /// [isMinimized] ミニマイズビューか
+  Widget _buildAgoraVideoRemote({bool isMinimized = false}) {
+    return ValueListenableBuilder(
+      valueListenable: _controller.isRemoteCameraEnabled,
+      builder: (context, value, child) {
+        if (!value) {
+          return _cameraDisabledView(isLocal: false, isMinimized: isMinimized);
+        }
+
+        return AgoraVideoView(
+          controller: VideoViewController.remote(
+            rtcEngine: _controller.engine,
+            canvas: VideoCanvas(uid: _controller.uid),
+            useFlutterTexture: true,
+            useAndroidSurfaceView: true,
+            connection:
+                RtcConnection(channelId: _controller.call.callReservationId),
+          ),
+        );
+      },
+    );
+  }
+
+  /// イベントハンドラボタン
+  /// [icon] アイコン
+  /// [iconColor] アイコンの色
+  /// [label] ラベル
+  /// [buttonColor] ボタンの色
+  /// [onTap] タップ時の処理
+  SizedBox _eventHandlerButton({
+    required IconData icon,
+    Color? iconColor,
+    required String label,
+    required Color buttonColor,
+    required VoidCallback onTap,
+  }) {
+    return SizedBox(
+      width: 64,
+      child: Column(
+        children: [
+          CircleButton(
+            icon: Icon(icon, color: iconColor),
+            onTap: onTap,
+            buttonColor: buttonColor,
+            buttonSize: 64,
+            borderColor: Colors.grey,
+          ),
+          const SizedBox(
+            height: 6,
+          ),
+          CustomText(
+            text: label,
+            fontSize: 10,
+            color: Colors.white,
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (!_controller.isUserJoined.value) {
@@ -87,9 +210,7 @@ class _VoiceCallViewState extends State<VoiceCallView> {
               const SizedBox(height: 256),
               CustomButton(
                 text: 'キャンセル',
-                onTap: () {
-                  _controller.endCall();
-                },
+                onTap: () => _controller.endCall(),
               ),
             ],
           ),
@@ -99,99 +220,107 @@ class _VoiceCallViewState extends State<VoiceCallView> {
       return CustomScaffold(
         isAppbar: false,
         body: SafeArea(
-          child: Stack(
-            children: [
-              _controller.isSwapped
-                  ? AgoraVideoView(
-                      controller: VideoViewController(
-                        rtcEngine: _controller.engine,
-                        canvas: const VideoCanvas(uid: 0),
-                        useFlutterTexture: true,
-                        useAndroidSurfaceView: true,
+          child: Container(
+            color: Colors.black.withOpacity(0.75),
+            child: Stack(
+              children: [
+                _controller.isSwapped
+                    ? _buildAgoraVideoLocal()
+                    : _buildAgoraVideoRemote(),
+                Positioned(
+                  left: 20,
+                  top: 100,
+                  width: 100,
+                  height: 150,
+                  child: GestureDetector(
+                    onTap: _onToggleSwap,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white),
                       ),
-                      onAgoraVideoViewCreated: (viewId) {
-                        _controller.engine.startPreview();
-                      },
-                    )
-                  : AgoraVideoView(
-                      controller: VideoViewController.remote(
-                        rtcEngine: _controller.engine,
-                        canvas: VideoCanvas(uid: _controller.uid),
-                        useFlutterTexture: true,
-                        useAndroidSurfaceView: true,
-                        connection: RtcConnection(
-                            channelId: _controller.call.callReservationId),
-                      ),
+                      child: _controller.isSwapped
+                          ? _buildAgoraVideoRemote(isMinimized: true)
+                          : _buildAgoraVideoLocal(isMinimized: true),
                     ),
-              Positioned(
-                left: 20,
-                top: 100,
-                width: 100,
-                height: 150,
-                child: GestureDetector(
-                  onTap: _onToggleSwap,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white),
-                    ),
-                    child: _controller.isSwapped
-                        ? AgoraVideoView(
-                            controller: VideoViewController.remote(
-                              rtcEngine: _controller.engine,
-                              canvas: VideoCanvas(uid: _controller.uid),
-                              useFlutterTexture: true,
-                              useAndroidSurfaceView: true,
-                              connection: RtcConnection(
-                                  channelId:
-                                      _controller.call.callReservationId),
-                            ),
-                          )
-                        : AgoraVideoView(
-                            controller: VideoViewController(
-                              rtcEngine: _controller.engine,
-                              canvas: const VideoCanvas(uid: 0),
-                              useFlutterTexture: true,
-                              useAndroidSurfaceView: true,
-                            ),
-                            onAgoraVideoViewCreated: (viewId) {
-                              _controller.engine.startPreview();
-                            },
-                          ),
                   ),
                 ),
-              ),
-              Positioned(
-                bottom: 30,
-                left: 20,
-                right: 20,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    CircleButton(
-                      icon: _controller.isMuted
-                          ? const Icon(Icons.mic_off)
-                          : const Icon(Icons.mic),
-                      onTap: _onToggleMute,
-                      buttonColor:
-                          _controller.isMuted ? Colors.red : Colors.blueAccent,
-                      buttonSize: 48,
-                    ),
-                    CircleButton(
-                      icon: const Icon(Icons.call_end),
-                      onTap: _onEndCall,
-                      buttonColor: Colors.red,
-                      buttonSize: 48,
-                    ),
-                    CircleButton(
-                      icon: const Icon(Icons.switch_camera),
-                      onTap: _onSwitchCamera,
-                      buttonColor: Colors.blueAccent,
-                      buttonSize: 48,
-                    ),
-                  ],
+                Positioned(
+                  top: 20,
+                  left: 20,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text:
+                            '${_controller.doctor?.lastName ?? ''} ${_controller.doctor?.firstName ?? ''} 先生',
+                        color: Colors.white,
+                        fontSize: 24,
+                      ),
+                      ValueListenableBuilder(
+                        valueListenable: _controller.elapsedTime,
+                        builder: (context, value, child) {
+                          return CustomText(
+                            text: value,
+                            color: Colors.white,
+                            fontSize: 16,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                Positioned(
+                  top: 20,
+                  right: 20,
+                  child: GestureDetector(
+                    onTap: () => _onSwitchCamera(),
+                    child: SizedBox(
+                      width: 48,
+                      height: 48,
+                      child: Icon(
+                        _controller.useFrontCamera
+                            ? Icons.camera_front
+                            : Icons.camera_rear,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: 30,
+                  left: 20,
+                  right: 20,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _eventHandlerButton(
+                        icon: _controller.isMuted ? Icons.mic_off : Icons.mic,
+                        label: _controller.isMuted ? 'ミュート解除' : 'ミュート',
+                        buttonColor: Colors.white,
+                        onTap: _onToggleMute,
+                      ),
+                      _eventHandlerButton(
+                        icon: Icons.call_end,
+                        label: '通話終了',
+                        buttonColor: Colors.red,
+                        iconColor: Colors.white,
+                        onTap: _onEndCall,
+                      ),
+                      _eventHandlerButton(
+                        icon: _controller.isLocalCameraEnabled.value
+                            ? Icons.videocam_off
+                            : Icons.videocam,
+                        label: _controller.isLocalCameraEnabled.value
+                            ? 'カメラオフ'
+                            : 'カメラオン',
+                        buttonColor: Colors.white,
+                        onTap: _onToggleCamera,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       );
