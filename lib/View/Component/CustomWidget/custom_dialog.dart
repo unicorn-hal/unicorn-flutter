@@ -29,6 +29,18 @@ class CustomDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    late List<String> buttonTextList;
+    late List<Function?> buttonOnTapList;
+    if (customButtonCount != 0) {
+      buttonTextList = [
+        leftButtonText,
+        rightButtonText,
+      ];
+      buttonOnTapList = [
+        leftButtonOnTap,
+        rightButtonOnTap,
+      ];
+    }
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -91,38 +103,25 @@ class CustomDialog extends StatelessWidget {
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: CustomButton(
-                              text: leftButtonText,
-                              onTap: () {
-                                Navigator.pop(context);
-                                if (leftButtonOnTap != null) {
-                                  leftButtonOnTap!.call();
-                                }
-                              },
+                        for (int i = 0; i < customButtonCount; i++) ...{
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: CustomButton(
+                                isFilledColor: i == 1 ? true : false,
+                                text: buttonTextList[i],
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  if (buttonOnTapList[i] != null) {
+                                    buttonOnTapList[i]!.call();
+                                  }
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                        customButtonCount == 2
-                            ? Expanded(
-                                flex: 1,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  child: CustomButton(
-                                    text: rightButtonText,
-                                    isFilledColor: true,
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      rightButtonOnTap!.call();
-                                    },
-                                  ),
-                                ),
-                              )
-                            : Container(),
+                        }
                       ],
                     ),
             ),
