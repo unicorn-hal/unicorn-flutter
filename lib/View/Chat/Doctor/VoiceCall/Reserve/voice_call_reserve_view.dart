@@ -172,6 +172,8 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                                 color: ColorName.mainColor,
                               ),
                             ),
+                            availableGestures:
+                                AvailableGestures.horizontalSwipe,
                             onDaySelected:
                                 (DateTime selectedDay, DateTime focusedDay) {
                               controller.setReserveDate(null, null);
