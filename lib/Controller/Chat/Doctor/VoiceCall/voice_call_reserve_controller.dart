@@ -17,40 +17,42 @@ class VoiceCallReserveController extends ControllerCore {
   CallApi get _callApi => CallApi();
   DoctorApi get _doctorApi => DoctorApi();
 
-  VoiceCallReserveController(this.context, this.doctor);
+  VoiceCallReserveController(this.context, this._doctor);
 
   BuildContext? context;
-  final Doctor doctor;
+  final Doctor _doctor;
 
-  late DateTime? reserveDate;
+  late DateTime? _reserveDate;
   int? selectedTimeSlotIndex;
 
   DateTime _calendarDate =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
 
   List<String> get _timeSlots =>
-      _generateHalfHourSlots(doctor.callSupportHours);
+      _generateHalfHourSlots(_doctor.callSupportHours);
 
   @override
   void initialize() async {
     // 初期値は現在時刻
-    reserveDate = DateTime.now();
+    _reserveDate = DateTime.now();
   }
+
+  Doctor get doctor => _doctor;
 
   /// 通話予約を行う
   Future<void> reserveCall() async {
-    if (reserveDate == null || selectedTimeSlotIndex == null) {
+    if (_reserveDate == null || selectedTimeSlotIndex == null) {
       Fluttertoast.showToast(msg: Strings.VOICE_CALL_SET_ERROR_TEXT);
       return;
     }
     ProtectorNotifier().enableProtector();
     // 予約日時を結合
     CallRequest body = CallRequest(
-      doctorId: doctor.doctorId,
+      doctorId: _doctor.doctorId,
       userId: AccountData().account!.uid,
-      callStartTime: reserveDate!,
+      callStartTime: _reserveDate!,
       // 一旦固定で30分間に設定
-      callEndTime: reserveDate!.add(
+      callEndTime: _reserveDate!.add(
         const Duration(minutes: 30),
       ),
     );
@@ -68,13 +70,13 @@ class VoiceCallReserveController extends ControllerCore {
 
     // 通話予約に成功した場合
     final String reserveMessage =
-        '通話予約が完了しました！ \n\n■予約内容\n${DateFormat('yyyy年MM月dd日').format(reserveDate!)}\n\n■時間\n${DateFormat('HH:mm').format(reserveDate!)}〜${DateFormat('HH:mm').format(reserveDate!.add(const Duration(minutes: 29)))}\n\n■医師名\n${doctor.lastName + doctor.firstName}\n\n■その他\n通話・予約に関してのお問い合わせはアプリ内「プロフィール > お問い合わせ」からお申し上げください。';
+        '通話予約が完了しました！ \n\n■予約内容\n${DateFormat('yyyy年MM月dd日').format(_reserveDate!)}\n\n■時間\n${DateFormat('HH:mm').format(_reserveDate!)}〜${DateFormat('HH:mm').format(_reserveDate!.add(const Duration(minutes: 29)))}\n\n■医師名\n${_doctor.lastName + _doctor.firstName}\n\n■その他\n通話・予約に関してのお問い合わせはアプリ内「プロフィール > お問い合わせ」からお申し上げください。';
 
     // 予約日時を初期化
     selectedTimeSlotIndex = null;
-    reserveDate = null;
+    _reserveDate = null;
 
-    ChatDoctorTextChatRoute($extra: doctor, reserveMessage: reserveMessage)
+    ChatDoctorTextChatRoute($extra: _doctor, reserveMessage: reserveMessage)
         .push(context!);
     return;
   }
@@ -82,12 +84,12 @@ class VoiceCallReserveController extends ControllerCore {
   // 選択された日時をセット
   void setReserveDate({int? index}) {
     if (index == null) {
-      reserveDate = null;
+      _reserveDate = null;
       selectedTimeSlotIndex = null;
       return;
     }
 
-    reserveDate = DateTime(
+    _reserveDate = DateTime(
       calendarDate.year,
       calendarDate.month,
       calendarDate.day,
@@ -105,7 +107,7 @@ class VoiceCallReserveController extends ControllerCore {
   /// 医師の通話予約一覧を取得
   Future<Map<DateTime, List<Call>>?> getDoctorReservation() async {
     final List<Call>? callList =
-        await _doctorApi.getDoctorCallList(doctorId: doctor.doctorId);
+        await _doctorApi.getDoctorCallList(doctorId: _doctor.doctorId);
 
     if (callList == null) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);

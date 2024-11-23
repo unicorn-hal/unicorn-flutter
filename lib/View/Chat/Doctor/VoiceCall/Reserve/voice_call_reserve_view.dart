@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -62,7 +61,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                     children: [
                       CustomText(
                         text:
-                            '"${widget.doctor.lastName + widget.doctor.firstName}先生"',
+                            '"${controller.doctor.lastName + controller.doctor.firstName}先生"',
                         fontSize: 30,
                       ),
                       const CustomText(
@@ -95,7 +94,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                     ),
                     child: CustomText(
                       text:
-                          ' ${widget.doctor.callSupportHours.replaceAll('-', '〜')}',
+                          ' ${controller.doctor.callSupportHours.replaceAll('-', '〜')}',
                       fontSize: 20,
                     ),
                   ),
