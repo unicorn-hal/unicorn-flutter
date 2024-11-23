@@ -69,6 +69,12 @@ class Strings {
       'メールアドレスおよび姓と名の登録が必要です';
   static const String FAMILY_EMAIL_VALIDATE_FORMAT_TEXT = 'メールアドレスの形式が正しくありません';
 
+  // 通話予約関連で使用するテキスト
+  static const String VOICE_CALL_SET_ERROR_TEXT = '通話予約日時を選択してください';
+  static const String VOICE_CALL_DISABLE_ERROR_TEXT =
+      'この時間は予約できません。他の時間を選択してください';
+  static const String VOICE_CALL_RESERVE_ERROR_TEXT = '通話予約に失敗しました';
+
   // ユーザープロフィール登録完了時に表示するテキスト
   static const String PROFILE_REGISTRATION_COMPLETED_MESSAGE =
       'ユーザーが正常に登録されました';
