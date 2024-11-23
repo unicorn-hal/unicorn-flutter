@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
+import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
+import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
 import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
@@ -363,26 +365,32 @@ class ChatDoctorInformationRoute extends GoRouteData {
 }
 
 class ChatDoctorTextChatRoute extends GoRouteData {
-  ChatDoctorTextChatRoute(
-    this.doctorId,
-    this.doctorName,
-  );
-  String doctorId;
-  String doctorName;
+  ChatDoctorTextChatRoute({
+    required this.$extra,
+    this.reserveMessage,
+  });
+  Doctor $extra;
+  String? reserveMessage;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => DoctorTextChatView(
-        doctorId: doctorId,
-        doctorName: doctorName,
+        doctor: $extra,
+        reserveMessage: reserveMessage,
       );
 }
 
 class ChatDoctorVoiceCallReserveRoute extends GoRouteData {
-  const ChatDoctorVoiceCallReserveRoute();
+  const ChatDoctorVoiceCallReserveRoute(
+    this.$extra,
+  );
+
+  final Doctor $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      VoiceCallReserveView();
+      VoiceCallReserveView(
+        doctor: $extra,
+      );
 }
 
 class ChatDoctorSearchRoute extends GoRouteData {

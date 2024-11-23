@@ -87,11 +87,7 @@ class DoctorInformationView extends StatelessWidget {
                       padding: const EdgeInsets.all(4.0),
                       child: GestureDetector(
                         onTap: () {
-                          final String doctorName =
-                              doctor.lastName + doctor.firstName;
-                          // todo: チャット画面へ遷移
-                          ChatDoctorTextChatRoute(doctorId, doctorName)
-                              .push(context);
+                          ChatDoctorTextChatRoute($extra: doctor).push(context);
                         },
                         child: Container(
                           width: 160,
@@ -129,8 +125,7 @@ class DoctorInformationView extends StatelessWidget {
                       padding: const EdgeInsets.all(4.0),
                       child: GestureDetector(
                         onTap: () {
-                          // todo: 通話予約画面へ遷移
-                          const ChatDoctorVoiceCallReserveRoute().push(context);
+                          ChatDoctorVoiceCallReserveRoute(doctor).push(context);
                         },
                         child: Container(
                           width: 160,
