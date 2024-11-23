@@ -253,42 +253,9 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                                   ),
                                 );
                               },
-                              todayBuilder: (context, day, focusedDay) {
-                                TextStyle textStyle =
-                                    const TextStyle(color: Colors.white);
-
-                                if (day.weekday == DateTime.saturday) {
-                                  textStyle =
-                                      const TextStyle(color: Colors.blue);
-                                } else if (day.weekday == DateTime.sunday) {
-                                  textStyle =
-                                      const TextStyle(color: Colors.red);
-                                }
-
-                                return Container(
-                                  decoration: const BoxDecoration(
-                                    color: ColorName.mainColor,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      '${day.day}',
-                                      style: textStyle,
-                                    ),
-                                  ),
-                                );
-                              },
                               selectedBuilder: (context, day, focusedDay) {
                                 TextStyle textStyle =
                                     const TextStyle(color: Colors.white);
-
-                                if (day.weekday == DateTime.saturday) {
-                                  textStyle =
-                                      const TextStyle(color: Colors.blue);
-                                } else if (day.weekday == DateTime.sunday) {
-                                  textStyle =
-                                      const TextStyle(color: Colors.red);
-                                }
 
                                 return Container(
                                   decoration: const BoxDecoration(
