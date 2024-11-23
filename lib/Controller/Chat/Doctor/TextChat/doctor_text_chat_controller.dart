@@ -179,6 +179,32 @@ class DoctorTextChatController extends ControllerCore {
     }
   }
 
+  /// 長押ししたメッセージを削除
+  Future<void> deleteMessage(Message message) async {
+    final int response = await _chatApi.deleteMessage(
+      chatId: _chatId,
+      messageId: message.messageId,
+    );
+
+    // 204以外の場合はエラーを表示
+    if (response != 204) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      return;
+    }
+
+    // リストからメッセージを削除する
+    _messageHistory.value = List.from(_messageHistory.value)
+      ..removeWhere((m) => m.messageId == message.messageId);
+
+    return;
+  }
+
+  /// todo: 後で実装する
+  /// 通報する処理
+  Future<void> reportMessage(Message message) async {
+    Log.echo('通報するメッセージ: ${message.content}');
+  }
+
   // チャット履歴を逆順にして返す
   ValueNotifier<List<Message>> get messageHistory => _messageHistory;
 }
