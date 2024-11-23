@@ -338,20 +338,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                                       return;
                                     }
                                     // 選択した時間を予約日時に設定
-                                    final DateTime selectedTime = DateTime(
-                                      controller.calendarDate.year,
-                                      controller.calendarDate.month,
-                                      controller.calendarDate.day,
-                                      int.parse(controller.timeSlots[index]
-                                          .split('〜')[0]
-                                          .split(':')[0]),
-                                      int.parse(controller.timeSlots[index]
-                                          .split('〜')[0]
-                                          .split(':')[1]),
-                                    );
-
-                                    controller.setReserveDate(
-                                        date: selectedTime, index: index);
+                                    controller.setReserveDate(index: index);
                                     setState(() {});
                                   },
                                   child: Container(

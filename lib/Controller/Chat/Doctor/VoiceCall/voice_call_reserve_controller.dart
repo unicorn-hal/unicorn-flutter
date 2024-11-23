@@ -80,8 +80,20 @@ class VoiceCallReserveController extends ControllerCore {
   }
 
   // 選択された日時をセット
-  void setReserveDate({DateTime? date, int? index}) {
-    reserveDate = date;
+  void setReserveDate({int? index}) {
+    if (index == null) {
+      reserveDate = null;
+      selectedTimeSlotIndex = null;
+      return;
+    }
+
+    reserveDate = DateTime(
+      calendarDate.year,
+      calendarDate.month,
+      calendarDate.day,
+      int.parse(timeSlots[index].split('〜')[0].split(':')[0]),
+      int.parse(timeSlots[index].split('〜')[0].split(':')[1]),
+    );
     selectedTimeSlotIndex = index;
   }
 
