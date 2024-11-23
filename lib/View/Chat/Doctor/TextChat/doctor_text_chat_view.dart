@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/TextChat/doctor_text_chat_controller.dart';
@@ -5,6 +6,7 @@ import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/message.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Chat/message_tile.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
@@ -106,6 +108,54 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
                                   postAt: DateFormat('HH:mm').format(
                                     message.sentAt.toLocal(),
                                   ),
+                                  onLongPress: () async {
+                                    showCupertinoModalPopup(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return CupertinoActionSheet(
+                                            actions: [
+                                              message.senderId ==
+                                                      AccountData().account!.uid
+                                                  ? CupertinoActionSheetAction(
+                                                      child: const CustomText(
+                                                        text: 'メッセージを削除',
+                                                        color: Colors.red,
+                                                      ),
+                                                      onPressed: () async {
+                                                        // 自分のメッセージを削除する
+                                                        Navigator.pop(context);
+
+                                                        await controller
+                                                            .deleteMessage(
+                                                                message);
+                                                      },
+                                                    )
+                                                  : CupertinoActionSheetAction(
+                                                      child: const CustomText(
+                                                        text: '通報',
+                                                        color: Colors.red,
+                                                      ),
+                                                      onPressed: () async {
+                                                        // 相手のメッセージを通報する
+                                                        // todo: 通報機能は後々実装する
+                                                        Navigator.pop(context);
+                                                        await controller
+                                                            .reportMessage(
+                                                                message);
+                                                      },
+                                                    ),
+                                            ],
+                                            cancelButton:
+                                                CupertinoActionSheetAction(
+                                              child: const CustomText(
+                                                  text: 'キャンセル'),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          );
+                                        });
+                                  },
                                 );
                               },
                             );
