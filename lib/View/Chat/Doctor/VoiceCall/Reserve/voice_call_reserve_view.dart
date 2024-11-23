@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -72,18 +73,10 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                 ),
               ),
             ),
-            Container(
+            SizedBox(
               width: size.width * 0.9,
-              height: 140,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: ColorName.shadowGray,
-                  width: 2,
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   const Padding(
                     padding: EdgeInsets.symmetric(
@@ -101,15 +94,9 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                       horizontal: 16.0,
                     ),
                     child: CustomText(
-                        text: 'チャット: ${widget.doctor.chatSupportHours}'),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 8.0,
-                      horizontal: 16.0,
-                    ),
-                    child: CustomText(
-                      text: '通話: ${widget.doctor.callSupportHours}',
+                      text:
+                          ' ${widget.doctor.callSupportHours.replaceAll('-', '〜')}',
+                      fontSize: 20,
                     ),
                   ),
                 ],
