@@ -78,6 +78,9 @@ class UserApi extends ApiCore with Endpoint {
     }
   }
 
+  /// POST
+  /// ユーザー通知設定登録
+  /// [body] UserNotification
   Future<UserNotification?> postUserNotification({
     required String userId,
     required UserNotification body,
@@ -131,20 +134,16 @@ class UserApi extends ApiCore with Endpoint {
   /// ユーザー通知設定更新
   /// [userId] ユーザーID
   /// [body] UserNotification
-  Future<UserNotification> putUserNotification({
+  Future<int> putUserNotification({
     required String userId,
     required UserNotification body,
   }) async {
     try {
       useParameter(parameter: '/$userId/notification');
       final ApiResponse response = await put(body.toJson());
-      return UserNotification.fromJson(response.data);
+      return response.statusCode;
     } catch (e) {
-      return UserNotification(
-        isMedicineReminder: false,
-        isRegularHealthCheckup: false,
-        isHospitalNews: false,
-      );
+      return 500;
     }
   }
 

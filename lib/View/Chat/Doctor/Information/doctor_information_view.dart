@@ -68,7 +68,7 @@ class DoctorInformationView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       CustomText(
-                        text: doctor.firstName + doctor.lastName,
+                        text: doctor.lastName + doctor.firstName,
                         fontSize: 26,
                       ),
                       const CustomText(
