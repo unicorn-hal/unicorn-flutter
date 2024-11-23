@@ -10,7 +10,10 @@ class CustomDialog extends StatelessWidget {
     required this.bodyText,
     this.image,
     this.titleColor = ColorName.mainColor,
-    this.onTap,
+    this.leftButtonText = 'キャンセル',
+    this.rightButtonText = '決定',
+    this.leftButtonOnTap,
+    this.rightButtonOnTap,
     this.customButtonCount = 2,
   });
 
@@ -18,7 +21,10 @@ class CustomDialog extends StatelessWidget {
   final String bodyText;
   final Image? image;
   final Color titleColor;
-  final Function? onTap;
+  final String leftButtonText;
+  final String rightButtonText;
+  final Function? leftButtonOnTap;
+  final Function? rightButtonOnTap;
   final int customButtonCount;
 
   @override
@@ -90,9 +96,12 @@ class CustomDialog extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
                             child: CustomButton(
-                              text: 'キャンセル',
+                              text: leftButtonText,
                               onTap: () {
                                 Navigator.pop(context);
+                                if (leftButtonOnTap != null) {
+                                  leftButtonOnTap!.call();
+                                }
                               },
                             ),
                           ),
@@ -104,11 +113,11 @@ class CustomDialog extends StatelessWidget {
                                   padding:
                                       const EdgeInsets.symmetric(horizontal: 5),
                                   child: CustomButton(
-                                    text: '決定',
+                                    text: rightButtonText,
                                     isFilledColor: true,
                                     onTap: () {
                                       Navigator.pop(context);
-                                      onTap!.call();
+                                      rightButtonOnTap!.call();
                                     },
                                   ),
                                 ),

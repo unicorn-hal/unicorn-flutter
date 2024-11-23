@@ -53,7 +53,7 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
                         return CustomDialog(
                           title: Strings.DIALOG_TITLE_CAVEAT,
                           bodyText: Strings.DIALOG_BODY_TEXT_DELETE,
-                          onTap: () async {
+                          rightButtonOnTap: () async {
                             await controller.deleteFamilyEmail();
                             // ignore: use_build_context_synchronously
                             Navigator.pop(context);

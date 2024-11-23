@@ -214,7 +214,7 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                                   return CustomDialog(
                                     title: Strings.DIALOG_TITLE_CAVEAT,
                                     bodyText: Strings.DIALOG_BODY_TEXT_DELETE,
-                                    onTap: () async {
+                                    rightButtonOnTap: () async {
                                       ProtectorNotifier().enableProtector();
                                       await controller.deleteChronicDisease(
                                           chronicDiseaseList[index]
