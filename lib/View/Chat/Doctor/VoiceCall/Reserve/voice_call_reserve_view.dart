@@ -176,7 +176,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                                 AvailableGestures.horizontalSwipe,
                             onDaySelected:
                                 (DateTime selectedDay, DateTime focusedDay) {
-                              controller.setReserveDate(null, null);
+                              controller.setReserveDate();
                               controller.changeCalendarDate(selectedDay);
                               setState(() {});
                             },
@@ -351,7 +351,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                                     );
 
                                     controller.setReserveDate(
-                                        selectedTime, index);
+                                        date: selectedTime, index: index);
                                     setState(() {});
                                   },
                                   child: Container(

@@ -74,16 +74,13 @@ class VoiceCallReserveController extends ControllerCore {
     selectedTimeSlotIndex = null;
     reserveDate = null;
 
-    ChatDoctorTextChatRoute(
-            doctorId: doctor.doctorId,
-            doctorName: doctor.lastName + doctor.firstName,
-            reserveMessage: reserveMessage)
+    ChatDoctorTextChatRoute($extra: doctor, reserveMessage: reserveMessage)
         .push(context!);
     return;
   }
 
   // 選択された日時をセット
-  void setReserveDate(DateTime? date, int? index) {
+  void setReserveDate({DateTime? date, int? index}) {
     reserveDate = date;
     selectedTimeSlotIndex = index;
   }
