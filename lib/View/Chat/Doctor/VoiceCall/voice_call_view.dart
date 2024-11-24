@@ -62,7 +62,9 @@ class _VoiceCallViewState extends State<VoiceCallView> {
       builder: (context) => CustomDialog(
         title: '確認',
         bodyText: '医師との通話を終了しますか？',
-        onTap: () {
+        customButtonCount: 2,
+        rightButtonText: '終了',
+        rightButtonOnTap: () {
           _controller.endCall();
         },
       ),
