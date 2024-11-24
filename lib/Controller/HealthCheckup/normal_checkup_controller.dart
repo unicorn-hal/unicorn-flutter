@@ -81,7 +81,7 @@ class NormalCheckupController extends ControllerCore {
               healthPoint: _healthPoint,
               bloodPressure: '145/63',
               bodyTemperature: '36.5')
-          .push(context);
+          .go(context);
       return;
     }
 
