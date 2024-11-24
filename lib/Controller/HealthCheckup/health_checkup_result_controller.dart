@@ -55,7 +55,7 @@ class HealthCheckupResultController extends ControllerCore {
     String todayDayOfWeek = DateFormat('EEEE').format(today).toLowerCase();
     DayOfWeekEnum dayOfWeekEnum = DayOfWeekEnumType.fromString(todayDayOfWeek);
     String formattedDayOfWeek =
-        DayOfWeekEnumType.toJapanseString(dayOfWeekEnum);
+        DayOfWeekEnumType.toDayAbbreviation(dayOfWeekEnum);
     _formattedDate = '$todayDatePart($formattedDayOfWeek)';
     return _formattedDate;
   }
