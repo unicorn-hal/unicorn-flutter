@@ -57,7 +57,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                         return CustomDialog(
                           title: Strings.DIALOG_TITLE_CAVEAT,
                           bodyText: Strings.DIALOG_BODY_TEXT_DELETE,
-                          onTap: () async {
+                          rightButtonOnTap: () async {
                             ProtectorNotifier().enableProtector();
                             await controller.deleteMedicine();
                             // ignore: use_build_context_synchronously

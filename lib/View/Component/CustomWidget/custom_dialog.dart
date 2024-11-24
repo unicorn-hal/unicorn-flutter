@@ -8,21 +8,39 @@ class CustomDialog extends StatelessWidget {
     super.key,
     required this.title,
     required this.bodyText,
-    this.decision = true,
     this.image,
     this.titleColor = ColorName.mainColor,
-    this.onTap,
+    this.leftButtonText = 'キャンセル',
+    this.rightButtonText = '決定',
+    this.leftButtonOnTap,
+    this.rightButtonOnTap,
+    this.customButtonCount = 2,
   });
 
   final String title;
   final String bodyText;
-  final bool decision;
   final Image? image;
   final Color titleColor;
-  final Function? onTap;
+  final String leftButtonText;
+  final String rightButtonText;
+  final Function? leftButtonOnTap;
+  final Function? rightButtonOnTap;
+  final int customButtonCount;
 
   @override
   Widget build(BuildContext context) {
+    late List<String> buttonTextList;
+    late List<Function?> buttonOnTapList;
+    if (customButtonCount != 0) {
+      buttonTextList = [
+        leftButtonText,
+        rightButtonText,
+      ];
+      buttonOnTapList = [
+        leftButtonOnTap,
+        rightButtonOnTap,
+      ];
+    }
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -80,44 +98,32 @@ class CustomDialog extends StatelessWidget {
                 bottom: 10,
               ),
               height: 60,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: CustomButton(
-                      text: 'キャンセル',
-                      onTap: () {
-                        Navigator.of(
-                          context,
-                          rootNavigator: true,
-                        ).pop();
-                      },
-                      primaryColor: ColorName.mainColor,
+              child: customButtonCount == 0 || customButtonCount > 2
+                  ? null
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        for (int i = 0; i < customButtonCount; i++) ...{
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: CustomButton(
+                                isFilledColor: i == 1 ? true : false,
+                                text: buttonTextList[i],
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  if (buttonOnTapList[i] != null) {
+                                    buttonOnTapList[i]!.call();
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                        }
+                      ],
                     ),
-                  ),
-                  decision
-                      ? const SizedBox(
-                          width: 20,
-                        )
-                      : Container(),
-                  Visibility(
-                    visible: decision,
-                    child: Expanded(
-                      flex: 1,
-                      child: CustomButton(
-                        text: '決定',
-                        isFilledColor: true,
-                        onTap: () {
-                          onTap?.call();
-                          Navigator.pop(context);
-                        },
-                        primaryColor: ColorName.mainColor,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
             ),
           ],
         ),

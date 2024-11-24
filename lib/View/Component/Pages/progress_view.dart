@@ -1,46 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
+import 'package:unicorn_flutter/Controller/Component/Pages/Register/Progress/progress_controller.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-import '../../../Constants/strings.dart';
-
-class ProgressView extends StatelessWidget {
+class ProgressView extends StatefulWidget {
   const ProgressView({
     super.key,
-    required this.progressType,
+    required this.from,
+    this.diseaseEnumString,
   });
 
-  final ProgressViewEnum progressType;
+  final String? diseaseEnumString;
+  final String from;
 
-  // todo: controllerに移植する
-  // enumからテキストに変換
-  String typeToText(ProgressViewEnum type) {
-    switch (type) {
-      case ProgressViewEnum.inspection:
-        return Strings.LOADING_TEXT_INSPECTION;
-      case ProgressViewEnum.treatment:
-        return Strings.LOADING_TEXT_TREATMENT;
-      case ProgressViewEnum.bodyTemperature:
-        return Strings.LOADING_TEXT_BODY_TEMPERATURE;
-      case ProgressViewEnum.bloodPressure:
-        return Strings.LOADING_TEXT_BLOOD_PRESSURE;
-      default:
-        return '';
-    }
+  @override
+  State<ProgressView> createState() => _ProgressViewState();
+}
+
+class _ProgressViewState extends State<ProgressView> {
+  late final ProgressController controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    controller = ProgressController(
+        context: context,
+        from: widget.from,
+        diseaseEnumString: widget.diseaseEnumString);
   }
 
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-      body: Center(
-        child: CustomLoadingAnimation(
-          text: typeToText(progressType),
-          iconColor: ColorName.textGray,
-          textColor: ColorName.textGray,
-        ),
-      ),
+      isAppbar: false,
+      body: ValueListenableBuilder<String>(
+          valueListenable: controller.bodyText,
+          builder: (context, value, child) {
+            return Center(
+              child: CustomLoadingAnimation(
+                text: value,
+                iconColor: ColorName.textGray,
+                textColor: ColorName.textGray,
+              ),
+            );
+          }),
     );
   }
 }

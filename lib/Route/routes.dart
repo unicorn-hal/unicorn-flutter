@@ -13,7 +13,6 @@ mixin Routes {
   // health_checkup
   static const String healthCheckup = '/health_checkup';
   static const String healthCheckupNormal = '/health_checkup/normal';
-  static const String healthCheckupProgress = '/health_checkup/progress';
   static const String healthCheckupResults = '/health_checkup/results';
   static const String healthCheckupAi = '/health_checkup/ai';
 

@@ -13,7 +13,7 @@ class ApiResponse {
     return ApiResponse(
       statusCode: json['statusCode'],
       message: json['message'],
-      data: json['data'],
+      data: json['data'] ?? {},
     );
   }
 

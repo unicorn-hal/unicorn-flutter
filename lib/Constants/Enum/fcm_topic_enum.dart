@@ -2,6 +2,8 @@ enum FCMTopicEnum {
   all,
   user,
   doctor,
+  regularHealthCheckup,
+  hospitalNews,
 }
 
 class FCMTopicType {
@@ -26,6 +28,10 @@ class FCMTopicType {
         return 'user';
       case FCMTopicEnum.doctor:
         return 'doctor';
+      case FCMTopicEnum.regularHealthCheckup:
+        return 'regularHealthCheckup';
+      case FCMTopicEnum.hospitalNews:
+        return 'hospitalNews';
       default:
         throw Exception('Unknown type: $value');
     }

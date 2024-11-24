@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
+import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
 import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
-import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/View/Chat/Ai/TextChat/ai_text_chat_view.dart';
 import 'package:unicorn_flutter/View/Chat/Doctor/TextChat/doctor_text_chat_view.dart';
@@ -79,9 +82,6 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<NormalCheckupRoute>(
           path: Routes.healthCheckupNormal,
-        ),
-        TypedGoRoute<CheckupProgressRoute>(
-          path: Routes.healthCheckupProgress,
         ),
         TypedGoRoute<CheckupResultRoute>(
           path: Routes.healthCheckupResults,
@@ -235,19 +235,22 @@ class EmergencyRoute extends GoRouteData {
       const EmergencyView();
 }
 
-@TypedGoRoute<EmergencyProgressRoute>(
+@TypedGoRoute<ProgressRoute>(
   path: Routes.emergencyProgress,
 )
-class EmergencyProgressRoute extends GoRouteData {
-  const EmergencyProgressRoute({
-    required this.$extra,
+class ProgressRoute extends GoRouteData {
+  const ProgressRoute({
+    required this.from,
+    this.diseaseEnumString,
   });
 
-  final ProgressViewEnum $extra;
+  final String from;
+  final String? diseaseEnumString;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => ProgressView(
-        progressType: $extra,
+        from: from,
+        diseaseEnumString: diseaseEnumString,
       );
 }
 
@@ -270,11 +273,17 @@ class RegisterPhysicalInfoRoute extends GoRouteData {
   path: Routes.registerAddressInfo,
 )
 class RegisterAddressInfoRoute extends GoRouteData {
-  const RegisterAddressInfoRoute();
+  const RegisterAddressInfoRoute({
+    this.$extra,
+  });
+
+  final UserRequest? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const RegisterAddressInfoView();
+      RegisterAddressInfoView(
+        userRequest: $extra,
+      );
 }
 
 @TypedGoRoute<RegisterUserInfoRoute>(
@@ -324,19 +333,6 @@ class NormalCheckupRoute extends GoRouteData {
       const NormalCheckupView();
 }
 
-class CheckupProgressRoute extends GoRouteData {
-  CheckupProgressRoute({
-    required this.$extra,
-  });
-
-  final ProgressViewEnum $extra;
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) => ProgressView(
-        progressType: $extra,
-      );
-}
-
 class CheckupResultRoute extends GoRouteData {
   const CheckupResultRoute();
 
@@ -369,26 +365,32 @@ class ChatDoctorInformationRoute extends GoRouteData {
 }
 
 class ChatDoctorTextChatRoute extends GoRouteData {
-  ChatDoctorTextChatRoute(
-    this.doctorId,
-    this.doctorName,
-  );
-  String doctorId;
-  String doctorName;
+  ChatDoctorTextChatRoute({
+    required this.$extra,
+    this.reserveMessage,
+  });
+  Doctor $extra;
+  String? reserveMessage;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => DoctorTextChatView(
-        doctorId: doctorId,
-        doctorName: doctorName,
+        doctor: $extra,
+        reserveMessage: reserveMessage,
       );
 }
 
 class ChatDoctorVoiceCallReserveRoute extends GoRouteData {
-  const ChatDoctorVoiceCallReserveRoute();
+  const ChatDoctorVoiceCallReserveRoute(
+    this.$extra,
+  );
+
+  final Doctor $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      VoiceCallReserveView();
+      VoiceCallReserveView(
+        doctor: $extra,
+      );
 }
 
 class ChatDoctorSearchRoute extends GoRouteData {
@@ -425,23 +427,23 @@ class ProfileRegisterPhysicalInfoRoute extends GoRouteData {
 
 class ProfileRegisterAddressInfoRoute extends GoRouteData {
   ProfileRegisterAddressInfoRoute({this.$extra});
-  PhysicalInfo? $extra;
+  UserRequest? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       RegisterAddressInfoView(
-        physicalInfo: $extra,
+        userRequest: $extra,
       );
 }
 
 class ProfileRegisterUserInfoRoute extends GoRouteData {
   ProfileRegisterUserInfoRoute({this.$extra});
-  AddressInfo? $extra;
+  UserRequest? $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       RegisterUserInfoView(
-        addressInfo: $extra,
+        userRequest: $extra,
       );
 }
 
@@ -472,11 +474,16 @@ class ProfileAppInformationLicenseRoute extends GoRouteData {
 }
 
 class ProfileNotificationSettingRoute extends GoRouteData {
-  const ProfileNotificationSettingRoute();
+  const ProfileNotificationSettingRoute({
+    required this.$extra,
+  });
+  final UserNotification $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const NotificationSettingView();
+      NotificationSettingView(
+        userNotification: $extra,
+      );
 }
 
 class ProfileFamilyEmailRoute extends GoRouteData {

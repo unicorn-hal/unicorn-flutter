@@ -31,8 +31,8 @@ class Call {
       'callReservationID': callReservationId,
       'doctorID': doctorId,
       'userID': userId,
-      'callStartTime': DateFormat('yyyy-MM-ddThh:mm:ss').format(callStartTime),
-      'callEndTime': DateFormat('yyyy-MM-ddThh:mm:ss').format(callEndTime),
+      'callStartTime': DateFormat('yyyy-MM-ddTHH:mm:ss').format(callStartTime),
+      'callEndTime': DateFormat('yyyy-MM-ddTHH:mm:ss').format(callEndTime),
     };
   }
 
