@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,18 +14,19 @@ import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/Account/account_api.dart';
+import 'package:unicorn_flutter/Service/Api/Chat/chat_api.dart';
 import 'package:unicorn_flutter/Service/Api/Department/department_api.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_service.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudMessaging/cloud_messaging_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:unicorn_flutter/Service/Package/LocalAuth/local_auth_service.dart';
 import 'package:unicorn_flutter/Service/Package/SharedPreferences/shared_preferences_service.dart';
 import 'package:unicorn_flutter/Service/Package/SystemInfo/system_info_service.dart';
 
 import '../Model/Chat/chat_data.dart';
 import '../Model/Data/Department/department_data.dart';
-import '../Service/Api/Chat/chat_api.dart';
 import '../Model/Data/HealthCheckup/health_checkup_data.dart';
 import '../Model/Entity/HealthCheckUp/health_checkup.dart';
 import '../Model/Entity/User/user_request.dart';
@@ -42,6 +43,7 @@ class TopLoadingController extends ControllerCore {
   UserApi get _userApi => UserApi();
   ChatApi get _chatApi => ChatApi();
   DepartmentApi get _departmentApi => DepartmentApi();
+  LocalAuthService get _localAuthService => LocalAuthService();
 
   BuildContext context;
   TopLoadingController(this.context);
@@ -59,8 +61,34 @@ class TopLoadingController extends ControllerCore {
     bool? appInitialized = await _sharedPreferencesService
         .getBool(SharedPreferencesKeysEnum.appInitialized.name);
 
-    /// SharedPreferences: useLocalAuth フラグを設定
-    await _sharedPreferencesService.setBool('useLocalAuth', false);
+    /// SharedPreferences: useLocalAuth フラグを初回起動時に設定
+    if (appInitialized == null || appInitialized == false) {
+      await _sharedPreferencesService.setBool('useLocalAuth', false);
+    }
+
+    /// useLocalAuth フラグが有効なら認証を行う
+
+    final completer = Completer<void>();
+
+    bool useLocalAuth =
+        await _sharedPreferencesService.getBool('useLocalAuth') ?? false;
+
+    if (useLocalAuth) {
+      // 認証処理を追加
+      try {
+        bool? isAuthenticated = await _localAuthService.authenticate();
+        if (isAuthenticated == null) {
+          isAuthenticated = true;
+        } else if (!isAuthenticated) {
+          throw Exception('Local Authentication failed');
+        } else {
+          completer.complete();
+        }
+      } catch (e) {
+        Log.echo('Error: $e');
+        await completer.future;
+      }
+    }
 
     /// ユーザー情報を取得
     firebase_auth.User? authUser = _authService.getUser();
@@ -194,7 +222,6 @@ class TopLoadingController extends ControllerCore {
 
     const HomeRoute().go(context);
   }
-  // }
 
   Future<String> get appVersion async {
     final version = await _systemInfoService.appVersion;
