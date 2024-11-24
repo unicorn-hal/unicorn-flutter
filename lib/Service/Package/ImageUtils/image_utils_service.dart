@@ -64,8 +64,11 @@ class ImageUtilsService {
   }
 
   /// Uint8ListをFileに変換する
-  File uint8listToFile(Uint8List uint8list) {
-    File file = File.fromRawPath(uint8list);
+  Future<File> uint8listToFile(Uint8List data, String fileName) async {
+    Directory tempDir = await Directory.systemTemp.createTemp();
+    String tempPath = tempDir.path;
+    File file = File('$tempPath/$fileName.png');
+    await file.writeAsBytes(data);
     return file;
   }
 

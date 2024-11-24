@@ -46,7 +46,7 @@ class AiAnnounceBanner extends StatelessWidget {
                     shape: BoxShape.circle,
                     color: imageBackgroundColor.withOpacity(0.5),
                     image: DecorationImage(
-                      image: Assets.images.icons.aiIcon.provider(),
+                      image: Assets.images.icons.uniIcon.provider(),
                     ),
                   ),
                 ),

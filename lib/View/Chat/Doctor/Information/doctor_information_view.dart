@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/Information/doctor_information_controller.dart';
-import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
-import 'package:unicorn_flutter/View/Component/Parts/Chat/department_badges.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -70,7 +68,7 @@ class DoctorInformationView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       CustomText(
-                        text: doctor.firstName + doctor.lastName,
+                        text: doctor.lastName + doctor.firstName,
                         fontSize: 26,
                       ),
                       const CustomText(
@@ -78,33 +76,6 @@ class DoctorInformationView extends StatelessWidget {
                         fontSize: 20,
                       ),
                     ],
-                  ),
-                ),
-
-                /// 科目カード表示部
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Container(
-                    constraints: const BoxConstraints(
-                      minWidth: 10,
-                    ),
-                    height: 60,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // todo: ここで科目リストを表示する
-                        for (Department department in doctor.departments)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 4,
-                            ),
-                            child: DepartmentBadge(
-                              name: department.departmentName,
-                            ),
-                          ),
-                      ],
-                    ),
                   ),
                 ),
 
@@ -116,8 +87,7 @@ class DoctorInformationView extends StatelessWidget {
                       padding: const EdgeInsets.all(4.0),
                       child: GestureDetector(
                         onTap: () {
-                          // todo: チャット画面へ遷移
-                          const ChatDoctorTextChatRoute().push(context);
+                          ChatDoctorTextChatRoute($extra: doctor).push(context);
                         },
                         child: Container(
                           width: 160,
@@ -155,8 +125,7 @@ class DoctorInformationView extends StatelessWidget {
                       padding: const EdgeInsets.all(4.0),
                       child: GestureDetector(
                         onTap: () {
-                          // todo: 通話予約画面へ遷移
-                          const ChatDoctorVoiceCallReserveRoute().push(context);
+                          ChatDoctorVoiceCallReserveRoute(doctor).push(context);
                         },
                         child: Container(
                           width: 160,

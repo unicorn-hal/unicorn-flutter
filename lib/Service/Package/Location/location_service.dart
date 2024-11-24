@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:unicorn_flutter/Model/Entity/address_info.dart';
+import 'package:unicorn_flutter/Model/Entity/location_address_info.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/Service/Package/PermissionHandler/permission_handler_service.dart';
 
@@ -49,7 +49,7 @@ class LocationService {
   }
 
   /// 現在位置から住所を取得するサービス
-  Future<AddressInfo?> getAddressFromPosition() async {
+  Future<LocationAddressInfo?> getAddressFromPosition() async {
     try {
       String? postalCode = await _getCurrentPostalCode();
       if (postalCode == null) {
@@ -64,7 +64,8 @@ class LocationService {
   }
 
   /// 郵便番号からApiを利用して住所を取得するサービス
-  Future<AddressInfo?> getAddressFromPostalCode(String postalCode) async {
+  Future<LocationAddressInfo?> getAddressFromPostalCode(
+      String postalCode) async {
     try {
       postalCode = postalCode.replaceAll('-', '');
       if (postalCode.length != 7) {
@@ -81,7 +82,7 @@ class LocationService {
       }
 
       Map<String, dynamic> address = jsonResponse['results'][0];
-      AddressInfo addressInfo = AddressInfo(
+      LocationAddressInfo addressInfo = LocationAddressInfo(
         postalCode: postalCode,
         prefecture: address['address1'],
         city: address['address2'],

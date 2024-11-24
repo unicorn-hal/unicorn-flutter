@@ -1,11 +1,11 @@
 name: unicorn_flutter
 description: "命を救う次世代ロボットシステム「Unicorn」"
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.3.4 <4.0.0'
+  sdk: ">=3.3.4 <4.0.0"
 
 dependencies:
   flutter:
@@ -44,8 +44,16 @@ dependencies:
   google_maps_flutter: ^2.2.8
   flutter_config: ^2.0.2
   firebase_messaging: ^15.1.0
+  uuid: ^4.5.1
   firebase_storage: ^12.2.0
   image: ^4.3.0
+  stomp_dart_client: ^2.0.0
+  in_app_review: ^2.0.9
+  shared_preferences: ^2.2.3
+  speech_to_text: ^6.6.2
+  avatar_glow: ^3.0.1
+  table_calendar: ^3.1.2
+  audioplayers: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -70,7 +78,7 @@ flutter:
     - .env.release
     - assets/images/
     - assets/images/icons/
-    
+    - assets/sounds/
 
   fonts:
     - family: Noto_Sans_JP

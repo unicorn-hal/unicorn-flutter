@@ -13,7 +13,6 @@ mixin Routes {
   // health_checkup
   static const String healthCheckup = '/health_checkup';
   static const String healthCheckupNormal = '/health_checkup/normal';
-  static const String healthCheckupProgress = '/health_checkup/progress';
   static const String healthCheckupResults = '/health_checkup/results';
   static const String healthCheckupAi = '/health_checkup/ai';
 
@@ -42,6 +41,8 @@ mixin Routes {
   static const String profileMedicineSetting = '/profile/medicine/setting';
   static const String profileLocalAuth = '/profile/local_auth';
   static const String profileAppInformation = '/profile/app_information';
+  static const String profileAppInformationLicense =
+      '/profile/app_information/license';
   static const String profileNotificationSetting =
       '/profile/notification_setting';
   static const String profileChronicDisease = '/profile/chronic_disease';

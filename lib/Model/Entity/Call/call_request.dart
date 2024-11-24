@@ -27,9 +27,9 @@ class CallRequest {
       'doctorID': doctorId,
       'userID': userId,
       'callStartTime':
-          DateFormat('yyyy-MM-ddThh:mm:ss+09:00').format(callStartTime),
+          DateFormat('yyyy-MM-ddTHH:mm:ss+09:00').format(callStartTime),
       'callEndTime':
-          DateFormat('yyyy-MM-ddThh:mm:ss+09:00').format(callEndTime),
+          DateFormat('yyyy-MM-ddTHH:mm:ss+09:00').format(callEndTime),
     };
   }
 }

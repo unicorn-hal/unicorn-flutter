@@ -71,4 +71,25 @@ class DayOfWeekEnumType {
         throw Exception('Unknown type: $value');
     }
   }
+  
+  static DayOfWeekEnum fromWeekday(int value) {
+    switch (value) {
+      case 1:
+        return DayOfWeekEnum.monday;
+      case 2:
+        return DayOfWeekEnum.tuesday;
+      case 3:
+        return DayOfWeekEnum.wednesday;
+      case 4:
+        return DayOfWeekEnum.thursday;
+      case 5:
+        return DayOfWeekEnum.friday;
+      case 6:
+        return DayOfWeekEnum.saturday;
+      case 7:
+        return DayOfWeekEnum.sunday;
+      default:
+        throw Exception('Unknown type: $value');
+    }
+  }
 }
