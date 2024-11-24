@@ -100,7 +100,7 @@ class VoiceCallController extends ControllerCore {
         },
         onUserJoined: (connection, uid, elapsed) {
           Log.echo('User joined: $uid');
-          startTimer();
+          _startTimer();
           _uid = uid;
           _isUserJoined.value = true;
         },
@@ -185,7 +185,7 @@ class VoiceCallController extends ControllerCore {
     );
   }
 
-  void startTimer() {
+  void _startTimer() {
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _elapsedTimeSec++;
       int minutes = _elapsedTimeSec ~/ 60;
@@ -195,7 +195,7 @@ class VoiceCallController extends ControllerCore {
     });
   }
 
-  void stopTimer() {
+  void _stopTimer() {
     _timer?.cancel();
     _elapsedTimeSec = 0;
     _elapsedTime.value = '00:00';
@@ -232,7 +232,6 @@ class VoiceCallController extends ControllerCore {
     _isRemoteCameraEnabled.dispose();
     _isRemoteMutated.dispose();
     _elapsedTime.dispose();
-    _elapsedTimeSec = 0;
-    _timer?.cancel();
+    _stopTimer();
   }
 }
