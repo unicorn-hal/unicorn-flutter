@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 
 class RegisterPhysicalInfoController extends ControllerCore {
   late DateTime birthDate;
   UserGenderEnum? gender;
+  UserData userData = UserData();
 
   final TextEditingController firstNameTextController = TextEditingController();
   final TextEditingController lastNameTextController = TextEditingController();
@@ -20,19 +23,31 @@ class RegisterPhysicalInfoController extends ControllerCore {
     birthDate = DateTime.now();
   }
 
-  PhysicalInfo? submit() {
+  UserRequest? submit() {
     if (validateField() == false) {
       return null;
     }
+
+    // todo: 編集処理でき次第、修正加えます。
     PhysicalInfo physicalInfo = PhysicalInfo(
       firstName: firstNameTextController.text,
       lastName: lastNameTextController.text,
       gender: gender!,
       birthDate: birthDate,
-      bodyHeight: double.tryParse(bodyHeightTextController.text.trim())!,
-      bodyWeight: double.tryParse(bodyWeightTextController.text.trim())!,
+      bodyHeight: double.tryParse(bodyHeightTextController.text)!,
+      bodyWeight: double.tryParse(bodyWeightTextController.text)!,
     );
-    return physicalInfo;
+
+    UserRequest? userRequest = UserRequest(
+      firstName: physicalInfo.firstName,
+      lastName: physicalInfo.lastName,
+      gender: physicalInfo.gender,
+      birthDate: physicalInfo.birthDate,
+      bodyHeight: physicalInfo.bodyHeight,
+      bodyWeight: physicalInfo.bodyWeight,
+    );
+
+    return userRequest;
   }
 
   bool validateField() {

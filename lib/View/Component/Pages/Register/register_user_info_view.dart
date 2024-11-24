@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_user_info_controller.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
@@ -7,19 +9,23 @@ import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class RegisterUserInfoView extends StatefulWidget {
-  const RegisterUserInfoView({super.key});
+  const RegisterUserInfoView({super.key, this.userRequest});
+  final UserRequest? userRequest;
 
   @override
   State<RegisterUserInfoView> createState() => _RegisterUserInfoViewState();
 }
 
 class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
-  final TextEditingController phoneNumber = TextEditingController();
-  final TextEditingController mailAddress = TextEditingController();
-  final TextEditingController occupation = TextEditingController();
   final FocusNode focusnode = FocusNode();
 
-  // todo: Controllerが完成次第、ここに追記または変更していきます。
+  late RegisterUserInfoController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = RegisterUserInfoController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +85,9 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                       height: 200,
                       child: Stack(
                         children: [
-                          const UserImageCircle(
+                          UserImageCircle(
                             imageSize: 200,
-                            // todo: Controllerができ次第、処理分岐させます。
+                            localImage: _controller.image,
                           ),
                           Align(
                             alignment: Alignment.bottomRight,
@@ -90,7 +96,10 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                               buttonColor: Colors.white,
                               borderColor:
                                   ColorName.imageSelectCirclebuttonColor,
-                              onTap: () {},
+                              onTap: () async {
+                                await _controller.selectImage();
+                                setState(() {});
+                              },
                               icon: const Icon(Icons.edit_outlined),
                             ),
                           )
@@ -102,18 +111,18 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                 const Padding(
                   padding: EdgeInsets.only(bottom: 10),
                   child: CustomText(
-                    text: '電話番号（ハイフンあり）',
+                    text: '電話番号（ハイフンなし）',
                     fontSize: 20,
                   ),
                 ),
                 CustomTextfield(
-                  hintText: '0120-999-9999',
+                  hintText: '01201234567',
                   width: deviceWidth * 0.85,
                   height: 44,
                   keyboardType: TextInputType.phone,
-                  controller: phoneNumber,
+                  controller: _controller.phoneNumberTextController,
                   maxLines: 1,
-                  maxLength: 14,
+                  maxLength: 12,
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 20, bottom: 10),
@@ -126,7 +135,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                   hintText: 'hogehoge@gmail.com',
                   width: deviceWidth * 0.85,
                   height: 44,
-                  controller: mailAddress,
+                  controller: _controller.emailTextController,
                   maxLines: 1,
                   maxLength: 30,
                 ),
@@ -141,13 +150,15 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                   hintText: '会社員、主婦、学生など',
                   width: deviceWidth * 0.85,
                   height: 44,
-                  controller: occupation,
+                  controller: _controller.occupationTextController,
                   maxLines: 1,
                   maxLength: 15,
                 ),
                 GestureDetector(
-                  onTap: () {},
-                  // todo: 次のViewができ次第ルーティングします。
+                  onTap: () async {
+                    await _controller.submit(widget.userRequest!);
+                    // todo: 次のViewができ次第ルーティングします。
+                  },
                   child: Align(
                     alignment: Alignment.center,
                     child: Padding(

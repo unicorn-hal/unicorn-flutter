@@ -53,4 +53,29 @@ class Strings {
 
   // ローディング中に表示するテキスト
   static const String LOADING_TEXT = 'ロード中';
+
+  // 設定反映時に使うテキスト
+  static const String SETTING_REFLECTED_TEXT = '設定を反映しました';
+
+  // 連絡先へのアクセスが未許可のときに使うテキスト
+  static const String REQUEST_PERMISSION_ERROR_TEXT =
+      '端末設定から連絡先へのアクセスを許可してください';
+
+  // メールアドレスが未登録に表示するテキスト
+  static const String FAMILY_EMAIL_NOT_REGISTERED_TEXT = 'メールアドレスが登録されていません';
+
+  // メールアドレス登録時のvalidateに使うテキスト
+  static const String FAMILY_EMAIL_VALIDATE_FIELD_TEXT =
+      'メールアドレスおよび姓と名の登録が必要です';
+  static const String FAMILY_EMAIL_VALIDATE_FORMAT_TEXT = 'メールアドレスの形式が正しくありません';
+
+  // 通話予約関連で使用するテキスト
+  static const String VOICE_CALL_SET_ERROR_TEXT = '通話予約日時を選択してください';
+  static const String VOICE_CALL_DISABLE_ERROR_TEXT =
+      'この時間は予約できません。他の時間を選択してください';
+  static const String VOICE_CALL_RESERVE_ERROR_TEXT = '通話予約に失敗しました';
+
+  // ユーザープロフィール登録完了時に表示するテキスト
+  static const String PROFILE_REGISTRATION_COMPLETED_MESSAGE =
+      'ユーザーが正常に登録されました';
 }

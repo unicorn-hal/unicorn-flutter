@@ -11,7 +11,9 @@ class ChatGPTResponse {
 
   factory ChatGPTResponse.fromJson(Map<String, dynamic> json) {
     return ChatGPTResponse(
-      created: DateTime.fromMillisecondsSinceEpoch(json['created']),
+      created: DateTime.fromMillisecondsSinceEpoch(
+        json['created'] * 1000,
+      ),
       message: ChatGPTMessage.fromJson(json['choices'][0]['message']),
     );
   }

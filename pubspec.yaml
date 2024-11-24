@@ -1,11 +1,11 @@
 name: unicorn_flutter
 description: "命を救う次世代ロボットシステム「Unicorn」"
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.3.4 <4.0.0'
+  sdk: ">=3.3.4 <4.0.0"
 
 dependencies:
   flutter:
@@ -55,6 +55,8 @@ dependencies:
   shared_preferences: ^2.2.3
   speech_to_text: ^6.6.2
   avatar_glow: ^3.0.1
+  table_calendar: ^3.1.2
+  audioplayers: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -79,7 +81,7 @@ flutter:
     - .env.release
     - assets/images/
     - assets/images/icons/
-    
+    - assets/sounds/
 
   fonts:
     - family: Noto_Sans_JP

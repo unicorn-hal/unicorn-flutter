@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:unicorn_flutter/Constants/prefectures.dart';
-import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
+import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_address_info_controller.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
+import 'package:unicorn_flutter/View/Component/Parts/google_map_viewer.dart';
+import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class RegisterAddressInfoView extends StatefulWidget {
-  const RegisterAddressInfoView({super.key, this.physicalInfo});
-  final PhysicalInfo? physicalInfo;
+  const RegisterAddressInfoView({super.key, this.userRequest});
+  final UserRequest? userRequest;
 
   @override
   State<RegisterAddressInfoView> createState() =>
@@ -17,23 +20,18 @@ class RegisterAddressInfoView extends StatefulWidget {
 }
 
 class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
-  final TextEditingController addressNumber = TextEditingController();
-  final TextEditingController address = TextEditingController();
-  final TextEditingController addressDetail = TextEditingController();
-  final List<String> entryItemStrings = ['未設定'] + Prefectures.list;
+  late RegisterAddressInfoController controller;
+
   final FocusNode focusnode = FocusNode();
-  // todo: Controllerが完成次第、ここに追記または変更していきます。
+
+  @override
+  void initState() {
+    super.initState();
+    controller = RegisterAddressInfoController();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final List<DropdownMenuItem<int>> dropdownItems = entryItemStrings
-        .map((e) => DropdownMenuItem(
-              value: entryItemStrings.indexOf(e),
-              child: CustomText(
-                text: e,
-              ),
-            ))
-        .toList();
     final deviceWidth = MediaQuery.of(context).size.width;
     return CustomScaffold(
       focusNode: focusnode,
@@ -75,8 +73,11 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    // todo: controllerでき次第ここに追記します。
+                  onTap: () async {
+                    ProtectorNotifier().enableProtector();
+                    await controller.setAddressFromLocation();
+                    setState(() {});
+                    ProtectorNotifier().disableProtector();
                   },
                   child: Align(
                     alignment: Alignment.center,
@@ -126,11 +127,18 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                       maxLines: 1,
                       maxLength: 7,
                       keyboardType: TextInputType.number,
-                      controller: addressNumber,
+                      controller: controller.postalCodeTextController,
+                      onTapOutside: (p0) async {
+                        await controller.updateMapPinPosition();
+                        setState(() {});
+                      },
                     ),
                     GestureDetector(
-                      onTap: () {
-                        // todo: controllerでき次第ここに追記します。
+                      onTap: () async {
+                        ProtectorNotifier().enableProtector();
+                        await controller.setAddressFromPostalCode();
+                        setState(() {});
+                        ProtectorNotifier().disableProtector();
                       },
                       child: Align(
                         alignment: Alignment.center,
@@ -170,9 +178,14 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   ),
                 ),
                 CustomDropdown(
-                  dropdownItems: dropdownItems,
+                  dropdownItems: controller.countryList(),
+                  selectIndex: controller.selectedPrefectureIndex,
                   height: 44,
-                  onChanged: (int? index) {},
+                  onChanged: (int? index) async {
+                    controller.selectedPrefectureIndex = index ?? 0;
+                    await controller.updateMapPinPosition();
+                    setState(() {});
+                  },
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 20, bottom: 10),
@@ -185,9 +198,13 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   hintText: '静岡市葵区追手町５－１',
                   width: deviceWidth * 0.85,
                   height: 44,
-                  controller: address,
+                  controller: controller.municipalitiesTextController,
                   maxLines: 1,
                   maxLength: 25,
+                  onTapOutside: (p0) async {
+                    await controller.updateMapPinPosition();
+                    setState(() {});
+                  },
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 20, bottom: 10),
@@ -200,9 +217,13 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   hintText: 'ユニコーンビル１０３号',
                   width: deviceWidth * 0.85,
                   height: 44,
-                  controller: addressDetail,
+                  controller: controller.addressDetailTextController,
                   maxLines: 1,
                   maxLength: 25,
+                  onTapOutside: (p0) async {
+                    await controller.updateMapPinPosition();
+                    setState(() {});
+                  },
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 20),
@@ -210,13 +231,21 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                     width: deviceWidth,
                     height: 170,
                     color: Colors.grey,
-                    child: Text('ここに地図入ります'),
-                    // todo: 地図でき次第ここに入れます。（とりあえずContainerだけ設けました）
+                    child: GoogleMapViewer(
+                      point: controller.mapPinPosition,
+                    ),
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
-                  // todo: 次のViewができ次第ルーティングします。
+                  onTap: () {
+                    UserRequest? userRequest =
+                        controller.submit(widget.userRequest!);
+                    if (userRequest == null) {
+                      return;
+                    }
+                    ProfileRegisterUserInfoRoute($extra: userRequest)
+                        .push(context);
+                  },
                   child: Align(
                     alignment: Alignment.center,
                     child: Padding(
