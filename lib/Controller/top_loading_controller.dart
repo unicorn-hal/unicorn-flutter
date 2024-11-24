@@ -24,6 +24,7 @@ import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:unicorn_flutter/Service/Package/LocalAuth/local_auth_service.dart';
 import 'package:unicorn_flutter/Service/Package/SharedPreferences/shared_preferences_service.dart';
 import 'package:unicorn_flutter/Service/Package/SystemInfo/system_info_service.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 
 import '../Model/Chat/chat_data.dart';
 import '../Model/Data/Department/department_data.dart';
@@ -73,22 +74,39 @@ class TopLoadingController extends ControllerCore {
     bool useLocalAuth =
         await _sharedPreferencesService.getBool('useLocalAuth') ?? false;
 
-    if (useLocalAuth) {
-      // 認証処理を追加
-      try {
-        bool? isAuthenticated = await _localAuthService.authenticate();
-        if (isAuthenticated == null) {
-          isAuthenticated = true;
-        } else if (!isAuthenticated) {
-          throw Exception('Local Authentication failed');
-        } else {
-          completer.complete();
+    Future<void> checkLocalAuth(bool useLocalAuth) async {
+      if (useLocalAuth) {
+        // 認証処理を追加
+        try {
+          bool? isAuthenticated = await _localAuthService.authenticate();
+          if (isAuthenticated == null) {
+            isAuthenticated = true;
+          } else if (!isAuthenticated) {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return CustomDialog(
+                    title: '認証に失敗しました',
+                    bodyText: '再度認証を行ってください',
+                    leftButtonText: 'もう一度行う',
+                    customButtonCount: 1,
+                    leftButtonOnTap: () {
+                      checkLocalAuth(useLocalAuth);
+                    },
+                  );
+                });
+            await completer.future;
+          } else {
+            completer.complete();
+          }
+        } catch (e) {
+          Log.echo('Error: $e');
+          await completer.future;
         }
-      } catch (e) {
-        Log.echo('Error: $e');
-        await completer.future;
       }
     }
+
+    await checkLocalAuth(useLocalAuth);
 
     /// ユーザー情報を取得
     firebase_auth.User? authUser = _authService.getUser();

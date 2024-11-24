@@ -20,9 +20,13 @@ class _LocalAuthViewState extends State<LocalAuthView> {
   void initState() {
     super.initState();
     controller = LocalAuthController();
+    controller.loadUseLocalAuth((useLocalAuth) {
+      setState(() {
+        isBiometrics = useLocalAuth;
+      });
+    });
   }
 
-  // todo: controller出来たら移動
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -54,9 +58,11 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                     )
                   : null,
               onTap: () {
-                isBiometrics = true;
-                // todo: controller出来たら変更
-                setState(() {});
+                controller.updateUseLocalAuth(true, (value) {
+                  setState(() {
+                    isBiometrics = value;
+                  });
+                });
               },
             ),
             const SpacerAndDivider(),
@@ -69,9 +75,11 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                     )
                   : null,
               onTap: () {
-                isBiometrics = false;
-                // todo: controller出来たら変更
-                setState(() {});
+                controller.updateUseLocalAuth(false, (value) {
+                  setState(() {
+                    isBiometrics = value;
+                  });
+                });
               },
             ),
             const SpacerAndDivider(),
