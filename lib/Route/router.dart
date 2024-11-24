@@ -302,7 +302,7 @@ class RegisterUserInfoRoute extends GoRouteData {
 }
 
 @TypedGoRoute<VideoCallRoute>(
-  path: Routes.chatVoiceCall,
+  path: Routes.videoCall,
 )
 class VideoCallRoute extends GoRouteData {
   VideoCallRoute({
