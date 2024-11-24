@@ -39,6 +39,7 @@ class VoiceCallController extends ControllerCore {
   final ValueNotifier<bool> _isUserJoined = ValueNotifier(false);
   final ValueNotifier<bool> _isLocalCameraEnabled = ValueNotifier(true);
   final ValueNotifier<bool> _isRemoteCameraEnabled = ValueNotifier(true);
+  final ValueNotifier<bool> _isRemoteMutated = ValueNotifier(false);
   final ValueNotifier<String> _elapsedTime = ValueNotifier('00:00');
 
   VoiceCallController({required Call call, required this.context})
@@ -59,6 +60,7 @@ class VoiceCallController extends ControllerCore {
   ValueNotifier<bool> get isUserJoined => _isUserJoined;
   ValueNotifier<bool> get isLocalCameraEnabled => _isLocalCameraEnabled;
   ValueNotifier<bool> get isRemoteCameraEnabled => _isRemoteCameraEnabled;
+  ValueNotifier<bool> get isRemoteMutated => _isRemoteMutated;
   ValueNotifier<String> get elapsedTime => _elapsedTime;
 
   @override
@@ -116,6 +118,21 @@ class VoiceCallController extends ControllerCore {
           }
           if (state == RemoteVideoState.remoteVideoStateStopped) {
             isRemoteCameraEnabled.value = false;
+          }
+        },
+        onRemoteAudioStateChanged: (
+          connection,
+          remoteUid,
+          state,
+          reason,
+          elapsed,
+        ) {
+          Log.echo('Remote audio state changed: $state');
+          if (state == RemoteAudioState.remoteAudioStateDecoding) {
+            isRemoteMutated.value = false;
+          }
+          if (state == RemoteAudioState.remoteAudioStateStopped) {
+            isRemoteMutated.value = true;
           }
         },
         onRequestToken: (connection) {
@@ -211,6 +228,7 @@ class VoiceCallController extends ControllerCore {
     _isUserJoined.dispose();
     _isLocalCameraEnabled.dispose();
     _isRemoteCameraEnabled.dispose();
+    _isRemoteMutated.dispose();
     _elapsedTime.dispose();
     _elapsedTimeSec = 0;
     _timer?.cancel();

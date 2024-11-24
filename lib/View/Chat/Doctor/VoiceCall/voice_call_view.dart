@@ -247,23 +247,39 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                 Positioned(
                   top: 20,
                   left: 20,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
                     children: [
-                      CustomText(
-                        text:
-                            '${_controller.doctor?.lastName ?? ''} ${_controller.doctor?.firstName ?? ''} 先生',
-                        color: Colors.white,
-                        fontSize: 24,
-                      ),
-                      ValueListenableBuilder(
-                        valueListenable: _controller.elapsedTime,
-                        builder: (context, value, child) {
-                          return CustomText(
-                            text: value,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            text:
+                                '${_controller.doctor?.lastName ?? ''} ${_controller.doctor?.firstName ?? ''} 先生',
                             color: Colors.white,
-                            fontSize: 16,
-                          );
+                            fontSize: 24,
+                          ),
+                          ValueListenableBuilder(
+                            valueListenable: _controller.elapsedTime,
+                            builder: (context, value, child) {
+                              return CustomText(
+                                text: value,
+                                color: Colors.white,
+                                fontSize: 16,
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 16),
+                      ValueListenableBuilder(
+                        valueListenable: _controller.isRemoteMutated,
+                        builder: (context, value, child) {
+                          return value
+                              ? const Icon(
+                                  Icons.mic_off,
+                                  color: Colors.red,
+                                )
+                              : const SizedBox();
                         },
                       ),
                     ],
