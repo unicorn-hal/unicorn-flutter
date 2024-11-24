@@ -68,45 +68,12 @@ class TopLoadingController extends ControllerCore {
     }
 
     /// useLocalAuth フラグが有効なら認証を行う
-
-    final completer = Completer<void>();
-
     bool useLocalAuth =
         await _sharedPreferencesService.getBool('useLocalAuth') ?? false;
 
-    Future<void> checkLocalAuth(bool useLocalAuth) async {
-      if (useLocalAuth) {
-        // 認証処理を追加
-        try {
-          bool? isAuthenticated = await _localAuthService.authenticate();
-          if (isAuthenticated == null) {
-            isAuthenticated = true;
-          } else if (!isAuthenticated) {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return CustomDialog(
-                    title: '認証に失敗しました',
-                    bodyText: '再度認証を行ってください',
-                    leftButtonText: 'もう一度行う',
-                    customButtonCount: 1,
-                    leftButtonOnTap: () {
-                      checkLocalAuth(useLocalAuth);
-                    },
-                  );
-                });
-            await completer.future;
-          } else {
-            completer.complete();
-          }
-        } catch (e) {
-          Log.echo('Error: $e');
-          await completer.future;
-        }
-      }
-    }
-
-    await checkLocalAuth(useLocalAuth);
+    /// ローカル認証
+    Completer localAuthCompleter = Completer<void>();
+    await _checkLocalAuth(useLocalAuth, localAuthCompleter);
 
     /// ユーザー情報を取得
     firebase_auth.User? authUser = _authService.getUser();
@@ -265,6 +232,44 @@ class TopLoadingController extends ControllerCore {
           FCMTopicEnum.user.name,
         ],
       );
+    }
+  }
+
+  /// ローカル認証
+  /// [useLocalAuth] ローカル認証を行うかどうか
+  /// [completer] 認証完了時に呼び出すCompleter
+  Future<void> _checkLocalAuth(bool useLocalAuth, Completer completer) async {
+    if (useLocalAuth) {
+      // 認証処理を追加
+      try {
+        bool? isAuthenticated = await _localAuthService.authenticate();
+        if (isAuthenticated == null) {
+          isAuthenticated = true;
+        } else if (!isAuthenticated) {
+          if (!context.mounted) {
+            return;
+          }
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return CustomDialog(
+                  title: '認証に失敗しました',
+                  bodyText: '再度認証を行ってください',
+                  leftButtonText: 'もう一度行う',
+                  customButtonCount: 1,
+                  leftButtonOnTap: () {
+                    _checkLocalAuth(useLocalAuth, completer);
+                  },
+                );
+              });
+          await completer.future;
+        } else {
+          completer.complete();
+        }
+      } catch (e) {
+        Log.echo('Error: $e');
+        await completer.future;
+      }
     }
   }
 }
