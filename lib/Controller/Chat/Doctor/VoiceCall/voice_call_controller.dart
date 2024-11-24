@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,6 +27,8 @@ class VoiceCallController extends ControllerCore {
 
   final Call _call;
   Doctor? _doctor;
+
+  Offset localPreviewPos = const Offset(20, 100);
 
   bool _isMuted = false;
   bool _isSwapped = false;

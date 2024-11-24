@@ -77,6 +77,28 @@ class _VoiceCallViewState extends State<VoiceCallView> {
     });
   }
 
+  void _onDragUpdate(DragUpdateDetails details) {
+    setState(() {
+      _controller.localPreviewPos += details.delta;
+      final double screenHeight = MediaQuery.of(context).size.height - 64;
+      final double screenWidth = MediaQuery.of(context).size.width;
+      if (_controller.localPreviewPos.dx < 0) {
+        _controller.localPreviewPos = Offset(0, _controller.localPreviewPos.dy);
+      }
+      if (_controller.localPreviewPos.dx > screenWidth - 100) {
+        _controller.localPreviewPos =
+            Offset(screenWidth - 100, _controller.localPreviewPos.dy);
+      }
+      if (_controller.localPreviewPos.dy < 0) {
+        _controller.localPreviewPos = Offset(_controller.localPreviewPos.dx, 0);
+      }
+      if (_controller.localPreviewPos.dy > screenHeight - 150) {
+        _controller.localPreviewPos =
+            Offset(_controller.localPreviewPos.dx, screenHeight - 150);
+      }
+    });
+  }
+
   /// カメラがオフの場合のビュー
   /// [isLocal] 自分のカメラか
   /// [isMinimized] ミニマイズビューか
@@ -230,11 +252,12 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                     ? _buildAgoraVideoLocal()
                     : _buildAgoraVideoRemote(),
                 Positioned(
-                  left: 20,
-                  top: 100,
+                  left: _controller.localPreviewPos.dx,
+                  top: _controller.localPreviewPos.dy,
                   width: 100,
                   height: 150,
                   child: GestureDetector(
+                    onPanUpdate: _onDragUpdate,
                     onTap: _onToggleSwap,
                     child: Container(
                       decoration: BoxDecoration(
