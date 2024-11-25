@@ -47,7 +47,7 @@ class Strings {
   static const String HEALTH_CHECKUP_RESULT_RISK_LEVEL_HIGH =
       '放置すると危険な症状や病気があります。\n今すぐunicornを要請してください';
   static const String HEALTH_CHECKUP_RESULT_RISK_LEVEL_AI =
-      'AI診断が終了しました。症状がある場合は\n医師との通話やAIチャットを利用してください。';
+      'AI診断が終了しました。症状がある場合は\n医師との通話を利用してください。';
 
   static const String CHAT_POST_RESPONSE_ERROR = 'メッセージの送信に失敗しました。';
 
