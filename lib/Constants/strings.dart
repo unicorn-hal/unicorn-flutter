@@ -78,4 +78,6 @@ class Strings {
   // ユーザープロフィール登録完了時に表示するテキスト
   static const String PROFILE_REGISTRATION_COMPLETED_MESSAGE =
       'ユーザーが正常に登録されました';
+  // プロフィール編集完了時に表示するテキスト
+  static const String PROFILE_EDIT_COMPLETED_TEXT = '情報が正常に更新されました';
 }
