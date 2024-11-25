@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:unicorn_flutter/Constants/prefectures.dart';
@@ -13,6 +14,12 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 class RegisterAddressInfoController extends ControllerCore {
   LocationService get _locationService => LocationService();
 
+  RegisterAddressInfoController({
+    required this.context,
+    required super.from,
+  });
+
+  BuildContext context;
   UserData userData = UserData();
 
   late List<String> _entryItemStrings;

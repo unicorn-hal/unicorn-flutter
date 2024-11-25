@@ -11,8 +11,13 @@ import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class RegisterAddressInfoView extends StatefulWidget {
-  const RegisterAddressInfoView({super.key, this.userRequest});
+  const RegisterAddressInfoView({
+    super.key,
+    this.userRequest,
+    required this.from,
+  });
   final UserRequest? userRequest;
+  final String from;
 
   @override
   State<RegisterAddressInfoView> createState() =>
@@ -27,7 +32,10 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
   @override
   void initState() {
     super.initState();
-    controller = RegisterAddressInfoController();
+    controller = RegisterAddressInfoController(
+      context: context,
+      from: widget.from,
+    );
   }
 
   @override
