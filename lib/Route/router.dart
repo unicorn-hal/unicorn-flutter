@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
-import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
 import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart';
 import 'package:unicorn_flutter/Model/Entity/FamilyEmail/family_email.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
@@ -266,7 +265,9 @@ class RegisterPhysicalInfoRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       // todo: View側でfromを受け取れるように変更
-      const RegisterPhysicalInfoView();
+      RegisterPhysicalInfoView(
+        from: from,
+      );
 }
 
 @TypedGoRoute<RegisterAddressInfoRoute>(
@@ -275,14 +276,17 @@ class RegisterPhysicalInfoRoute extends GoRouteData {
 class RegisterAddressInfoRoute extends GoRouteData {
   const RegisterAddressInfoRoute({
     this.$extra,
+    required this.from,
   });
 
   final UserRequest? $extra;
+  final String from;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       RegisterAddressInfoView(
         userRequest: $extra,
+        from: from,
       );
 }
 
@@ -290,11 +294,15 @@ class RegisterAddressInfoRoute extends GoRouteData {
   path: Routes.registerUserInfo,
 )
 class RegisterUserInfoRoute extends GoRouteData {
-  const RegisterUserInfoRoute();
+  RegisterUserInfoRoute({
+    required this.from,
+  });
+
+  final String from;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      RegisterUserInfoView();
+      RegisterUserInfoView(from: from);
 }
 
 /////////////////////////////////  Root  //////////////////////////////
@@ -422,7 +430,9 @@ class ProfileRegisterPhysicalInfoRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const RegisterPhysicalInfoView();
+      const RegisterPhysicalInfoView(
+        from: Routes.profile,
+      );
 }
 
 class ProfileRegisterAddressInfoRoute extends GoRouteData {
@@ -433,6 +443,7 @@ class ProfileRegisterAddressInfoRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) =>
       RegisterAddressInfoView(
         userRequest: $extra,
+        from: Routes.profile,
       );
 }
 
@@ -444,6 +455,7 @@ class ProfileRegisterUserInfoRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) =>
       RegisterUserInfoView(
         userRequest: $extra,
+        from: Routes.profile,
       );
 }
 
