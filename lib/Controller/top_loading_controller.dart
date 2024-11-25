@@ -1,5 +1,5 @@
-import 'dart:async';
 // ignore_for_file: use_build_context_synchronously
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/fcm_topic_enum.dart';
