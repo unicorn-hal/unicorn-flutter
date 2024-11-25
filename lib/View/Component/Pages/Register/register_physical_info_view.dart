@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_physical_info_controller.dart';
+import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
@@ -13,7 +14,16 @@ import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class RegisterPhysicalInfoView extends StatefulWidget {
-  const RegisterPhysicalInfoView({super.key});
+  const RegisterPhysicalInfoView({
+    super.key,
+    this.userRequest,
+    this.userData,
+    required this.from,
+  });
+
+  final String from;
+  final UserRequest? userRequest;
+  final UserData? userData;
 
   @override
   State<RegisterPhysicalInfoView> createState() =>
@@ -28,7 +38,10 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
   @override
   void initState() {
     super.initState();
-    controller = RegisterPhysicalInfoController();
+    controller = RegisterPhysicalInfoController(
+      context: context,
+      from: widget.from,
+    );
   }
 
   @override
