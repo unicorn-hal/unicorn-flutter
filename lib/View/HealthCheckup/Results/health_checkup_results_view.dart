@@ -9,26 +9,30 @@ import 'package:unicorn_flutter/gen/colors.gen.dart';
 import '../../Component/CustomWidget/custom_scaffold.dart';
 
 class HealthCheckupResultsView extends StatelessWidget {
-  const HealthCheckupResultsView(
-      {super.key,
-      required this.diseaseType,
-      required this.healthPoint,
-      required this.bloodPressure,
-      required this.bodyTemperature});
+  const HealthCheckupResultsView({
+    super.key,
+    this.diseaseType,
+    this.healthPoint,
+    this.diseaseEnumString,
+    required this.bloodPressure,
+    required this.bodyTemperature,
+  });
 
-  final HealthCheckupDiseaseEnum diseaseType;
-  final int healthPoint;
+  final HealthCheckupDiseaseEnum? diseaseType;
+  final int? healthPoint;
   final String bloodPressure;
   final String bodyTemperature;
+  final String? diseaseEnumString;
 
   @override
   Widget build(BuildContext context) {
     HealthCheckupResultController controller = HealthCheckupResultController(
-      context,
-      diseaseType,
-      healthPoint,
-      bloodPressure,
-      bodyTemperature,
+      context: context,
+      bloodPressure: bloodPressure,
+      bodyTemperature: bodyTemperature,
+      healthPoint: healthPoint,
+      diseaseType: diseaseType,
+      diseaseEnumString: diseaseEnumString,
     );
     final Size size = MediaQuery.of(context).size;
 

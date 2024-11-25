@@ -3,6 +3,7 @@ import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart'
 import 'package:unicorn_flutter/Constants/health_checkup_question.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
 
 class NormalCheckupController extends ControllerCore {
   BuildContext context;
@@ -74,14 +75,11 @@ class NormalCheckupController extends ControllerCore {
   /// [selectedIndex] 選択されたインデックス
   void nextQuestion(int selectedIndex) {
     if (_questionCount >= HealthCheckupQuestionData.questions.length - 1) {
-      /// 質問が終わったら結果画面へ移動
-      /// todo: bloodPressureとbodyTemperatureは仮の値
-      CheckupResultRoute(
-              $extra: _diseaseType,
-              healthPoint: _healthPoint,
-              bloodPressure: '145/63',
-              bodyTemperature: '36.5')
-          .go(context);
+      ProgressRoute(
+        from: Routes.normalCheckup,
+        healthPoint: _healthPoint,
+        diseaseType: _diseaseType,
+      ).go(context);
       return;
     }
 

@@ -1,34 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/Enum/day_of_week_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_risk_level_enum.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup_request.dart';
+import 'package:unicorn_flutter/Service/Api/HealthCheckup/health_checkup_api.dart';
 import 'package:unicorn_flutter/Service/Package/UrlLauncher/url_launcher_service.dart';
 
 class HealthCheckupResultController extends ControllerCore {
   /// Serviceのインスタンス化
+  HealthCheckupApi get _healthCheckupApi => HealthCheckupApi();
 
   /// コンストラクタ
-  HealthCheckupResultController(
-    this.context,
-    this.diseaseType,
+  HealthCheckupResultController({
+    required this.context,
+    required this.bloodPressure,
+    required this.bodyTemperature,
     this.healthPoint,
-    this.bloodPressure,
-    this.bodyTemperature,
-  );
+    this.diseaseType,
+    this.diseaseEnumString,
+  });
   BuildContext context;
 
   /// 変数の定義
   /// リスクレベルの閾値
-  int dangerLine = 6;
-  int deadLine = 10;
+  final int _dangerLine = 6;
+  final int _deadLine = 10;
 
-  int healthPoint;
-  HealthCheckupDiseaseEnum diseaseType;
+  int? healthPoint;
+  HealthCheckupDiseaseEnum? diseaseType;
   String bloodPressure;
   String bodyTemperature;
+  String? diseaseEnumString;
   late String _formattedDate;
+  late HealthCheckupRequest _healthCheckupRequest;
   late Color _healthColor;
   late String userName;
   late String _healthText;
@@ -39,8 +47,19 @@ class HealthCheckupResultController extends ControllerCore {
   @override
   void initialize() {
     _formattedDate = getTodayDate();
-    setHealthRiskLevelView(getHealthRiskLevel());
-    setDiseaseTypeView(diseaseType);
+    if (diseaseEnumString != null) {
+      diseaseType = HealthCheckupDiseaseType.fromString(diseaseEnumString!);
+      setHealthRiskLevelView(HealthRiskLevelEnum.ai);
+      setDiseaseTypeView(diseaseType!);
+    } else {
+      setHealthRiskLevelView(getHealthRiskLevel());
+      setDiseaseTypeView(diseaseType!);
+    }
+    _healthCheckupRequest = formatHealthCheckupRecordless(
+      bodyTemperature,
+      bloodPressure,
+    );
+    postHealthCheckup(_healthCheckupRequest);
   }
 
   /// 各関数の実装
@@ -60,13 +79,39 @@ class HealthCheckupResultController extends ControllerCore {
     return _formattedDate;
   }
 
+  HealthCheckupRequest formatHealthCheckupRecordless(
+    String bodyTemperature,
+    String bloodPressure,
+  ) {
+    String date = DateFormat('yyyy年MM月dd日').format(DateTime.now());
+    String diseaseExampleName = diseaseExampleNameList[0];
+    String medicalRecord =
+        '## $date\n 体温: bloodPressure\n 血圧: bodyTemperature\n 診断: 軽度の$diseaseExampleName';
+    return HealthCheckupRequest(
+      date: DateFormat('yyyy-MM-dd').parse(DateTime.now().toString()),
+      bodyTemperature: double.parse(bodyTemperature),
+      bloodPressure: bloodPressure,
+      medicalRecord: medicalRecord,
+    );
+  }
+
+  Future<int> postHealthCheckup(
+      HealthCheckupRequest healthCheckupRequest) async {
+    int res =
+        await _healthCheckupApi.postHealthCheckup(body: healthCheckupRequest);
+    if (res != 200) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+    }
+    return res;
+  }
+
   String get formattedDate => _formattedDate;
 
   /// 健康リスクレベルを取得
   HealthRiskLevelEnum getHealthRiskLevel() {
-    if (healthPoint > deadLine) {
+    if (healthPoint! > _deadLine) {
       return HealthRiskLevelEnum.high;
-    } else if (healthPoint > dangerLine) {
+    } else if (healthPoint! > _dangerLine) {
       return HealthRiskLevelEnum.medium;
     } else {
       return HealthRiskLevelEnum.low;

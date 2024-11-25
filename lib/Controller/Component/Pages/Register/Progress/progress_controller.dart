@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
@@ -10,10 +13,14 @@ class ProgressController extends ControllerCore {
     required this.context,
     required super.from,
     this.diseaseEnumString,
+    this.healthPoint,
+    this.diseaseType,
   });
 
   BuildContext context;
   String? diseaseEnumString;
+  int? healthPoint;
+  HealthCheckupDiseaseEnum? diseaseType;
 
   late ValueNotifier<String> _bodyText;
 
@@ -24,7 +31,6 @@ class ProgressController extends ControllerCore {
     } else {
       _bodyText = ValueNotifier(typeToText(ProgressViewEnum.bodyTemperature));
     }
-
     delayEvent();
   }
 
@@ -37,15 +43,27 @@ class ProgressController extends ControllerCore {
     } else {
       _bodyText.value = typeToText(ProgressViewEnum.bloodPressure);
     }
-
     await Future.delayed(const Duration(seconds: 3));
-
+    String bodyTemperature = _generateRandomBodyTemperature().toString();
+    String bloodPressure = _generateRandomBloodPressure();
     // それぞれの画面に遷移
     if (from == Routes.emergency) {
       // todo: 画面遷移
-    } else {
+    } else if (from == Routes.normalCheckup) {
       // todo: 結果画面に必要な情報はあとから修正
-      CheckupResultRoute().go(context);
+
+      CheckupResultRoute(
+        $extra: diseaseType,
+        healthPoint: healthPoint,
+        bodyTemperature: bodyTemperature,
+        bloodPressure: bloodPressure,
+      ).go(context);
+    } else if (from == Routes.healthCheckupAi) {
+      CheckupResultRoute(
+        diseaseEnumString: diseaseEnumString,
+        bodyTemperature: bodyTemperature,
+        bloodPressure: bloodPressure,
+      ).go(context);
     }
   }
 
@@ -63,6 +81,20 @@ class ProgressController extends ControllerCore {
       default:
         return '';
     }
+  }
+
+  /// 正常値の範囲でランダムな体温を生成
+  double _generateRandomBodyTemperature() {
+    Random random = Random();
+    return 36.0 + random.nextDouble() * 1.5; // 36.0°C から 37.5°C の範囲
+  }
+
+  /// 正常値の範囲でランダムな血圧を生成
+  String _generateRandomBloodPressure() {
+    Random random = Random();
+    int systolic = 90 + random.nextInt(30); // 90 から 120 の範囲
+    int diastolic = 60 + random.nextInt(20); // 60 から 80 の範囲
+    return '$systolic/$diastolic';
   }
 
   ValueNotifier<String> get bodyText => _bodyText;

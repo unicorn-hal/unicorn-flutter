@@ -244,15 +244,21 @@ class ProgressRoute extends GoRouteData {
   const ProgressRoute({
     required this.from,
     this.diseaseEnumString,
+    this.healthPoint,
+    this.diseaseType,
   });
 
   final String from;
   final String? diseaseEnumString;
+  final int? healthPoint;
+  final HealthCheckupDiseaseEnum? diseaseType;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => ProgressView(
         from: from,
         diseaseEnumString: diseaseEnumString,
+        healthPoint: healthPoint,
+        diseaseType: diseaseType,
       );
 }
 
@@ -337,22 +343,25 @@ class NormalCheckupRoute extends GoRouteData {
 
 class CheckupResultRoute extends GoRouteData {
   const CheckupResultRoute({
-    required this.$extra,
-    required this.healthPoint,
+    this.$extra,
+    this.healthPoint,
+    this.diseaseEnumString,
     required this.bodyTemperature,
     required this.bloodPressure,
   });
 
-  final HealthCheckupDiseaseEnum $extra;
-  final int healthPoint;
+  final HealthCheckupDiseaseEnum? $extra;
+  final int? healthPoint;
   final String bodyTemperature;
   final String bloodPressure;
+  final String? diseaseEnumString;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       HealthCheckupResultsView(
         diseaseType: $extra,
         healthPoint: healthPoint,
+        diseaseEnumString: diseaseEnumString,
         bodyTemperature: bodyTemperature,
         bloodPressure: bloodPressure,
       );
