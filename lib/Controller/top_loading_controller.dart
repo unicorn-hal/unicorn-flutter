@@ -1,5 +1,5 @@
 import 'dart:async';
-
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/fcm_topic_enum.dart';
@@ -64,12 +64,14 @@ class TopLoadingController extends ControllerCore {
 
     /// SharedPreferences: useLocalAuth フラグを初回起動時に設定
     if (appInitialized == null || appInitialized == false) {
-      await _sharedPreferencesService.setBool('useLocalAuth', false);
+      await _sharedPreferencesService.setBool(
+          SharedPreferencesKeysEnum.useLocalAuth.name, false);
     }
 
     /// useLocalAuth フラグが有効なら認証を行う
-    bool useLocalAuth =
-        await _sharedPreferencesService.getBool('useLocalAuth') ?? false;
+    bool useLocalAuth = await _sharedPreferencesService
+            .getBool(SharedPreferencesKeysEnum.useLocalAuth.name) ??
+        false;
 
     /// ローカル認証
     Completer localAuthCompleter = Completer<void>();

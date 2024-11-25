@@ -9,21 +9,21 @@ class LocalAuthController {
       SharedPreferencesService();
   final LocalAuthService _localAuthService = LocalAuthService();
 
-  Future<bool> getUseLocalAuth() async {
+  Future<bool> _getUseLocalAuth() async {
     return await _sharedPreferencesService.getBool('useLocalAuth') ?? false;
   }
 
-  Future<void> setUseLocalAuth(bool value) async {
+  Future<void> _setUseLocalAuth(bool value) async {
     await _sharedPreferencesService.setBool('useLocalAuth', value);
   }
 
   Future<void> loadUseLocalAuth(Function(bool) callback) async {
-    bool useLocalAuth = await getUseLocalAuth();
+    bool useLocalAuth = await _getUseLocalAuth();
     callback(useLocalAuth);
   }
 
   Future<void> updateUseLocalAuth(bool value, Function(bool) callback) async {
-    await setUseLocalAuth(value);
+    await _setUseLocalAuth(value);
     callback(value);
   }
 
