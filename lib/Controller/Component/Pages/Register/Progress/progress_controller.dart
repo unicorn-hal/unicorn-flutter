@@ -86,7 +86,8 @@ class ProgressController extends ControllerCore {
   /// 正常値の範囲でランダムな体温を生成
   double _generateRandomBodyTemperature() {
     Random random = Random();
-    return 36.0 + random.nextDouble() * 1.5; // 36.0°C から 37.5°C の範囲
+    double temp = 36.0 + random.nextDouble() * 1.5; // 36.0°C から 37.5°C の範囲
+    return double.parse(temp.toStringAsFixed(1)); // 小数点第1位までに丸める
   }
 
   /// 正常値の範囲でランダムな血圧を生成
