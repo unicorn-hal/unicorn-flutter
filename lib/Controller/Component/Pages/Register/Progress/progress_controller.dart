@@ -11,15 +11,13 @@ import 'package:unicorn_flutter/Route/routes.dart';
 class ProgressController extends ControllerCore {
   ProgressController({
     required this.context,
-    this.diseaseEnumString,
-    this.healthPoint,
-    this.diseaseType,
+    required this.healthPoint,
+    required this.diseaseType,
   });
 
   BuildContext context;
-  String? diseaseEnumString;
-  int? healthPoint;
-  HealthCheckupDiseaseEnum? diseaseType;
+  int healthPoint;
+  HealthCheckupDiseaseEnum diseaseType;
 
   late ValueNotifier<String> _bodyText;
 
@@ -48,18 +46,10 @@ class ProgressController extends ControllerCore {
     // それぞれの画面に遷移
     if (from == Routes.emergency) {
       // todo: 画面遷移
-    } else if (from == Routes.normalCheckup) {
-      // todo: 結果画面に必要な情報はあとから修正
-
+    } else {
       CheckupResultRoute(
         $extra: diseaseType,
         healthPoint: healthPoint,
-        bodyTemperature: bodyTemperature,
-        bloodPressure: bloodPressure,
-      ).go(context);
-    } else if (from == Routes.healthCheckupAi) {
-      CheckupResultRoute(
-        diseaseEnumString: diseaseEnumString,
         bodyTemperature: bodyTemperature,
         bloodPressure: bloodPressure,
       ).go(context);
