@@ -11,18 +11,16 @@ import '../../Component/CustomWidget/custom_scaffold.dart';
 class HealthCheckupResultsView extends StatelessWidget {
   const HealthCheckupResultsView({
     super.key,
-    this.diseaseType,
-    this.healthPoint,
-    this.diseaseEnumString,
+    required this.diseaseType,
+    required this.healthPoint,
     required this.bloodPressure,
     required this.bodyTemperature,
   });
 
-  final HealthCheckupDiseaseEnum? diseaseType;
-  final int? healthPoint;
+  final HealthCheckupDiseaseEnum diseaseType;
+  final int healthPoint;
   final String bloodPressure;
   final String bodyTemperature;
-  final String? diseaseEnumString;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +30,6 @@ class HealthCheckupResultsView extends StatelessWidget {
       bodyTemperature: bodyTemperature,
       healthPoint: healthPoint,
       diseaseType: diseaseType,
-      diseaseEnumString: diseaseEnumString,
     );
     final Size size = MediaQuery.of(context).size;
 

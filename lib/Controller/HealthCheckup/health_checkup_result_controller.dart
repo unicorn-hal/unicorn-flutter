@@ -13,15 +13,15 @@ import 'package:unicorn_flutter/Service/Package/UrlLauncher/url_launcher_service
 class HealthCheckupResultController extends ControllerCore {
   /// Serviceのインスタンス化
   HealthCheckupApi get _healthCheckupApi => HealthCheckupApi();
+  UrlLauncherService get _urlLauncherService => UrlLauncherService();
 
   /// コンストラクタ
   HealthCheckupResultController({
     required this.context,
     required this.bloodPressure,
     required this.bodyTemperature,
-    this.healthPoint,
-    this.diseaseType,
-    this.diseaseEnumString,
+    required this.healthPoint,
+    required this.diseaseType,
   });
   BuildContext context;
 
@@ -30,11 +30,10 @@ class HealthCheckupResultController extends ControllerCore {
   final int _dangerLine = 6;
   final int _deadLine = 10;
 
-  int? healthPoint;
-  HealthCheckupDiseaseEnum? diseaseType;
+  int healthPoint;
+  HealthCheckupDiseaseEnum diseaseType;
   String bloodPressure;
   String bodyTemperature;
-  String? diseaseEnumString;
   late String _formattedDate;
   late HealthCheckupRequest _healthCheckupRequest;
   late Color _healthColor;
@@ -46,19 +45,22 @@ class HealthCheckupResultController extends ControllerCore {
   /// initialize()
   @override
   void initialize() {
+    /// 本日の日付を取得
     _formattedDate = getTodayDate();
-    if (diseaseEnumString != null) {
-      diseaseType = HealthCheckupDiseaseType.fromString(diseaseEnumString!);
-      setHealthRiskLevelView(HealthRiskLevelEnum.ai);
-      setDiseaseTypeView(diseaseType!);
-    } else {
-      setHealthRiskLevelView(getHealthRiskLevel());
-      setDiseaseTypeView(diseaseType!);
-    }
+
+    /// 健康リスクレベルを取得
+    setHealthRiskLevelView(getHealthRiskLevel());
+
+    /// 疾患タイプに応じたテキストリストと疾患例名リストを設定
+    setDiseaseTypeView(diseaseType);
+
+    /// postに必要なデータを整形
     _healthCheckupRequest = formatHealthCheckupRecordless(
       bodyTemperature,
       bloodPressure,
     );
+
+    /// post処理
     postHealthCheckup(_healthCheckupRequest);
   }
 
@@ -79,12 +81,26 @@ class HealthCheckupResultController extends ControllerCore {
     return _formattedDate;
   }
 
+  /// postに必要なデータを整形
+  /// [bodyTemperature] 体温
+  /// [bloodPressure] 血圧
   HealthCheckupRequest formatHealthCheckupRecordless(
     String bodyTemperature,
     String bloodPressure,
   ) {
     String date = DateFormat('yyyy年MM月dd日').format(DateTime.now());
-    String diseaseExampleName = diseaseExampleNameList[0];
+    String diseaseExampleName;
+
+    /// 疾患例名を取得
+    if (diseaseType == HealthCheckupDiseaseEnum.goodHealth) {
+      /// 疾患例名が健康の場合は健康と表示
+      /// それ以外は疾患例名リストの先頭を取得
+      diseaseExampleName = '健康';
+    } else {
+      diseaseExampleName = diseaseExampleNameList[0];
+    }
+
+    /// 診断書のテキストを作成
     String medicalRecord =
         '## $date\n 体温: bloodPressure\n 血圧: bodyTemperature\n 診断: 軽度の$diseaseExampleName';
     return HealthCheckupRequest(
@@ -95,6 +111,8 @@ class HealthCheckupResultController extends ControllerCore {
     );
   }
 
+  /// post処理
+  /// [healthCheckupRequest] 健康診断リクエスト
   Future<int> postHealthCheckup(
       HealthCheckupRequest healthCheckupRequest) async {
     int res =
@@ -109,9 +127,9 @@ class HealthCheckupResultController extends ControllerCore {
 
   /// 健康リスクレベルを取得
   HealthRiskLevelEnum getHealthRiskLevel() {
-    if (healthPoint! > _deadLine) {
+    if (healthPoint > _deadLine) {
       return HealthRiskLevelEnum.high;
-    } else if (healthPoint! > _dangerLine) {
+    } else if (healthPoint > _dangerLine) {
       return HealthRiskLevelEnum.medium;
     } else {
       return HealthRiskLevelEnum.low;
@@ -121,6 +139,7 @@ class HealthCheckupResultController extends ControllerCore {
   /// 健康リスクレベルに応じたテキストとカラーを設定
   /// [healthRiskLevel] 健康リスクレベル
   void setHealthRiskLevelView(HealthRiskLevelEnum healthRiskLevel) {
+    /// 健康リスクレベルに応じたテキストとカラーを取得
     _healthText = HealthRiskLevelType.getHealthRiskLevelString(healthRiskLevel);
     _healthColor = HealthRiskLevelType.getHealthRiskLevelColor(healthRiskLevel);
   }
@@ -132,6 +151,7 @@ class HealthCheckupResultController extends ControllerCore {
   /// 疾患タイプに応じたテキストリストと疾患例名リストを設定
   /// [diseaseType] 疾患タイプ
   void setDiseaseTypeView(HealthCheckupDiseaseEnum diseaseType) {
+    /// 疾患タイプに応じたテキストリストと疾患例名リストを取得
     _diseaseTextList = HealthCheckupDiseaseType.getDiseaseTextList(diseaseType);
     _diseaseExampleNameList =
         HealthCheckupDiseaseType.getDiseaseExampleNameList(diseaseType);
@@ -145,7 +165,7 @@ class HealthCheckupResultController extends ControllerCore {
   /// 疾患名をクリックするとWikipediaのページに遷移
   /// [diseaseName] 疾患名
   Future<void> getDiseaseUrl(String diseaseName) {
-    return UrlLauncherService()
+    return _urlLauncherService
         .launchUrl('https://ja.wikipedia.org/wiki/$diseaseName');
   }
 }
