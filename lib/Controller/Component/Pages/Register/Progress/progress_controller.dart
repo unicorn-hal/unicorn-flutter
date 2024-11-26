@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
@@ -100,7 +99,7 @@ class ProgressController extends ControllerCore {
     // 体温の評価
     if (bodyTemperature < _normalBodyTempMin - 0.5 ||
         bodyTemperature > _normalBodyTempMax + 0.5) {
-      healthPoint += 3; // 大きく正常値範囲外ならhealthPointを大幅に増加
+      healthPoint += 4; // 大きく正常値範囲外ならhealthPointを大幅に増加
     } else if (bodyTemperature < _normalBodyTempMin ||
         bodyTemperature > _normalBodyTempMax) {
       healthPoint += 2; // 少し正常値範囲外ならhealthPointを少し増加
@@ -117,7 +116,7 @@ class ProgressController extends ControllerCore {
         systolic > _normalSystolicMax + 10 ||
         diastolic < _normalDiastolicMin - 10 ||
         diastolic > _normalDiastolicMax + 10) {
-      return healthPoint += 3; // 大きく正常値範囲外ならhealthPointを大幅に増加
+      return healthPoint += 4; // 大きく正常値範囲外ならhealthPointを大幅に増加
     } else if (systolic < _normalSystolicMin ||
         systolic > _normalSystolicMax ||
         diastolic < _normalDiastolicMin ||
