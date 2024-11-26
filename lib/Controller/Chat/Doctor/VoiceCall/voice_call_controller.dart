@@ -48,6 +48,22 @@ class VoiceCallController extends ControllerCore {
       : _call = call;
   BuildContext context;
 
+  @override
+  Future<void> initialize() async {
+    // todo: パーミッション処理は遷移前に行う
+    await _permissionHandlerService.checkAndRequestPermission(
+      Permission.microphone,
+    );
+    await _permissionHandlerService.checkAndRequestPermission(
+      Permission.camera,
+    );
+
+    await _initAgoraEngine();
+    await _fetchToken();
+    await _fetchDoctor();
+    await _joinChannel();
+  }
+
   RtcEngine get engine => _engine;
 
   Call get call => _call;
@@ -64,22 +80,6 @@ class VoiceCallController extends ControllerCore {
   ValueNotifier<bool> get isRemoteCameraEnabled => _isRemoteCameraEnabled;
   ValueNotifier<bool> get isRemoteMutated => _isRemoteMutated;
   ValueNotifier<String> get elapsedTime => _elapsedTime;
-
-  @override
-  Future<void> initialize() async {
-    // todo: パーミッション処理は遷移前に行う
-    await _permissionHandlerService.checkAndRequestPermission(
-      Permission.microphone,
-    );
-    await _permissionHandlerService.checkAndRequestPermission(
-      Permission.camera,
-    );
-
-    await _initAgoraEngine();
-    await _fetchToken();
-    await _fetchDoctor();
-    await _joinChannel();
-  }
 
   /// Agoraエンジンの初期化
   Future<void> _initAgoraEngine() async {
