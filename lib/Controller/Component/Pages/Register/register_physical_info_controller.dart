@@ -37,16 +37,12 @@ class RegisterPhysicalInfoController extends ControllerCore {
 
   void setTextEditingController() {
     if (from == Routes.profile) {
-      firstNameTextController =
-          TextEditingController(text: userData.user!.firstName);
-      lastNameTextController =
-          TextEditingController(text: userData.user!.lastName);
+      firstNameTextController.text = userData.user!.firstName;
+      lastNameTextController.text = userData.user!.lastName;
       gender = userData.user!.gender;
       birthDate = userData.user!.birthDate;
-      bodyHeightTextController =
-          TextEditingController(text: userData.user!.bodyHeight.toString());
-      bodyWeightTextController =
-          TextEditingController(text: userData.user!.bodyWeight.toString());
+      bodyHeightTextController.text = userData.user!.bodyHeight.toString();
+      bodyWeightTextController.text = userData.user!.bodyWeight.toString();
     } else {
       return;
     }
