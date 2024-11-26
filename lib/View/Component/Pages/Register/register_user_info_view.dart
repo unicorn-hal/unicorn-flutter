@@ -6,11 +6,17 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
+import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class RegisterUserInfoView extends StatefulWidget {
-  const RegisterUserInfoView({super.key, this.userRequest});
+  const RegisterUserInfoView({
+    super.key,
+    this.userRequest,
+    required this.from,
+  });
   final UserRequest? userRequest;
+  final String from;
 
   @override
   State<RegisterUserInfoView> createState() => _RegisterUserInfoViewState();
@@ -24,7 +30,10 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
   @override
   void initState() {
     super.initState();
-    _controller = RegisterUserInfoController();
+    _controller = RegisterUserInfoController(
+      context: context,
+      from: widget.from,
+    );
   }
 
   @override
@@ -156,8 +165,9 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                 ),
                 GestureDetector(
                   onTap: () async {
+                    ProtectorNotifier().enableProtector();
                     await _controller.submit(widget.userRequest!);
-                    // todo: 次のViewができ次第ルーティングします。
+                    ProtectorNotifier().disableProtector();
                   },
                   child: Align(
                     alignment: Alignment.center,

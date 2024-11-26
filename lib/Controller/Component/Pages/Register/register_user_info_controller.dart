@@ -2,14 +2,18 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:unicorn_flutter/Constants/regexp_constants.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_info.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
+import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudStorage/cloud_storage_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
@@ -22,12 +26,16 @@ class RegisterUserInfoController extends ControllerCore {
       FirebaseCloudStorageService();
   ImageUtilsService get _imageUtilsService => ImageUtilsService();
 
-  final TextEditingController phoneNumberTextController =
-      TextEditingController();
-  final TextEditingController emailTextController = TextEditingController();
-  final TextEditingController occupationTextController =
-      TextEditingController();
+  RegisterUserInfoController({
+    required super.from,
+    required this.context,
+  });
 
+  TextEditingController phoneNumberTextController = TextEditingController();
+  TextEditingController emailTextController = TextEditingController();
+  TextEditingController occupationTextController = TextEditingController();
+
+  BuildContext context;
   UserData userData = UserData();
 
   File? _imageFile;
@@ -37,6 +45,16 @@ class RegisterUserInfoController extends ControllerCore {
 
   @override
   void initialize() {}
+
+  Future<void> setTextEditingController(UserRequest userRequest) async {
+    if (from == Routes.profile) {
+      phoneNumberTextController.text = userData.user!.firstName;
+      emailTextController.text = userData.user!.lastName;
+      occupationTextController.text = userData.user!.bodyHeight.toString();
+    } else {
+      return;
+    }
+  }
 
   /// 端末のギャラリーから画像を選択する
   Future<void> selectImage() async {
@@ -81,7 +99,6 @@ class RegisterUserInfoController extends ControllerCore {
       return;
     }
 
-    // todo: 編集処理でき次第、修正加えます。
     UserInfo userInfo = UserInfo(
       iconImageUrl: iconImageUrl,
       phoneNumber: phoneNumberTextController.text,
@@ -89,7 +106,42 @@ class RegisterUserInfoController extends ControllerCore {
       occupation: occupationTextController.text,
     );
 
-    userRequest.userId = UserData().user!.userId;
+    if (from == Routes.profile) {
+      userRequest = UserRequest(
+        userId: userData.user!.userId,
+        firstName: userData.user!.firstName,
+        lastName: userData.user!.lastName,
+        email: userInfo.email,
+        gender: userData.user!.gender,
+        birthDate: userData.user!.birthDate,
+        address: userData.user!.address,
+        postalCode: userData.user!.postalCode,
+        phoneNumber: userInfo.phoneNumber,
+        iconImageUrl: userInfo.iconImageUrl,
+        bodyHeight: userData.user!.bodyHeight,
+        bodyWeight: userData.user!.bodyWeight,
+        occupation: userInfo.occupation,
+      );
+      Future<int> responceCode =
+          UserApi().putUser(userId: userData.user!.userId, body: userRequest);
+      if (await responceCode == 200) {
+        // シングルトンに登録した値をセットする
+        userData.setUser(User.fromJson(userRequest.toJson()));
+        Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_TEXT);
+        ProfileRoute().push(context);
+        return;
+      }
+      if (await responceCode == 400) {
+        Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+        return;
+      }
+      if (await responceCode == 500) {
+        Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+        return;
+      }
+    }
+
+    userRequest.userId = userData.user!.userId;
     userRequest.iconImageUrl = userInfo.iconImageUrl;
     userRequest.phoneNumber = userInfo.phoneNumber;
     userRequest.email = userInfo.email;
@@ -99,6 +151,7 @@ class RegisterUserInfoController extends ControllerCore {
     if (await responceCode == 200) {
       Fluttertoast.showToast(
           msg: Strings.PROFILE_REGISTRATION_COMPLETED_MESSAGE);
+      HomeRoute().push(context);
     }
     if (await responceCode == 400) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
