@@ -70,10 +70,10 @@ class LocalAuthService {
   }
 
   /// ローカル認証を実行
-  Future<void> authenticate() async {
+  Future<bool?> authenticate() async {
     if (await getLocalAuthStatus() == LocalAuthStatus.failed) {
       Log.toast('Device not supported');
-      return;
+      return null;
     }
 
     try {
@@ -86,14 +86,17 @@ class LocalAuthService {
         ),
       );
       Log.toast('Did authenticate: $didAuthenticate');
+      return didAuthenticate;
     } on PlatformException catch (e) {
       if (e.code == 'NotAvailable') {
         Log.toast('Not available: ${e.message}', symbol: '❗️');
+        return false;
       } else {
         rethrow;
       }
     } catch (e) {
       Log.echo('Error: $e', symbol: '🚫');
+      return false;
     }
   }
 }
