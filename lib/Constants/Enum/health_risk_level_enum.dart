@@ -5,7 +5,6 @@ enum HealthRiskLevelEnum {
   low,
   medium,
   high,
-  ai,
 }
 
 class HealthRiskLevelType {
@@ -17,8 +16,6 @@ class HealthRiskLevelType {
         return Strings.HEALTH_CHECKUP_RESULT_RISK_LEVEL_MEDIUM;
       case HealthRiskLevelEnum.high:
         return Strings.HEALTH_CHECKUP_RESULT_RISK_LEVEL_HIGH;
-      case HealthRiskLevelEnum.ai:
-        return Strings.HEALTH_CHECKUP_RESULT_RISK_LEVEL_AI;
       default:
         throw Exception('Unknown healthRiskLevel: $healthRiskLevel');
     }
@@ -32,8 +29,6 @@ class HealthRiskLevelType {
         return Colors.orange;
       case HealthRiskLevelEnum.high:
         return Colors.red;
-      case HealthRiskLevelEnum.ai:
-        return Colors.purple;
       default:
         throw Exception('Unknown healthRiskLevel: $healthRiskLevel');
     }
