@@ -259,14 +259,17 @@ class ProgressRoute extends GoRouteData {
 class RegisterPhysicalInfoRoute extends GoRouteData {
   const RegisterPhysicalInfoRoute({
     required this.from,
+    required this.$extra,
   });
   final String from;
+  final UserRequest $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       // todo: View側でfromを受け取れるように変更
       RegisterPhysicalInfoView(
         from: from,
+        userRequest: $extra,
       );
 }
 
@@ -426,12 +429,14 @@ class ProfileRoute extends GoRouteData {
 }
 
 class ProfileRegisterPhysicalInfoRoute extends GoRouteData {
-  const ProfileRegisterPhysicalInfoRoute();
+  ProfileRegisterPhysicalInfoRoute({required this.$extra});
+  UserRequest $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const RegisterPhysicalInfoView(
+      RegisterPhysicalInfoView(
         from: Routes.profile,
+        userRequest: $extra,
       );
 }
 
