@@ -3,7 +3,7 @@ import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup_answer
 import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup_question.dart';
 
 class HealthCheckupQuestions {
-  static List<HealthCheckupQuestion> questions = [
+  static List<HealthCheckupQuestion> dataList = [
     HealthCheckupQuestion(
         number: 1,
         question: '現在、体に違和感がありますか？',

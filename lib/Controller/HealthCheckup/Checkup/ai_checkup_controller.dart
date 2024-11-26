@@ -81,7 +81,15 @@ class AiCheckupController extends ControllerCore {
     HealthCheckupDiseaseEnum diseaseType =
         HealthCheckupDiseaseType.fromString(result);
 
-    ProgressRoute(diseaseType: diseaseType, healthPoint: _baseHealthPoint)
+    int healthPoint = _baseHealthPoint;
+
+    if (diseaseType == HealthCheckupDiseaseEnum.goodHealth) {
+      healthPoint = -2;
+    } else {
+      healthPoint = 3;
+    }
+
+    ProgressRoute(diseaseType: diseaseType, healthPoint: healthPoint)
         .go(context);
   }
 

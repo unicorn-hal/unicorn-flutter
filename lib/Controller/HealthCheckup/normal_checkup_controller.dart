@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
-import 'package:unicorn_flutter/Constants/health_checkup_question.dart';
+import 'package:unicorn_flutter/Constants/health_checkup_questions.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 
@@ -37,7 +37,7 @@ class NormalCheckupController extends ControllerCore {
     _checkupName.clear();
 
     /// 現在の質問を取得
-    final currentQuestion = HealthCheckupQuestions.questions[_questionCount];
+    final currentQuestion = HealthCheckupQuestions.dataList[_questionCount];
 
     /// メイン質問かどうかで分岐
     /// メイン質問の場合は病気タイプを取得
@@ -57,7 +57,7 @@ class NormalCheckupController extends ControllerCore {
 
   /// 質問データの読み込み
   String loadQuestionTitle() {
-    final currentQuestion = HealthCheckupQuestions.questions[_questionCount];
+    final currentQuestion = HealthCheckupQuestions.dataList[_questionCount];
     return currentQuestion.question;
   }
 
@@ -73,7 +73,7 @@ class NormalCheckupController extends ControllerCore {
   /// 次の質問に移動
   /// [selectedIndex] 選択されたインデックス
   void nextQuestion(int selectedIndex) {
-    if (_questionCount >= HealthCheckupQuestions.questions.length - 1) {
+    if (_questionCount >= HealthCheckupQuestions.dataList.length - 1) {
       ProgressRoute(
         healthPoint: _healthPoint,
         diseaseType: _diseaseType,
@@ -84,7 +84,7 @@ class NormalCheckupController extends ControllerCore {
     /// メイン質問かどうかで分岐
     /// メイン質問の場合は病気タイプを取得
     /// それ以外は健康ポイントを取得
-    if (HealthCheckupQuestions.questions[_questionCount].isMainQuestion) {
+    if (HealthCheckupQuestions.dataList[_questionCount].isMainQuestion) {
       _diseaseType = getDiseaseType(selectedIndex);
     } else {
       _healthPoint = updateHealthPoint(selectedIndex);
@@ -100,7 +100,7 @@ class NormalCheckupController extends ControllerCore {
   int updateHealthPoint(int selectedIndex) {
     /// 選択されたインデックスの健康ポイントを取得
     return _healthPoint += HealthCheckupQuestions
-        .questions[_questionCount].answers![selectedIndex].healthPoint;
+        .dataList[_questionCount].answers![selectedIndex].healthPoint;
   }
 
   int get healthPoint => _healthPoint;
@@ -110,7 +110,7 @@ class NormalCheckupController extends ControllerCore {
   HealthCheckupDiseaseEnum getDiseaseType(int selectedIndex) {
     /// 選択されたインデックスの病気タイプを取得
     return _diseaseType = HealthCheckupQuestions
-        .questions[_questionCount].diseaseType![selectedIndex];
+        .dataList[_questionCount].diseaseType![selectedIndex];
   }
 
   HealthCheckupDiseaseEnum get diseaseType => _diseaseType;
