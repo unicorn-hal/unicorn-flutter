@@ -27,8 +27,8 @@ class NormalCheckupController extends ControllerCore {
   /// 質問データの読み込み
   void _loadQuestionData() {
     _checkupTitle = HealthCheckupQuestions.dataList[_questionCount].question;
-    _checkupValue = List.filled(_checkupName.length, false);
     _checkupName = _loadQuestionOptions();
+    _checkupValue = _initializeAnswerOptions();
   }
 
   /// 選択肢データの読み込み
@@ -56,6 +56,11 @@ class NormalCheckupController extends ControllerCore {
   List<String> get checkupName => _checkupName;
 
   String get checkupTitle => _checkupTitle;
+
+  /// 回答オプションの初期化
+  List<bool> _initializeAnswerOptions() {
+    return _checkupValue = List.filled(_checkupName.length, false);
+  }
 
   List<bool> get checkupValue => _checkupValue;
 
