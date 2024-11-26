@@ -19,6 +19,13 @@ class ProgressController extends ControllerCore {
   int healthPoint;
   HealthCheckupDiseaseEnum diseaseType;
 
+  final double _normalBodyTempMin = 36.0;
+  final double _normalBodyTempMax = 37.5;
+  final int _normalSystolicMin = 90;
+  final int _normalSystolicMax = 120;
+  final int _normalDiastolicMin = 60;
+  final int _normalDiastolicMax = 80;
+
   late ValueNotifier<String> _bodyText;
 
   @override
@@ -41,8 +48,11 @@ class ProgressController extends ControllerCore {
       _bodyText.value = typeToText(ProgressViewEnum.bloodPressure);
     }
     await Future.delayed(const Duration(seconds: 3));
-    String bodyTemperature = _generateRandomBodyTemperature().toString();
+
+    double bodyTemperature = _generateRandomBodyTemperature();
     String bloodPressure = _generateRandomBloodPressure();
+
+    healthPoint = _updateHealthPoint(bodyTemperature, bloodPressure);
     // それぞれの画面に遷移
     if (from == Routes.emergency) {
       // todo: 画面遷移
@@ -50,7 +60,7 @@ class ProgressController extends ControllerCore {
       CheckupResultRoute(
         $extra: diseaseType,
         healthPoint: healthPoint,
-        bodyTemperature: bodyTemperature,
+        bodyTemperature: bodyTemperature.toString(),
         bloodPressure: bloodPressure,
       ).go(context);
     }
@@ -75,16 +85,47 @@ class ProgressController extends ControllerCore {
   /// 正常値の範囲でランダムな体温を生成
   double _generateRandomBodyTemperature() {
     Random random = Random();
-    double temp = 36.0 + random.nextDouble() * 1.5; // 36.0°C から 37.5°C の範囲
-    return double.parse(temp.toStringAsFixed(1)); // 小数点第1位までに丸める
+    return _normalBodyTempMin + random.nextDouble() * 1.5; // 36.0 から 37.5 の範囲
   }
 
   /// 正常値の範囲でランダムな血圧を生成
   String _generateRandomBloodPressure() {
     Random random = Random();
-    int systolic = 90 + random.nextInt(30); // 90 から 120 の範囲
-    int diastolic = 60 + random.nextInt(20); // 60 から 80 の範囲
+    int systolic = _normalSystolicMin + random.nextInt(30); // 90 から 120 の範囲
+    int diastolic = _normalDiastolicMin + random.nextInt(20); // 60 から 80 の範囲
     return '$systolic/$diastolic';
+  }
+
+  int _updateHealthPoint(double bodyTemperature, String bloodPressure) {
+    // 体温の評価
+    if (bodyTemperature < _normalBodyTempMin - 0.5 ||
+        bodyTemperature > _normalBodyTempMax + 0.5) {
+      healthPoint += 3; // 大きく正常値範囲外ならhealthPointを大幅に増加
+    } else if (bodyTemperature < _normalBodyTempMin ||
+        bodyTemperature > _normalBodyTempMax) {
+      healthPoint += 2; // 少し正常値範囲外ならhealthPointを少し増加
+    } else {
+      healthPoint -= 3; // 正常値範囲内ならhealthPointを減少
+    }
+
+    // 血圧の評価
+    List<String> bpValues = bloodPressure.split('/');
+    int systolic = int.parse(bpValues[0]);
+    int diastolic = int.parse(bpValues[1]);
+
+    if (systolic < _normalSystolicMin - 10 ||
+        systolic > _normalSystolicMax + 10 ||
+        diastolic < _normalDiastolicMin - 10 ||
+        diastolic > _normalDiastolicMax + 10) {
+      return healthPoint += 3; // 大きく正常値範囲外ならhealthPointを大幅に増加
+    } else if (systolic < _normalSystolicMin ||
+        systolic > _normalSystolicMax ||
+        diastolic < _normalDiastolicMin ||
+        diastolic > _normalDiastolicMax) {
+      return healthPoint += 2; // 少し正常値範囲外ならhealthPointを少し増加
+    } else {
+      return healthPoint -= 2; // 正常値範囲内ならhealthPointを減少
+    }
   }
 
   ValueNotifier<String> get bodyText => _bodyText;
