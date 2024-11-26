@@ -30,21 +30,21 @@ class ProgressController extends ControllerCore {
   @override
   void initialize() {
     if (from == Routes.emergency) {
-      _bodyText = ValueNotifier(typeToText(ProgressViewEnum.inspection));
+      _bodyText = ValueNotifier(_typeToText(ProgressViewEnum.inspection));
     } else {
-      _bodyText = ValueNotifier(typeToText(ProgressViewEnum.bodyTemperature));
+      _bodyText = ValueNotifier(_typeToText(ProgressViewEnum.bodyTemperature));
     }
-    delayEvent();
+    _delayEvent();
   }
 
-  Future<void> delayEvent() async {
+  Future<void> _delayEvent() async {
     await Future.delayed(const Duration(seconds: 3));
 
     // 3秒後に表示するテキストを変更
     if (from == Routes.emergency) {
-      _bodyText.value = typeToText(ProgressViewEnum.treatment);
+      _bodyText.value = _typeToText(ProgressViewEnum.treatment);
     } else {
-      _bodyText.value = typeToText(ProgressViewEnum.bloodPressure);
+      _bodyText.value = _typeToText(ProgressViewEnum.bloodPressure);
     }
     await Future.delayed(const Duration(seconds: 3));
 
@@ -66,7 +66,7 @@ class ProgressController extends ControllerCore {
   }
 
   /// enumからテキストに変換
-  String typeToText(ProgressViewEnum type) {
+  String _typeToText(ProgressViewEnum type) {
     switch (type) {
       case ProgressViewEnum.inspection:
         return Strings.LOADING_TEXT_INSPECTION;
