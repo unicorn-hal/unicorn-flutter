@@ -37,7 +37,6 @@ class HealthCheckupResultController extends ControllerCore {
   late String _formattedDate;
   late HealthCheckupRequest _healthCheckupRequest;
   late Color _healthColor;
-  late String userName;
   late String _healthText;
   late List<String> _diseaseTextList;
   late List<String> _diseaseExampleNameList;
