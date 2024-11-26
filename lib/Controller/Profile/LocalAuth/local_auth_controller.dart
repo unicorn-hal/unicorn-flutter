@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Constants/Enum/shared_preferences_keys_enum.dart';
 import 'package:unicorn_flutter/Service/Package/LocalAuth/local_auth_service.dart';
 import 'package:unicorn_flutter/Service/Package/SharedPreferences/shared_preferences_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
@@ -10,11 +11,14 @@ class LocalAuthController {
   final LocalAuthService _localAuthService = LocalAuthService();
 
   Future<bool> _getUseLocalAuth() async {
-    return await _sharedPreferencesService.getBool('useLocalAuth') ?? false;
+    return await _sharedPreferencesService
+            .getBool(SharedPreferencesKeysEnum.useLocalAuth.name) ??
+        false;
   }
 
   Future<void> _setUseLocalAuth(bool value) async {
-    await _sharedPreferencesService.setBool('useLocalAuth', value);
+    await _sharedPreferencesService.setBool(
+        SharedPreferencesKeysEnum.useLocalAuth.name, value);
   }
 
   Future<void> loadUseLocalAuth(Function(bool) callback) async {
