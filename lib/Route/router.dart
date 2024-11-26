@@ -337,25 +337,22 @@ class NormalCheckupRoute extends GoRouteData {
 
 class CheckupResultRoute extends GoRouteData {
   const CheckupResultRoute({
-    this.$extra,
-    this.healthPoint,
-    this.diseaseEnumString,
+    required this.$extra,
+    required this.healthPoint,
     required this.bodyTemperature,
     required this.bloodPressure,
   });
 
-  final HealthCheckupDiseaseEnum? $extra;
-  final int? healthPoint;
+  final HealthCheckupDiseaseEnum $extra;
+  final int healthPoint;
   final String bodyTemperature;
   final String bloodPressure;
-  final String? diseaseEnumString;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       HealthCheckupResultsView(
         diseaseType: $extra,
         healthPoint: healthPoint,
-        diseaseEnumString: diseaseEnumString,
         bodyTemperature: bodyTemperature,
         bloodPressure: bloodPressure,
       );
