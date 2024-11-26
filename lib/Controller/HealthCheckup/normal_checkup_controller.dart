@@ -37,7 +37,7 @@ class NormalCheckupController extends ControllerCore {
     _checkupName.clear();
 
     /// 現在の質問を取得
-    final currentQuestion = HealthCheckupQuestionData.questions[_questionCount];
+    final currentQuestion = HealthCheckupQuestions.questions[_questionCount];
 
     /// メイン質問かどうかで分岐
     /// メイン質問の場合は病気タイプを取得
@@ -57,7 +57,7 @@ class NormalCheckupController extends ControllerCore {
 
   /// 質問データの読み込み
   String loadQuestionTitle() {
-    final currentQuestion = HealthCheckupQuestionData.questions[_questionCount];
+    final currentQuestion = HealthCheckupQuestions.questions[_questionCount];
     return currentQuestion.question;
   }
 
@@ -73,7 +73,7 @@ class NormalCheckupController extends ControllerCore {
   /// 次の質問に移動
   /// [selectedIndex] 選択されたインデックス
   void nextQuestion(int selectedIndex) {
-    if (_questionCount >= HealthCheckupQuestionData.questions.length - 1) {
+    if (_questionCount >= HealthCheckupQuestions.questions.length - 1) {
       ProgressRoute(
         healthPoint: _healthPoint,
         diseaseType: _diseaseType,
@@ -84,7 +84,7 @@ class NormalCheckupController extends ControllerCore {
     /// メイン質問かどうかで分岐
     /// メイン質問の場合は病気タイプを取得
     /// それ以外は健康ポイントを取得
-    if (HealthCheckupQuestionData.questions[_questionCount].isMainQuestion) {
+    if (HealthCheckupQuestions.questions[_questionCount].isMainQuestion) {
       _diseaseType = getDiseaseType(selectedIndex);
     } else {
       _healthPoint = updateHealthPoint(selectedIndex);
@@ -99,7 +99,7 @@ class NormalCheckupController extends ControllerCore {
   /// [selectedIndex] 選択されたインデックス
   int updateHealthPoint(int selectedIndex) {
     /// 選択されたインデックスの健康ポイントを取得
-    return _healthPoint += HealthCheckupQuestionData
+    return _healthPoint += HealthCheckupQuestions
         .questions[_questionCount].answers![selectedIndex].healthPoint;
   }
 
@@ -109,7 +109,7 @@ class NormalCheckupController extends ControllerCore {
   /// [selectedIndex] 選択されたインデックス
   HealthCheckupDiseaseEnum getDiseaseType(int selectedIndex) {
     /// 選択されたインデックスの病気タイプを取得
-    return _diseaseType = HealthCheckupQuestionData
+    return _diseaseType = HealthCheckupQuestions
         .questions[_questionCount].diseaseType![selectedIndex];
   }
 
