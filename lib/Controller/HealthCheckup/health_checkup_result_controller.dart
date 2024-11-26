@@ -23,17 +23,18 @@ class HealthCheckupResultController extends ControllerCore {
     required this.healthPoint,
     required this.diseaseType,
   });
+
   BuildContext context;
+  int healthPoint;
+  HealthCheckupDiseaseEnum diseaseType;
+  String bloodPressure;
+  String bodyTemperature;
 
   /// 変数の定義
   /// リスクレベルの閾値
   final int _dangerLine = 6;
   final int _deadLine = 10;
 
-  int healthPoint;
-  HealthCheckupDiseaseEnum diseaseType;
-  String bloodPressure;
-  String bodyTemperature;
   late String _formattedDate;
   late HealthCheckupRequest _healthCheckupRequest;
   late Color _healthColor;
@@ -47,28 +48,36 @@ class HealthCheckupResultController extends ControllerCore {
     /// 本日の日付を取得
     DateTime today = DateTime.now();
 
-    _formattedDate = getTodayDate(today);
+    _formattedDate = _getTodayDate(today);
 
     /// 健康リスクレベルを取得
-    setHealthRiskLevelView(getHealthRiskLevel());
+    /// リスクレベルに応じたテキストとカラーを設定
+    /// リスクレベルに応じた疾患タイプのテキストリストと疾患例名リストを設定
+    _healthText =
+        HealthRiskLevelType.getHealthRiskLevelString(_getHealthRiskLevel());
+    _healthColor =
+        HealthRiskLevelType.getHealthRiskLevelColor(_getHealthRiskLevel());
 
     /// 疾患タイプに応じたテキストリストと疾患例名リストを設定
-    setDiseaseTypeView(diseaseType);
+    /// 疾患タイプに応じたテキストリストと疾患例名リストを取得
+    _diseaseTextList = HealthCheckupDiseaseType.getDiseaseTextList(diseaseType);
+    _diseaseExampleNameList =
+        HealthCheckupDiseaseType.getDiseaseExampleNameList(diseaseType);
 
     /// postに必要なデータを整形
-    _healthCheckupRequest = formatHealthCheckupRecordless(
+    _healthCheckupRequest = _makeHealthCheckupRequest(
       bodyTemperature,
       bloodPressure,
       today,
     );
 
     /// post処理
-    postHealthCheckup(_healthCheckupRequest);
+    _postHealthCheckup(_healthCheckupRequest);
   }
 
   /// 各関数の実装
   /// 本日の日付を取得
-  String getTodayDate(DateTime date) {
+  String _getTodayDate(DateTime date) {
     /// 本日の日付を取得(2024-11-06の形式)
     String todayDatePart = DateFormat('MM/dd').format(date);
 
@@ -84,7 +93,7 @@ class HealthCheckupResultController extends ControllerCore {
   /// postに必要なデータを整形
   /// [bodyTemperature] 体温
   /// [bloodPressure] 血圧
-  HealthCheckupRequest formatHealthCheckupRecordless(
+  HealthCheckupRequest _makeHealthCheckupRequest(
     String bodyTemperature,
     String bloodPressure,
     DateTime today,
@@ -114,7 +123,7 @@ class HealthCheckupResultController extends ControllerCore {
 
   /// post処理
   /// [healthCheckupRequest] 健康診断リクエスト
-  Future<int> postHealthCheckup(
+  Future<int> _postHealthCheckup(
       HealthCheckupRequest healthCheckupRequest) async {
     int res =
         await _healthCheckupApi.postHealthCheckup(body: healthCheckupRequest);
@@ -127,7 +136,7 @@ class HealthCheckupResultController extends ControllerCore {
   String get formattedDate => _formattedDate;
 
   /// 健康リスクレベルを取得
-  HealthRiskLevelEnum getHealthRiskLevel() {
+  HealthRiskLevelEnum _getHealthRiskLevel() {
     if (healthPoint > _deadLine) {
       return HealthRiskLevelEnum.high;
     } else if (healthPoint > _dangerLine) {
@@ -137,26 +146,9 @@ class HealthCheckupResultController extends ControllerCore {
     }
   }
 
-  /// 健康リスクレベルに応じたテキストとカラーを設定
-  /// [healthRiskLevel] 健康リスクレベル
-  void setHealthRiskLevelView(HealthRiskLevelEnum healthRiskLevel) {
-    /// 健康リスクレベルに応じたテキストとカラーを取得
-    _healthText = HealthRiskLevelType.getHealthRiskLevelString(healthRiskLevel);
-    _healthColor = HealthRiskLevelType.getHealthRiskLevelColor(healthRiskLevel);
-  }
-
   Color get healthColor => _healthColor;
 
   String get healthText => _healthText;
-
-  /// 疾患タイプに応じたテキストリストと疾患例名リストを設定
-  /// [diseaseType] 疾患タイプ
-  void setDiseaseTypeView(HealthCheckupDiseaseEnum diseaseType) {
-    /// 疾患タイプに応じたテキストリストと疾患例名リストを取得
-    _diseaseTextList = HealthCheckupDiseaseType.getDiseaseTextList(diseaseType);
-    _diseaseExampleNameList =
-        HealthCheckupDiseaseType.getDiseaseExampleNameList(diseaseType);
-  }
 
   List<String> get diseaseTextList => _diseaseTextList;
 
