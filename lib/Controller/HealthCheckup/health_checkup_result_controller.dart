@@ -46,7 +46,9 @@ class HealthCheckupResultController extends ControllerCore {
   @override
   void initialize() {
     /// 本日の日付を取得
-    _formattedDate = getTodayDate();
+    DateTime today = DateTime.now();
+
+    _formattedDate = getTodayDate(today);
 
     /// 健康リスクレベルを取得
     setHealthRiskLevelView(getHealthRiskLevel());
@@ -58,6 +60,7 @@ class HealthCheckupResultController extends ControllerCore {
     _healthCheckupRequest = formatHealthCheckupRecordless(
       bodyTemperature,
       bloodPressure,
+      today,
     );
 
     /// post処理
@@ -66,14 +69,12 @@ class HealthCheckupResultController extends ControllerCore {
 
   /// 各関数の実装
   /// 本日の日付を取得
-  String getTodayDate() {
-    DateTime today = DateTime.now();
-
+  String getTodayDate(DateTime date) {
     /// 本日の日付を取得(2024-11-06の形式)
-    String todayDatePart = DateFormat('MM/dd').format(today);
+    String todayDatePart = DateFormat('MM/dd').format(date);
 
     /// 本日の曜日を取得
-    String todayDayOfWeek = DateFormat('EEEE').format(today).toLowerCase();
+    String todayDayOfWeek = DateFormat('EEEE').format(date).toLowerCase();
     DayOfWeekEnum dayOfWeekEnum = DayOfWeekEnumType.fromString(todayDayOfWeek);
     String formattedDayOfWeek =
         DayOfWeekEnumType.toDayAbbreviation(dayOfWeekEnum);
@@ -87,8 +88,9 @@ class HealthCheckupResultController extends ControllerCore {
   HealthCheckupRequest formatHealthCheckupRecordless(
     String bodyTemperature,
     String bloodPressure,
+    DateTime today,
   ) {
-    String date = DateFormat('yyyy年MM月dd日').format(DateTime.now());
+    String date = DateFormat('yyyy年MM月dd日').format(today);
     String diseaseExampleName;
 
     /// 疾患例名を取得
@@ -104,7 +106,7 @@ class HealthCheckupResultController extends ControllerCore {
     String medicalRecord =
         '## $date\n 体温: bloodPressure\n 血圧: bodyTemperature\n 診断: 軽度の$diseaseExampleName';
     return HealthCheckupRequest(
-      date: DateFormat('yyyy-MM-dd').parse(DateTime.now().toString()),
+      date: DateFormat('yyyy-MM-dd').parse(today.toString()),
       bodyTemperature: double.parse(bodyTemperature),
       bloodPressure: bloodPressure,
       medicalRecord: medicalRecord,
