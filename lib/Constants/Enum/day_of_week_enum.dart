@@ -71,7 +71,7 @@ class DayOfWeekEnumType {
         throw Exception('Unknown type: $value');
     }
   }
-  
+
   static DayOfWeekEnum fromWeekday(int value) {
     switch (value) {
       case 1:
