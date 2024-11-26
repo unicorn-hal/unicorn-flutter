@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_address_info_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
-import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -36,6 +35,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
       context: context,
       from: widget.from,
     );
+    controller.setTextEditingController();
   }
 
   @override
@@ -145,7 +145,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                       onTap: () async {
                         ProtectorNotifier().enableProtector();
                         await controller.setAddressFromPostalCode();
-                        setState(() {});
+                        // setState(() {});
                         ProtectorNotifier().disableProtector();
                       },
                       child: Align(
@@ -245,14 +245,8 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    UserRequest? userRequest =
-                        controller.submit(widget.userRequest!);
-                    if (userRequest == null) {
-                      return;
-                    }
-                    ProfileRegisterUserInfoRoute($extra: userRequest)
-                        .push(context);
+                  onTap: () async {
+                    await controller.submit(widget.userRequest!);
                   },
                   child: Align(
                     alignment: Alignment.center,
