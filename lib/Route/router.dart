@@ -298,14 +298,19 @@ class RegisterAddressInfoRoute extends GoRouteData {
 )
 class RegisterUserInfoRoute extends GoRouteData {
   RegisterUserInfoRoute({
+    this.$extra,
     required this.from,
   });
 
+  final UserRequest? $extra;
   final String from;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      RegisterUserInfoView(from: from);
+      RegisterUserInfoView(
+        userRequest: $extra,
+        from: from,
+      );
 }
 
 /////////////////////////////////  Root  //////////////////////////////
