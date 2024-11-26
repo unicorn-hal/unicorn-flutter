@@ -87,7 +87,6 @@ class RegisterPhysicalInfoController extends ControllerCore {
       if (await responceCode == 200) {
         // シングルトンに登録した値をセットする
         userData.setUser(User.fromJson(userRequest.toJson()));
-        print(User.fromJson(userRequest.toJson()));
         Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_TEXT);
         ProfileRoute().push(context);
         return;
@@ -110,8 +109,6 @@ class RegisterPhysicalInfoController extends ControllerCore {
       bodyHeight: physicalInfo.bodyHeight,
       bodyWeight: physicalInfo.bodyWeight,
     );
-
-    print(User.fromJson(userRequest.toJson()));
 
     RegisterAddressInfoRoute(
             from: Routes.registerPhysicalInfo, $extra: userRequest)
