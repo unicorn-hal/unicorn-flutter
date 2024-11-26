@@ -4,7 +4,7 @@ import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_physical_info_controller.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
-import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -16,14 +16,12 @@ import 'package:unicorn_flutter/gen/colors.gen.dart';
 class RegisterPhysicalInfoView extends StatefulWidget {
   const RegisterPhysicalInfoView({
     super.key,
-    this.userRequest,
-    this.userData,
+    required this.userRequest,
     required this.from,
   });
 
   final String from;
-  final UserRequest? userRequest;
-  final UserData? userData;
+  final UserRequest userRequest;
 
   @override
   State<RegisterPhysicalInfoView> createState() =>
@@ -42,6 +40,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
       context: context,
       from: widget.from,
     );
+    controller.setTextEditingController();
   }
 
   @override
@@ -293,13 +292,8 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                           )),
                     ),
                   ),
-                  onTap: () {
-                    UserRequest? userRequest = controller.submit();
-                    if (userRequest == null) {
-                      return;
-                    }
-                    ProfileRegisterAddressInfoRoute($extra: userRequest)
-                        .push(context);
+                  onTap: () async {
+                    await controller.submit(widget.userRequest);
                   },
                 )
               ],

@@ -8,6 +8,7 @@ import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Route/routes.dart';
@@ -51,9 +52,9 @@ class RegisterPhysicalInfoController extends ControllerCore {
     }
   }
 
-  Future<UserRequest?> submit(UserRequest userRequest) async {
+  Future<void> submit(UserRequest userRequest) async {
     if (validateField() == false) {
-      return null;
+      return;
     }
 
     PhysicalInfo physicalInfo = PhysicalInfo(
@@ -66,38 +67,42 @@ class RegisterPhysicalInfoController extends ControllerCore {
     );
 
     if (from == Routes.profile) {
-      UserRequest userRequest = UserRequest(
+      userRequest = UserRequest(
         userId: userData.user!.userId,
-        firstName: physicalInfo.firstName,
-        lastName: physicalInfo.lastName,
         email: userData.user!.email,
-        gender: physicalInfo.gender,
-        birthDate: physicalInfo.birthDate,
         address: userData.user!.address,
         postalCode: userData.user!.postalCode,
         phoneNumber: userData.user!.phoneNumber,
         iconImageUrl: userData.user!.iconImageUrl,
+        occupation: userData.user!.occupation,
+        firstName: physicalInfo.firstName,
+        lastName: physicalInfo.lastName,
+        gender: physicalInfo.gender,
+        birthDate: physicalInfo.birthDate,
         bodyHeight: physicalInfo.bodyHeight,
         bodyWeight: physicalInfo.bodyWeight,
-        occupation: userData.user!.occupation,
       );
       Future<int> responceCode =
           UserApi().putUser(userId: userData.user!.userId, body: userRequest);
       if (await responceCode == 200) {
+        // シングルトンに登録した値をセットする
+        userData.setUser(User.fromJson(userRequest.toJson()));
+        print(User.fromJson(userRequest.toJson()));
         Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_TEXT);
-        return ProfileRoute().push(context);
+        ProfileRoute().push(context);
+        return;
       }
       if (await responceCode == 400) {
         Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-        return ProfileRoute().push(context);
+        return;
       }
       if (await responceCode == 500) {
         Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-        return ProfileRoute().push(context);
+        return;
       }
     }
 
-    UserRequest? userRequest = UserRequest(
+    userRequest = UserRequest(
       firstName: physicalInfo.firstName,
       lastName: physicalInfo.lastName,
       gender: physicalInfo.gender,
@@ -106,7 +111,12 @@ class RegisterPhysicalInfoController extends ControllerCore {
       bodyWeight: physicalInfo.bodyWeight,
     );
 
-    return userRequest;
+    print(User.fromJson(userRequest.toJson()));
+
+    RegisterAddressInfoRoute(
+            from: Routes.registerPhysicalInfo, $extra: userRequest)
+        .push(context);
+    return;
   }
 
   bool validateField() {
