@@ -21,18 +21,18 @@ class NormalCheckupController extends ControllerCore {
   /// 初期化
   @override
   void initialize() {
-    loadQuestionData();
+    _loadQuestionData();
   }
 
   /// 質問データの読み込み
-  void loadQuestionData() {
-    _checkupTitle = loadQuestionTitle();
-    _checkupName = loadQuestionOptions();
-    _checkupValue = initializeAnswerOptions();
+  void _loadQuestionData() {
+    _checkupTitle = HealthCheckupQuestions.dataList[_questionCount].question;
+    _checkupValue = List.filled(_checkupName.length, false);
+    _checkupName = _loadQuestionOptions();
   }
 
   /// 選択肢データの読み込み
-  List<String> loadQuestionOptions() {
+  List<String> _loadQuestionOptions() {
     /// 選択肢の初期化
     _checkupName.clear();
 
@@ -55,18 +55,7 @@ class NormalCheckupController extends ControllerCore {
 
   List<String> get checkupName => _checkupName;
 
-  /// 質問データの読み込み
-  String loadQuestionTitle() {
-    final currentQuestion = HealthCheckupQuestions.dataList[_questionCount];
-    return currentQuestion.question;
-  }
-
   String get checkupTitle => _checkupTitle;
-
-  /// 回答オプションの初期化
-  List<bool> initializeAnswerOptions() {
-    return _checkupValue = List.filled(_checkupName.length, false);
-  }
 
   List<bool> get checkupValue => _checkupValue;
 
@@ -85,46 +74,23 @@ class NormalCheckupController extends ControllerCore {
     /// メイン質問の場合は病気タイプを取得
     /// それ以外は健康ポイントを取得
     if (HealthCheckupQuestions.dataList[_questionCount].isMainQuestion) {
-      _diseaseType = getDiseaseType(selectedIndex);
+      _diseaseType = HealthCheckupQuestions
+          .dataList[_questionCount].diseaseType![selectedIndex];
     } else {
-      _healthPoint = updateHealthPoint(selectedIndex);
+      _healthPoint += HealthCheckupQuestions
+          .dataList[_questionCount].answers![selectedIndex].healthPoint;
     }
 
     _questionCount++;
-    loadQuestionData();
-    _progressText = updateProgressText();
-  }
+    _loadQuestionData();
 
-  /// 健康ポイントを更新
-  /// [selectedIndex] 選択されたインデックス
-  int updateHealthPoint(int selectedIndex) {
-    /// 選択されたインデックスの健康ポイントを取得
-    return _healthPoint += HealthCheckupQuestions
-        .dataList[_questionCount].answers![selectedIndex].healthPoint;
+    /// プログレスバーの更新
+    _progressText = '${((_progressValue += 0.1) * 100).toStringAsFixed(0)}%';
   }
 
   int get healthPoint => _healthPoint;
 
-  /// 選択したインデックスから病気タイプを取得
-  /// [selectedIndex] 選択されたインデックス
-  HealthCheckupDiseaseEnum getDiseaseType(int selectedIndex) {
-    /// 選択されたインデックスの病気タイプを取得
-    return _diseaseType = HealthCheckupQuestions
-        .dataList[_questionCount].diseaseType![selectedIndex];
-  }
-
   HealthCheckupDiseaseEnum get diseaseType => _diseaseType;
-
-  /// プログレスバーの更新
-  String updateProgressText() {
-    _progressValue = updateProgressValue();
-    return _progressText = '${(_progressValue * 100).toStringAsFixed(0)}%';
-  }
-
-  /// プログレスバーの値を更新
-  double updateProgressValue() {
-    return _progressValue += 0.1;
-  }
 
   double get progressValue => _progressValue;
 
