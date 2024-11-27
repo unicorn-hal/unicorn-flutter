@@ -235,7 +235,7 @@ class HealthCheckupTopView extends ConsumerWidget {
                     items: [
                       HealthCheckButton(
                         onTap: () {
-                          const CheckupResultRoute().push(context);
+                          const NormalCheckupRoute().push(context);
                         },
                       ),
                       Stack(

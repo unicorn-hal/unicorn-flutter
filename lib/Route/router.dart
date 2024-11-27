@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
+import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
 import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart';
@@ -241,16 +243,19 @@ class EmergencyRoute extends GoRouteData {
 class ProgressRoute extends GoRouteData {
   const ProgressRoute({
     required this.from,
-    this.diseaseEnumString,
+    required this.diseaseType,
+    required this.healthPoint,
   });
 
   final String from;
-  final String? diseaseEnumString;
+  final int healthPoint;
+  final HealthCheckupDiseaseEnum diseaseType;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => ProgressView(
         from: from,
-        diseaseEnumString: diseaseEnumString,
+        healthPoint: healthPoint,
+        diseaseType: diseaseType,
       );
 }
 
@@ -334,11 +339,26 @@ class NormalCheckupRoute extends GoRouteData {
 }
 
 class CheckupResultRoute extends GoRouteData {
-  const CheckupResultRoute();
+  const CheckupResultRoute({
+    required this.$extra,
+    required this.healthPoint,
+    required this.bodyTemperature,
+    required this.bloodPressure,
+  });
+
+  final HealthCheckupDiseaseEnum $extra;
+  final int healthPoint;
+  final String bodyTemperature;
+  final String bloodPressure;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      HealthCheckupResultsView();
+      HealthCheckupResultsView(
+        diseaseType: $extra,
+        healthPoint: healthPoint,
+        bodyTemperature: bodyTemperature,
+        bloodPressure: bloodPressure,
+      );
 }
 //////////////////////////////  healthCheckup  //////////////////////////////
 

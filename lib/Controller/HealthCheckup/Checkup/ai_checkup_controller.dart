@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Constants/Enum/chatgpt_role.dart';
-import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
+import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_message.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_response.dart';
 import 'package:unicorn_flutter/Route/router.dart';
@@ -26,6 +26,7 @@ class AiCheckupController extends ControllerCore {
   // 変数の定義
   late ValueNotifier<String> _aiText;
   final String _aiTextDefault = 'なんでも聞いてください';
+  final int _baseHealthPoint = 3;
   bool _isListening = false;
   bool _isDone = false;
 
@@ -78,8 +79,23 @@ class AiCheckupController extends ControllerCore {
 
     ProtectorNotifier().disableProtector();
 
-    ProgressRoute(from: Routes.healthCheckupAi, diseaseEnumString: result)
-        .go(context);
+    HealthCheckupDiseaseEnum diseaseType =
+        HealthCheckupDiseaseType.fromString(result);
+
+    int healthPoint = _baseHealthPoint;
+
+    if (diseaseType == HealthCheckupDiseaseEnum.goodHealth) {
+      healthPoint = -2;
+    } else {
+      healthPoint = 3;
+    }
+
+    ProgressRoute(
+      from: Routes.healthCheckupAi,
+      diseaseType: diseaseType,
+      healthPoint: healthPoint,
+      // ignore: use_build_context_synchronously
+    ).go(context);
   }
 
   /// 認識した音声をChatGPTに送信してEnumを返す
