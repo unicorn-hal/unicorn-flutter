@@ -36,7 +36,6 @@ class HealthCheckupResultsController extends ControllerCore {
   final int _deadLine = 10;
 
   late String _formattedDate;
-  late HealthCheckupRequest _healthCheckupRequest;
   late Color _healthColor;
   late String _healthText;
   late List<String> _diseaseTextList;
@@ -47,7 +46,6 @@ class HealthCheckupResultsController extends ControllerCore {
   void initialize() {
     /// 本日の日付を取得
     DateTime today = DateTime.now();
-
     _formattedDate = _getTodayDate(today);
 
     /// 健康リスクレベルを取得
@@ -64,15 +62,8 @@ class HealthCheckupResultsController extends ControllerCore {
     _diseaseExampleNameList =
         HealthCheckupDiseaseType.getDiseaseExampleNameList(diseaseType);
 
-    /// postに必要なデータを整形
-    _healthCheckupRequest = _makeHealthCheckupRequest(
-      bodyTemperature,
-      bloodPressure,
-      today,
-    );
-
     /// post処理
-    _postHealthCheckup(_healthCheckupRequest);
+    _postHealthCheckup(today);
   }
 
   /// 各関数の実装
@@ -86,8 +77,7 @@ class HealthCheckupResultsController extends ControllerCore {
     DayOfWeekEnum dayOfWeekEnum = DayOfWeekEnumType.fromString(todayDayOfWeek);
     String formattedDayOfWeek =
         DayOfWeekEnumType.toDayAbbreviation(dayOfWeekEnum);
-    _formattedDate = '$todayDatePart($formattedDayOfWeek)';
-    return _formattedDate;
+    return '$todayDatePart($formattedDayOfWeek)';
   }
 
   /// postに必要なデータを整形
@@ -123,8 +113,13 @@ class HealthCheckupResultsController extends ControllerCore {
 
   /// post処理
   /// [healthCheckupRequest] 健康診断リクエスト
-  Future<int> _postHealthCheckup(
-      HealthCheckupRequest healthCheckupRequest) async {
+  Future<int> _postHealthCheckup(DateTime today) async {
+    /// postに必要なデータを整形
+    HealthCheckupRequest healthCheckupRequest = _makeHealthCheckupRequest(
+      bodyTemperature,
+      bloodPressure,
+      today,
+    );
     int res =
         await _healthCheckupApi.postHealthCheckup(body: healthCheckupRequest);
     if (res != 200) {
