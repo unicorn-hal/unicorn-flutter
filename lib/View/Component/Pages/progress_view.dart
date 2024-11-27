@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/Progress/progress_controller.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -8,11 +9,13 @@ class ProgressView extends StatefulWidget {
   const ProgressView({
     super.key,
     required this.from,
-    this.diseaseEnumString,
+    required this.healthPoint,
+    required this.diseaseType,
   });
 
-  final String? diseaseEnumString;
   final String from;
+  final int healthPoint;
+  final HealthCheckupDiseaseEnum diseaseType;
 
   @override
   State<ProgressView> createState() => _ProgressViewState();
@@ -26,9 +29,11 @@ class _ProgressViewState extends State<ProgressView> {
     super.initState();
 
     controller = ProgressController(
-        context: context,
-        from: widget.from,
-        diseaseEnumString: widget.diseaseEnumString);
+      context: context,
+      from: widget.from,
+      healthPoint: widget.healthPoint,
+      diseaseType: widget.diseaseType,
+    );
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Controller/Profile/LocalAuth/local_auth_controller.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
@@ -12,8 +13,20 @@ class LocalAuthView extends StatefulWidget {
 }
 
 class _LocalAuthViewState extends State<LocalAuthView> {
+  late LocalAuthController controller;
   bool isBiometrics = true;
-  // todo: controller出来たら移動
+
+  @override
+  void initState() {
+    super.initState();
+    controller = LocalAuthController();
+    controller.loadUseLocalAuth((useLocalAuth) {
+      setState(() {
+        isBiometrics = useLocalAuth;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -45,9 +58,11 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                     )
                   : null,
               onTap: () {
-                isBiometrics = true;
-                // todo: controller出来たら変更
-                setState(() {});
+                controller.updateUseLocalAuth(true, (value) {
+                  setState(() {
+                    isBiometrics = value;
+                  });
+                });
               },
             ),
             const SpacerAndDivider(),
@@ -60,9 +75,11 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                     )
                   : null,
               onTap: () {
-                isBiometrics = false;
-                // todo: controller出来たら変更
-                setState(() {});
+                controller.updateUseLocalAuth(false, (value) {
+                  setState(() {
+                    isBiometrics = value;
+                  });
+                });
               },
             ),
             const SpacerAndDivider(),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unicorn_flutter/Controller/HealthCheckup/normal_checkup_controller.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -13,15 +15,16 @@ class NormalCheckupView extends StatefulWidget {
 }
 
 class _NormalCheckupViewState extends State<NormalCheckupView> {
-  /// todo: 検診項目をListでもらう
-  final String checkupTitle = 'Q.1 体の調子について';
-  final String checkupName = '検診項目';
-  bool checkupValue = false;
-  // 進捗バーの値　0.0~1.0
-  final double progressValue = 0.2;
+  late NormalCheckupController controller;
 
-  //double型の値をパーセントに変換する
-  String get progressText => '${(progressValue * 100).toStringAsFixed(0)}%';
+  late int selectedIndex;
+  bool isSelected = false;
+
+  @override
+  void initState() {
+    controller = NormalCheckupController(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +41,7 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
                 child: CustomText(text: '検診の進捗度'),
               ),
               CustomText(
-                text: progressText,
+                text: controller.progressText,
                 fontSize: 36,
               ),
               Padding(
@@ -58,20 +61,19 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
                         valueColor: const AlwaysStoppedAnimation<Color>(
                           ColorName.mainColor,
                         ),
-                        value: progressValue,
+                        value: controller.progressValue,
                       ),
                     ),
                   ),
                 ),
               ),
 
-              /// 検診項目の表示部
-              /// todo: 検診項部分を動的に変更したい
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: CustomText(text: checkupTitle, fontSize: 20),
+                  child:
+                      CustomText(text: controller.checkupTitle, fontSize: 20),
                 ),
               ),
               const Padding(
@@ -83,17 +85,18 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
               SizedBox(
                 width: size.width * 0.9,
                 child: ListView.builder(
-                  itemCount: 4,
+                  itemCount: controller.checkupName.length,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return CheckboxTile(
-                      checkboxText: checkupName,
-                      value: checkupValue,
+                      checkboxText: controller.checkupName[index],
+                      value: controller.checkupValue[index],
                       onChanged: () {
                         setState(() {
-                          // todo: controllerでindexに対応したvalueを変更する
-                          checkupValue = !checkupValue;
+                          isSelected = true;
+                          selectedIndex = index;
+                          controller.updateCheckupValue(index);
                         });
                       },
                     );
@@ -122,7 +125,19 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
               child: CustomButton(
                 isFilledColor: true,
                 text: '次の項目へ',
-                onTap: () {},
+                onTap: () {
+                  setState(() {
+                    if (isSelected == false) {
+                      Fluttertoast.showToast(
+                        msg: '項目を選択してください',
+                        backgroundColor: Colors.red,
+                      );
+                    } else {
+                      isSelected = false;
+                      controller.nextQuestion(selectedIndex);
+                    }
+                  });
+                },
               ),
             ),
           ),
