@@ -6,6 +6,8 @@ mixin Routes {
   static const String registerAddressInfo = '/register/address_info';
   static const String registerPhysicalInfo = '/register/physical_info';
   static const String registerUserInfo = '/register/user_info';
+  static const String videoCall = '/video_call';
+
   // home
   static const String home = '/home';
 
@@ -21,7 +23,6 @@ mixin Routes {
   static const String chatDoctorTextChat = '/chat/doctor/text_chat';
   static const String chatDoctorSearch = '/chat/doctor/search';
   static const String chatAiTextChat = '/chat/ai/text_chat';
-  static const String chatVoiceCall = '/chat/voice_call';
   static const String chatVoiceCallReserve = '/chat/voice_call/reserve';
 
   // profile

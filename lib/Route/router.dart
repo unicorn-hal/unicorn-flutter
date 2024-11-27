@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
+import 'package:unicorn_flutter/Model/Entity/Call/call.dart';
+import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
@@ -18,6 +20,7 @@ import 'package:unicorn_flutter/View/Chat/Doctor/TextChat/doctor_text_chat_view.
 import 'package:unicorn_flutter/View/Chat/Doctor/Information/doctor_information_view.dart';
 import 'package:unicorn_flutter/View/Chat/Doctor/VoiceCall/Reserve/voice_call_reserve_view.dart';
 import 'package:unicorn_flutter/View/Chat/Doctor/Search/doctor_search_view.dart';
+import 'package:unicorn_flutter/View/Chat/Doctor/VoiceCall/voice_call_view.dart';
 import 'package:unicorn_flutter/View/Chat/chat_top_view.dart';
 import 'package:unicorn_flutter/View/Component/Pages/progress_view.dart';
 import 'package:unicorn_flutter/View/HealthCheckup/Checkup/ai_checkup_view.dart';
@@ -300,6 +303,21 @@ class RegisterUserInfoRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       RegisterUserInfoView();
+}
+
+@TypedGoRoute<VideoCallRoute>(
+  path: Routes.videoCall,
+)
+class VideoCallRoute extends GoRouteData {
+  VideoCallRoute({
+    required this.$extra,
+  });
+  final Call $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => VoiceCallView(
+        call: $extra,
+      );
 }
 
 /////////////////////////////////  Root  //////////////////////////////

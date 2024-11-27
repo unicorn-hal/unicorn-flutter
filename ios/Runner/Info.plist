@@ -42,14 +42,15 @@
 	<string>ユーザーがパーソナライズされた情報を取得するために位置情報を使用することを許可します。</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>ユーザーが写真にアクセスするために使用されます。</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>アプリの音声認識に利用します。</string>
 	<key>NSMicrophoneUsageDescription</key>
+	<string>このアプリは音声通話のためにマイクを使用します。</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>アプリの音声認識に利用します。</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>audio</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
@@ -69,5 +70,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 </dict>
 </plist>
