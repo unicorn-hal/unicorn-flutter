@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
-import 'package:unicorn_flutter/Model/Entity/TutorialTarget/TutorialTarget.dart';
+import 'package:unicorn_flutter/Model/Entity/TutorialTarget/tutorial_target.dart';
 
 class TutorialService {
   late TutorialCoachMark _tutorialCoachMark;
