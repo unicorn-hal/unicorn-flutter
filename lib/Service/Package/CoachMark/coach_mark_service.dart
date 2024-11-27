@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:unicorn_flutter/Model/Entity/TutorialTarget/tutorial_target.dart';
 
-class TutorialService {
+class CoachMarkService {
   late TutorialCoachMark _tutorialCoachMark;
   List<TargetFocus> targets = [];
 
