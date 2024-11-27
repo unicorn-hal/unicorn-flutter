@@ -101,9 +101,10 @@ class HomeController extends ControllerCore {
 
           Call call = await _getCall(reservationId);
           Doctor doctor = await _getDoctor(call.doctorId);
-          String callStartTime =
-              DateFormat('yyyy/MM/dd HH:mm').format(call.callStartTime);
-          String callEndTime = DateFormat('HH:mm').format(call.callEndTime);
+          String callStartTime = DateFormat('yyyy/MM/dd HH:mm')
+              .format(call.callStartTime.toLocal());
+          String callEndTime =
+              DateFormat('HH:mm').format(call.callEndTime.toLocal());
 
           CallStandby callStandby = CallStandby(
             callReservationId: reservationId,
