@@ -311,18 +311,21 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                   ),
                 ),
                 Positioned(
-                  top: 20,
+                  top: 10,
                   right: 20,
                   child: GestureDetector(
                     onTap: () => _onSwitchCamera(),
-                    child: SizedBox(
-                      width: 48,
-                      height: 48,
+                    behavior: HitTestBehavior.opaque,
+                    child: Container(
+                      height: 72,
+                      width: 72,
+                      alignment: Alignment.center,
                       child: Icon(
                         _controller.useFrontCamera
                             ? Icons.camera_front
                             : Icons.camera_rear,
                         color: Colors.white,
+                        size: 30,
                       ),
                     ),
                   ),
