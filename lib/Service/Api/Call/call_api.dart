@@ -8,10 +8,10 @@ class CallApi extends ApiCore with Endpoint {
   CallApi() : super(Endpoint.calls);
 
   /// GET
-  /// 通話情報取得
+  /// 通話予約一覧取得
   /// [doctorId] 医師ID
   /// [userId] ユーザID
-  Future<List<Call>?> getCall({
+  Future<List<Call>?> getCalls({
     required String doctorId,
     required String userId,
   }) async {
@@ -21,6 +21,19 @@ class CallApi extends ApiCore with Endpoint {
       return (response.data['data'] as List)
           .map((e) => Call.fromJson(e))
           .toList();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// GET
+  /// 通話予約情報取得
+  /// [callReservationId] 通話予約ID
+  Future<Call?> getCall({required String callReservationId}) async {
+    try {
+      useParameter(parameter: '/$callReservationId');
+      final ApiResponse response = await get();
+      return Call.fromJson(response.data['data']);
     } catch (e) {
       return null;
     }
