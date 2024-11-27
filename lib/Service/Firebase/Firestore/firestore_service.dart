@@ -1,7 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class FirebaseFirestoreService {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late FirebaseFirestore _firestore;
+
+  FirebaseFirestoreService({String databaseId = '(default)'}) {
+    _firestore = FirebaseFirestore.instanceFor(
+      app: Firebase.app(),
+      databaseId: databaseId,
+    );
+  }
 
   Future<void> addData(String collection, Map<String, dynamic> data) async {
     await _firestore.collection(collection).add(data);
