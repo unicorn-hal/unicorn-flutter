@@ -227,11 +227,11 @@ class VoiceCallController extends ControllerCore {
   }
 
   void dispose() {
+    _stopTimer();
     _isUserJoined.dispose();
     _isLocalCameraEnabled.dispose();
     _isRemoteCameraEnabled.dispose();
     _isRemoteMutated.dispose();
     _elapsedTime.dispose();
-    _stopTimer();
   }
 }
