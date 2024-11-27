@@ -27,7 +27,7 @@ class VoiceCallController extends ControllerCore {
   final Call _call;
   Doctor? _doctor;
 
-  Offset localPreviewPos = const Offset(20, 100);
+  Offset localPreviewPos = const Offset(20, 90);
 
   bool _isMuted = false;
   bool _isSwapped = false;

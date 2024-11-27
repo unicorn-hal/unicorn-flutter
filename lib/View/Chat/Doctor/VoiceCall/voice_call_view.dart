@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -165,14 +166,17 @@ class _VoiceCallViewState extends State<VoiceCallView> {
           return _cameraDisabledView(isLocal: false, isMinimized: isMinimized);
         }
 
-        return AgoraVideoView(
-          controller: VideoViewController.remote(
-            rtcEngine: _controller.engine,
-            canvas: VideoCanvas(uid: _controller.uid),
-            useFlutterTexture: true,
-            useAndroidSurfaceView: true,
-            connection:
-                RtcConnection(channelId: _controller.call.callReservationId),
+        return AspectRatio(
+          aspectRatio: 3 / 2,
+          child: AgoraVideoView(
+            controller: VideoViewController.remote(
+              rtcEngine: _controller.engine,
+              canvas: VideoCanvas(uid: _controller.uid),
+              useFlutterTexture: true,
+              useAndroidSurfaceView: true,
+              connection:
+                  RtcConnection(channelId: _controller.call.callReservationId),
+            ),
           ),
         );
       },
@@ -248,14 +252,17 @@ class _VoiceCallViewState extends State<VoiceCallView> {
             color: Colors.black.withOpacity(0.75),
             child: Stack(
               children: [
-                _controller.isSwapped
-                    ? _buildAgoraVideoLocal()
-                    : _buildAgoraVideoRemote(),
+                Align(
+                  alignment: Alignment.center,
+                  child: _controller.isSwapped
+                      ? _buildAgoraVideoLocal()
+                      : _buildAgoraVideoRemote(),
+                ),
                 Positioned(
                   left: _controller.localPreviewPos.dx,
                   top: _controller.localPreviewPos.dy,
-                  width: 100,
-                  height: 150,
+                  width: _controller.isSwapped ? 150 : 100,
+                  height: _controller.isSwapped ? 100 : 150,
                   child: GestureDetector(
                     onPanUpdate: _onDragUpdate,
                     onTap: _onToggleSwap,
