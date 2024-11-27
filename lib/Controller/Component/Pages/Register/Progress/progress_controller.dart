@@ -100,12 +100,12 @@ class ProgressController extends ControllerCore {
     // 体温の評価
     if (bodyTemperature < _normalBodyTempMin - 0.5 ||
         bodyTemperature > _normalBodyTempMax + 0.5) {
-      healthPoint += 4; // 大きく正常値範囲外ならhealthPointを大幅に増加
+      healthPoint += 3; // 大きく正常値範囲外ならhealthPointを大幅に増加
     } else if (bodyTemperature < _normalBodyTempMin ||
         bodyTemperature > _normalBodyTempMax) {
-      healthPoint += 2; // 少し正常値範囲外ならhealthPointを少し増加
+      healthPoint += 1; // 少し正常値範囲外ならhealthPointを少し増加
     } else {
-      healthPoint -= 3; // 正常値範囲内ならhealthPointを減少
+      healthPoint -= 1; // 正常値範囲内ならhealthPointを減少
     }
 
     // 血圧の評価
@@ -117,14 +117,14 @@ class ProgressController extends ControllerCore {
         systolic > _normalSystolicMax + 10 ||
         diastolic < _normalDiastolicMin - 10 ||
         diastolic > _normalDiastolicMax + 10) {
-      return healthPoint += 4; // 大きく正常値範囲外ならhealthPointを大幅に増加
+      return healthPoint += 3; // 大きく正常値範囲外ならhealthPointを大幅に増加
     } else if (systolic < _normalSystolicMin ||
         systolic > _normalSystolicMax ||
         diastolic < _normalDiastolicMin ||
         diastolic > _normalDiastolicMax) {
-      return healthPoint += 2; // 少し正常値範囲外ならhealthPointを少し増加
+      return healthPoint += 1; // 少し正常値範囲外ならhealthPointを少し増加
     } else {
-      return healthPoint -= 2; // 正常値範囲内ならhealthPointを減少
+      return healthPoint -= 1; // 正常値範囲内ならhealthPointを減少
     }
   }
 

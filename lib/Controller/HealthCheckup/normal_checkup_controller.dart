@@ -83,6 +83,11 @@ class NormalCheckupController extends ControllerCore {
     if (HealthCheckupQuestions.dataList[_questionCount].isMainQuestion) {
       _diseaseType = HealthCheckupQuestions
           .dataList[_questionCount].diseaseType![selectedIndex];
+      if (_diseaseType == HealthCheckupDiseaseEnum.goodHealth) {
+        _healthPoint = -2;
+      } else {
+        _healthPoint = 3;
+      }
     } else {
       _healthPoint += HealthCheckupQuestions
           .dataList[_questionCount].answers![selectedIndex].healthPoint;
