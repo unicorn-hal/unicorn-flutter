@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:unicorn_flutter/Constants/prefectures.dart';
@@ -19,6 +18,7 @@ import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 class RegisterAddressInfoController extends ControllerCore {
   LocationService get _locationService => LocationService();
+  UserApi get _userApi => UserApi();
 
   RegisterAddressInfoController({
     required this.context,
@@ -170,9 +170,8 @@ class RegisterAddressInfoController extends ControllerCore {
         bodyWeight: userData.user!.bodyWeight,
         occupation: userData.user!.occupation,
       );
-      ;
       Future<int> responceCode =
-          UserApi().putUser(userId: userData.user!.userId, body: userRequest);
+          _userApi.putUser(userId: userData.user!.userId, body: userRequest);
       if (await responceCode == 200) {
         // シングルトンに登録した値をセットする
         ProtectorNotifier().enableProtector();
@@ -201,8 +200,6 @@ class RegisterAddressInfoController extends ControllerCore {
     RegisterUserInfoRoute(from: Routes.registerUserInfo, $extra: userRequest)
         .push(context);
 
-    print(userRequest.postalCode);
-    print(userRequest.address);
     return;
   }
 

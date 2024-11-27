@@ -15,10 +15,14 @@ import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 
 class RegisterPhysicalInfoController extends ControllerCore {
+  UserApi get _userApi => UserApi();
+
   RegisterPhysicalInfoController({
     required this.context,
     required super.from,
   });
+
+  BuildContext context;
 
   TextEditingController firstNameTextController = TextEditingController();
   TextEditingController lastNameTextController = TextEditingController();
@@ -27,7 +31,6 @@ class RegisterPhysicalInfoController extends ControllerCore {
 
   late DateTime birthDate;
   UserGenderEnum? gender;
-  BuildContext context;
   UserData userData = UserData();
 
   @override

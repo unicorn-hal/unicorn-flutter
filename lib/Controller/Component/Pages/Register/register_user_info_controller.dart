@@ -25,17 +25,19 @@ class RegisterUserInfoController extends ControllerCore {
   FirebaseCloudStorageService get _cloudStorageService =>
       FirebaseCloudStorageService();
   ImageUtilsService get _imageUtilsService => ImageUtilsService();
+  UserApi get _userApi => UserApi();
 
   RegisterUserInfoController({
     required super.from,
     required this.context,
   });
 
+  BuildContext context;
+
   TextEditingController phoneNumberTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
   TextEditingController occupationTextController = TextEditingController();
 
-  BuildContext context;
   UserData userData = UserData();
 
   File? _imageFile;
@@ -123,7 +125,7 @@ class RegisterUserInfoController extends ControllerCore {
         occupation: userInfo.occupation,
       );
       Future<int> responceCode =
-          UserApi().putUser(userId: userData.user!.userId, body: userRequest);
+          _userApi.putUser(userId: userData.user!.userId, body: userRequest);
       if (await responceCode == 200) {
         // シングルトンに登録した値をセットする
         userData.setUser(User.fromJson(userRequest.toJson()));
@@ -147,7 +149,7 @@ class RegisterUserInfoController extends ControllerCore {
     userRequest.email = userInfo.email;
     userRequest.occupation = userInfo.occupation;
 
-    Future<int> responceCode = UserApi().postUser(body: userRequest);
+    Future<int> responceCode = _userApi.postUser(body: userRequest);
     if (await responceCode == 200) {
       Fluttertoast.showToast(
           msg: Strings.PROFILE_REGISTRATION_COMPLETED_MESSAGE);
