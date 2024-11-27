@@ -2,7 +2,7 @@ name: unicorn_flutter
 description: "命を救う次世代ロボットシステム「Unicorn」"
 publish_to: "none"
 
-version: 1.0.0+1
+version: 1.0.0+4
 
 environment:
   sdk: ">=3.3.4 <4.0.0"
