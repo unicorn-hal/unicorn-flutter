@@ -242,15 +242,18 @@ class EmergencyRoute extends GoRouteData {
 )
 class ProgressRoute extends GoRouteData {
   const ProgressRoute({
+    required this.from,
     required this.diseaseType,
     required this.healthPoint,
   });
 
+  final String from;
   final int healthPoint;
   final HealthCheckupDiseaseEnum diseaseType;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => ProgressView(
+        from: from,
         healthPoint: healthPoint,
         diseaseType: diseaseType,
       );

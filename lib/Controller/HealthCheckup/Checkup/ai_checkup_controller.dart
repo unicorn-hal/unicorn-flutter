@@ -8,6 +8,7 @@ import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart'
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_message.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_response.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/ChatGPT/chatgpt_service.dart';
 import 'package:unicorn_flutter/Service/Package/SpeechToText/speech_to_text_service.dart';
 import '../../../View/bottom_navigation_bar_view.dart';
@@ -89,8 +90,12 @@ class AiCheckupController extends ControllerCore {
       healthPoint = 3;
     }
 
-    ProgressRoute(diseaseType: diseaseType, healthPoint: healthPoint)
-        .go(context);
+    ProgressRoute(
+      from: Routes.healthCheckupAi,
+      diseaseType: diseaseType,
+      healthPoint: healthPoint,
+      // ignore: use_build_context_synchronously
+    ).go(context);
   }
 
   /// 認識した音声をChatGPTに送信してEnumを返す

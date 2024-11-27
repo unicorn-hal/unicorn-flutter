@@ -3,6 +3,7 @@ import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart'
 import 'package:unicorn_flutter/Constants/health_checkup_questions.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
 
 class NormalCheckupController extends ControllerCore {
   BuildContext context;
@@ -69,6 +70,7 @@ class NormalCheckupController extends ControllerCore {
   void nextQuestion(int selectedIndex) {
     if (_questionCount >= HealthCheckupQuestions.dataList.length - 1) {
       ProgressRoute(
+        from: Routes.healthCheckupNormal,
         healthPoint: _healthPoint,
         diseaseType: _diseaseType,
       ).go(context);
@@ -92,10 +94,6 @@ class NormalCheckupController extends ControllerCore {
     /// プログレスバーの更新
     _progressText = '${((_progressValue += 0.1) * 100).toStringAsFixed(0)}%';
   }
-
-  int get healthPoint => _healthPoint;
-
-  HealthCheckupDiseaseEnum get diseaseType => _diseaseType;
 
   double get progressValue => _progressValue;
 

@@ -8,10 +8,12 @@ import 'package:unicorn_flutter/gen/colors.gen.dart';
 class ProgressView extends StatefulWidget {
   const ProgressView({
     super.key,
+    required this.from,
     required this.healthPoint,
     required this.diseaseType,
   });
 
+  final String from;
   final int healthPoint;
   final HealthCheckupDiseaseEnum diseaseType;
 
@@ -28,6 +30,7 @@ class _ProgressViewState extends State<ProgressView> {
 
     controller = ProgressController(
       context: context,
+      from: widget.from,
       healthPoint: widget.healthPoint,
       diseaseType: widget.diseaseType,
     );

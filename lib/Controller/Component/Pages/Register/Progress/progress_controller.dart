@@ -10,6 +10,7 @@ import 'package:unicorn_flutter/Route/routes.dart';
 class ProgressController extends ControllerCore {
   ProgressController({
     required this.context,
+    required super.from,
     required this.healthPoint,
     required this.diseaseType,
   });
