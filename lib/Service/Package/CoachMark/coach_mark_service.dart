@@ -4,16 +4,15 @@ import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:unicorn_flutter/Model/Entity/TutorialTarget/tutorial_target.dart';
 
 class CoachMarkService {
-  late TutorialCoachMark _tutorialCoachMark;
-  List<TargetFocus> targets = [];
-
-  ///　必ずinitializeTargetsを呼び出してからshowTutorialを呼び出す
-  ///　context: BuildContextを渡す
-
-  /// ターゲットを初期化する
-  void initializeTargets({
+  /// TutorialTargetからターゲットを作成する
+  /// [targetList]
+  List<TargetFocus> getTargetFocusList({
     required List<TutorialTarget> targetList,
   }) {
+    // ターゲットのリストを作成
+    List<TargetFocus> targets = [];
+
+    // 受け取ったtargetListを元にtargetsを作成
     for (int i = 0; i < targetList.length; i++) {
       targets.add(
         TargetFocus(
@@ -55,13 +54,20 @@ class CoachMarkService {
         ),
       );
     }
+
+    // ターゲットのリストを返す
+    return targets;
   }
 
   /// チュートリアルを表示する
+  /// [context] BuildContext
+  /// [targets] TargetFocusのリスト
   void showTutorial({
     required BuildContext context,
+    required List<TargetFocus> targets,
   }) {
-    _tutorialCoachMark = TutorialCoachMark(
+    // チュートリアルの設定
+    TutorialCoachMark _tutorialCoachMark = TutorialCoachMark(
       targets: targets,
       colorShadow: Colors.black,
       textSkip: "スキップ",
@@ -76,8 +82,9 @@ class CoachMarkService {
       onSkip: () {
         return true;
       },
-    )..show(
-        context: context,
-      );
+    );
+
+    // チュートリアルを表示
+    _tutorialCoachMark.show(context: context);
   }
 }
