@@ -10,6 +10,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_modal.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
@@ -271,160 +272,86 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                         isScrollControlled: true,
                                         context: context,
                                         builder: (BuildContext context) {
-                                          return Container(
-                                            width: deviceWidth,
-                                            margin:
-                                                const EdgeInsets.only(top: 64),
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(20),
-                                                topRight: Radius.circular(20),
-                                              ),
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Stack(
+                                          return CustomModal(
+                                            title: '繰り返し',
+                                            leftButtonOnTap: () {
+                                              controller
+                                                  .resetReminderDayOfWeekList();
+                                            },
+                                            rightButtonOnTap: () {
+                                              controller
+                                                  .updateReminderDayOfWeek(
+                                                      index: index);
+                                              setState(() {});
+                                            },
+                                            content: StatefulBuilder(
+                                              builder: (context,
+                                                  StateSetter setState) {
+                                                return Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
                                                   children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            controller
-                                                                .resetReminderDayOfWeekList();
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: const Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                              left: 10,
-                                                            ),
-                                                            child: CustomText(
-                                                              text: '戻る',
-                                                              color:
-                                                                  Colors.blue,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () {
-                                                            controller
-                                                                .updateReminderDayOfWeek(
-                                                                    index:
-                                                                        index);
-                                                            setState(() {});
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: const Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                              right: 10,
-                                                            ),
-                                                            child: CustomText(
-                                                              text: '決定',
-                                                              color:
-                                                                  Colors.blue,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
                                                     Container(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                        top: 12,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        border: Border.all(
+                                                          color: Colors.grey,
+                                                        ),
                                                       ),
-                                                      child: const Align(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: CustomText(
-                                                          text: '繰り返し',
+                                                      width: deviceWidth * 0.9,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                          horizontal: 15,
+                                                        ),
+                                                        child: ListView.builder(
+                                                          physics:
+                                                              const NeverScrollableScrollPhysics(),
+                                                          shrinkWrap: true,
+                                                          itemCount: 7,
+                                                          itemBuilder:
+                                                              (BuildContext
+                                                                      context,
+                                                                  int index) {
+                                                            return SizedBox(
+                                                              width:
+                                                                  deviceWidth *
+                                                                      0.9,
+                                                              child:
+                                                                  CommonItemTile(
+                                                                title:
+                                                                    '毎${controller.getDayAbbreviation(index: index)}曜日',
+                                                                action: controller
+                                                                        .checkReminderDayOfWeekList(
+                                                                            index:
+                                                                                index)
+                                                                    ? const Icon(
+                                                                        Icons
+                                                                            .check,
+                                                                        color: Colors
+                                                                            .blue,
+                                                                      )
+                                                                    : null,
+                                                                onTap: () {
+                                                                  controller
+                                                                      .changeReminderDayOfWeekList(
+                                                                          index:
+                                                                              index);
+                                                                  setState(
+                                                                      () {});
+                                                                },
+                                                              ),
+                                                            );
+                                                          },
                                                         ),
                                                       ),
                                                     ),
                                                   ],
-                                                ),
-                                                const SizedBox(
-                                                  height: 40,
-                                                ),
-                                                StatefulBuilder(
-                                                  builder: (context,
-                                                      StateSetter setState) {
-                                                    return Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20),
-                                                            border: Border.all(
-                                                              color:
-                                                                  Colors.grey,
-                                                            ),
-                                                          ),
-                                                          width:
-                                                              deviceWidth * 0.9,
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                              horizontal: 15,
-                                                            ),
-                                                            child: ListView
-                                                                .builder(
-                                                              physics:
-                                                                  const NeverScrollableScrollPhysics(),
-                                                              shrinkWrap: true,
-                                                              itemCount: 7,
-                                                              itemBuilder:
-                                                                  (BuildContext
-                                                                          context,
-                                                                      int index) {
-                                                                return SizedBox(
-                                                                  width:
-                                                                      deviceWidth *
-                                                                          0.9,
-                                                                  child:
-                                                                      CommonItemTile(
-                                                                    title:
-                                                                        '毎${controller.getDayAbbreviation(index: index)}曜日',
-                                                                    action: controller.checkReminderDayOfWeekList(
-                                                                            index:
-                                                                                index)
-                                                                        ? const Icon(
-                                                                            Icons.check,
-                                                                            color:
-                                                                                Colors.blue,
-                                                                          )
-                                                                        : null,
-                                                                    onTap: () {
-                                                                      controller.changeReminderDayOfWeekList(
-                                                                          index:
-                                                                              index);
-                                                                      setState(
-                                                                          () {});
-                                                                    },
-                                                                  ),
-                                                                );
-                                                              },
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                ),
-                                              ],
+                                                );
+                                              },
                                             ),
                                           );
                                         },
