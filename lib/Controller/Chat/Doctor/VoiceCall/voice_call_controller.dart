@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Entity/Agora/agora_certificate.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call_standby.dart';
@@ -46,14 +47,13 @@ class VoiceCallController extends ControllerCore {
 
   @override
   Future<void> initialize() async {
-    // todo: パーミッション処理は遷移前に行う
-    await _permissionHandlerService.checkAndRequestPermission(
-      Permission.microphone,
-    );
-    await _permissionHandlerService.checkAndRequestPermission(
-      Permission.camera,
-    );
+    bool permissionResult =
+        await _permissionHandlerService.requestVideoCallPermissions();
 
+    if (!permissionResult) {
+      Fluttertoast.showToast(msg: Strings.CALL_PERMISSION_ERROR_TEXT);
+      return;
+    }
     await _initAgoraEngine();
     await _fetchToken();
     await _joinChannel();

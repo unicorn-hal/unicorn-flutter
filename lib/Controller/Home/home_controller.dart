@@ -9,6 +9,7 @@ import 'package:unicorn_flutter/Model/Entity/Call/call.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call_standby.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call_status.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/Call/call_api.dart';
 import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/Firestore/firestore_service.dart';
@@ -20,7 +21,10 @@ class HomeController extends ControllerCore {
   CallApi get _callApi => CallApi();
   DoctorApi get _doctorApi => DoctorApi();
 
-  // todo: 変数はすべてControllerから取得する
+  HomeController(this.context);
+  BuildContext context;
+
+  // todo: 仮データ
   final List<Map<String, dynamic>> _boardList = [
     {
       'title': 'タイトル1',
@@ -39,6 +43,7 @@ class HomeController extends ControllerCore {
     },
   ];
 
+  // todo: 仮データ
   final List<Map<String, dynamic>> _medicineList = [
     {
       'name': 'カロナール',
@@ -58,6 +63,7 @@ class HomeController extends ControllerCore {
     },
   ];
 
+  // todo: APIから取得時に命名も見直し
   int currentIndex = 0;
   final CarouselSliderController _carouselController =
       CarouselSliderController();
@@ -74,11 +80,13 @@ class HomeController extends ControllerCore {
   List<Map<String, dynamic>> get medicineList => _medicineList;
   CarouselSliderController get carouselController => _carouselController;
 
+  /// 通話待機中の予約情報を取得
   void _callReservationsListener() {
     final String collection = UserData().user!.userId;
     _firestoreService.streamData(collection).listen(
       (event) async {
         try {
+          await Future.delayed(const Duration(seconds: 2));
           final filteredData = event.docs.where((doc) {
             final data =
                 CallStatus.fromJson(doc.data() as Map<String, dynamic>);
@@ -89,6 +97,7 @@ class HomeController extends ControllerCore {
             return;
           }
           final String reservationId = filteredData.first.id;
+          Log.echo('reservationId: $reservationId');
 
           Call call = await _getCall(reservationId);
           Doctor doctor = await _getDoctor(call.doctorId);
@@ -129,7 +138,15 @@ class HomeController extends ControllerCore {
     return res;
   }
 
-  void dispose() {
-    callStandbyNotifier.dispose();
+  Future<void> goVideoCall() async {
+    if (callStandbyNotifier.value == null) {
+      // tips: View自体が表示されないので、基本的には発生しない
+      return;
+    }
+
+    final CallStandby callStandby = callStandbyNotifier.value!;
+    // ignore: use_build_context_synchronously
+    VideoCallRoute($extra: callStandby).go(context);
+    callStandbyNotifier.value = null;
   }
 }

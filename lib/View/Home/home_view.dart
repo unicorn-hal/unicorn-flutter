@@ -26,13 +26,12 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    _controller = HomeController();
+    _controller = HomeController(context);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
   }
 
   @override
@@ -77,6 +76,7 @@ class _HomeViewState extends State<HomeView> {
                       return Container();
                     }
                     return GestureDetector(
+                      onTap: () => _controller.goVideoCall(),
                       child: Container(
                         height: 100,
                         margin: const EdgeInsets.symmetric(

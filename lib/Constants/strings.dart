@@ -86,4 +86,7 @@ class Strings {
   // ユーザープロフィール登録完了時に表示するテキスト
   static const String PROFILE_REGISTRATION_COMPLETED_MESSAGE =
       'ユーザーが正常に登録されました';
+
+  // 通話時のパーミッションエラー時に表示するテキスト
+  static const String CALL_PERMISSION_ERROR_TEXT = 'カメラとマイクの使用を許可してください';
 }
