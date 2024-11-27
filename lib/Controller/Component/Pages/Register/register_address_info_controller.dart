@@ -178,7 +178,7 @@ class RegisterAddressInfoController extends ControllerCore {
         ProtectorNotifier().enableProtector();
         userData.setUser(User.fromJson(userRequest.toJson()));
         ProtectorNotifier().disableProtector();
-        Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_TEXT);
+        Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
         ProfileRoute().push(context);
         return;
       }

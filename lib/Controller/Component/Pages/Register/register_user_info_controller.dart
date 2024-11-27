@@ -127,7 +127,7 @@ class RegisterUserInfoController extends ControllerCore {
       if (await responceCode == 200) {
         // シングルトンに登録した値をセットする
         userData.setUser(User.fromJson(userRequest.toJson()));
-        Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_TEXT);
+        Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
         ProfileRoute().push(context);
         return;
       }
