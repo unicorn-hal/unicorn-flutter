@@ -33,7 +33,7 @@ class CallApi extends ApiCore with Endpoint {
     try {
       useParameter(parameter: '/$callReservationId');
       final ApiResponse response = await get();
-      return Call.fromJson(response.data['data']);
+      return Call.fromJson(response.data);
     } catch (e) {
       return null;
     }
