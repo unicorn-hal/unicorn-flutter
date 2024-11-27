@@ -10,13 +10,13 @@ import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup_reques
 import 'package:unicorn_flutter/Service/Api/HealthCheckup/health_checkup_api.dart';
 import 'package:unicorn_flutter/Service/Package/UrlLauncher/url_launcher_service.dart';
 
-class HealthCheckupResultController extends ControllerCore {
+class HealthCheckupResultsController extends ControllerCore {
   /// Serviceのインスタンス化
   HealthCheckupApi get _healthCheckupApi => HealthCheckupApi();
   UrlLauncherService get _urlLauncherService => UrlLauncherService();
 
   /// コンストラクタ
-  HealthCheckupResultController({
+  HealthCheckupResultsController({
     required this.context,
     required this.bloodPressure,
     required this.bodyTemperature,

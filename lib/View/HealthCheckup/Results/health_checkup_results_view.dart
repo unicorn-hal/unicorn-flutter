@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
-import 'package:unicorn_flutter/Controller/HealthCheckup/health_checkup_result_controller.dart';
+import 'package:unicorn_flutter/Controller/HealthCheckup/health_checkup_results_controller.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
@@ -24,7 +24,7 @@ class HealthCheckupResultsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HealthCheckupResultController controller = HealthCheckupResultController(
+    HealthCheckupResultsController controller = HealthCheckupResultsController(
       context: context,
       bloodPressure: bloodPressure,
       bodyTemperature: bodyTemperature,
