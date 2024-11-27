@@ -6,12 +6,10 @@ import 'package:flutter/widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Entity/Agora/agora_certificate.dart';
-import 'package:unicorn_flutter/Model/Entity/Call/call.dart';
-import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
+import 'package:unicorn_flutter/Model/Entity/Call/call_standby.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:unicorn_flutter/Model/Entity/Agora/agora_certificate_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
-import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/Service/Package/Agora/Api/agora_certificate_api.dart';
 import 'package:unicorn_flutter/Service/Package/PermissionHandler/permission_handler_service.dart';
@@ -20,12 +18,10 @@ class VoiceCallController extends ControllerCore {
   PermissionHandlerService get _permissionHandlerService =>
       PermissionHandlerService();
   AgoraCertificateApi get _agoraApi => AgoraCertificateApi();
-  DoctorApi get _doctorApi => DoctorApi();
 
   late RtcEngine _engine;
 
-  final Call _call;
-  Doctor? _doctor;
+  final CallStandby _callStandby;
 
   Offset localPreviewPos = const Offset(20, 90);
 
@@ -44,8 +40,8 @@ class VoiceCallController extends ControllerCore {
   final ValueNotifier<bool> _isRemoteMutated = ValueNotifier(false);
   final ValueNotifier<String> _elapsedTime = ValueNotifier('00:00');
 
-  VoiceCallController({required Call call, required this.context})
-      : _call = call;
+  VoiceCallController({required CallStandby callStandby, required this.context})
+      : _callStandby = callStandby;
   BuildContext context;
 
   @override
@@ -60,14 +56,12 @@ class VoiceCallController extends ControllerCore {
 
     await _initAgoraEngine();
     await _fetchToken();
-    await _fetchDoctor();
     await _joinChannel();
   }
 
   RtcEngine get engine => _engine;
 
-  Call get call => _call;
-  Doctor? get doctor => _doctor;
+  CallStandby get callStandby => _callStandby;
 
   bool get isMuted => _isMuted;
   bool get isSwapped => _isSwapped;
@@ -150,7 +144,7 @@ class VoiceCallController extends ControllerCore {
   /// トークン取得
   Future<void> _fetchToken() async {
     AgoraCertificateRequest request = AgoraCertificateRequest(
-      channelName: _call.callReservationId,
+      channelName: _callStandby.callReservationId,
     );
     AgoraCertificate? certificate = await _agoraApi.fetchToken(body: request);
     if (certificate != null) {
@@ -163,20 +157,12 @@ class VoiceCallController extends ControllerCore {
     }
   }
 
-  /// 医師情報取得
-  Future<void> _fetchDoctor() async {
-    Doctor? res = await _doctorApi.getDoctor(doctorId: _call.doctorId);
-    if (res != null) {
-      _doctor = res;
-    }
-  }
-
   /// チャンネル参加
   Future<void> _joinChannel() async {
     Log.echo('Joining channel...: $_token');
     await _engine.joinChannel(
       token: _token!,
-      channelId: _call.callReservationId,
+      channelId: _callStandby.callReservationId,
       uid: _uid!,
       options: const ChannelMediaOptions(
         channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,

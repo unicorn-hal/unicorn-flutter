@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/progress_view_enum.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call.dart';
+import 'package:unicorn_flutter/Model/Entity/Call/call_standby.dart';
 import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
@@ -312,11 +313,11 @@ class VideoCallRoute extends GoRouteData {
   VideoCallRoute({
     required this.$extra,
   });
-  final Call $extra;
+  final CallStandby $extra;
 
   @override
   Widget build(BuildContext context, GoRouterState state) => VoiceCallView(
-        call: $extra,
+        callStandby: $extra,
       );
 }
 

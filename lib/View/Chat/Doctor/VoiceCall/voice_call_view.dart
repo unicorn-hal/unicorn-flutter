@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/VoiceCall/voice_call_controller.dart';
-import 'package:unicorn_flutter/Model/Entity/Call/call.dart';
+import 'package:unicorn_flutter/Model/Entity/Call/call_standby.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
@@ -12,8 +12,8 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 
 class VoiceCallView extends StatefulWidget {
-  final Call call;
-  const VoiceCallView({super.key, required this.call});
+  final CallStandby callStandby;
+  const VoiceCallView({super.key, required this.callStandby});
 
   @override
   State<VoiceCallView> createState() => _VoiceCallViewState();
@@ -25,7 +25,8 @@ class _VoiceCallViewState extends State<VoiceCallView> {
   @override
   void initState() {
     super.initState();
-    _controller = VoiceCallController(call: widget.call, context: context);
+    _controller =
+        VoiceCallController(callStandby: widget.callStandby, context: context);
     _controller.isUserJoined.addListener(() {
       Log.echo('isChannelJoined: ${_controller.isUserJoined.value}');
       setState(() {});
@@ -173,8 +174,8 @@ class _VoiceCallViewState extends State<VoiceCallView> {
               canvas: VideoCanvas(uid: _controller.uid),
               useFlutterTexture: true,
               useAndroidSurfaceView: true,
-              connection:
-                  RtcConnection(channelId: _controller.call.callReservationId),
+              connection: RtcConnection(
+                  channelId: _controller.callStandby.callReservationId),
             ),
           ),
         );
@@ -284,8 +285,7 @@ class _VoiceCallViewState extends State<VoiceCallView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           CustomText(
-                            text:
-                                '${_controller.doctor?.lastName ?? ''} ${_controller.doctor?.firstName ?? ''} 先生',
+                            text: '${_controller.callStandby.doctorName} 先生',
                             color: Colors.white,
                             fontSize: 24,
                           ),
