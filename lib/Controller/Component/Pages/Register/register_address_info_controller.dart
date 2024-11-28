@@ -151,23 +151,11 @@ class RegisterAddressInfoController extends ControllerCore {
       addressDetail: addressDetailTextController.text,
     );
 
+    userRequest.postalCode = addressInfo.postalCode;
+    userRequest.address =
+        "${addressInfo.prefectures}${addressInfo.municipalities}${addressInfo.addressDetail}";
+
     if (from == Routes.profile) {
-      userRequest = UserRequest(
-        userId: userData.user!.userId,
-        firstName: userData.user!.firstName,
-        lastName: userData.user!.lastName,
-        email: userData.user!.email,
-        gender: userData.user!.gender,
-        birthDate: userData.user!.birthDate,
-        address:
-            "${addressInfo.prefectures}${addressInfo.municipalities}${addressInfo.addressDetail}",
-        postalCode: addressInfo.postalCode,
-        phoneNumber: userData.user!.phoneNumber,
-        iconImageUrl: userData.user!.iconImageUrl,
-        bodyHeight: userData.user!.bodyHeight,
-        bodyWeight: userData.user!.bodyWeight,
-        occupation: userData.user!.occupation,
-      );
       ProtectorNotifier().enableProtector();
       int responceCode = await _userApi.putUser(
           userId: userData.user!.userId, body: userRequest);
@@ -183,12 +171,6 @@ class RegisterAddressInfoController extends ControllerCore {
       ProfileRoute().push(context);
       return;
     }
-
-    userRequest = UserRequest(
-      postalCode: addressInfo.postalCode,
-      address:
-          "${addressInfo.prefectures}${addressInfo.municipalities} ${addressInfo.addressDetail}",
-    );
 
     RegisterUserInfoRoute(from: Routes.registerUserInfo, $extra: userRequest)
         .push(context);

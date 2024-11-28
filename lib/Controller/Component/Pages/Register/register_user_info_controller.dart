@@ -106,22 +106,12 @@ class RegisterUserInfoController extends ControllerCore {
       occupation: occupationTextController.text,
     );
 
+    userRequest.iconImageUrl = userInfo.iconImageUrl;
+    userRequest.phoneNumber = userInfo.phoneNumber;
+    userRequest.email = userInfo.email;
+    userRequest.occupation = userInfo.occupation;
+
     if (from == Routes.profile) {
-      userRequest = UserRequest(
-        userId: userData.user!.userId,
-        firstName: userData.user!.firstName,
-        lastName: userData.user!.lastName,
-        email: userInfo.email,
-        gender: userData.user!.gender,
-        birthDate: userData.user!.birthDate,
-        address: userData.user!.address,
-        postalCode: userData.user!.postalCode,
-        phoneNumber: userInfo.phoneNumber,
-        iconImageUrl: userInfo.iconImageUrl,
-        bodyHeight: userData.user!.bodyHeight,
-        bodyWeight: userData.user!.bodyWeight,
-        occupation: userInfo.occupation,
-      );
       ProtectorNotifier().enableProtector();
       int responceCode = await _userApi.putUser(
           userId: userData.user!.userId, body: userRequest);
@@ -137,12 +127,6 @@ class RegisterUserInfoController extends ControllerCore {
       ProfileRoute().push(context);
       return;
     }
-
-    userRequest.userId = userData.user!.userId;
-    userRequest.iconImageUrl = userInfo.iconImageUrl;
-    userRequest.phoneNumber = userInfo.phoneNumber;
-    userRequest.email = userInfo.email;
-    userRequest.occupation = userInfo.occupation;
 
     ProtectorNotifier().enableProtector();
     int responceCode = await _userApi.postUser(body: userRequest);

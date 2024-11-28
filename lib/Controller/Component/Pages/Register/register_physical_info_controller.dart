@@ -64,22 +64,14 @@ class RegisterPhysicalInfoController extends ControllerCore {
       bodyWeight: double.tryParse(bodyWeightTextController.text)!,
     );
 
+    userRequest.firstName = physicalInfo.firstName;
+    userRequest.lastName = physicalInfo.lastName;
+    userRequest.gender = physicalInfo.gender;
+    userRequest.birthDate = physicalInfo.birthDate;
+    userRequest.bodyHeight = physicalInfo.bodyHeight;
+    userRequest.bodyWeight = physicalInfo.bodyWeight;
+
     if (from == Routes.profile) {
-      userRequest = UserRequest(
-        userId: userData.user!.userId,
-        email: userData.user!.email,
-        address: userData.user!.address,
-        postalCode: userData.user!.postalCode,
-        phoneNumber: userData.user!.phoneNumber,
-        iconImageUrl: userData.user!.iconImageUrl,
-        occupation: userData.user!.occupation,
-        firstName: physicalInfo.firstName,
-        lastName: physicalInfo.lastName,
-        gender: physicalInfo.gender,
-        birthDate: physicalInfo.birthDate,
-        bodyHeight: physicalInfo.bodyHeight,
-        bodyWeight: physicalInfo.bodyWeight,
-      );
       ProtectorNotifier().enableProtector();
       int responceCode = await _userApi.putUser(
           userId: userData.user!.userId, body: userRequest);
@@ -95,15 +87,6 @@ class RegisterPhysicalInfoController extends ControllerCore {
       ProfileRoute().push(context);
       return;
     }
-
-    userRequest = UserRequest(
-      firstName: physicalInfo.firstName,
-      lastName: physicalInfo.lastName,
-      gender: physicalInfo.gender,
-      birthDate: physicalInfo.birthDate,
-      bodyHeight: physicalInfo.bodyHeight,
-      bodyWeight: physicalInfo.bodyWeight,
-    );
 
     RegisterAddressInfoRoute(
             from: Routes.registerPhysicalInfo, $extra: userRequest)
