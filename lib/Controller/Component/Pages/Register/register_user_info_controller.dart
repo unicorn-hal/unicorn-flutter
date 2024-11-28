@@ -159,11 +159,9 @@ class RegisterUserInfoController extends ControllerCore {
     }
     if (await responceCode == 400) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-      HomeRoute().push(context);
     }
     if (await responceCode == 500) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-      HomeRoute().push(context);
     }
   }
 
