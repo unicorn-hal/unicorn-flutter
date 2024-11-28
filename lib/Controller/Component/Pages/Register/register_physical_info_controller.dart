@@ -82,7 +82,7 @@ class RegisterPhysicalInfoController extends ControllerCore {
         bodyWeight: physicalInfo.bodyWeight,
       );
       Future<int> responceCode =
-          UserApi().putUser(userId: userData.user!.userId, body: userRequest);
+          _userApi.putUser(userId: userData.user!.userId, body: userRequest);
       if (await responceCode == 200) {
         // シングルトンに登録した値をセットする
         userData.setUser(User.fromJson(userRequest.toJson()));
@@ -92,10 +92,12 @@ class RegisterPhysicalInfoController extends ControllerCore {
       }
       if (await responceCode == 400) {
         Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+        ProfileRoute().push(context);
         return;
       }
       if (await responceCode == 500) {
         Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+        ProfileRoute().push(context);
         return;
       }
     }

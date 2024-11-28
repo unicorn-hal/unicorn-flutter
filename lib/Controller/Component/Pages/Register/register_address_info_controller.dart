@@ -183,10 +183,12 @@ class RegisterAddressInfoController extends ControllerCore {
       }
       if (await responceCode == 400) {
         Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+        ProfileRoute().push(context);
         return;
       }
       if (await responceCode == 500) {
         Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+        ProfileRoute().push(context);
         return;
       }
     }
