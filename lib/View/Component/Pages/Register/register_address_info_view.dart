@@ -40,6 +40,12 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     return Stack(

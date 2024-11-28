@@ -237,4 +237,12 @@ class RegisterAddressInfoController extends ControllerCore {
     }
     return true;
   }
+
+  /// メモリリークを防ぐためdispose
+  void dispose() {
+    postalCodeTextController.dispose();
+    municipalitiesTextController.dispose();
+    addressDetailTextController.dispose();
+    _protector.dispose();
+  }
 }
