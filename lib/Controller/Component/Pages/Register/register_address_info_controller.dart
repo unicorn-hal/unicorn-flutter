@@ -54,8 +54,21 @@ class RegisterAddressInfoController extends ControllerCore {
 
   void setTextEditingController() {
     if (from == Routes.profile) {
+      List<String> splitedAddress = userData.user!.address.split(',');
+
+      String prefectureFromSplitAddress = splitedAddress[0];
+      String municipalitiesFromSplitAddress = splitedAddress[1];
+      String? addressDetailFromSplitAddress =
+          splitedAddress.length > 2 ? splitedAddress[2] : null;
+
       postalCodeTextController.text = userData.user!.postalCode;
-      municipalitiesTextController.text = userData.user!.address;
+      selectedPrefectureIndex =
+          _entryItemStrings.indexOf(prefectureFromSplitAddress);
+      municipalitiesTextController.text = municipalitiesFromSplitAddress;
+      if (addressDetailFromSplitAddress != null &&
+          addressDetailFromSplitAddress.isNotEmpty) {
+        addressDetailTextController.text = addressDetailFromSplitAddress;
+      }
     }
   }
 
@@ -177,7 +190,7 @@ class RegisterAddressInfoController extends ControllerCore {
 
     userRequest.postalCode = addressInfo.postalCode;
     userRequest.address =
-        "${addressInfo.prefectures}${addressInfo.municipalities}${addressInfo.addressDetail}";
+        "${addressInfo.prefectures},${addressInfo.municipalities},${addressInfo.addressDetail}";
 
     if (from == Routes.profile) {
       ProtectorNotifier().enableProtector();
