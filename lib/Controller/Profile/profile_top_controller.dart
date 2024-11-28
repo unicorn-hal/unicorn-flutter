@@ -117,12 +117,52 @@ class ProfileTopController extends ControllerCore {
           title: '住所設定',
           icon: Icons.home,
           onTap: () {
-            ProfileRegisterAddressInfoRoute().push(context);
+            User? data = UserData().user;
+            if (data == null) {
+              return;
+            }
+            UserRequest userRequest = UserRequest(
+              userId: data.userId,
+              firstName: data.firstName,
+              lastName: data.lastName,
+              email: data.email,
+              gender: data.gender,
+              birthDate: data.birthDate,
+              address: data.address,
+              postalCode: data.postalCode,
+              phoneNumber: data.phoneNumber,
+              iconImageUrl: data.iconImageUrl,
+              bodyHeight: data.bodyHeight,
+              bodyWeight: data.bodyWeight,
+              occupation: data.occupation,
+            );
+            ProfileRegisterAddressInfoRoute($extra: userRequest).push(context);
           }),
       ProfileDetail(
           title: 'ユーザー設定',
           icon: Icons.manage_accounts,
-          onTap: () => ProfileRegisterUserInfoRoute().push(context)),
+          onTap: () {
+            User? data = UserData().user;
+            if (data == null) {
+              return;
+            }
+            UserRequest userRequest = UserRequest(
+              userId: data.userId,
+              firstName: data.firstName,
+              lastName: data.lastName,
+              email: data.email,
+              gender: data.gender,
+              birthDate: data.birthDate,
+              address: data.address,
+              postalCode: data.postalCode,
+              phoneNumber: data.phoneNumber,
+              iconImageUrl: data.iconImageUrl,
+              bodyHeight: data.bodyHeight,
+              bodyWeight: data.bodyWeight,
+              occupation: data.occupation,
+            );
+            ProfileRegisterUserInfoRoute($extra: userRequest).push(context);
+          })
     ];
   }
 
