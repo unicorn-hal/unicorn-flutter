@@ -156,6 +156,7 @@ class RegisterUserInfoController extends ControllerCore {
     }
     if (!RegExpConstants.emailRegExp.hasMatch(emailTextController.text)) {
       Fluttertoast.showToast(msg: "メールアドレスの形式が正しくありません");
+      return false;
     }
     return true;
   }
