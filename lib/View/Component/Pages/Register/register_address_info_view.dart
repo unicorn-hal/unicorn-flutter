@@ -243,9 +243,13 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                         width: deviceWidth,
                         height: 170,
                         color: Colors.grey,
-                        child: GoogleMapViewer(
-                          point: controller.mapPinPosition,
-                        ),
+                        child: ValueListenableBuilder(
+                            valueListenable: controller.mapPinPosition,
+                            builder: (context, value, child) {
+                              return GoogleMapViewer(
+                                point: value,
+                              );
+                            }),
                       ),
                     ),
                     GestureDetector(

@@ -29,7 +29,8 @@ class RegisterAddressInfoController extends ControllerCore {
   UserData userData = UserData();
 
   late List<String> _entryItemStrings;
-  late LatLng _mapPinPosition;
+  ValueNotifier<LatLng> _mapPinPosition =
+      ValueNotifier(const LatLng(35.69168711233464, 139.69700732758113));
 
   int selectedPrefectureIndex = 0;
 
@@ -43,17 +44,15 @@ class RegisterAddressInfoController extends ControllerCore {
   @override
   void initialize() {
     _entryItemStrings = ['未設定'] + Prefectures.list;
-    _mapPinPosition =
-        const LatLng(35.69168711233464, 139.69700732758113); // HAL東京・仮初期値
     _setDefaultValue();
   }
 
   ValueNotifier<bool> get protector => _protector;
 
   List<String> get entryItemStrings => _entryItemStrings;
-  LatLng get mapPinPosition => _mapPinPosition;
+  ValueNotifier<LatLng> get mapPinPosition => _mapPinPosition;
 
-  void _setDefaultValue() {
+  Future<void> _setDefaultValue() async {
     if (from == Routes.profile) {
       List<String> splitedAddress = userData.user!.address.split(',');
 
@@ -70,6 +69,8 @@ class RegisterAddressInfoController extends ControllerCore {
           addressDetailFromSplitAddress.isNotEmpty) {
         addressDetailTextController.text = addressDetailFromSplitAddress;
       }
+
+      await updateMapPinPosition();
     }
   }
 
@@ -92,7 +93,7 @@ class RegisterAddressInfoController extends ControllerCore {
         municipalitiesTextController.text;
     LatLng? position = await _locationService.getPositionFromAddress(address);
     if (position != null) {
-      _mapPinPosition = position;
+      _mapPinPosition.value = position;
     }
   }
 
