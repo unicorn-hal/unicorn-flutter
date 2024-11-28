@@ -53,7 +53,7 @@ class RegisterUserInfoController extends ControllerCore {
     _setDefaultValue();
   }
 
-  Future<void> _setDefaultValue() async {
+  void _setDefaultValue() {
     if (from == Routes.profile) {
       phoneNumberTextController.text = userData.user!.phoneNumber;
       emailTextController.text = userData.user!.email;
