@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_address_info_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -256,9 +257,11 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                           width: deviceWidth * 0.5,
                           height: 60,
                           color: ColorName.profileInputButtonColor,
-                          child: const Center(
+                          child: Center(
                             child: CustomText(
-                              text: '次に進む',
+                              text: widget.from == Routes.profile
+                                  ? '完了する'
+                                  : '次に進む',
                               fontSize: 22,
                               color: Colors.white,
                             ),

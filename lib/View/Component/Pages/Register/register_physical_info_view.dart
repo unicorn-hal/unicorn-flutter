@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_physical_info_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -281,9 +282,11 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                           width: deviceWidth * 0.5,
                           height: 60,
                           color: ColorName.profileInputButtonColor,
-                          child: const Center(
+                          child: Center(
                             child: CustomText(
-                              text: '次に進む',
+                              text: widget.from == Routes.profile
+                                  ? '完了する'
+                                  : '次に進む',
                               fontSize: 22,
                               color: Colors.white,
                             ),
