@@ -143,6 +143,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                     GestureDetector(
                       onTap: () async {
                         await controller.setAddressFromPostalCode();
+                        setState(() {});
                       },
                       child: Align(
                         alignment: Alignment.center,
