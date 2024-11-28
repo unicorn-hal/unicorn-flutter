@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:io';
 
@@ -40,7 +42,7 @@ class RegisterUserInfoController extends ControllerCore {
 
   UserData userData = UserData();
 
-  ValueNotifier<bool> _protector = ValueNotifier(false);
+  final ValueNotifier<bool> _protector = ValueNotifier(false);
   ValueNotifier<bool> get protector => _protector;
 
   File? _imageFile;
@@ -80,7 +82,11 @@ class RegisterUserInfoController extends ControllerCore {
       if (_imageFile == null) {
         return null;
       }
-      ProtectorNotifier().enableProtector();
+      if (from == Routes.profile) {
+        ProtectorNotifier().enableProtector();
+      } else {
+        _protector.value = true;
+      }
       String getUrl = await _cloudStorageService.uploadUserAvatar(
         UserData().user!.userId,
         _imageFile!,
@@ -89,7 +95,11 @@ class RegisterUserInfoController extends ControllerCore {
     } catch (e) {
       Log.echo('Failed to upload image: $e');
     } finally {
-      ProtectorNotifier().disableProtector();
+      if (from == Routes.profile) {
+        ProtectorNotifier().disableProtector();
+      } else {
+        _protector.value = false;
+      }
     }
     return null;
   }
@@ -128,7 +138,7 @@ class RegisterUserInfoController extends ControllerCore {
         userData.setUser(User.fromJson(userRequest.toJson()));
         Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
       }
-      ProfileRoute().go(context);
+      const ProfileRoute().go(context);
       return;
     }
 
@@ -140,7 +150,7 @@ class RegisterUserInfoController extends ControllerCore {
       return;
     }
     Fluttertoast.showToast(msg: Strings.PROFILE_REGISTRATION_COMPLETED_MESSAGE);
-    HomeRoute().push(context);
+    const HomeRoute().push(context);
   }
 
   bool validateField() {
