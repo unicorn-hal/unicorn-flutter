@@ -124,8 +124,10 @@ class RegisterUserInfoController extends ControllerCore {
         bodyWeight: userData.user!.bodyWeight,
         occupation: userInfo.occupation,
       );
+      ProtectorNotifier().enableProtector();
       Future<int> responceCode =
           _userApi.putUser(userId: userData.user!.userId, body: userRequest);
+      ProtectorNotifier().disableProtector();
       if (await responceCode == 200) {
         // シングルトンに登録した値をセットする
         userData.setUser(User.fromJson(userRequest.toJson()));
@@ -151,7 +153,9 @@ class RegisterUserInfoController extends ControllerCore {
     userRequest.email = userInfo.email;
     userRequest.occupation = userInfo.occupation;
 
+    ProtectorNotifier().enableProtector();
     Future<int> responceCode = _userApi.postUser(body: userRequest);
+    ProtectorNotifier().disableProtector();
     if (await responceCode == 200) {
       Fluttertoast.showToast(
           msg: Strings.PROFILE_REGISTRATION_COMPLETED_MESSAGE);

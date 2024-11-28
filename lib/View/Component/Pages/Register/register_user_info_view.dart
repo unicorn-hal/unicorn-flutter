@@ -6,7 +6,6 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
-import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class RegisterUserInfoView extends StatefulWidget {
@@ -165,9 +164,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                 ),
                 GestureDetector(
                   onTap: () async {
-                    ProtectorNotifier().enableProtector();
                     await _controller.submit(widget.userRequest!);
-                    ProtectorNotifier().disableProtector();
                   },
                   child: Align(
                     alignment: Alignment.center,

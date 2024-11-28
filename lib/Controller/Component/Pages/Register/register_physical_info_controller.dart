@@ -13,6 +13,7 @@ import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
+import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 class RegisterPhysicalInfoController extends ControllerCore {
   UserApi get _userApi => UserApi();
@@ -81,8 +82,10 @@ class RegisterPhysicalInfoController extends ControllerCore {
         bodyHeight: physicalInfo.bodyHeight,
         bodyWeight: physicalInfo.bodyWeight,
       );
+      ProtectorNotifier().enableProtector();
       Future<int> responceCode =
           _userApi.putUser(userId: userData.user!.userId, body: userRequest);
+      ProtectorNotifier().disableProtector();
       if (await responceCode == 200) {
         // シングルトンに登録した値をセットする
         userData.setUser(User.fromJson(userRequest.toJson()));

@@ -170,13 +170,13 @@ class RegisterAddressInfoController extends ControllerCore {
         bodyWeight: userData.user!.bodyWeight,
         occupation: userData.user!.occupation,
       );
+      ProtectorNotifier().enableProtector();
       Future<int> responceCode =
           _userApi.putUser(userId: userData.user!.userId, body: userRequest);
+      ProtectorNotifier().disableProtector();
       if (await responceCode == 200) {
         // シングルトンに登録した値をセットする
-        ProtectorNotifier().enableProtector();
         userData.setUser(User.fromJson(userRequest.toJson()));
-        ProtectorNotifier().disableProtector();
         Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
         ProfileRoute().push(context);
         return;
