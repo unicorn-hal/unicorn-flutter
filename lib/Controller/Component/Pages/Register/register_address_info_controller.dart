@@ -172,8 +172,7 @@ class RegisterAddressInfoController extends ControllerCore {
       return;
     }
 
-    RegisterUserInfoRoute(from: Routes.registerUserInfo, $extra: userRequest)
-        .push(context);
+    RegisterUserInfoRoute($extra: userRequest).push(context);
 
     return;
   }

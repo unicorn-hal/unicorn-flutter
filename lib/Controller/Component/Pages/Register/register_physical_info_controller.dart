@@ -88,9 +88,7 @@ class RegisterPhysicalInfoController extends ControllerCore {
       return;
     }
 
-    RegisterAddressInfoRoute(
-            from: Routes.registerPhysicalInfo, $extra: userRequest)
-        .push(context);
+    RegisterAddressInfoRoute($extra: userRequest).push(context);
     return;
   }
 

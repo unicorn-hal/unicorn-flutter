@@ -279,17 +279,15 @@ class RegisterPhysicalInfoRoute extends GoRouteData {
 class RegisterAddressInfoRoute extends GoRouteData {
   const RegisterAddressInfoRoute({
     this.$extra,
-    required this.from,
   });
 
   final UserRequest? $extra;
-  final String from;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       RegisterAddressInfoView(
         userRequest: $extra,
-        from: from,
+        from: Routes.registerPhysicalInfo,
       );
 }
 
@@ -299,17 +297,15 @@ class RegisterAddressInfoRoute extends GoRouteData {
 class RegisterUserInfoRoute extends GoRouteData {
   RegisterUserInfoRoute({
     this.$extra,
-    required this.from,
   });
 
   final UserRequest? $extra;
-  final String from;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       RegisterUserInfoView(
         userRequest: $extra,
-        from: from,
+        from: Routes.registerAddressInfo,
       );
 }
 
