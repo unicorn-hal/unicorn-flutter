@@ -49,9 +49,11 @@ class RegisterUserInfoController extends ControllerCore {
   Image get image => _image ?? Assets.images.icons.defaultUserIcon.image();
 
   @override
-  void initialize() {}
+  void initialize() {
+    _setDefaultValue();
+  }
 
-  Future<void> setDefaultValue() async {
+  Future<void> _setDefaultValue() async {
     if (from == Routes.profile) {
       phoneNumberTextController.text = userData.user!.phoneNumber;
       emailTextController.text = userData.user!.email;

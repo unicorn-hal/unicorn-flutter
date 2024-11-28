@@ -34,7 +34,6 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
       context: context,
       from: widget.from,
     );
-    _controller.setDefaultValue();
   }
 
   @override

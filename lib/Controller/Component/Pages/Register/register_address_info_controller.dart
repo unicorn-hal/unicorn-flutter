@@ -45,6 +45,7 @@ class RegisterAddressInfoController extends ControllerCore {
     _entryItemStrings = ['未設定'] + Prefectures.list;
     _mapPinPosition =
         const LatLng(35.69168711233464, 139.69700732758113); // HAL東京・仮初期値
+    _setDefaultValue();
   }
 
   ValueNotifier<bool> get protector => _protector;
@@ -52,7 +53,7 @@ class RegisterAddressInfoController extends ControllerCore {
   List<String> get entryItemStrings => _entryItemStrings;
   LatLng get mapPinPosition => _mapPinPosition;
 
-  void setDefaultValue() {
+  void _setDefaultValue() {
     if (from == Routes.profile) {
       List<String> splitedAddress = userData.user!.address.split(',');
 

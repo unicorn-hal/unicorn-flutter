@@ -36,7 +36,6 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
       context: context,
       from: widget.from,
     );
-    controller.setDefaultValue();
   }
 
   @override
