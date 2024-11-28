@@ -160,4 +160,12 @@ class RegisterUserInfoController extends ControllerCore {
     }
     return true;
   }
+
+  /// メモリリークを防ぐためdispose
+  void dispose() {
+    phoneNumberTextController.dispose();
+    emailTextController.dispose();
+    occupationTextController.dispose();
+    _protector.dispose();
+  }
 }

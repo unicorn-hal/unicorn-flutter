@@ -38,6 +38,12 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final deviceWidth = MediaQuery.of(context).size.width;
     return Stack(
