@@ -33,6 +33,8 @@ class RegisterAddressInfoController extends ControllerCore {
 
   int selectedPrefectureIndex = 0;
 
+  ValueNotifier<bool> _protector = ValueNotifier(false);
+
   /// 入力欄のコントローラー
   TextEditingController postalCodeTextController = TextEditingController();
   TextEditingController municipalitiesTextController = TextEditingController();
@@ -44,6 +46,8 @@ class RegisterAddressInfoController extends ControllerCore {
     _mapPinPosition =
         const LatLng(35.69168711233464, 139.69700732758113); // HAL東京・仮初期値
   }
+
+  ValueNotifier<bool> get protector => _protector;
 
   List<String> get entryItemStrings => _entryItemStrings;
   LatLng get mapPinPosition => _mapPinPosition;
@@ -105,10 +109,18 @@ class RegisterAddressInfoController extends ControllerCore {
 
   /// 現在位置から住所を取得し、入力欄にセットする
   Future<void> setAddressFromLocation() async {
-    ProtectorNotifier().enableProtector();
+    if (from == Routes.profile) {
+      ProtectorNotifier().enableProtector();
+    } else {
+      _protector.value = true;
+    }
     final LocationAddressInfo? currentPositionInfo =
         await _locationService.getAddressFromPosition();
-    ProtectorNotifier().disableProtector();
+    if (from == Routes.profile) {
+      ProtectorNotifier().disableProtector();
+    } else {
+      _protector.value = false;
+    }
     if (currentPositionInfo == null) {
       return;
     }
@@ -125,10 +137,18 @@ class RegisterAddressInfoController extends ControllerCore {
 
   /// 郵便番号から住所を取得し、入力欄にセットする
   Future<void> setAddressFromPostalCode() async {
-    ProtectorNotifier().enableProtector();
+    if (from == Routes.profile) {
+      ProtectorNotifier().enableProtector();
+    } else {
+      _protector.value = true;
+    }
     LocationAddressInfo? addressFromPostalCode = await _locationService
         .getAddressFromPostalCode(postalCodeTextController.text);
-    ProtectorNotifier().disableProtector();
+    if (from == Routes.profile) {
+      ProtectorNotifier().disableProtector();
+    } else {
+      _protector.value = false;
+    }
     if (addressFromPostalCode == null) {
       return;
     }

@@ -40,6 +40,9 @@ class RegisterUserInfoController extends ControllerCore {
 
   UserData userData = UserData();
 
+  ValueNotifier<bool> _protector = ValueNotifier(false);
+  ValueNotifier<bool> get protector => _protector;
+
   File? _imageFile;
   Image? _image;
 
@@ -128,11 +131,12 @@ class RegisterUserInfoController extends ControllerCore {
       return;
     }
 
-    ProtectorNotifier().enableProtector();
+    _protector.value = true;
     int responceCode = await _userApi.postUser(body: userRequest);
-    ProtectorNotifier().disableProtector();
+    _protector.value = false;
     if (responceCode == 400 || responceCode == 500) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      return;
     }
     Fluttertoast.showToast(msg: Strings.PROFILE_REGISTRATION_COMPLETED_MESSAGE);
     HomeRoute().push(context);
