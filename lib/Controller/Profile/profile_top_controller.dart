@@ -88,7 +88,7 @@ class ProfileTopController extends ControllerCore {
         title: '身体情報',
         icon: Icons.man,
         onTap: () {
-          final UserRequest userRequest = UserData().convertUserRequest();
+          final UserRequest userRequest = UserData().getUserWithRequest();
           ProfileRegisterPhysicalInfoRoute(
             $extra: userRequest,
           ).push(context);
@@ -98,7 +98,7 @@ class ProfileTopController extends ControllerCore {
           title: '住所設定',
           icon: Icons.home,
           onTap: () {
-            final UserRequest userRequest = UserData().convertUserRequest();
+            final UserRequest userRequest = UserData().getUserWithRequest();
             ProfileRegisterAddressInfoRoute(
               $extra: userRequest,
             ).push(context);
@@ -107,7 +107,7 @@ class ProfileTopController extends ControllerCore {
           title: 'ユーザー設定',
           icon: Icons.manage_accounts,
           onTap: () {
-            final UserRequest userRequest = UserData().convertUserRequest();
+            final UserRequest userRequest = UserData().getUserWithRequest();
             ProfileRegisterUserInfoRoute(
               $extra: userRequest,
             ).push(context);

@@ -15,7 +15,7 @@ class UserData {
   }
 
   // UserRequest型に変換
-  UserRequest convertUserRequest() {
+  UserRequest getUserWithRequest() {
     return UserRequest.fromJson(_user!.toJson());
   }
 }
