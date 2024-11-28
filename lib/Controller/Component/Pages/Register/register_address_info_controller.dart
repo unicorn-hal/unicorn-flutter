@@ -230,7 +230,8 @@ class RegisterAddressInfoController extends ControllerCore {
     }
     if (municipalitiesTextController.text.contains(',') ||
         addressDetailTextController.text.contains(',')) {
-      Fluttertoast.showToast(msg: '使用できない文字列が含まれています');
+      Fluttertoast.showToast(
+          msg: Strings.PROFILE_ADDRESS_NOT_FORMAT_ERROR_MESSAGE);
       return false;
     }
     return true;

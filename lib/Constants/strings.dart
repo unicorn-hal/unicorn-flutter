@@ -80,4 +80,7 @@ class Strings {
       'ユーザーが正常に登録されました';
   // プロフィール編集完了時に表示するテキスト
   static const String PROFILE_EDIT_COMPLETED_MESSAGE = '情報が正常に更新されました';
+  // 住所情報画面でテキストフィールド内に使用できない文字列が含まれる際に表示するテキスト
+  static const String PROFILE_ADDRESS_NOT_FORMAT_ERROR_MESSAGE =
+      '使用できない文字列が含まれています';
 }
