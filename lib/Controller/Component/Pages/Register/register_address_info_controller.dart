@@ -52,8 +52,6 @@ class RegisterAddressInfoController extends ControllerCore {
     if (from == Routes.profile) {
       postalCodeTextController.text = userData.user!.postalCode;
       municipalitiesTextController.text = userData.user!.address;
-    } else {
-      return;
     }
   }
 

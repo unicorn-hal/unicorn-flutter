@@ -53,8 +53,6 @@ class RegisterUserInfoController extends ControllerCore {
       phoneNumberTextController.text = userData.user!.phoneNumber;
       emailTextController.text = userData.user!.email;
       occupationTextController.text = userData.user!.occupation;
-    } else {
-      return;
     }
   }
 

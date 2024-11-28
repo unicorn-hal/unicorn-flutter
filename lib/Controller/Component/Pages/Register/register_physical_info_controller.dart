@@ -47,8 +47,6 @@ class RegisterPhysicalInfoController extends ControllerCore {
       birthDate = userData.user!.birthDate;
       bodyHeightTextController.text = userData.user!.bodyHeight.toString();
       bodyWeightTextController.text = userData.user!.bodyWeight.toString();
-    } else {
-      return;
     }
   }
 
