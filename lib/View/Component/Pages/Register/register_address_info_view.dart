@@ -264,7 +264,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                               child: Center(
                                 child: CustomText(
                                   text: widget.from == Routes.profile
-                                      ? '完了する'
+                                      ? '保存する'
                                       : '次に進む',
                                   fontSize: 22,
                                   color: Colors.white,

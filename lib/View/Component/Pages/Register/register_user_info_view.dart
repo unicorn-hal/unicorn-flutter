@@ -186,7 +186,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                               color: ColorName.profileInputButtonColor,
                               child: const Center(
                                 child: CustomText(
-                                  text: '完了する',
+                                  text: '保存する',
                                   fontSize: 22,
                                   color: Colors.white,
                                 ),
