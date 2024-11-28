@@ -118,10 +118,10 @@ class RegisterUserInfoController extends ControllerCore {
 
     if (from == Routes.profile) {
       ProtectorNotifier().enableProtector();
-      int responceCode = await _userApi.putUser(
+      int statusCode = await _userApi.putUser(
           userId: userData.user!.userId, body: userRequest);
       ProtectorNotifier().disableProtector();
-      if (responceCode != 200) {
+      if (statusCode != 200) {
         Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
       } else {
         // シングルトンに登録した値をセットする
@@ -133,9 +133,9 @@ class RegisterUserInfoController extends ControllerCore {
     }
 
     _protector.value = true;
-    int responceCode = await _userApi.postUser(body: userRequest);
+    int statusCode = await _userApi.postUser(body: userRequest);
     _protector.value = false;
-    if (responceCode == 400 || responceCode == 500) {
+    if (statusCode == 400 || statusCode == 500) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
       return;
     }

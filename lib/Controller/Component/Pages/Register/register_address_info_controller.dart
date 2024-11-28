@@ -196,10 +196,10 @@ class RegisterAddressInfoController extends ControllerCore {
 
     if (from == Routes.profile) {
       ProtectorNotifier().enableProtector();
-      int responceCode = await _userApi.putUser(
+      int statusCode = await _userApi.putUser(
           userId: userData.user!.userId, body: userRequest);
       ProtectorNotifier().disableProtector();
-      if (responceCode != 200) {
+      if (statusCode != 200) {
         Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
       } else {
         // シングルトンに登録した値をセットする
