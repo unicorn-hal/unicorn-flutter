@@ -78,13 +78,13 @@ class RegisterPhysicalInfoController extends ControllerCore {
       ProtectorNotifier().disableProtector();
       if (responceCode == 400 || responceCode == 500) {
         Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-        ProfileRoute().push(context);
+        ProfileRoute().go(context);
         return;
       }
       // シングルトンに登録した値をセットする
       userData.setUser(User.fromJson(userRequest.toJson()));
       Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
-      ProfileRoute().push(context);
+      ProfileRoute().go(context);
       return;
     }
 
