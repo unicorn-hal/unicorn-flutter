@@ -105,8 +105,10 @@ class RegisterAddressInfoController extends ControllerCore {
 
   /// 現在位置から住所を取得し、入力欄にセットする
   Future<void> setAddressFromLocation() async {
+    ProtectorNotifier().enableProtector();
     final LocationAddressInfo? currentPositionInfo =
         await _locationService.getAddressFromPosition();
+    ProtectorNotifier().disableProtector();
     if (currentPositionInfo == null) {
       return;
     }
@@ -123,8 +125,10 @@ class RegisterAddressInfoController extends ControllerCore {
 
   /// 郵便番号から住所を取得し、入力欄にセットする
   Future<void> setAddressFromPostalCode() async {
+    ProtectorNotifier().enableProtector();
     LocationAddressInfo? addressFromPostalCode = await _locationService
         .getAddressFromPostalCode(postalCodeTextController.text);
+    ProtectorNotifier().disableProtector();
     if (addressFromPostalCode == null) {
       return;
     }

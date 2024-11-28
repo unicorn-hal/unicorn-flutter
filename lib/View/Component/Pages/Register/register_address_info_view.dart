@@ -83,10 +83,8 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                 ),
                 GestureDetector(
                   onTap: () async {
-                    ProtectorNotifier().enableProtector();
                     await controller.setAddressFromLocation();
                     setState(() {});
-                    ProtectorNotifier().disableProtector();
                   },
                   child: Align(
                     alignment: Alignment.center,
@@ -144,10 +142,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        ProtectorNotifier().enableProtector();
                         await controller.setAddressFromPostalCode();
-                        // setState(() {});
-                        ProtectorNotifier().disableProtector();
                       },
                       child: Align(
                         alignment: Alignment.center,
