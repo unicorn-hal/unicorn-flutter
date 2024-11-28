@@ -29,12 +29,12 @@ class RegisterAddressInfoController extends ControllerCore {
   UserData userData = UserData();
 
   late List<String> _entryItemStrings;
-  ValueNotifier<LatLng> _mapPinPosition =
+  final ValueNotifier<LatLng> _mapPinPosition =
       ValueNotifier(const LatLng(35.69168711233464, 139.69700732758113));
 
   int selectedPrefectureIndex = 0;
 
-  ValueNotifier<bool> _protector = ValueNotifier(false);
+  final ValueNotifier<bool> _protector = ValueNotifier(false);
 
   /// 入力欄のコントローラー
   TextEditingController postalCodeTextController = TextEditingController();
