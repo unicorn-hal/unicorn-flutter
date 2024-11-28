@@ -7,7 +7,6 @@ import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Profile/profile_detail.dart';
-import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
@@ -89,25 +88,7 @@ class ProfileTopController extends ControllerCore {
         title: '身体情報',
         icon: Icons.man,
         onTap: () {
-          User? data = UserData().user;
-          if (data == null) {
-            return;
-          }
-          UserRequest userRequest = UserRequest(
-            userId: data.userId,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            email: data.email,
-            gender: data.gender,
-            birthDate: data.birthDate,
-            address: data.address,
-            postalCode: data.postalCode,
-            phoneNumber: data.phoneNumber,
-            iconImageUrl: data.iconImageUrl,
-            bodyHeight: data.bodyHeight,
-            bodyWeight: data.bodyWeight,
-            occupation: data.occupation,
-          );
+          final UserRequest userRequest = UserData().convertUserRequest();
           ProfileRegisterPhysicalInfoRoute(
             $extra: userRequest,
           ).push(context);
@@ -117,51 +98,19 @@ class ProfileTopController extends ControllerCore {
           title: '住所設定',
           icon: Icons.home,
           onTap: () {
-            User? data = UserData().user;
-            if (data == null) {
-              return;
-            }
-            UserRequest userRequest = UserRequest(
-              userId: data.userId,
-              firstName: data.firstName,
-              lastName: data.lastName,
-              email: data.email,
-              gender: data.gender,
-              birthDate: data.birthDate,
-              address: data.address,
-              postalCode: data.postalCode,
-              phoneNumber: data.phoneNumber,
-              iconImageUrl: data.iconImageUrl,
-              bodyHeight: data.bodyHeight,
-              bodyWeight: data.bodyWeight,
-              occupation: data.occupation,
-            );
-            ProfileRegisterAddressInfoRoute($extra: userRequest).push(context);
+            final UserRequest userRequest = UserData().convertUserRequest();
+            ProfileRegisterAddressInfoRoute(
+              $extra: userRequest,
+            ).push(context);
           }),
       ProfileDetail(
           title: 'ユーザー設定',
           icon: Icons.manage_accounts,
           onTap: () {
-            User? data = UserData().user;
-            if (data == null) {
-              return;
-            }
-            UserRequest userRequest = UserRequest(
-              userId: data.userId,
-              firstName: data.firstName,
-              lastName: data.lastName,
-              email: data.email,
-              gender: data.gender,
-              birthDate: data.birthDate,
-              address: data.address,
-              postalCode: data.postalCode,
-              phoneNumber: data.phoneNumber,
-              iconImageUrl: data.iconImageUrl,
-              bodyHeight: data.bodyHeight,
-              bodyWeight: data.bodyWeight,
-              occupation: data.occupation,
-            );
-            ProfileRegisterUserInfoRoute($extra: userRequest).push(context);
+            final UserRequest userRequest = UserData().convertUserRequest();
+            ProfileRegisterUserInfoRoute(
+              $extra: userRequest,
+            ).push(context);
           })
     ];
   }
