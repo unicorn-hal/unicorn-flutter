@@ -7,7 +7,9 @@ import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Profile/profile_detail.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Package/SharedPreferences/shared_preferences_service.dart';
@@ -84,14 +86,38 @@ class ProfileTopController extends ControllerCore {
         },
       ),
       ProfileDetail(
-          title: '身体情報',
-          icon: Icons.man,
-          onTap: () => const ProfileRegisterPhysicalInfoRoute().push(context)),
+        title: '身体情報',
+        icon: Icons.man,
+        onTap: () {
+          User? data = UserData().user;
+          if (data == null) {
+            return;
+          }
+          UserRequest userRequest = UserRequest(
+            userId: data.userId,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            gender: data.gender,
+            birthDate: data.birthDate,
+            address: data.address,
+            postalCode: data.postalCode,
+            phoneNumber: data.phoneNumber,
+            iconImageUrl: data.iconImageUrl,
+            bodyHeight: data.bodyHeight,
+            bodyWeight: data.bodyWeight,
+            occupation: data.occupation,
+          );
+          ProfileRegisterPhysicalInfoRoute(
+            $extra: userRequest,
+          ).push(context);
+        },
+      ),
       ProfileDetail(
           title: '住所設定',
           icon: Icons.home,
           onTap: () {
-            return ProfileRegisterAddressInfoRoute().push(context);
+            ProfileRegisterAddressInfoRoute().push(context);
           }),
       ProfileDetail(
           title: 'ユーザー設定',
