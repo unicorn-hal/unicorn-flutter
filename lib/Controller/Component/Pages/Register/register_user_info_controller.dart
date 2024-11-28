@@ -51,7 +51,7 @@ class RegisterUserInfoController extends ControllerCore {
   @override
   void initialize() {}
 
-  Future<void> setTextEditingController() async {
+  Future<void> setDefaultValue() async {
     if (from == Routes.profile) {
       phoneNumberTextController.text = userData.user!.phoneNumber;
       emailTextController.text = userData.user!.email;

@@ -39,7 +39,7 @@ class RegisterPhysicalInfoController extends ControllerCore {
     birthDate = DateTime.now();
   }
 
-  void setTextEditingController() {
+  void setDefaultValue() {
     if (from == Routes.profile) {
       firstNameTextController.text = userData.user!.firstName;
       lastNameTextController.text = userData.user!.lastName;

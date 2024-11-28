@@ -39,7 +39,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
       context: context,
       from: widget.from,
     );
-    controller.setTextEditingController();
+    controller.setDefaultValue();
   }
 
   @override

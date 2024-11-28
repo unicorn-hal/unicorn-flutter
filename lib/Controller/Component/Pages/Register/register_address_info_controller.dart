@@ -52,7 +52,7 @@ class RegisterAddressInfoController extends ControllerCore {
   List<String> get entryItemStrings => _entryItemStrings;
   LatLng get mapPinPosition => _mapPinPosition;
 
-  void setTextEditingController() {
+  void setDefaultValue() {
     if (from == Routes.profile) {
       List<String> splitedAddress = userData.user!.address.split(',');
 
