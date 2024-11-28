@@ -86,23 +86,16 @@ class RegisterPhysicalInfoController extends ControllerCore {
       int responceCode = await _userApi.putUser(
           userId: userData.user!.userId, body: userRequest);
       ProtectorNotifier().disableProtector();
-      if (responceCode == 200) {
-        // シングルトンに登録した値をセットする
-        userData.setUser(User.fromJson(userRequest.toJson()));
-        Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
-        ProfileRoute().push(context);
-        return;
-      }
-      if (responceCode == 400) {
+      if (responceCode == 400 || responceCode == 500) {
         Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
         ProfileRoute().push(context);
         return;
       }
-      if (responceCode == 500) {
-        Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-        ProfileRoute().push(context);
-        return;
-      }
+      // シングルトンに登録した値をセットする
+      userData.setUser(User.fromJson(userRequest.toJson()));
+      Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
+      ProfileRoute().push(context);
+      return;
     }
 
     userRequest = UserRequest(

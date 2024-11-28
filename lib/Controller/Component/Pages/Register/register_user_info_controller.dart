@@ -128,23 +128,16 @@ class RegisterUserInfoController extends ControllerCore {
       int responceCode = await _userApi.putUser(
           userId: userData.user!.userId, body: userRequest);
       ProtectorNotifier().disableProtector();
-      if (responceCode == 200) {
-        // シングルトンに登録した値をセットする
-        userData.setUser(User.fromJson(userRequest.toJson()));
-        Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
-        ProfileRoute().push(context);
-        return;
-      }
-      if (responceCode == 400) {
+      if (responceCode == 400 || responceCode == 500) {
         Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
         ProfileRoute().push(context);
         return;
       }
-      if (responceCode == 500) {
-        Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-        ProfileRoute().push(context);
-        return;
-      }
+      // シングルトンに登録した値をセットする
+      userData.setUser(User.fromJson(userRequest.toJson()));
+      Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
+      ProfileRoute().push(context);
+      return;
     }
 
     userRequest.userId = userData.user!.userId;
@@ -154,19 +147,13 @@ class RegisterUserInfoController extends ControllerCore {
     userRequest.occupation = userInfo.occupation;
 
     ProtectorNotifier().enableProtector();
-    Future<int> responceCode = _userApi.postUser(body: userRequest);
+    int responceCode = await _userApi.postUser(body: userRequest);
     ProtectorNotifier().disableProtector();
-    if (await responceCode == 200) {
-      Fluttertoast.showToast(
-          msg: Strings.PROFILE_REGISTRATION_COMPLETED_MESSAGE);
-      HomeRoute().push(context);
-    }
-    if (await responceCode == 400) {
+    if (responceCode == 400 || responceCode == 500) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
-    if (await responceCode == 500) {
-      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-    }
+    Fluttertoast.showToast(msg: Strings.PROFILE_REGISTRATION_COMPLETED_MESSAGE);
+    HomeRoute().push(context);
   }
 
   bool validateField() {
