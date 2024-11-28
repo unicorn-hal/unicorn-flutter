@@ -8,6 +8,7 @@ import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Profile/profile_detail.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Package/SharedPreferences/shared_preferences_service.dart';
@@ -84,19 +85,33 @@ class ProfileTopController extends ControllerCore {
         },
       ),
       ProfileDetail(
-          title: '身体情報',
-          icon: Icons.man,
-          onTap: () => const ProfileRegisterPhysicalInfoRoute().push(context)),
+        title: '身体情報',
+        icon: Icons.man,
+        onTap: () {
+          final UserRequest userRequest = UserData().getUserWithRequest();
+          ProfileRegisterPhysicalInfoRoute(
+            $extra: userRequest,
+          ).push(context);
+        },
+      ),
       ProfileDetail(
           title: '住所設定',
           icon: Icons.home,
           onTap: () {
-            return ProfileRegisterAddressInfoRoute().push(context);
+            final UserRequest userRequest = UserData().getUserWithRequest();
+            ProfileRegisterAddressInfoRoute(
+              $extra: userRequest,
+            ).push(context);
           }),
       ProfileDetail(
           title: 'ユーザー設定',
           icon: Icons.manage_accounts,
-          onTap: () => ProfileRegisterUserInfoRoute().push(context)),
+          onTap: () {
+            final UserRequest userRequest = UserData().getUserWithRequest();
+            ProfileRegisterUserInfoRoute(
+              $extra: userRequest,
+            ).push(context);
+          })
     ];
   }
 

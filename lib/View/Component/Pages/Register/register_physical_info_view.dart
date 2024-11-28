@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_physical_info_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
-import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -13,7 +13,14 @@ import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class RegisterPhysicalInfoView extends StatefulWidget {
-  const RegisterPhysicalInfoView({super.key});
+  const RegisterPhysicalInfoView({
+    super.key,
+    required this.userRequest,
+    required this.from,
+  });
+
+  final String from;
+  final UserRequest userRequest;
 
   @override
   State<RegisterPhysicalInfoView> createState() =>
@@ -28,7 +35,10 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
   @override
   void initState() {
     super.initState();
-    controller = RegisterPhysicalInfoController();
+    controller = RegisterPhysicalInfoController(
+      context: context,
+      from: widget.from,
+    );
   }
 
   @override
@@ -271,22 +281,19 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                           width: deviceWidth * 0.5,
                           height: 60,
                           color: ColorName.profileInputButtonColor,
-                          child: const Center(
+                          child: Center(
                             child: CustomText(
-                              text: '次に進む',
+                              text: widget.from == Routes.profile
+                                  ? '保存する'
+                                  : '次に進む',
                               fontSize: 22,
                               color: Colors.white,
                             ),
                           )),
                     ),
                   ),
-                  onTap: () {
-                    UserRequest? userRequest = controller.submit();
-                    if (userRequest == null) {
-                      return;
-                    }
-                    ProfileRegisterAddressInfoRoute($extra: userRequest)
-                        .push(context);
+                  onTap: () async {
+                    await controller.submit(widget.userRequest);
                   },
                 )
               ],

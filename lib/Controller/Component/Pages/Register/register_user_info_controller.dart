@@ -1,15 +1,21 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:unicorn_flutter/Constants/regexp_constants.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_info.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
+import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudStorage/cloud_storage_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
@@ -21,14 +27,23 @@ class RegisterUserInfoController extends ControllerCore {
   FirebaseCloudStorageService get _cloudStorageService =>
       FirebaseCloudStorageService();
   ImageUtilsService get _imageUtilsService => ImageUtilsService();
+  UserApi get _userApi => UserApi();
 
-  final TextEditingController phoneNumberTextController =
-      TextEditingController();
-  final TextEditingController emailTextController = TextEditingController();
-  final TextEditingController occupationTextController =
-      TextEditingController();
+  RegisterUserInfoController({
+    required super.from,
+    required this.context,
+  });
+
+  BuildContext context;
+
+  TextEditingController phoneNumberTextController = TextEditingController();
+  TextEditingController emailTextController = TextEditingController();
+  TextEditingController occupationTextController = TextEditingController();
 
   UserData userData = UserData();
+
+  final ValueNotifier<bool> _protector = ValueNotifier(false);
+  ValueNotifier<bool> get protector => _protector;
 
   File? _imageFile;
   Image? _image;
@@ -36,7 +51,17 @@ class RegisterUserInfoController extends ControllerCore {
   Image get image => _image ?? Assets.images.icons.defaultUserIcon.image();
 
   @override
-  void initialize() {}
+  void initialize() {
+    _setDefaultValue();
+  }
+
+  void _setDefaultValue() {
+    if (from == Routes.profile) {
+      phoneNumberTextController.text = userData.user!.phoneNumber;
+      emailTextController.text = userData.user!.email;
+      occupationTextController.text = userData.user!.occupation;
+    }
+  }
 
   /// 端末のギャラリーから画像を選択する
   Future<void> selectImage() async {
@@ -57,7 +82,11 @@ class RegisterUserInfoController extends ControllerCore {
       if (_imageFile == null) {
         return null;
       }
-      ProtectorNotifier().enableProtector();
+      if (from == Routes.profile) {
+        ProtectorNotifier().enableProtector();
+      } else {
+        _protector.value = true;
+      }
       String getUrl = await _cloudStorageService.uploadUserAvatar(
         UserData().user!.userId,
         _imageFile!,
@@ -66,7 +95,11 @@ class RegisterUserInfoController extends ControllerCore {
     } catch (e) {
       Log.echo('Failed to upload image: $e');
     } finally {
-      ProtectorNotifier().disableProtector();
+      if (from == Routes.profile) {
+        ProtectorNotifier().disableProtector();
+      } else {
+        _protector.value = false;
+      }
     }
     return null;
   }
@@ -81,7 +114,6 @@ class RegisterUserInfoController extends ControllerCore {
       return;
     }
 
-    // todo: 編集処理でき次第、修正加えます。
     UserInfo userInfo = UserInfo(
       iconImageUrl: iconImageUrl,
       phoneNumber: phoneNumberTextController.text,
@@ -89,23 +121,36 @@ class RegisterUserInfoController extends ControllerCore {
       occupation: occupationTextController.text,
     );
 
-    userRequest.userId = UserData().user!.userId;
     userRequest.iconImageUrl = userInfo.iconImageUrl;
     userRequest.phoneNumber = userInfo.phoneNumber;
     userRequest.email = userInfo.email;
     userRequest.occupation = userInfo.occupation;
 
-    Future<int> responceCode = UserApi().postUser(body: userRequest);
-    if (await responceCode == 200) {
-      Fluttertoast.showToast(
-          msg: Strings.PROFILE_REGISTRATION_COMPLETED_MESSAGE);
+    if (from == Routes.profile) {
+      ProtectorNotifier().enableProtector();
+      int statusCode = await _userApi.putUser(
+          userId: userData.user!.userId, body: userRequest);
+      ProtectorNotifier().disableProtector();
+      if (statusCode != 200) {
+        Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      } else {
+        // シングルトンに登録した値をセットする
+        userData.setUser(User.fromJson(userRequest.toJson()));
+        Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
+      }
+      const ProfileRoute().go(context);
+      return;
     }
-    if (await responceCode == 400) {
+
+    _protector.value = true;
+    int statusCode = await _userApi.postUser(body: userRequest);
+    _protector.value = false;
+    if (statusCode == 400 || statusCode == 500) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      return;
     }
-    if (await responceCode == 500) {
-      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-    }
+    Fluttertoast.showToast(msg: Strings.PROFILE_REGISTRATION_COMPLETED_MESSAGE);
+    const HomeRoute().push(context);
   }
 
   bool validateField() {
@@ -122,7 +167,16 @@ class RegisterUserInfoController extends ControllerCore {
     }
     if (!RegExpConstants.emailRegExp.hasMatch(emailTextController.text)) {
       Fluttertoast.showToast(msg: "メールアドレスの形式が正しくありません");
+      return false;
     }
     return true;
+  }
+
+  /// メモリリークを防ぐためdispose
+  void dispose() {
+    phoneNumberTextController.dispose();
+    emailTextController.dispose();
+    occupationTextController.dispose();
+    _protector.dispose();
   }
 }

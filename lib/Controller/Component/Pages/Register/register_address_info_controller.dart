@@ -2,41 +2,77 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:unicorn_flutter/Constants/prefectures.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/User/address_info.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Model/Entity/location_address_info.dart';
+import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
+import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Package/Location/location_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 class RegisterAddressInfoController extends ControllerCore {
   LocationService get _locationService => LocationService();
+  UserApi get _userApi => UserApi();
 
+  RegisterAddressInfoController({
+    required this.context,
+    required super.from,
+  });
+
+  BuildContext context;
   UserData userData = UserData();
 
   late List<String> _entryItemStrings;
-  late LatLng _mapPinPosition;
+  final ValueNotifier<LatLng> _mapPinPosition =
+      ValueNotifier(const LatLng(35.69168711233464, 139.69700732758113));
 
   int selectedPrefectureIndex = 0;
 
+  final ValueNotifier<bool> _protector = ValueNotifier(false);
+
   /// 入力欄のコントローラー
-  final TextEditingController postalCodeTextController =
-      TextEditingController();
-  final TextEditingController municipalitiesTextController =
-      TextEditingController();
-  final TextEditingController addressDetailTextController =
-      TextEditingController();
+  TextEditingController postalCodeTextController = TextEditingController();
+  TextEditingController municipalitiesTextController = TextEditingController();
+  TextEditingController addressDetailTextController = TextEditingController();
 
   @override
   void initialize() {
     _entryItemStrings = ['未設定'] + Prefectures.list;
-    _mapPinPosition =
-        const LatLng(35.69168711233464, 139.69700732758113); // HAL東京・仮初期値
+    _setDefaultValue();
   }
 
+  ValueNotifier<bool> get protector => _protector;
+
   List<String> get entryItemStrings => _entryItemStrings;
-  LatLng get mapPinPosition => _mapPinPosition;
+  ValueNotifier<LatLng> get mapPinPosition => _mapPinPosition;
+
+  Future<void> _setDefaultValue() async {
+    if (from == Routes.profile) {
+      List<String> splitedAddress = userData.user!.address.split(',');
+
+      String prefectureFromSplitAddress = splitedAddress[0];
+      String municipalitiesFromSplitAddress = splitedAddress[1];
+      String? addressDetailFromSplitAddress =
+          splitedAddress.length > 2 ? splitedAddress[2] : null;
+
+      postalCodeTextController.text = userData.user!.postalCode;
+      selectedPrefectureIndex =
+          _entryItemStrings.indexOf(prefectureFromSplitAddress);
+      municipalitiesTextController.text = municipalitiesFromSplitAddress;
+      if (addressDetailFromSplitAddress != null &&
+          addressDetailFromSplitAddress.isNotEmpty) {
+        addressDetailTextController.text = addressDetailFromSplitAddress;
+      }
+
+      await updateMapPinPosition();
+    }
+  }
 
   /// 都道府県のリストを作成
   List<DropdownMenuItem<int>> countryList() {
@@ -57,7 +93,7 @@ class RegisterAddressInfoController extends ControllerCore {
         municipalitiesTextController.text;
     LatLng? position = await _locationService.getPositionFromAddress(address);
     if (position != null) {
-      _mapPinPosition = position;
+      _mapPinPosition.value = position;
     }
   }
 
@@ -88,8 +124,18 @@ class RegisterAddressInfoController extends ControllerCore {
 
   /// 現在位置から住所を取得し、入力欄にセットする
   Future<void> setAddressFromLocation() async {
+    if (from == Routes.profile) {
+      ProtectorNotifier().enableProtector();
+    } else {
+      _protector.value = true;
+    }
     final LocationAddressInfo? currentPositionInfo =
         await _locationService.getAddressFromPosition();
+    if (from == Routes.profile) {
+      ProtectorNotifier().disableProtector();
+    } else {
+      _protector.value = false;
+    }
     if (currentPositionInfo == null) {
       return;
     }
@@ -106,8 +152,18 @@ class RegisterAddressInfoController extends ControllerCore {
 
   /// 郵便番号から住所を取得し、入力欄にセットする
   Future<void> setAddressFromPostalCode() async {
+    if (from == Routes.profile) {
+      ProtectorNotifier().enableProtector();
+    } else {
+      _protector.value = true;
+    }
     LocationAddressInfo? addressFromPostalCode = await _locationService
         .getAddressFromPostalCode(postalCodeTextController.text);
+    if (from == Routes.profile) {
+      ProtectorNotifier().disableProtector();
+    } else {
+      _protector.value = false;
+    }
     if (addressFromPostalCode == null) {
       return;
     }
@@ -122,12 +178,11 @@ class RegisterAddressInfoController extends ControllerCore {
     await updateMapPinPosition();
   }
 
-  UserRequest? submit(UserRequest userRequest) {
+  Future<void> submit(UserRequest userRequest) async {
     if (validateField() == false) {
-      return null;
+      return;
     }
 
-    // todo: 編集処理でき次第、修正加えます。
     AddressInfo addressInfo = AddressInfo(
       postalCode: postalCodeTextController.text,
       prefectures: _entryItemStrings[selectedPrefectureIndex],
@@ -137,9 +192,26 @@ class RegisterAddressInfoController extends ControllerCore {
 
     userRequest.postalCode = addressInfo.postalCode;
     userRequest.address =
-        "${addressInfo.prefectures}${addressInfo.municipalities}${addressInfo.addressDetail}";
+        "${addressInfo.prefectures},${addressInfo.municipalities},${addressInfo.addressDetail}";
 
-    return userRequest;
+    if (from == Routes.profile) {
+      ProtectorNotifier().enableProtector();
+      int statusCode = await _userApi.putUser(
+          userId: userData.user!.userId, body: userRequest);
+      ProtectorNotifier().disableProtector();
+      if (statusCode != 200) {
+        Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      } else {
+        // シングルトンに登録した値をセットする
+        userData.setUser(User.fromJson(userRequest.toJson()));
+        Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
+      }
+      ProfileRoute().go(context);
+      return;
+    }
+
+    RegisterUserInfoRoute($extra: userRequest).push(context);
+    return;
   }
 
   bool validateField() {
@@ -158,6 +230,20 @@ class RegisterAddressInfoController extends ControllerCore {
       Fluttertoast.showToast(msg: "${emptyMessageField.join(',')}が入力されていません。");
       return false;
     }
+    if (municipalitiesTextController.text.contains(',') ||
+        addressDetailTextController.text.contains(',')) {
+      Fluttertoast.showToast(
+          msg: Strings.PROFILE_ADDRESS_NOT_FORMAT_ERROR_MESSAGE);
+      return false;
+    }
     return true;
+  }
+
+  /// メモリリークを防ぐためdispose
+  void dispose() {
+    postalCodeTextController.dispose();
+    municipalitiesTextController.dispose();
+    addressDetailTextController.dispose();
+    _protector.dispose();
   }
 }

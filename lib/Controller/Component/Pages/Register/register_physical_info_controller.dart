@@ -1,34 +1,61 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Constants/Enum/user_gender_enum.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/User/physical_info.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
+import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
+import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
+import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 class RegisterPhysicalInfoController extends ControllerCore {
+  UserApi get _userApi => UserApi();
+
+  RegisterPhysicalInfoController({
+    required this.context,
+    required super.from,
+  });
+
+  BuildContext context;
+
+  TextEditingController firstNameTextController = TextEditingController();
+  TextEditingController lastNameTextController = TextEditingController();
+  TextEditingController bodyHeightTextController = TextEditingController();
+  TextEditingController bodyWeightTextController = TextEditingController();
+
   late DateTime birthDate;
   UserGenderEnum? gender;
   UserData userData = UserData();
 
-  final TextEditingController firstNameTextController = TextEditingController();
-  final TextEditingController lastNameTextController = TextEditingController();
-  final TextEditingController bodyHeightTextController =
-      TextEditingController();
-  final TextEditingController bodyWeightTextController =
-      TextEditingController();
-
   @override
   void initialize() {
     birthDate = DateTime.now();
+    _setDefaultValue();
   }
 
-  UserRequest? submit() {
+  void _setDefaultValue() {
+    if (from == Routes.profile) {
+      firstNameTextController.text = userData.user!.firstName;
+      lastNameTextController.text = userData.user!.lastName;
+      gender = userData.user!.gender;
+      birthDate = userData.user!.birthDate;
+      bodyHeightTextController.text = userData.user!.bodyHeight.toString();
+      bodyWeightTextController.text = userData.user!.bodyWeight.toString();
+    }
+  }
+
+  Future<void> submit(UserRequest userRequest) async {
     if (validateField() == false) {
-      return null;
+      return;
     }
 
-    // todo: 編集処理でき次第、修正加えます。
     PhysicalInfo physicalInfo = PhysicalInfo(
       firstName: firstNameTextController.text,
       lastName: lastNameTextController.text,
@@ -38,16 +65,31 @@ class RegisterPhysicalInfoController extends ControllerCore {
       bodyWeight: double.tryParse(bodyWeightTextController.text)!,
     );
 
-    UserRequest? userRequest = UserRequest(
-      firstName: physicalInfo.firstName,
-      lastName: physicalInfo.lastName,
-      gender: physicalInfo.gender,
-      birthDate: physicalInfo.birthDate,
-      bodyHeight: physicalInfo.bodyHeight,
-      bodyWeight: physicalInfo.bodyWeight,
-    );
+    userRequest.firstName = physicalInfo.firstName;
+    userRequest.lastName = physicalInfo.lastName;
+    userRequest.gender = physicalInfo.gender;
+    userRequest.birthDate = physicalInfo.birthDate;
+    userRequest.bodyHeight = physicalInfo.bodyHeight;
+    userRequest.bodyWeight = physicalInfo.bodyWeight;
 
-    return userRequest;
+    if (from == Routes.profile) {
+      ProtectorNotifier().enableProtector();
+      int statusCode = await _userApi.putUser(
+          userId: userData.user!.userId, body: userRequest);
+      ProtectorNotifier().disableProtector();
+      if (statusCode != 200) {
+        Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      } else {
+        // シングルトンに登録した値をセットする
+        userData.setUser(User.fromJson(userRequest.toJson()));
+        Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
+      }
+      ProfileRoute().go(context);
+      return;
+    }
+
+    RegisterAddressInfoRoute($extra: userRequest).push(context);
+    return;
   }
 
   bool validateField() {

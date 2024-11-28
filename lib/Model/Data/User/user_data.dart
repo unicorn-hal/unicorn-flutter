@@ -1,4 +1,5 @@
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 
 class UserData {
   static final UserData _instance = UserData._internal();
@@ -11,5 +12,10 @@ class UserData {
 
   void setUser(User user) {
     _user = user;
+  }
+
+  // UserRequest型に変換
+  UserRequest getUserWithRequest() {
+    return UserRequest.fromJson(_user!.toJson());
   }
 }
