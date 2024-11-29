@@ -73,6 +73,8 @@ class RegisterAddressInfoController extends ControllerCore {
           addressDetailFromSplitAddress.isNotEmpty) {
         addressDetailTextController.text = addressDetailFromSplitAddress;
       }
+      await Future.delayed(const Duration(milliseconds: 120));
+      // todo: 別の回避方法を見つけるか、delayedの時間を調整する
       await updateMapPinPosition();
     }
   }
