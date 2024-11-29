@@ -4,6 +4,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:unicorn_flutter/Service/Log/log_service.dart';
+
 class GoogleMapViewer extends StatefulWidget {
   const GoogleMapViewer({
     super.key,
@@ -18,7 +20,7 @@ class GoogleMapViewer extends StatefulWidget {
 }
 
 class _GoogleMapViewerState extends State<GoogleMapViewer> {
-  late GoogleMapController mapController;
+  GoogleMapController? mapController;
 
   late LatLng _point;
   late LatLng? _destination;
@@ -50,9 +52,13 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
         _fetchRoute();
         _animateCameraToBounds();
       } else {
-        mapController.animateCamera(
-          CameraUpdate.newLatLng(_point),
-        );
+        try {
+          mapController!.animateCamera(
+            CameraUpdate.newLatLng(_point),
+          );
+        } catch (e) {
+          Log.echo('Error: $e');
+        }
       }
     }
   }
@@ -141,9 +147,13 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
             : _destination!.longitude,
       ),
     );
-    mapController.animateCamera(
-      CameraUpdate.newLatLngBounds(bounds, 50),
-    );
+    try {
+      mapController!.animateCamera(
+        CameraUpdate.newLatLngBounds(bounds, 50),
+      );
+    } catch (e) {
+      Log.echo('Error: $e');
+    }
   }
 
   @override
