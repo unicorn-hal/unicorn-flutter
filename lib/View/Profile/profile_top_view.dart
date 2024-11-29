@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:unicorn_flutter/Controller/Profile/profile_top_controller.dart';
+import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/profile_detail_cell.dart';
@@ -14,48 +16,49 @@ class ProfileTopView extends StatelessWidget {
     ProfileTopController controller = ProfileTopController(context);
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
-    String lastName = 'のりた';
-    String firstName = 'しおき';
-    // todo: controller出来たら消す
     return CustomScaffold(
       isScrollable: true,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 15,
+          Consumer(builder: (context, ref, _) {
+            UserData userData = ref.watch(userDataProvider);
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15,
+                  ),
+                  child: UserImageCircle(
+                    imageUrl: userData.user!.iconImageUrl,
+                    imageSize: 120,
+                  ),
                 ),
-                child: UserImageCircle(
-                  imageSize: 120,
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 20,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomText(
+                        text: userData.user!.lastName,
+                        fontSize: 30,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      CustomText(
+                        text: userData.user!.firstName,
+                        fontSize: 30,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 20,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomText(
-                      text: lastName,
-                      fontSize: 30,
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    CustomText(
-                      text: firstName,
-                      fontSize: 30,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+              ],
+            );
+          }),
           Container(
             width: deviceWidth,
             height: deviceHeight * 0.7,
