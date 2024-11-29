@@ -5,7 +5,6 @@ import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup_questi
 class HealthCheckupQuestions {
   static List<HealthCheckupQuestion> dataList = [
     HealthCheckupQuestion(
-        number: 1,
         question: '現在、体に違和感がありますか？',
         isMainQuestion: true,
         diseaseType: [
@@ -17,7 +16,6 @@ class HealthCheckupQuestions {
           HealthCheckupDiseaseEnum.painfulHead,
         ]),
     HealthCheckupQuestion(
-      number: 2,
       question: '最近の健康状態について、どのように感じていますか？',
       isMainQuestion: false,
       answers: [
@@ -44,7 +42,6 @@ class HealthCheckupQuestions {
       ],
     ),
     HealthCheckupQuestion(
-      number: 3,
       question: '過去24時間で、新たに気になる症状がありましたか？',
       isMainQuestion: false,
       answers: [
@@ -59,7 +56,6 @@ class HealthCheckupQuestions {
       ],
     ),
     HealthCheckupQuestion(
-        number: 4,
         question: '最近、急激な痛みや息苦しさを感じましたか？',
         isMainQuestion: false,
         answers: [
@@ -73,7 +69,6 @@ class HealthCheckupQuestions {
           ),
         ]),
     HealthCheckupQuestion(
-      number: 5,
       question: '最近の体重の変化はありますか？',
       isMainQuestion: false,
       answers: [
@@ -100,7 +95,6 @@ class HealthCheckupQuestions {
       ],
     ),
     HealthCheckupQuestion(
-        number: 6,
         question: '定期的な運動をしていますか？',
         isMainQuestion: false,
         answers: [
@@ -122,7 +116,6 @@ class HealthCheckupQuestions {
           ),
         ]),
     HealthCheckupQuestion(
-        number: 7,
         question: 'どのような食事を普段しますか？',
         isMainQuestion: false,
         answers: [
@@ -148,7 +141,6 @@ class HealthCheckupQuestions {
           ),
         ]),
     HealthCheckupQuestion(
-      number: 8,
       question: '最近、ストレスや不安を感じることがありますか？',
       isMainQuestion: false,
       answers: [
@@ -171,7 +163,6 @@ class HealthCheckupQuestions {
       ],
     ),
     HealthCheckupQuestion(
-        number: 9,
         question: '睡眠の質について、どのように感じていますか？',
         isMainQuestion: false,
         answers: [
@@ -197,7 +188,6 @@ class HealthCheckupQuestions {
           ),
         ]),
     HealthCheckupQuestion(
-        number: 11,
         question: '最近、急激に症状が悪化したと感じたことがありますか？',
         isMainQuestion: false,
         answers: [
