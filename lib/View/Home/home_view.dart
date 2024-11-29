@@ -102,8 +102,11 @@ class _HomeViewState extends State<HomeView> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 10),
+                                  padding: EdgeInsets.only(
+                                    bottom: 5,
+                                    left: 10,
+                                    right: 10,
+                                  ),
                                   child: CustomText(
                                     text: '通話の準備ができました',
                                     color: Colors.white,
