@@ -21,7 +21,6 @@ import 'package:unicorn_flutter/Service/Firebase/CloudStorage/cloud_storage_serv
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/Service/Package/ImageUtils/image_utils_service.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
-import 'package:unicorn_flutter/gen/assets.gen.dart';
 
 class RegisterUserInfoController extends ControllerCore {
   /// Serviceのインスタンス化
@@ -56,9 +55,7 @@ class RegisterUserInfoController extends ControllerCore {
 
   /// 各関数の実装
   ValueNotifier<bool> get protector => _protector;
-  Image? get image => (_image == null) && (_iconImageUrl == null)
-      ? Assets.images.icons.defaultUserIcon.image()
-      : _image;
+  Image? get image => _image;
   String? get iconImageUrl => _iconImageUrl;
   bool get useAppbar => _useAppbar;
 
@@ -114,17 +111,22 @@ class RegisterUserInfoController extends ControllerCore {
   }
 
   Future<void> submit(UserRequest userRequest) async {
-    String? iconImageUrl;
-    if (_imageFile != null) {
-      iconImageUrl = await _uploadImage();
+    if (_image == null &&
+        userData.user!.phoneNumber == phoneNumberTextController.text &&
+        userData.user!.email == emailTextController.text &&
+        userData.user!.occupation == occupationTextController.text) {
+      const ProfileRoute().go(context);
+      return;
     }
-
     if (validateField() == false) {
       return;
     }
+    if (_imageFile != null) {
+      _iconImageUrl = await _uploadImage();
+    }
 
     UserInfo userInfo = UserInfo(
-      iconImageUrl: iconImageUrl,
+      iconImageUrl: _iconImageUrl,
       phoneNumber: phoneNumberTextController.text,
       email: emailTextController.text,
       occupation: occupationTextController.text,
