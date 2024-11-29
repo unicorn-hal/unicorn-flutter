@@ -16,6 +16,7 @@ class UserData extends ChangeNotifier {
 
   void setUser(User user) {
     _user = user;
+    notifyListeners();
   }
 
   // UserRequest型に変換
