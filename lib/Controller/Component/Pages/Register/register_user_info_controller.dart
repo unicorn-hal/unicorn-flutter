@@ -69,7 +69,6 @@ class RegisterUserInfoController extends ControllerCore {
       emailTextController.text = userData.user!.email;
       occupationTextController.text = userData.user!.occupation;
       _iconImageUrl = userData.user!.iconImageUrl;
-      print(userData.user!.iconImageUrl);
     }
   }
 
