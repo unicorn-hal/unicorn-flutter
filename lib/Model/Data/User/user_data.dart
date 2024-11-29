@@ -1,7 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 
-class UserData {
+final userDataProvider = ChangeNotifierProvider((ref) => UserData());
+
+class UserData extends ChangeNotifier {
   static final UserData _instance = UserData._internal();
   factory UserData() => _instance;
   UserData._internal();
@@ -12,6 +16,7 @@ class UserData {
 
   void setUser(User user) {
     _user = user;
+    notifyListeners();
   }
 
   // UserRequest型に変換

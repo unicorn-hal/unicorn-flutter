@@ -98,7 +98,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                       child: CustomTextfield(
                         hintText: '山田',
                         height: 44,
-                        controller: controller.firstNameTextController,
+                        controller: controller.lastNameTextController,
                         width: deviceWidth * 0.4,
                       ),
                     ),
@@ -107,7 +107,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                       child: CustomTextfield(
                         hintText: '太郎',
                         height: 44,
-                        controller: controller.lastNameTextController,
+                        controller: controller.firstNameTextController,
                         width: deviceWidth * 0.4,
                       ),
                     ),
