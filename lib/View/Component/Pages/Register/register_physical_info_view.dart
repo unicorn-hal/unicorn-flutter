@@ -144,9 +144,8 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                               ? ColorName.menCirclebuttonColor
                               : ColorName.nocheckedCirclebuttonColor,
                           onTap: () {
-                            setState(() {
-                              _controller.gender = UserGenderEnum.male;
-                            });
+                            _controller.setGender(UserGenderEnum.male);
+                            setState(() {});
                           },
                           icon: const Icon(
                             Icons.person_outlined,
@@ -173,9 +172,8 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                                   ? ColorName.womenCirclebuttonColor
                                   : ColorName.nocheckedCirclebuttonColor,
                           onTap: () {
-                            setState(() {
-                              _controller.gender = UserGenderEnum.female;
-                            });
+                            _controller.setGender(UserGenderEnum.female);
+                            setState(() {});
                           },
                           icon: const Icon(
                             Icons.person_outline,
@@ -202,9 +200,8 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                                   ? ColorName.textGray
                                   : ColorName.nocheckedCirclebuttonColor,
                           onTap: () {
-                            setState(() {
-                              _controller.gender = UserGenderEnum.other;
-                            });
+                            _controller.setGender(UserGenderEnum.other);
+                            setState(() {});
                           },
                           icon: const Icon(
                             Icons.person_outline,
@@ -240,7 +237,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                       initValue: _controller.birthDate,
                       drumRollType: DrumRollType.date,
                       onConfirm: (DateTime date) {
-                        _controller.birthDate = date;
+                        _controller.setBirthDate(date);
                         Log.echo('date: $date');
                       },
                     ),
