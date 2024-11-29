@@ -41,7 +41,7 @@ class RegisterUserInfoController extends ControllerCore {
   TextEditingController emailTextController = TextEditingController();
   TextEditingController occupationTextController = TextEditingController();
   bool _useAppbar = false;
-  UserData userData = UserData();
+  final UserData _userData = UserData();
   final ValueNotifier<bool> _protector = ValueNotifier(false);
   File? _imageFile;
   Image? _image;
@@ -62,10 +62,10 @@ class RegisterUserInfoController extends ControllerCore {
   void _setDefaultValue() {
     if (from == Routes.profile) {
       _useAppbar = true;
-      phoneNumberTextController.text = userData.user!.phoneNumber;
-      emailTextController.text = userData.user!.email;
-      occupationTextController.text = userData.user!.occupation;
-      _iconImageUrl = userData.user!.iconImageUrl;
+      phoneNumberTextController.text = _userData.user!.phoneNumber;
+      emailTextController.text = _userData.user!.email;
+      occupationTextController.text = _userData.user!.occupation;
+      _iconImageUrl = _userData.user!.iconImageUrl;
     }
   }
 
@@ -111,14 +111,14 @@ class RegisterUserInfoController extends ControllerCore {
   }
 
   Future<void> submit(UserRequest userRequest) async {
-    if (_image == null &&
-        userData.user!.phoneNumber == phoneNumberTextController.text &&
-        userData.user!.email == emailTextController.text &&
-        userData.user!.occupation == occupationTextController.text) {
-      const ProfileRoute().go(context);
+    if (validateField() == false) {
       return;
     }
-    if (validateField() == false) {
+    if (_image == null &&
+        _userData.user!.phoneNumber == phoneNumberTextController.text &&
+        _userData.user!.email == emailTextController.text &&
+        _userData.user!.occupation == occupationTextController.text) {
+      const ProfileRoute().go(context);
       return;
     }
     if (_imageFile != null) {
@@ -140,13 +140,13 @@ class RegisterUserInfoController extends ControllerCore {
     if (from == Routes.profile) {
       ProtectorNotifier().enableProtector();
       int statusCode = await _userApi.putUser(
-          userId: userData.user!.userId, body: userRequest);
+          userId: _userData.user!.userId, body: userRequest);
       ProtectorNotifier().disableProtector();
       if (statusCode != 200) {
         Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
       } else {
         // シングルトンに登録した値をセットする
-        userData.setUser(User.fromJson(userRequest.toJson()));
+        _userData.setUser(User.fromJson(userRequest.toJson()));
         Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
       }
       const ProfileRoute().go(context);

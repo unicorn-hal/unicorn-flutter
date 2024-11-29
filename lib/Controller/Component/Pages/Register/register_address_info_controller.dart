@@ -33,8 +33,8 @@ class RegisterAddressInfoController extends ControllerCore {
   TextEditingController municipalitiesTextController = TextEditingController();
   TextEditingController addressDetailTextController = TextEditingController();
   bool _useAppbar = false;
-  UserData userData = UserData();
-  int selectedPrefectureIndex = 0;
+  final UserData _userData = UserData();
+  int _selectedPrefectureIndex = 0;
   final ValueNotifier<LatLng> _mapPinPosition =
       ValueNotifier(const LatLng(35.69168711233464, 139.69700732758113));
   final ValueNotifier<bool> _protector = ValueNotifier(false);
@@ -52,17 +52,21 @@ class RegisterAddressInfoController extends ControllerCore {
   List<String> get entryItemStrings => _entryItemStrings;
   ValueNotifier<LatLng> get mapPinPosition => _mapPinPosition;
   bool get useAppbar => _useAppbar;
+  int get selectedPrefectureIndex => _selectedPrefectureIndex;
+  void setSelectedPrefectureIndex(int index) {
+    _selectedPrefectureIndex = index;
+  }
 
   Future<void> _setDefaultValue() async {
     if (from == Routes.profile) {
       _useAppbar = true;
-      List<String> splitedAddress = userData.user!.address.split(',');
+      List<String> splitedAddress = _userData.user!.address.split(',');
       String prefectureFromSplitAddress = splitedAddress[0];
       String municipalitiesFromSplitAddress = splitedAddress[1];
       String? addressDetailFromSplitAddress =
           splitedAddress.length > 2 ? splitedAddress[2] : null;
-      postalCodeTextController.text = userData.user!.postalCode;
-      selectedPrefectureIndex =
+      postalCodeTextController.text = _userData.user!.postalCode;
+      _selectedPrefectureIndex =
           _entryItemStrings.indexOf(prefectureFromSplitAddress);
       municipalitiesTextController.text = municipalitiesFromSplitAddress;
       if (addressDetailFromSplitAddress != null &&
@@ -88,7 +92,7 @@ class RegisterAddressInfoController extends ControllerCore {
 
   /// Mapのピンを移動する
   Future<void> updateMapPinPosition() async {
-    final String address = _entryItemStrings[selectedPrefectureIndex] +
+    final String address = _entryItemStrings[_selectedPrefectureIndex] +
         municipalitiesTextController.text;
     LatLng? position = await _locationService.getPositionFromAddress(address);
     if (position != null) {
@@ -110,7 +114,7 @@ class RegisterAddressInfoController extends ControllerCore {
       municipalitiesTextController.text = city + town;
     }
     if (prefecture != null) {
-      selectedPrefectureIndex = _entryItemStrings.indexOf(prefecture);
+      _selectedPrefectureIndex = _entryItemStrings.indexOf(prefecture);
     }
 
     AddressInfo(
@@ -184,7 +188,7 @@ class RegisterAddressInfoController extends ControllerCore {
 
     AddressInfo addressInfo = AddressInfo(
       postalCode: postalCodeTextController.text,
-      prefectures: _entryItemStrings[selectedPrefectureIndex],
+      prefectures: _entryItemStrings[_selectedPrefectureIndex],
       municipalities: municipalitiesTextController.text,
       addressDetail: addressDetailTextController.text,
     );
@@ -194,15 +198,20 @@ class RegisterAddressInfoController extends ControllerCore {
         "${addressInfo.prefectures},${addressInfo.municipalities},${addressInfo.addressDetail}";
 
     if (from == Routes.profile) {
+      if (_userData.user!.postalCode == postalCodeTextController.text &&
+          _userData.user!.address == userRequest.address) {
+        const ProfileRoute().go(context);
+        return;
+      }
       ProtectorNotifier().enableProtector();
       int statusCode = await _userApi.putUser(
-          userId: userData.user!.userId, body: userRequest);
+          userId: _userData.user!.userId, body: userRequest);
       ProtectorNotifier().disableProtector();
       if (statusCode != 200) {
         Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
       } else {
         // シングルトンに登録した値をセットする
-        userData.setUser(User.fromJson(userRequest.toJson()));
+        _userData.setUser(User.fromJson(userRequest.toJson()));
         Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
       }
       // ignore: use_build_context_synchronously
@@ -219,7 +228,7 @@ class RegisterAddressInfoController extends ControllerCore {
     postalCodeTextController.text.isEmpty
         ? emptyMessageField.add("郵便番号")
         : null;
-    _entryItemStrings[selectedPrefectureIndex] == '未設定'
+    _entryItemStrings[_selectedPrefectureIndex] == '未設定'
         ? emptyMessageField.add('都道府県')
         : null;
     municipalitiesTextController.text.isEmpty

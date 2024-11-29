@@ -207,7 +207,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                       selectIndex: _controller.selectedPrefectureIndex,
                       height: 44,
                       onChanged: (int? index) async {
-                        _controller.selectedPrefectureIndex = index ?? 0;
+                        _controller.setSelectedPrefectureIndex(index ?? 0);
                         await _controller.updateMapPinPosition();
                         setState(() {});
                       },
