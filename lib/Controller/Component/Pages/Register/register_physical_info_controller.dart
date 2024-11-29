@@ -81,6 +81,17 @@ class RegisterPhysicalInfoController extends ControllerCore {
     userRequest.bodyWeight = physicalInfo.bodyWeight;
 
     if (from == Routes.profile) {
+      if (userData.user!.lastName == lastNameTextController.text &&
+          userData.user!.firstName == firstNameTextController.text &&
+          userData.user!.gender == gender &&
+          userData.user!.birthDate == birthDate &&
+          userData.user!.bodyHeight.toString() ==
+              bodyHeightTextController.text &&
+          userData.user!.bodyWeight.toString() ==
+              bodyWeightTextController.text) {
+        const ProfileRoute().go(context);
+        return;
+      }
       ProtectorNotifier().enableProtector();
       int statusCode = await _userApi.putUser(
           userId: userData.user!.userId, body: userRequest);
