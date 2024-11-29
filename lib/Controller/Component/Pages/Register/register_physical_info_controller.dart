@@ -104,10 +104,10 @@ class RegisterPhysicalInfoController extends ControllerCore {
   bool validateField() {
     List<String> emptyMessageField = [];
     firstNameTextController.text.isEmpty
-        ? emptyMessageField.add("お名前（姓）")
+        ? emptyMessageField.add("お名前（名）")
         : null;
     lastNameTextController.text.isEmpty
-        ? emptyMessageField.add("お名前（名）")
+        ? emptyMessageField.add("お名前（姓）")
         : null;
     gender == null ? emptyMessageField.add("性別") : null;
     bodyHeightTextController.text.isEmpty ? emptyMessageField.add("身長") : null;
