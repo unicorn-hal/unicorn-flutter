@@ -44,10 +44,9 @@ class RegisterUserInfoController extends ControllerCore {
   bool _useAppbar = false;
   UserData userData = UserData();
   final ValueNotifier<bool> _protector = ValueNotifier(false);
-  ValueNotifier<bool> get protector => _protector;
   File? _imageFile;
   Image? _image;
-  Image get image => _image ?? Assets.images.icons.defaultUserIcon.image();
+  String? _iconImageUrl;
 
   /// initialize()
   @override
@@ -56,6 +55,11 @@ class RegisterUserInfoController extends ControllerCore {
   }
 
   /// 各関数の実装
+  ValueNotifier<bool> get protector => _protector;
+  Image? get image => (_image == null) && (_iconImageUrl == null)
+      ? Assets.images.icons.defaultUserIcon.image()
+      : _image;
+  String? get iconImageUrl => _iconImageUrl;
   bool get useAppbar => _useAppbar;
 
   void _setDefaultValue() {
@@ -64,6 +68,8 @@ class RegisterUserInfoController extends ControllerCore {
       phoneNumberTextController.text = userData.user!.phoneNumber;
       emailTextController.text = userData.user!.email;
       occupationTextController.text = userData.user!.occupation;
+      _iconImageUrl = userData.user!.iconImageUrl;
+      print(userData.user!.iconImageUrl);
     }
   }
 

@@ -118,6 +118,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                               UserImageCircle(
                                 imageSize: 200,
                                 localImage: _controller.image,
+                                imageUrl: _controller.iconImageUrl,
                               ),
                               Align(
                                 alignment: Alignment.bottomRight,
