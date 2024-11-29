@@ -24,39 +24,43 @@ import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 
 class RegisterUserInfoController extends ControllerCore {
+  /// Serviceのインスタンス化
   FirebaseCloudStorageService get _cloudStorageService =>
       FirebaseCloudStorageService();
   ImageUtilsService get _imageUtilsService => ImageUtilsService();
   UserApi get _userApi => UserApi();
 
+  /// コンストラクタ
   RegisterUserInfoController({
     required super.from,
     required this.context,
   });
-
   BuildContext context;
 
+  /// 変数の定義
   TextEditingController phoneNumberTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
   TextEditingController occupationTextController = TextEditingController();
-
+  bool _useAppbar = false;
   UserData userData = UserData();
-
   final ValueNotifier<bool> _protector = ValueNotifier(false);
   ValueNotifier<bool> get protector => _protector;
-
   File? _imageFile;
   Image? _image;
-
   Image get image => _image ?? Assets.images.icons.defaultUserIcon.image();
 
+  /// initialize()
   @override
   void initialize() {
     _setDefaultValue();
   }
 
+  /// 各関数の実装
+  bool get useAppbar => _useAppbar;
+
   void _setDefaultValue() {
     if (from == Routes.profile) {
+      _useAppbar = true;
       phoneNumberTextController.text = userData.user!.phoneNumber;
       emailTextController.text = userData.user!.email;
       occupationTextController.text = userData.user!.occupation;

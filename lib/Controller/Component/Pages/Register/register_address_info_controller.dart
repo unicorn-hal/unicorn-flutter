@@ -17,50 +17,50 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 class RegisterAddressInfoController extends ControllerCore {
+  /// Serviceのインスタンス化
   LocationService get _locationService => LocationService();
   UserApi get _userApi => UserApi();
 
+  /// コンストラクタ
   RegisterAddressInfoController({
     required this.context,
     required super.from,
   });
-
   BuildContext context;
-  UserData userData = UserData();
 
-  late List<String> _entryItemStrings;
-  final ValueNotifier<LatLng> _mapPinPosition =
-      ValueNotifier(const LatLng(35.69168711233464, 139.69700732758113));
-
-  int selectedPrefectureIndex = 0;
-
-  final ValueNotifier<bool> _protector = ValueNotifier(false);
-
-  /// 入力欄のコントローラー
+  /// 変数の定義
   TextEditingController postalCodeTextController = TextEditingController();
   TextEditingController municipalitiesTextController = TextEditingController();
   TextEditingController addressDetailTextController = TextEditingController();
+  bool _useAppbar = false;
+  UserData userData = UserData();
+  int selectedPrefectureIndex = 0;
+  final ValueNotifier<LatLng> _mapPinPosition =
+      ValueNotifier(const LatLng(35.69168711233464, 139.69700732758113));
+  final ValueNotifier<bool> _protector = ValueNotifier(false);
+  late List<String> _entryItemStrings;
 
+  /// initialize()
   @override
   void initialize() {
     _entryItemStrings = ['未設定'] + Prefectures.list;
     _setDefaultValue();
   }
 
+  /// 各関数の実装
   ValueNotifier<bool> get protector => _protector;
-
   List<String> get entryItemStrings => _entryItemStrings;
   ValueNotifier<LatLng> get mapPinPosition => _mapPinPosition;
+  bool get useAppbar => _useAppbar;
 
   Future<void> _setDefaultValue() async {
     if (from == Routes.profile) {
+      _useAppbar = true;
       List<String> splitedAddress = userData.user!.address.split(',');
-
       String prefectureFromSplitAddress = splitedAddress[0];
       String municipalitiesFromSplitAddress = splitedAddress[1];
       String? addressDetailFromSplitAddress =
           splitedAddress.length > 2 ? splitedAddress[2] : null;
-
       postalCodeTextController.text = userData.user!.postalCode;
       selectedPrefectureIndex =
           _entryItemStrings.indexOf(prefectureFromSplitAddress);
@@ -69,7 +69,6 @@ class RegisterAddressInfoController extends ControllerCore {
           addressDetailFromSplitAddress.isNotEmpty) {
         addressDetailTextController.text = addressDetailFromSplitAddress;
       }
-
       await updateMapPinPosition();
     }
   }
@@ -117,7 +116,7 @@ class RegisterAddressInfoController extends ControllerCore {
     AddressInfo(
       postalCode: postalCode!,
       prefectures: prefecture!,
-      municipalities: "${city}${town}",
+      municipalities: "$city$town",
       addressDetail: addressDetailTextController.text,
     );
   }
@@ -206,7 +205,8 @@ class RegisterAddressInfoController extends ControllerCore {
         userData.setUser(User.fromJson(userRequest.toJson()));
         Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
       }
-      ProfileRoute().go(context);
+      // ignore: use_build_context_synchronously
+      const ProfileRoute().go(context);
       return;
     }
 

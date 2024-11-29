@@ -16,32 +16,40 @@ import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 class RegisterPhysicalInfoController extends ControllerCore {
+  /// Serviceのインスタンス化
   UserApi get _userApi => UserApi();
 
+  /// コンストラクタ
   RegisterPhysicalInfoController({
     required this.context,
     required super.from,
   });
-
   BuildContext context;
 
+  /// 変数の定義
   TextEditingController firstNameTextController = TextEditingController();
   TextEditingController lastNameTextController = TextEditingController();
   TextEditingController bodyHeightTextController = TextEditingController();
   TextEditingController bodyWeightTextController = TextEditingController();
 
+  bool _useAppbar = false;
   late DateTime birthDate;
   UserGenderEnum? gender;
   UserData userData = UserData();
 
+  /// initialize()
   @override
   void initialize() {
     birthDate = DateTime.now();
     _setDefaultValue();
   }
 
+  /// 各関数の実装
+  bool get useAppbar => _useAppbar;
+
   void _setDefaultValue() {
     if (from == Routes.profile) {
+      _useAppbar = true;
       firstNameTextController.text = userData.user!.firstName;
       lastNameTextController.text = userData.user!.lastName;
       gender = userData.user!.gender;
@@ -84,7 +92,8 @@ class RegisterPhysicalInfoController extends ControllerCore {
         userData.setUser(User.fromJson(userRequest.toJson()));
         Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
       }
-      ProfileRoute().go(context);
+      // ignore: use_build_context_synchronously
+      const ProfileRoute().go(context);
       return;
     }
 

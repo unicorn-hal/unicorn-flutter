@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_user_info_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
@@ -49,8 +50,15 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
       children: [
         CustomScaffold(
           focusNode: focusnode,
-          isAppbar: false,
+          isAppbar: _controller.useAppbar,
           isScrollable: true,
+          appBar: _controller.useAppbar
+              ? CustomAppBar(
+                  title: 'ユーザー情報',
+                  foregroundColor: Colors.white,
+                  backgroundColor: ColorName.mainColor,
+                )
+              : null,
           body: SafeArea(
             child: SizedBox(
               width: deviceWidth,
@@ -60,30 +68,34 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(color: ColorName.textGray),
+                    Visibility(
+                      visible: !_controller.useAppbar,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(color: ColorName.textGray),
+                          ),
                         ),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.only(bottom: 10),
-                        child: Align(
-                            alignment: Alignment.topCenter,
-                            child: Column(
-                              children: [
-                                CustomText(
-                                  text: 'User',
-                                  color: ColorName.profileInputBackgroundColor,
-                                  fontSize: 22,
-                                ),
-                                CustomText(
-                                  text: 'ユーザー情報を入力してください',
-                                  color: ColorName.textBlack,
-                                  fontSize: 22,
-                                ),
-                              ],
-                            )),
+                        child: const Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Align(
+                              alignment: Alignment.topCenter,
+                              child: Column(
+                                children: [
+                                  CustomText(
+                                    text: 'User',
+                                    color:
+                                        ColorName.profileInputBackgroundColor,
+                                    fontSize: 22,
+                                  ),
+                                  CustomText(
+                                    text: 'ユーザー情報を入力してください',
+                                    color: ColorName.textBlack,
+                                    fontSize: 22,
+                                  ),
+                                ],
+                              )),
+                        ),
                       ),
                     ),
                     const Padding(
