@@ -248,7 +248,7 @@ class DoctorInformationView extends StatelessWidget {
                           horizontal: 16.0,
                         ),
                         child: CustomText(
-                          text: '通話: ${doctor.chatSupportHours}',
+                          text: '通話: ${doctor.callSupportHours}',
                         ),
                       ),
                     ],
