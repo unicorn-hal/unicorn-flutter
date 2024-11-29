@@ -6,6 +6,7 @@ import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_drum_roll.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -285,30 +286,23 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                     ),
                   ],
                 ),
-                GestureDetector(
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 40),
-                      child: Container(
-                          width: deviceWidth * 0.5,
-                          height: 60,
-                          color: ColorName.profileInputButtonColor,
-                          child: Center(
-                            child: CustomText(
-                              text: widget.from == Routes.profile
-                                  ? '保存する'
-                                  : '次に進む',
-                              fontSize: 22,
-                              color: Colors.white,
-                            ),
-                          )),
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 40),
+                    child: SizedBox(
+                      width: deviceWidth * 0.5,
+                      height: 60,
+                      child: CustomButton(
+                        isFilledColor: true,
+                        text: widget.from == Routes.profile ? '保存する' : '次に進む',
+                        onTap: () async {
+                          await _controller.submit(widget.userRequest);
+                        },
+                      ),
                     ),
                   ),
-                  onTap: () async {
-                    await _controller.submit(widget.userRequest);
-                  },
-                )
+                ),
               ],
             ),
           ),

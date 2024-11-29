@@ -3,6 +3,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:unicorn_flutter/Controller/Component/Pages/Register/register_user_info_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
@@ -183,28 +184,23 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                       maxLines: 1,
                       maxLength: 15,
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        await _controller.submit(widget.userRequest!);
-                      },
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 30, bottom: 30),
-                          child: Container(
-                              width: deviceWidth * 0.5,
-                              height: 60,
-                              color: ColorName.profileInputButtonColor,
-                              child: const Center(
-                                child: CustomText(
-                                  text: '保存する',
-                                  fontSize: 22,
-                                  color: Colors.white,
-                                ),
-                              )),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 40),
+                        child: SizedBox(
+                          width: deviceWidth * 0.5,
+                          height: 60,
+                          child: CustomButton(
+                            isFilledColor: true,
+                            text: '保存する',
+                            onTap: () async {
+                              await _controller.submit(widget.userRequest!);
+                            },
+                          ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
