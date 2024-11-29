@@ -21,7 +21,7 @@ class ChatGPTService {
           <String, dynamic>{
             'model': 'gpt-4o',
             'messages': body.map((e) => e.toJson()).toList(),
-            'max_tokens': 300,
+            'max_tokens': 600,
             'temperature': 0.7,
           },
         ),
