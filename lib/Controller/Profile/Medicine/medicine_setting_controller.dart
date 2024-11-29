@@ -10,6 +10,7 @@ import 'package:unicorn_flutter/Model/Entity/Medicine/reminder.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/reminder_request.dart';
 import 'package:unicorn_flutter/Service/Api/Medicine/medicine_api.dart';
 import 'package:uuid/uuid.dart';
+import 'package:collection/collection.dart';
 
 class MedicineSettingController extends ControllerCore {
   /// Serviceのインスタンス化
@@ -173,9 +174,18 @@ class MedicineSettingController extends ControllerCore {
 
   /// Medicineの情報を更新する関数
   Future<int> putMedicine() async {
+    if (_medicine!.medicineName == nameController.text &&
+        _medicine.quantity == int.parse(countController.text) &&
+        _medicine.dosage == _selectIndex! + 1 &&
+        _medicine.reminders.length == _reminders.length) {
+      Function isEqual = const ListEquality().equals;
+      if (isEqual(_medicine.reminders, _reminders)) {
+        return 200;
+      }
+    }
     MedicineRequest body = MedicineRequest(
       medicineName: nameController.text,
-      count: _medicine!.count,
+      count: _medicine.count,
       quantity: int.parse(countController.text),
       dosage: _selectIndex! + 1,
       reminders: _createReminderRequestList(reminders: _reminders),
