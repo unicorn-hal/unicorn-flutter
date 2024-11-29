@@ -197,20 +197,6 @@ class HealthCheckupQuestions {
           ),
         ]),
     HealthCheckupQuestion(
-        number: 10,
-        question: '最近、体調に影響を与えるような生活の変化はありましたか？',
-        isMainQuestion: false,
-        answers: [
-          HealthCheckupAnswer(
-            answer: 'はい',
-            healthPoint: 2,
-          ),
-          HealthCheckupAnswer(
-            answer: 'いいえ',
-            healthPoint: 0,
-          ),
-        ]),
-    HealthCheckupQuestion(
         number: 11,
         question: '最近、急激に症状が悪化したと感じたことがありますか？',
         isMainQuestion: false,
