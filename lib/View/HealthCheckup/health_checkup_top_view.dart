@@ -290,11 +290,26 @@ class HealthCheckupTopView extends ConsumerWidget {
             ),
           ),
           healthCheckupData.data == null
-              ? SizedBox(
-                  height: 300,
-                  width: size.width,
-                  child: const Center(
-                    child: CustomText(text: '過去の検診記録はありません。'),
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                    vertical: 8.0,
+                  ),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: ColorName.shadowGray,
+                    ),
+                    height: 300,
+                    width: size.width,
+                    child: const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CustomText(text: '検診記録がありません。'),
+                          CustomText(text: '検診ボタンを押して記録を残しましょう!'),
+                        ],
+                      ),
+                    ),
                   ),
                 )
               : ListView.builder(
