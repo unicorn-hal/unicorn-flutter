@@ -223,7 +223,6 @@ class HealthCheckupTopView extends ConsumerWidget {
           /// 検診を開始するボタン(通常検診&AI音声検診)
           Center(
             child: SizedBox(
-              height: 150,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -231,48 +230,38 @@ class HealthCheckupTopView extends ConsumerWidget {
                     padding: EdgeInsets.all(4.0),
                     child: CustomText(text: '↓さあ、検診を開始しましょう↓'),
                   ),
-                  CarouselSlider(
-                    items: [
-                      HealthCheckButton(
-                        onTap: () {
-                          const NormalCheckupRoute().push(context);
-                        },
+                  // 通常検診ボタン
+                  HealthCheckButton(
+                    onTap: () {
+                      const NormalCheckupRoute().push(context);
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  // AI音声検診ボタン
+                  Stack(
+                    children: [
+                      SizedBox(
+                        child: HealthCheckButton(
+                          onTap: () {
+                            const AiCheckupRoute().push(context);
+                          },
+                          aiCheck: true,
+                        ),
                       ),
-                      Stack(
-                        children: [
-                          SizedBox(
-                            height: 100,
-                            child: HealthCheckButton(
-                              onTap: () {
-                                const AiCheckupRoute().push(context);
-                              },
-                              aiCheck: true,
-                            ),
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: SizedBox(
+                          width: 100,
+                          height: 60,
+                          child: Assets.images.healthCheckupMark.image(
+                            fit: BoxFit.cover,
                           ),
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            child: SizedBox(
-                              width: 100,
-                              height: 60,
-                              child: Assets.images.healthCheckupMark.image(
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ],
-                    options: CarouselOptions(
-                      height: 100,
-                      initialPage: 0,
-                      autoPlay: false,
-                      viewportFraction: 1.0,
-                      enableInfiniteScroll: true,
-                      autoPlayInterval: const Duration(seconds: 1),
-                      autoPlayAnimationDuration:
-                          const Duration(milliseconds: 800),
-                    ),
                   ),
                 ],
               ),
