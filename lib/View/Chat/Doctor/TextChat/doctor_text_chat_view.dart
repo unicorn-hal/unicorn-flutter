@@ -63,6 +63,26 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
         backgroundColor: ColorName.mainColor,
         title: '${widget.doctor.lastName}${widget.doctor.firstName}先生',
         foregroundColor: Colors.white,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const CustomText(
+                  text: 'チャットサポート時間',
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
+                CustomText(
+                  text: widget.doctor.chatSupportHours,
+                  color: Colors.white,
+                  fontSize: 14,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       body: Stack(
         children: [

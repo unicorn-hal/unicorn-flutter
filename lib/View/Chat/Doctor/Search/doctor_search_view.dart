@@ -307,6 +307,7 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                               userName: doctor.lastName + doctor.firstName,
                               description:
                                   '病院: ${doctor.hospital.hospitalName} 診療科: ${doctor.departments.map((e) => e.departmentName).join(',')}',
+                              imageUrl: doctor.doctorIconUrl,
                             ),
                           );
                         });
