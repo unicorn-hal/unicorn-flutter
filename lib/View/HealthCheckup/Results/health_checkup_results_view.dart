@@ -199,57 +199,77 @@ class HealthCheckupResultsView extends StatelessWidget {
                   constraints: const BoxConstraints(
                     minHeight: 100,
                   ),
-                  child: ListView.builder(
-                    itemCount: controller.diseaseExampleNameList.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () async {
-                          await controller.getDiseaseUrl(
-                              controller.diseaseExampleNameList[index]);
-                        },
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              width: size.width * 0.9,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: ColorName.shadowGray,
+                  child: controller.diseaseExampleNameList.isEmpty
+                      //　健康時には関連する病気を表示しない
+                      ? const SizedBox(
+                          height: 200,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                  size: 50,
                                 ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0,
-                                    ),
-                                    child: CustomText(
-                                      text: controller
-                                          .diseaseExampleNameList[index],
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.all(2.0),
-                                    child: Icon(
-                                      Icons.arrow_drop_down,
-                                      color: Colors.blue,
-                                      size: 36,
-                                    ),
-                                  )
-                                ],
-                              ),
+                                CustomText(
+                                  text: '回答に関連する病気はありません',
+                                ),
+                              ],
                             ),
                           ),
+                        )
+                      : ListView.builder(
+                          itemCount: controller.diseaseExampleNameList.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () async {
+                                await controller.getDiseaseUrl(
+                                    controller.diseaseExampleNameList[index]);
+                              },
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: size.width * 0.9,
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: ColorName.shadowGray,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0,
+                                          ),
+                                          child: CustomText(
+                                            text: controller
+                                                .diseaseExampleNameList[index],
+                                          ),
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.all(2.0),
+                                          child: Icon(
+                                            Icons.arrow_drop_down,
+                                            color: Colors.blue,
+                                            size: 36,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
                 const SizedBox(
                   height: 80,
