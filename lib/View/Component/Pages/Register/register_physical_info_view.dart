@@ -291,6 +291,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                       width: deviceWidth * 0.5,
                       height: 60,
                       child: CustomButton(
+                        fontSize: 18,
                         isFilledColor: true,
                         text: widget.from == Routes.profile ? '保存する' : '次に進む',
                         onTap: () async {

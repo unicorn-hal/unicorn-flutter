@@ -193,6 +193,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                           width: deviceWidth * 0.5,
                           height: 60,
                           child: CustomButton(
+                            fontSize: 18,
                             isFilledColor: true,
                             text: '保存する',
                             onTap: () async {
