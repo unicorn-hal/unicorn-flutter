@@ -53,9 +53,8 @@ class ProfileTopController extends ControllerCore {
         title: '通知設定',
         icon: Icons.notifications,
         onTap: () async {
-          UserNotification? userNotification;
           ProtectorNotifier().enableProtector();
-          userNotification = await getUserNotification();
+          UserNotification? userNotification = await getUserNotification();
           ProtectorNotifier().disableProtector();
           if (userNotification == null) {
             return;
