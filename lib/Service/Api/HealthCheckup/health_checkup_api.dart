@@ -1,3 +1,4 @@
+import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup.dart';
 import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup_request.dart';
 import 'package:unicorn_flutter/Model/Entity/api_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
@@ -9,12 +10,14 @@ class HealthCheckupApi extends ApiCore with Endpoint {
   /// POST
   /// 健康結果登録
   /// [body] HealthCheckupRequest
-  Future<int> postHealthCheckup({required HealthCheckupRequest body}) async {
+  Future<HealthCheckup?> postHealthCheckup(
+      {required HealthCheckupRequest body}) async {
     try {
       final ApiResponse response = await post(body.toJson());
-      return response.statusCode;
+
+      return HealthCheckup.fromJson(response.data);
     } catch (e) {
-      return 500;
+      return null;
     }
   }
 

@@ -6,9 +6,12 @@ import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart'
 import 'package:unicorn_flutter/Constants/Enum/health_risk_level_enum.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Data/HealthCheckup/health_checkup_data.dart';
 import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup_request.dart';
 import 'package:unicorn_flutter/Service/Api/HealthCheckup/health_checkup_api.dart';
 import 'package:unicorn_flutter/Service/Package/UrlLauncher/url_launcher_service.dart';
+
+import '../../../Model/Entity/HealthCheckUp/health_checkup.dart';
 
 class HealthCheckupResultsController extends ControllerCore {
   /// Serviceのインスタンス化
@@ -62,7 +65,6 @@ class HealthCheckupResultsController extends ControllerCore {
     _diseaseExampleNameList =
         HealthCheckupDiseaseType.getDiseaseExampleNameList(diseaseType);
 
-    /// post処理
     _postHealthCheckup(today);
   }
 
@@ -112,20 +114,21 @@ class HealthCheckupResultsController extends ControllerCore {
   }
 
   /// post処理
-  /// [healthCheckupRequest] 健康診断リクエスト
-  Future<int> _postHealthCheckup(DateTime today) async {
+  Future<void> _postHealthCheckup(DateTime today) async {
     /// postに必要なデータを整形
     HealthCheckupRequest healthCheckupRequest = _makeHealthCheckupRequest(
       bodyTemperature,
       bloodPressure,
       today,
     );
-    int res =
+    final HealthCheckup? response =
         await _healthCheckupApi.postHealthCheckup(body: healthCheckupRequest);
-    if (res != 200) {
+    if (response == null) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
-    return res;
+
+    //成功時にはHealthCheckupDataに値を追加
+    HealthCheckupData().addData(response!);
   }
 
   String get formattedDate => _formattedDate;

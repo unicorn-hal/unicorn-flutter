@@ -23,7 +23,7 @@ class HealthCheckupData extends ChangeNotifier {
   }
 
   /// リストにデータを追加
-  void addList(HealthCheckup data) {
+  void addData(HealthCheckup data) {
     _data?.add(data);
     notifyListeners();
   }
