@@ -9,12 +9,14 @@ class CustomButton extends StatelessWidget {
     this.primaryColor = ColorName.mainColor,
     required this.text,
     required this.onTap,
+    this.fontSize = 14,
   });
 
   final Color primaryColor;
   final bool isFilledColor;
   final String text;
   final Function onTap;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class CustomButton extends StatelessWidget {
         fit: BoxFit.scaleDown,
         child: CustomText(
           text: text,
-          fontSize: 14,
+          fontSize: fontSize,
           color: isFilledColor ? Colors.white : primaryColor,
         ),
       ),
