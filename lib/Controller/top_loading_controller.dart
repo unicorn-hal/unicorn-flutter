@@ -169,19 +169,6 @@ class TopLoadingController extends ControllerCore {
       Log.echo('Chat: ${chatList.map((e) => e.toJson()).toList()}');
     }
 
-    /// 通知設定を登録したことがあるかどうかを取得し、未登録の場合は登録する
-    bool notificationInitialized = await getNotificationInitialized();
-    if (!notificationInitialized) {
-      UserNotification? userNotification = await postUserNotification();
-      if (userNotification == null) {
-        /// 通信エラー時
-        Log.echo('userNotification: $userNotification');
-        return;
-      }
-      await _sharedPreferencesService.setBool(
-          SharedPreferencesKeysEnum.notificationInitialized.name, true);
-    }
-
     // デバッグ用
     // todo: 本番環境では削除
     await _userApi.postUser(
@@ -217,6 +204,19 @@ class TopLoadingController extends ControllerCore {
       'occupation': 'エンジニア',
     }));
 
+    /// 通知設定を登録したことがあるかどうかを取得し、未登録の場合は登録する
+    bool notificationInitialized = await _getNotificationInitialized();
+    if (!notificationInitialized) {
+      UserNotification? userNotification = await _postUserNotification();
+      if (userNotification == null) {
+        /// 通信エラー時
+        Log.echo('userNotification: $userNotification');
+        return;
+      }
+      await _sharedPreferencesService.setBool(
+          SharedPreferencesKeysEnum.notificationInitialized.name, true);
+    }
+
     /// SharedPreferences: 起動フラグ
     _sharedPreferencesService.setBool(
         SharedPreferencesKeysEnum.appInitialized.name, true);
@@ -246,6 +246,8 @@ class TopLoadingController extends ControllerCore {
         <String>[
           FCMTopicEnum.all.name,
           FCMTopicEnum.user.name,
+          FCMTopicEnum.hospitalNews.name,
+          FCMTopicEnum.regularHealthCheckup.name,
         ],
       );
     }
@@ -290,7 +292,7 @@ class TopLoadingController extends ControllerCore {
   }
 
   /// 通知設定を登録したことがあるかどうか
-  Future<bool> getNotificationInitialized() async {
+  Future<bool> _getNotificationInitialized() async {
     bool? notificationInitialized = await _sharedPreferencesService
         .getBool(SharedPreferencesKeysEnum.notificationInitialized.name);
     if (notificationInitialized == null) {
@@ -303,9 +305,9 @@ class TopLoadingController extends ControllerCore {
   }
 
   /// 通知設定を登録する
-  Future<UserNotification?> postUserNotification() async {
+  Future<UserNotification?> _postUserNotification() async {
     UserNotification? userNotification = await _userApi.postUserNotification(
-      userId: UserData().user!.userId,
+      userId: uid,
       body: UserNotification(
         isHospitalNews: true,
         isMedicineReminder: true,
