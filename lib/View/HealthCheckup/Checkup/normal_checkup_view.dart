@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Controller/HealthCheckup/normal_checkup_controller.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -34,6 +35,11 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
         CustomScaffold(
           isScrollable: true,
           scrollController: controller.scrollController,
+          appBar: CustomAppBar(
+            title: '通常検診',
+            foregroundColor: Colors.white,
+            backgroundColor: ColorName.mainColor,
+          ),
           body: Column(
             children: [
               /// 進捗バーの表示部
