@@ -3,6 +3,7 @@ import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart'
 import 'package:unicorn_flutter/Controller/HealthCheckup/Results/health_checkup_results_controller.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
@@ -37,6 +38,11 @@ class HealthCheckupResultsView extends StatelessWidget {
       children: [
         CustomScaffold(
           isScrollable: true,
+          appBar: CustomAppBar(
+            title: '検診結果',
+            foregroundColor: Colors.white,
+            backgroundColor: ColorName.mainColor,
+          ),
           body: Center(
             child: Column(
               children: [
@@ -222,7 +228,10 @@ class HealthCheckupResultsView extends StatelessWidget {
                       );
                     },
                   ),
-                )
+                ),
+                const SizedBox(
+                  height: 80,
+                ),
               ],
             ),
           ),
