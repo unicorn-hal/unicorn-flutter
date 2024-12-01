@@ -116,7 +116,7 @@ class UserApi extends ApiCore with Endpoint {
   /// [userId] ユーザーID
   /// [healthCheckupId] 健康診断ID
   /// [body] HealthCheckupRequest
-  Future<int> putUserHealthCheckup({
+  Future<HealthCheckup?> putUserHealthCheckup({
     required String userId,
     required String healthCheckupId,
     required HealthCheckupRequest body,
@@ -124,9 +124,9 @@ class UserApi extends ApiCore with Endpoint {
     try {
       useParameter(parameter: '/$userId/health_checkups/$healthCheckupId');
       final ApiResponse response = await put(body.toJson());
-      return response.statusCode;
+      return HealthCheckup.fromJson(response.data);
     } catch (e) {
-      return 500;
+      return null;
     }
   }
 

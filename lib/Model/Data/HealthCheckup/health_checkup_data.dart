@@ -27,4 +27,14 @@ class HealthCheckupData extends ChangeNotifier {
     _data?.add(data);
     notifyListeners();
   }
+
+  /// リスト内のデータを更新する
+  void updateData(HealthCheckup data) {
+    final index = _data?.indexWhere(
+        (element) => element.healthCheckupId == data.healthCheckupId);
+    if (index != null && index >= 0) {
+      _data?[index] = data;
+      notifyListeners();
+    }
+  }
 }
