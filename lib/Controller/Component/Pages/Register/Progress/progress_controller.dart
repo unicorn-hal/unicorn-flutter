@@ -49,14 +49,15 @@ class ProgressController extends ControllerCore {
     }
     await Future.delayed(const Duration(seconds: 3));
 
-    double bodyTemperature = _generateRandomBodyTemperature();
-    String bloodPressure = _generateRandomBloodPressure();
-
-    healthPoint = _updateHealthPoint(bodyTemperature, bloodPressure);
     // それぞれの画面に遷移
     if (from == Routes.emergency) {
       // todo: 画面遷移
     } else {
+      // 体温と血圧をランダムに生成
+      double bodyTemperature = _generateRandomBodyTemperature();
+      String bloodPressure = _generateRandomBloodPressure();
+
+      healthPoint = _updateHealthPoint(bodyTemperature, bloodPressure);
       CheckupResultRoute(
         $extra: diseaseType,
         healthPoint: healthPoint,
@@ -85,7 +86,10 @@ class ProgressController extends ControllerCore {
   /// 正常値の範囲でランダムな体温を生成
   double _generateRandomBodyTemperature() {
     Random random = Random();
-    return _normalBodyTempMin + random.nextDouble() * 1.5; // 36.0 から 37.5 の範囲
+    double randomValue =
+        _normalBodyTempMin + random.nextDouble() * 1.5; // 36.0 から 37.5 の範囲
+    // 小数点第一位までの値に変換
+    return double.parse(randomValue.toStringAsFixed(1));
   }
 
   /// 正常値の範囲でランダムな血圧を生成

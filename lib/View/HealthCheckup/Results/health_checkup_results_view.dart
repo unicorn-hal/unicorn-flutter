@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Controller/HealthCheckup/Results/health_checkup_results_controller.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
@@ -53,7 +54,6 @@ class HealthCheckupResultsView extends StatelessWidget {
                   ),
                   child: Container(
                     width: size.width,
-                    height: 300,
                     color: controller.healthColor.withOpacity(0.5),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -80,7 +80,6 @@ class HealthCheckupResultsView extends StatelessWidget {
                                   CustomText(
                                     text: UserData().user!.lastName +
                                         UserData().user!.firstName,
-                                    fontSize: 14,
                                   ),
                                   const CustomText(
                                     text: 'さんの検診結果',
@@ -88,6 +87,29 @@ class HealthCheckupResultsView extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6.0,
+                                  ),
+                                  child: CustomText(
+                                      text:
+                                          '体温 : ${controller.bodyTemperature}℃')),
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6.0,
+                                  ),
+                                  child: CustomText(
+                                      text:
+                                          '血圧 : ${controller.bloodPressure}mmHg')),
                             ],
                           ),
                         ),
