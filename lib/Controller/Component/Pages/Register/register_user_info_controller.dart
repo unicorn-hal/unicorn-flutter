@@ -24,42 +24,51 @@ import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 
 class RegisterUserInfoController extends ControllerCore {
+  /// Serviceのインスタンス化
   FirebaseCloudStorageService get _cloudStorageService =>
       FirebaseCloudStorageService();
   ImageUtilsService get _imageUtilsService => ImageUtilsService();
   UserApi get _userApi => UserApi();
 
+  /// コンストラクタ
   RegisterUserInfoController({
     required super.from,
     required this.context,
   });
-
   BuildContext context;
 
+  /// 変数の定義
   TextEditingController phoneNumberTextController = TextEditingController();
   TextEditingController emailTextController = TextEditingController();
   TextEditingController occupationTextController = TextEditingController();
-
-  UserData userData = UserData();
-
+  bool _useAppbar = false;
+  final UserData _userData = UserData();
   final ValueNotifier<bool> _protector = ValueNotifier(false);
-  ValueNotifier<bool> get protector => _protector;
-
   File? _imageFile;
   Image? _image;
+  String? _iconImageUrl;
 
-  Image get image => _image ?? Assets.images.icons.defaultUserIcon.image();
-
+  /// initialize()
   @override
   void initialize() {
     _setDefaultValue();
   }
 
+  /// 各関数の実装
+  ValueNotifier<bool> get protector => _protector;
+  Image? get image => (_image == null) && (_iconImageUrl == null)
+      ? Assets.images.icons.defaultUserIcon.image()
+      : _image;
+  String? get iconImageUrl => _iconImageUrl;
+  bool get useAppbar => _useAppbar;
+
   void _setDefaultValue() {
     if (from == Routes.profile) {
-      phoneNumberTextController.text = userData.user!.phoneNumber;
-      emailTextController.text = userData.user!.email;
-      occupationTextController.text = userData.user!.occupation;
+      _useAppbar = true;
+      phoneNumberTextController.text = _userData.user!.phoneNumber;
+      emailTextController.text = _userData.user!.email;
+      occupationTextController.text = _userData.user!.occupation;
+      _iconImageUrl = _userData.user!.iconImageUrl;
     }
   }
 
@@ -105,17 +114,22 @@ class RegisterUserInfoController extends ControllerCore {
   }
 
   Future<void> submit(UserRequest userRequest) async {
-    String? iconImageUrl;
-    if (_imageFile != null) {
-      iconImageUrl = await _uploadImage();
-    }
-
     if (validateField() == false) {
       return;
     }
+    if (_image == null &&
+        _userData.user!.phoneNumber == phoneNumberTextController.text &&
+        _userData.user!.email == emailTextController.text &&
+        _userData.user!.occupation == occupationTextController.text) {
+      const ProfileRoute().go(context);
+      return;
+    }
+    if (_imageFile != null) {
+      _iconImageUrl = await _uploadImage();
+    }
 
     UserInfo userInfo = UserInfo(
-      iconImageUrl: iconImageUrl,
+      iconImageUrl: _iconImageUrl,
       phoneNumber: phoneNumberTextController.text,
       email: emailTextController.text,
       occupation: occupationTextController.text,
@@ -129,13 +143,13 @@ class RegisterUserInfoController extends ControllerCore {
     if (from == Routes.profile) {
       ProtectorNotifier().enableProtector();
       int statusCode = await _userApi.putUser(
-          userId: userData.user!.userId, body: userRequest);
+          userId: _userData.user!.userId, body: userRequest);
       ProtectorNotifier().disableProtector();
       if (statusCode != 200) {
         Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
       } else {
         // シングルトンに登録した値をセットする
-        userData.setUser(User.fromJson(userRequest.toJson()));
+        _userData.setUser(User.fromJson(userRequest.toJson()));
         Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
       }
       const ProfileRoute().go(context);

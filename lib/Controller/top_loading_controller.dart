@@ -194,7 +194,7 @@ class TopLoadingController extends ControllerCore {
       'email': 'test@test.com',
       'gender': 'male',
       'birthDate': '1990-01-01',
-      'address': '東京都新宿区1-1-1',
+      'address': '東京都,新宿区,1-1-1',
       'postalCode': '1000001',
       'phoneNumber': '09012345678',
       'iconImageUrl': 'https://placehold.jp/150x150.png',

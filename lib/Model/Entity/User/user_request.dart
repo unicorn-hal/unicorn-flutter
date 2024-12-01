@@ -43,7 +43,7 @@ class UserRequest {
       address: json['address'],
       postalCode: json['postalCode'],
       phoneNumber: json['phoneNumber'],
-      iconImageUrl: json['iconImage'],
+      iconImageUrl: json['iconImageUrl'],
       bodyHeight: json['bodyHeight'],
       bodyWeight: json['bodyWeight'],
       occupation: json['occupation'],
