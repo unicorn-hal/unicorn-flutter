@@ -12,6 +12,7 @@ import 'package:unicorn_flutter/Model/Entity/Account/account_request.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat.dart';
 import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/Account/account_api.dart';
 import 'package:unicorn_flutter/Service/Api/Chat/chat_api.dart';
@@ -203,6 +204,19 @@ class TopLoadingController extends ControllerCore {
       'occupation': 'エンジニア',
     }));
 
+    /// 通知設定を登録したことがあるかどうかを取得し、未登録の場合は登録する
+    bool notificationInitialized = await _getNotificationInitialized();
+    if (!notificationInitialized) {
+      UserNotification? userNotification = await _postUserNotification();
+      if (userNotification == null) {
+        /// 通信エラー時
+        Log.echo('userNotification: $userNotification');
+        return;
+      }
+      await _sharedPreferencesService.setBool(
+          SharedPreferencesKeysEnum.notificationInitialized.name, true);
+    }
+
     /// SharedPreferences: 起動フラグ
     _sharedPreferencesService.setBool(
         SharedPreferencesKeysEnum.appInitialized.name, true);
@@ -232,6 +246,8 @@ class TopLoadingController extends ControllerCore {
         <String>[
           FCMTopicEnum.all.name,
           FCMTopicEnum.user.name,
+          FCMTopicEnum.hospitalNews.name,
+          FCMTopicEnum.regularHealthCheckup.name,
         ],
       );
     }
@@ -273,5 +289,34 @@ class TopLoadingController extends ControllerCore {
         await completer.future;
       }
     }
+  }
+
+  /// 通知設定を登録したことがあるかどうか
+  Future<bool> _getNotificationInitialized() async {
+    bool? notificationInitialized = await _sharedPreferencesService
+        .getBool(SharedPreferencesKeysEnum.notificationInitialized.name);
+    if (notificationInitialized == null) {
+      /// 通知設定未登録の場合はfalseをsetする
+      _sharedPreferencesService.setBool(
+          SharedPreferencesKeysEnum.notificationInitialized.name, false);
+      return false;
+    }
+    return notificationInitialized;
+  }
+
+  /// 通知設定を登録する
+  Future<UserNotification?> _postUserNotification() async {
+    UserNotification? userNotification = await _userApi.postUserNotification(
+      userId: uid,
+      body: UserNotification(
+        isHospitalNews: true,
+        isMedicineReminder: true,
+        isRegularHealthCheckup: true,
+      ),
+    );
+    if (userNotification == null) {
+      Log.echo('Error: 通信エラー');
+    }
+    return userNotification;
   }
 }

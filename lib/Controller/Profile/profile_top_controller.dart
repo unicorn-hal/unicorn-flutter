@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:unicorn_flutter/Constants/Enum/shared_preferences_keys_enum.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
@@ -11,14 +10,11 @@ import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
-import 'package:unicorn_flutter/Service/Package/SharedPreferences/shared_preferences_service.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 class ProfileTopController extends ControllerCore {
   /// Serviceのインスタンス化
   UserApi get _userApi => UserApi();
-  SharedPreferencesService get _sharedPreferencesService =>
-      SharedPreferencesService();
 
   /// コンストラクタ
   ProfileTopController(
@@ -57,25 +53,8 @@ class ProfileTopController extends ControllerCore {
         title: '通知設定',
         icon: Icons.notifications,
         onTap: () async {
-          UserNotification? userNotification;
           ProtectorNotifier().enableProtector();
-          bool notificationInitialized =
-              await _sharedPreferencesService.getBool(
-                      SharedPreferencesKeysEnum.notificationInitialized.name) ??
-                  false;
-          if (notificationInitialized == false) {
-            userNotification = await postUserNotification();
-            if (userNotification == null) {
-              _sharedPreferencesService.setBool(
-                  SharedPreferencesKeysEnum.notificationInitialized.name,
-                  false);
-              return;
-            }
-            await _sharedPreferencesService.setBool(
-                SharedPreferencesKeysEnum.notificationInitialized.name, true);
-          } else {
-            userNotification = await getUserNotification();
-          }
+          UserNotification? userNotification = await getUserNotification();
           ProtectorNotifier().disableProtector();
           if (userNotification == null) {
             return;
@@ -119,22 +98,6 @@ class ProfileTopController extends ControllerCore {
   Future<UserNotification?> getUserNotification() async {
     UserNotification? userNotification =
         await _userApi.getUserNotification(userId: UserData().user!.userId);
-    if (userNotification == null) {
-      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-    }
-    return userNotification;
-  }
-
-  /// 通知設定を登録する関数
-  Future<UserNotification?> postUserNotification() async {
-    UserNotification? userNotification = await _userApi.postUserNotification(
-      userId: UserData().user!.userId,
-      body: UserNotification(
-        isHospitalNews: true,
-        isMedicineReminder: true,
-        isRegularHealthCheckup: true,
-      ),
-    );
     if (userNotification == null) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
