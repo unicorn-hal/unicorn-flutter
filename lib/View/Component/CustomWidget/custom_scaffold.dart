@@ -13,6 +13,7 @@ class CustomScaffold extends StatelessWidget {
   final bool isScrollable;
   final bool isAppbar;
   final FocusNode? focusNode;
+  final ScrollController? scrollController;
 
   const CustomScaffold({
     super.key,
@@ -26,6 +27,7 @@ class CustomScaffold extends StatelessWidget {
     this.isScrollable = false,
     this.isAppbar = true,
     this.focusNode,
+    this.scrollController,
   });
 
   @override
@@ -46,6 +48,7 @@ class CustomScaffold extends StatelessWidget {
               : null,
           body: isScrollable
               ? SingleChildScrollView(
+                  controller: scrollController,
                   child: body,
                 )
               : body,

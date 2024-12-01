@@ -231,10 +231,13 @@ class HealthCheckupTopView extends ConsumerWidget {
                     child: CustomText(text: '↓さあ、検診を開始しましょう↓'),
                   ),
                   // 通常検診ボタン
-                  HealthCheckButton(
-                    onTap: () {
-                      const NormalCheckupRoute().push(context);
-                    },
+                  SizedBox(
+                    height: 80,
+                    child: HealthCheckButton(
+                      onTap: () {
+                        const NormalCheckupRoute().push(context);
+                      },
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
@@ -243,6 +246,7 @@ class HealthCheckupTopView extends ConsumerWidget {
                   Stack(
                     children: [
                       SizedBox(
+                        height: 80,
                         child: HealthCheckButton(
                           onTap: () {
                             const AiCheckupRoute().push(context);

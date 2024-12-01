@@ -33,6 +33,7 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
       children: [
         CustomScaffold(
           isScrollable: true,
+          scrollController: controller.scrollController,
           body: Column(
             children: [
               /// 進捗バーの表示部
@@ -134,6 +135,8 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
                       );
                     } else {
                       isSelected = false;
+                      // スクロール位置を一番上に戻す
+                      controller.scrollController.jumpTo(0);
                       controller.nextQuestion(selectedIndex);
                     }
                   });
