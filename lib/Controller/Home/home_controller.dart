@@ -150,4 +150,9 @@ class HomeController extends ControllerCore {
     VideoCallRoute($extra: callStandby).go(context);
     callStandbyNotifier.value = null;
   }
+
+  void dispose() {
+    _firestoreService.dispose();
+    callStandbyNotifier.dispose();
+  }
 }

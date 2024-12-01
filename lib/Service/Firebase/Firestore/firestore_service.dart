@@ -28,7 +28,16 @@ class FirebaseFirestoreService {
     return await _firestore.collection(collection).doc(id).get();
   }
 
+  Future<List<DocumentSnapshot>> getCollectionData(String collection) async {
+    final snapshot = await _firestore.collection(collection).get();
+    return snapshot.docs;
+  }
+
   Stream<QuerySnapshot> streamData(String collection) {
     return _firestore.collection(collection).snapshots();
+  }
+
+  void dispose() {
+    _firestore.terminate();
   }
 }
