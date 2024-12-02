@@ -9,12 +9,14 @@ import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account_request.dart';
+import 'package:unicorn_flutter/Model/Entity/AppConfig/app_config.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat.dart';
 import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/Account/account_api.dart';
+import 'package:unicorn_flutter/Service/Api/AppConfig/app_config_api.dart';
 import 'package:unicorn_flutter/Service/Api/Chat/chat_api.dart';
 import 'package:unicorn_flutter/Service/Api/Department/department_api.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
@@ -41,6 +43,7 @@ class TopLoadingController extends ControllerCore {
   FirebaseCloudMessagingService get _messagingService =>
       FirebaseCloudMessagingService();
   SystemInfoService get _systemInfoService => SystemInfoService();
+  AppConfigApi get _appConfigApi => AppConfigApi();
   AccountApi get _accountApi => AccountApi();
   UserApi get _userApi => UserApi();
   ChatApi get _chatApi => ChatApi();
@@ -129,6 +132,11 @@ class TopLoadingController extends ControllerCore {
     );
     Log.echo('Account: ${account?.toJson() ?? 'null'}');
     Log.echo('User: ${user?.toJson() ?? 'null'}');
+
+    /// AppConfig: アプリ設定情報を取得
+    AppConfig appConfig = await _getAppConfig();
+    Completer availableCompleter = Completer<void>();
+    await _checkAppAvailable(appConfig.available, availableCompleter);
 
     /// シングルトンにアカウント情報を保存
     AccountData().setAccount(account!);
@@ -291,6 +299,66 @@ class TopLoadingController extends ControllerCore {
     }
   }
 
+  /// AppConfigの取得と検証
+  Future<AppConfig> _getAppConfig() async {
+    final AppConfig? appConfig = await _appConfigApi.getAppConfig();
+    if (appConfig == null) {
+      throw Exception('AppConfig API failed');
+    }
+    return appConfig;
+  }
+
+  /// アプリ有効フラグの検証
+  /// [isAvailable] アプリが有効かどうか
+  /// [completer] 検証完了時に呼び出すCompleter
+  Future<void> _checkAppAvailable(bool isAvailable, Completer completer) async {
+    if (!isAvailable) {
+      if (!context.mounted) {
+        return;
+      }
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return const CustomDialog(
+            title: 'エラー',
+            bodyText: 'システムメンテナンス中です...',
+            customButtonCount: 0,
+            titleColor: Colors.red,
+          );
+        },
+      );
+      await completer.future;
+    } else {
+      completer.complete();
+    }
+  }
+
+  /// リリースビルドバージョンの検証
+  Future<bool> checkReleaseBuild() async {
+    final int releaseBuild =
+        (await _appConfigApi.getAppConfig())?.releaseBuild ?? 0;
+    final int currentBuildNumber =
+        int.parse(await _systemInfoService.appBuildNumber);
+    Log.echo('ReleaseBuild: $releaseBuild, CurrentBuild: $currentBuildNumber');
+    return !(releaseBuild > currentBuildNumber);
+  }
+
+  /// (DEBUG) データ初期化
+  void clearData() async {
+    await _accountApi.deleteAccount();
+    await _userApi.deleteUser(userId: uid);
+
+    await _authService.signOut();
+    await _sharedPreferencesService.clear();
+    await _sharedPreferencesService.setBool(
+        SharedPreferencesKeysEnum.useLocalAuth.name, false);
+    await _sharedPreferencesService.setBool(
+        SharedPreferencesKeysEnum.appInitialized.name, false);
+
+    Log.toast('データを初期化しました');
+  }
+  
   /// 通知設定を登録したことがあるかどうか
   Future<bool> _getNotificationInitialized() async {
     bool? notificationInitialized = await _sharedPreferencesService

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:unicorn_flutter/Controller/top_loading_controller.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
@@ -56,6 +57,36 @@ class TopLoadingView extends StatelessWidget {
                   }
                 },
               ),
+              FutureBuilder(
+                  future: controller.checkReleaseBuild(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      bool isReleaseBuild = snapshot.data!;
+                      if (isReleaseBuild) {
+                        return const SizedBox();
+                      } else {
+                        return Column(
+                          children: [
+                            const CustomText(
+                              text: 'DEBUG BUILD',
+                              color: ColorName.textGray,
+                              fontWeight: FontWeight.w300,
+                              fontSize: 12,
+                            ),
+                            const SizedBox(height: 8),
+                            CustomButton(
+                              text: 'データ初期化',
+                              onTap: () {
+                                controller.clearData();
+                              },
+                            )
+                          ],
+                        );
+                      }
+                    } else {
+                      return const SizedBox();
+                    }
+                  }),
             ],
           ),
         ),

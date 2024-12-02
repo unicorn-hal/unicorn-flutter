@@ -43,6 +43,24 @@ class PermissionHandlerService {
     return requestPermission(permission);
   }
 
+  /// ビデオ通話専用: カメラとマイクのパーミッションをリクエストする
+  Future<bool> requestVideoCallPermissions() async {
+    final List<package.Permission> permissions = [
+      package.Permission.camera,
+      package.Permission.microphone,
+    ];
+    for (final permission in permissions) {
+      final package.PermissionStatus status = await permission.request();
+      if (status.isGranted || status.isLimited || status.isPermanentlyDenied) {
+        Log.echo('$permission granted');
+      } else {
+        Log.echo('$permission denied');
+        return false;
+      }
+    }
+    return true;
+  }
+
   /// Nativeの設定画面を開く
   Future<void> openAppSettings() async {
     try {

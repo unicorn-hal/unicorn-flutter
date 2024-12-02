@@ -1,7 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Controller/Home/home_controller.dart';
 import 'package:unicorn_flutter/Controller/bottom_navigation_bar_controller.dart';
+import 'package:unicorn_flutter/Model/Entity/Call/call_standby.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -19,51 +21,22 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  // todo: 変数はすべてControllerから取得する
-  final List<Map<String, dynamic>> boardList = [
-    {
-      'title': 'タイトル1',
-      'content': '内容1',
-      'imageUrl': 'https://picsum.photos/200/300',
-    },
-    {
-      'title': 'タイトル2',
-      'content': '内容2',
-      'imageUrl': 'https://picsum.photos/200/300',
-    },
-    {
-      'title': 'タイトル3',
-      'content': '内容3',
-      'imageUrl': 'https://picsum.photos/200/300',
-    },
-  ];
+  late HomeController _controller;
 
-  final List<Map<String, dynamic>> medicineList = [
-    {
-      'name': 'カロナール',
-      'remainingDays': 7,
-      'remainingCount': 7,
-      'progressColor': Colors.green,
-      'currentNum': 2,
-      'totalNum': 14,
-    },
-    {
-      'name': 'アポトキシン4869',
-      'remainingDays': 5,
-      'remainingCount': 30,
-      'progressColor': Colors.red,
-      'currentNum': 8,
-      'totalNum': 25,
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _controller = HomeController(context);
+  }
 
-  int _currentIndex = 0;
-  CarouselSliderController carouselController = CarouselSliderController();
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final double deviceHeight = MediaQuery.of(context).size.height;
-
     return CustomScaffold(
       isScrollable: true,
       appBar: CustomAppBar(
@@ -81,7 +54,6 @@ class _HomeViewState extends State<HomeView> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            height: deviceHeight * 0.45,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -95,11 +67,87 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 const SpacerAndDivider(
                   topHeight: 0,
-                  bottomHeight: 10,
+                  bottomHeight: 0,
+                ),
+                ValueListenableBuilder(
+                  valueListenable: _controller.callStandbyNotifier,
+                  builder: (BuildContext context, CallStandby? value,
+                      Widget? child) {
+                    if (value == null) {
+                      return Container();
+                    }
+                    return GestureDetector(
+                      onTap: () => _controller.goVideoCall(),
+                      child: Container(
+                        height: 100,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.green,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(Icons.call, color: Colors.green),
+                              ),
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(
+                                    bottom: 5,
+                                    left: 10,
+                                    right: 10,
+                                  ),
+                                  child: CustomText(
+                                    text: '通話の準備ができました',
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    CustomText(
+                                      text: '${value.doctorName}先生',
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    CustomText(
+                                      text: '(${value.hospitalName})',
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                  ],
+                                ),
+                                CustomText(
+                                  text: value.reservationDateTimes,
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 CarouselSlider.builder(
-                  carouselController: carouselController,
-                  itemCount: medicineList.length,
+                  carouselController: _controller.carouselController,
+                  itemCount: _controller.medicineList.length,
                   itemBuilder: (
                     BuildContext context,
                     int index,
@@ -110,9 +158,9 @@ class _HomeViewState extends State<HomeView> {
                           vertical: 10, horizontal: 10),
                       child: GestureDetector(
                         onTap: () {
-                          if (_currentIndex == index) return;
-                          _currentIndex = index;
-                          carouselController.animateToPage(
+                          if (_controller.currentIndex == index) return;
+                          _controller.currentIndex = index;
+                          _controller.carouselController.animateToPage(
                             index,
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.easeInOut,
@@ -120,12 +168,16 @@ class _HomeViewState extends State<HomeView> {
                           setState(() {});
                         },
                         child: MedicineLimitCard(
-                          medicineName: medicineList[index]['name'],
-                          remainingDays: medicineList[index]['remainingDays'],
-                          remainingCount: medicineList[index]['remainingCount'],
-                          progressColor: medicineList[index]['progressColor'],
-                          currentNum: medicineList[index]['currentNum'],
-                          totalNum: medicineList[index]['totalNum'],
+                          medicineName: _controller.medicineList[index]['name'],
+                          remainingDays: _controller.medicineList[index]
+                              ['remainingDays'],
+                          remainingCount: _controller.medicineList[index]
+                              ['remainingCount'],
+                          progressColor: _controller.medicineList[index]
+                              ['progressColor'],
+                          currentNum: _controller.medicineList[index]
+                              ['currentNum'],
+                          totalNum: _controller.medicineList[index]['totalNum'],
                         ),
                       ),
                     );
@@ -137,27 +189,30 @@ class _HomeViewState extends State<HomeView> {
                     viewportFraction: 0.8,
                     enableInfiniteScroll: false,
                     onPageChanged: (index, _) {
-                      _currentIndex = index;
+                      _controller.currentIndex = index;
                       setState(() {});
                     },
                   ),
                 ),
                 DotsIndicator(
-                  dotsCount: medicineList.length,
-                  position: _currentIndex,
+                  dotsCount: _controller.medicineList.length,
+                  position: _controller.currentIndex,
                   decorator: const DotsDecorator(
                     color: Colors.grey,
                     activeColor: ColorName.mainColor,
                   ),
                   onTap: (position) {
-                    _currentIndex = position;
-                    carouselController.animateToPage(
+                    _controller.currentIndex = position;
+                    _controller.carouselController.animateToPage(
                       position,
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.easeInOut,
                     );
                     setState(() {});
                   },
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 HealthCheckButton(
                   onTap: () => BottomNavigationBarController().goBranch(1),
@@ -179,13 +234,13 @@ class _HomeViewState extends State<HomeView> {
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: boardList.length,
+            itemCount: _controller.boardList.length,
             itemBuilder: (BuildContext context, int index) {
               return SizedBox(
                 child: BoardTile(
-                  title: boardList[index]['title'],
-                  content: boardList[index]['content'],
-                  imageUrl: boardList[index]['imageUrl'],
+                  title: _controller.boardList[index]['title'],
+                  content: _controller.boardList[index]['content'],
+                  imageUrl: _controller.boardList[index]['imageUrl'],
                   onTap: () {
                     // todo: タップ時の処理
                   },
