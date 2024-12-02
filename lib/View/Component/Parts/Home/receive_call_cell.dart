@@ -2,12 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 
 class ReceiveCallCell extends StatelessWidget {
-  const ReceiveCallCell({super.key});
+  const ReceiveCallCell({
+    super.key,
+    required this.doctorName,
+    required this.hospitalName,
+    required this.reservationDateTimes,
+    required this.onTap,
+  });
+  final String doctorName;
+  final String hospitalName;
+  final String reservationDateTimes;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => onTap.call(),
       child: Container(
         height: 100,
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -48,20 +58,20 @@ class ReceiveCallCell extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CustomText(
-                      text: '先生',
+                      text: '$doctorName先生',
                       color: Colors.white,
                       fontSize: 14,
                     ),
                     const SizedBox(width: 5),
                     CustomText(
-                      text: '()',
+                      text: '($hospitalName)',
                       color: Colors.white,
                       fontSize: 12,
                     ),
                   ],
                 ),
                 CustomText(
-                  text: '',
+                  text: reservationDateTimes,
                   color: Colors.white,
                   fontSize: 14,
                 ),
