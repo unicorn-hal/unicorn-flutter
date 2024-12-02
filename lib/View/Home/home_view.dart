@@ -1,9 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:unicorn_flutter/Controller/Home/home_controller.dart';
 import 'package:unicorn_flutter/Controller/bottom_navigation_bar_controller.dart';
+import 'package:unicorn_flutter/Model/Cache/Medicine/medicine_cache.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call_standby.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -145,72 +148,78 @@ class _HomeViewState extends State<HomeView> {
                     );
                   },
                 ),
-                CarouselSlider.builder(
-                  carouselController: _controller.carouselController,
-                  itemCount: _controller.medicineList.length,
-                  itemBuilder: (
-                    BuildContext context,
-                    int index,
-                    int realIndex,
-                  ) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 10),
-                      child: GestureDetector(
-                        onTap: () {
-                          if (_controller.currentIndex == index) return;
-                          _controller.currentIndex = index;
+                Consumer(builder: (context, ref, _) {
+                  final medicineCacheRef = ref.watch(medicineCacheProvider);
+                  return Column(
+                    children: [
+                      CarouselSlider.builder(
+                        carouselController: _controller.carouselController,
+                        itemCount: medicineCacheRef.data.length,
+                        itemBuilder: (
+                          BuildContext context,
+                          int index,
+                          int realIndex,
+                        ) {
+                          Medicine medicine = medicineCacheRef.data[index];
+
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 10),
+                            child: GestureDetector(
+                              onTap: () {
+                                if (_controller.currentIndex == index) return;
+                                _controller.currentIndex = index;
+                                _controller.carouselController.animateToPage(
+                                  index,
+                                  duration: const Duration(milliseconds: 500),
+                                  curve: Curves.easeInOut,
+                                );
+                                setState(() {});
+                              },
+                              child: MedicineLimitCard(
+                                medicineName: medicine.medicineName,
+                                remainingDays:
+                                    (medicine.count / medicine.dosage).floor(),
+                                remainingCount: medicine.quantity,
+                                progressColor: ColorName.mainColor,
+                                currentNum: medicine.count - medicine.quantity,
+                                totalNum: medicine.count,
+                              ),
+                            ),
+                          );
+                        },
+                        options: CarouselOptions(
+                          height: 160,
+                          initialPage: 0,
+                          autoPlay: false,
+                          viewportFraction: 0.8,
+                          enableInfiniteScroll: false,
+                          onPageChanged: (index, _) {
+                            _controller.currentIndex = index;
+                            setState(() {});
+                          },
+                        ),
+                      ),
+                      DotsIndicator(
+                        dotsCount: medicineCacheRef.data.length,
+                        position: _controller.currentIndex,
+                        decorator: const DotsDecorator(
+                          color: Colors.grey,
+                          activeColor: ColorName.mainColor,
+                        ),
+                        onTap: (position) {
+                          _controller.currentIndex = position;
                           _controller.carouselController.animateToPage(
-                            index,
+                            position,
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.easeInOut,
                           );
                           setState(() {});
                         },
-                        child: MedicineLimitCard(
-                          medicineName: _controller.medicineList[index]['name'],
-                          remainingDays: _controller.medicineList[index]
-                              ['remainingDays'],
-                          remainingCount: _controller.medicineList[index]
-                              ['remainingCount'],
-                          progressColor: _controller.medicineList[index]
-                              ['progressColor'],
-                          currentNum: _controller.medicineList[index]
-                              ['currentNum'],
-                          totalNum: _controller.medicineList[index]['totalNum'],
-                        ),
                       ),
-                    );
-                  },
-                  options: CarouselOptions(
-                    height: 160,
-                    initialPage: 0,
-                    autoPlay: false,
-                    viewportFraction: 0.8,
-                    enableInfiniteScroll: false,
-                    onPageChanged: (index, _) {
-                      _controller.currentIndex = index;
-                      setState(() {});
-                    },
-                  ),
-                ),
-                DotsIndicator(
-                  dotsCount: _controller.medicineList.length,
-                  position: _controller.currentIndex,
-                  decorator: const DotsDecorator(
-                    color: Colors.grey,
-                    activeColor: ColorName.mainColor,
-                  ),
-                  onTap: (position) {
-                    _controller.currentIndex = position;
-                    _controller.carouselController.animateToPage(
-                      position,
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeInOut,
-                    );
-                    setState(() {});
-                  },
-                ),
+                    ],
+                  );
+                }),
                 const SizedBox(
                   height: 10,
                 ),

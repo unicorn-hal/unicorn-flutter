@@ -44,26 +44,6 @@ class HomeController extends ControllerCore {
     },
   ];
 
-  // todo: 仮データ
-  final List<Map<String, dynamic>> _medicineList = [
-    {
-      'name': 'カロナール',
-      'remainingDays': 7,
-      'remainingCount': 7,
-      'progressColor': Colors.green,
-      'currentNum': 2,
-      'totalNum': 14,
-    },
-    {
-      'name': 'アポトキシン4869',
-      'remainingDays': 5,
-      'remainingCount': 30,
-      'progressColor': Colors.red,
-      'currentNum': 8,
-      'totalNum': 25,
-    },
-  ];
-
   // todo: APIから取得時に命名も見直し
   int currentIndex = 0;
   final CarouselSliderController _carouselController =
@@ -80,7 +60,6 @@ class HomeController extends ControllerCore {
   }
 
   List<Map<String, dynamic>> get boardList => _boardList;
-  List<Map<String, dynamic>> get medicineList => _medicineList;
   CarouselSliderController get carouselController => _carouselController;
 
   /// 通話待機中の予約情報を取得
