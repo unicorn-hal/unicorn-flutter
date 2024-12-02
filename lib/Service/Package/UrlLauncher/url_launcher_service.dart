@@ -6,20 +6,10 @@ class UrlLauncherService {
   /// [url] String URL文字列
   Future<void> launchUrl(String url) async {
     try {
-      // URLをエンコードしてUriオブジェクトを作成
-      final String encodedUrl = Uri.encodeFull(url);
-      final Uri uri = Uri.parse(encodedUrl);
-
-      // URLを開けるか確認
-      if (!await package.canLaunchUrl(uri)) {
-        Log.echo('URLを開けませんでした。', symbol: '❌');
-        return;
-      }
-
+      final Uri uri = Uri.parse(url);
       // 外部ブラウザでURLを開く
       await package.launchUrl(
         uri,
-        mode: package.LaunchMode.externalApplication,
       );
       Log.echo('URLを開きました。', symbol: '✅');
     } catch (e) {
