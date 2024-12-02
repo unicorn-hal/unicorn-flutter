@@ -9,6 +9,8 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.d
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
+import '../../../Component/Parts/Chat/department_badges.dart';
+
 class DoctorInformationView extends StatelessWidget {
   const DoctorInformationView({
     super.key,
@@ -76,6 +78,32 @@ class DoctorInformationView extends StatelessWidget {
                         fontSize: 20,
                       ),
                     ],
+                  ),
+                ),
+
+                /// 科目カード表示部
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    constraints: const BoxConstraints(
+                      minWidth: 10,
+                    ),
+                    height: 60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        for (final department in doctor.departments)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 4,
+                            ),
+                            child: DepartmentBadge(
+                              name: department.departmentName,
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
 
@@ -220,7 +248,7 @@ class DoctorInformationView extends StatelessWidget {
                           horizontal: 16.0,
                         ),
                         child: CustomText(
-                          text: '通話: ${doctor.chatSupportHours}',
+                          text: '通話: ${doctor.callSupportHours}',
                         ),
                       ),
                     ],

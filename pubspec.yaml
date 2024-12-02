@@ -57,6 +57,7 @@ dependencies:
   audioplayers: ^6.1.0
   tutorial_coach_mark: ^1.2.12
   cloud_firestore: ^5.4.0
+  collection: ^1.18.0
 
 dev_dependencies:
   flutter_test:

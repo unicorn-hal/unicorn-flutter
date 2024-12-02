@@ -92,12 +92,14 @@ class CustomDialog extends StatelessWidget {
               ),
             ),
             Container(
-              padding: const EdgeInsets.only(
+              padding: EdgeInsets.only(
                 left: 10,
                 right: 10,
-                bottom: 10,
+                bottom:
+                    customButtonCount == 0 || customButtonCount > 2 ? 0 : 10,
               ),
-              height: 60,
+              height:
+                  customButtonCount == 0 || customButtonCount > 2 ? null : 60,
               child: customButtonCount == 0 || customButtonCount > 2
                   ? null
                   : Row(

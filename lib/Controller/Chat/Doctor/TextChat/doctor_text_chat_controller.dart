@@ -18,6 +18,7 @@ import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Service/Api/Chat/chat_api.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 
+import '../../../../Model/Entity/Chat/message_response.dart';
 import '../../../Core/controller_core.dart';
 
 class DoctorTextChatController extends ControllerCore {
@@ -180,10 +181,11 @@ class DoctorTextChatController extends ControllerCore {
       content: chatController.text,
     );
     chatController.text = '';
-    final response = await _chatApi.postMessage(body: message, chatId: _chatId);
+    final MessageResponse? response =
+        await _chatApi.postMessage(body: message, chatId: _chatId);
 
-    // 200以外の場合はエラーを表示
-    if (response.hashCode != 200) {
+    // nullの場合はエラーを表示
+    if (response == null) {
       Fluttertoast.showToast(msg: Strings.CHAT_POST_RESPONSE_ERROR);
     }
   }
@@ -213,17 +215,18 @@ class DoctorTextChatController extends ControllerCore {
   Future<void> reportMessage(Message message) async {
     Log.echo('通報するメッセージ: ${message.content}');
   }
-  
+
   /// 予約メッセージを送信
   Future<void> sendReserveMessage() async {
     MessageRequest message = MessageRequest(
       senderId: AccountData().account!.uid,
       content: _reserveMessage!,
     );
-    final response = await _chatApi.postMessage(body: message, chatId: _chatId);
+    final MessageResponse? response =
+        await _chatApi.postMessage(body: message, chatId: _chatId);
 
-    // 200以外の場合はエラーを表示
-    if (response.hashCode != 200) {
+    // nullの場合はエラーを表示
+    if (response == null) {
       Fluttertoast.showToast(msg: Strings.CHAT_POST_RESPONSE_ERROR);
     }
   }

@@ -109,6 +109,12 @@ class FamilyEmailRegisterController extends ControllerCore {
 
   /// メールアドレスを更新する関数
   Future<int> putFamilyEmail() async {
+    if (_image == null &&
+        _familyEmail!.lastName == lastNameController.text &&
+        _familyEmail.firstName == firstNameController.text &&
+        _familyEmail.email == emailController.text) {
+      return 200;
+    }
     ProtectorNotifier().enableProtector();
     await _uploadImage();
     FamilyEmailPutRequest body = FamilyEmailPutRequest(
