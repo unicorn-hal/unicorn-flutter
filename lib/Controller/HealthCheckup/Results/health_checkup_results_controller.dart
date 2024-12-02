@@ -127,7 +127,7 @@ class HealthCheckupResultsController extends ControllerCore {
 
     // postするものと同じ日付のHealthCheckupがあるかを確認
     String? healthCheckupId =
-        getHealthCheckupIdWithDate(healthCheckupRequest.date);
+        _getHealthCheckupIdWithDate(healthCheckupRequest.date);
     HealthCheckup? response;
 
     // その日付のHealthCheckupがあれば更新、なければ新規作成
@@ -189,7 +189,7 @@ class HealthCheckupResultsController extends ControllerCore {
 
   /// 日付を指定してその日付のHealthCheckupが存在すればhealthcheckupIdを返す
   /// [date] 日付
-  String? getHealthCheckupIdWithDate(DateTime date) {
+  String? _getHealthCheckupIdWithDate(DateTime date) {
     List<HealthCheckup> healthCheckupList = HealthCheckupData().data ?? [];
     for (HealthCheckup healthCheckup in healthCheckupList) {
       if (healthCheckup.date == date) {
