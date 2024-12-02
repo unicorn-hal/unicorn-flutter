@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:carousel_slider/carousel_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
@@ -71,6 +72,8 @@ class HomeController extends ControllerCore {
   ValueNotifier<CallStandby?> callStandbyNotifier =
       ValueNotifier<CallStandby?>(null);
 
+  StreamSubscription<QuerySnapshot<Object?>>? _callStandbySubscription;
+
   @override
   void initialize() async {
     _callReservationsListener();
@@ -83,7 +86,7 @@ class HomeController extends ControllerCore {
   /// 通話待機中の予約情報を取得
   void _callReservationsListener() {
     final String collection = UserData().user!.userId;
-    _firestoreService.streamData(collection).listen(
+    _callStandbySubscription = _firestoreService.streamData(collection).listen(
       (event) async {
         try {
           await Future.delayed(const Duration(seconds: 2));
@@ -152,6 +155,7 @@ class HomeController extends ControllerCore {
   }
 
   void dispose() {
+    _callStandbySubscription?.cancel();
     _firestoreService.dispose();
     callStandbyNotifier.dispose();
   }

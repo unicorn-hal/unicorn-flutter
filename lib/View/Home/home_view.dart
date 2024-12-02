@@ -32,6 +32,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void dispose() {
     super.dispose();
+    _controller.dispose();
   }
 
   @override
