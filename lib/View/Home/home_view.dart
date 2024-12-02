@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:unicorn_flutter/Controller/Home/home_controller.dart';
@@ -42,6 +43,8 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width;
+
     return CustomScaffold(
       isScrollable: true,
       appBar: CustomAppBar(
@@ -152,6 +155,34 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 Consumer(builder: (context, ref, _) {
                   final medicineCacheRef = ref.watch(medicineCacheProvider);
+
+                  if (medicineCacheRef.data.isEmpty) {
+                    // todo: おくすりが登録されていない場合のView
+                    return DottedBorder(
+                      dashPattern: const [15, 10],
+                      borderType: BorderType.RRect,
+                      radius: const Radius.circular(20),
+                      child: SizedBox(
+                        width: deviceWidth * 0.9,
+                        height: 200,
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.add,
+                              color: Colors.grey,
+                              size: 22,
+                            ),
+                            CustomText(
+                              text: 'おくすりを登録する',
+                              color: ColorName.textGray,
+                              fontSize: 14,
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  }
                   return Column(
                     children: [
                       CarouselSlider.builder(
