@@ -177,13 +177,11 @@ class _HomeViewState extends State<HomeView> {
                                 setState(() {});
                               },
                               child: MedicineLimitCard(
-                                medicineName: medicine.medicineName,
-                                remainingDays:
-                                    (medicine.count / medicine.dosage).floor(),
-                                remainingCount: medicine.quantity,
-                                progressColor: _controller.colors[index % 10],
-                                currentNum: medicine.count - medicine.quantity,
-                                totalNum: medicine.count,
+                                medicine: medicine,
+                                color: _controller.colors[index % 10],
+                                buttonOnTap: () {
+                                  print('button tapped: $index');
+                                },
                               ),
                             ),
                           );
