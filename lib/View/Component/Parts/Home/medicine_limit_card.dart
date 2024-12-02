@@ -24,7 +24,7 @@ class MedicineLimitCard extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     final String medicineName = medicine.medicineName;
-    final int remainingDays = (medicine.count / medicine.dosage).floor();
+    final int remainingDays = (medicine.quantity / medicine.dosage).ceil();
     final int remainingQuantity = medicine.quantity;
     final int currentNum = medicine.count - medicine.quantity;
     final int totalNum = medicine.count;
@@ -97,12 +97,12 @@ class MedicineLimitCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       const CustomText(
-                        text: '残り回数 / 個数',
+                        text: '服用回数 / 錠数',
                         fontSize: 12,
                         color: ColorName.textGray,
                       ),
                       CustomText(
-                          text: '$remainingDays日分 / 残り$remainingQuantity個'),
+                          text: '残り $remainingDays回 / $remainingQuantity錠'),
                     ],
                   ),
                   Container(
