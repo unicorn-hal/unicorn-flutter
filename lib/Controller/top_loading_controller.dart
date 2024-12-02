@@ -183,7 +183,7 @@ class TopLoadingController extends ControllerCore {
 
     final List<Medicine>? medicineList = await _medicineApi.getMedicineList();
     if (medicineList != null) {
-      MedicineCache().setList(medicineList);
+      MedicineCache().setMedicineList(medicineList);
       Log.echo('Medicine: ${medicineList.map((e) => e.toJson()).toList()}');
     }
 

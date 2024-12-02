@@ -13,7 +13,7 @@ class MedicineCache extends ChangeNotifier {
 
   List<Medicine> get data => _data;
 
-  void setList(List<Medicine> dataList) {
+  void setMedicineList(List<Medicine> dataList) {
     _data.clear();
     _data.addAll(dataList);
     notifyListeners();

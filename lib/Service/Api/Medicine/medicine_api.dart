@@ -18,7 +18,7 @@ class MedicineApi extends ApiCore with Endpoint {
       final List<Medicine> data = (response.data['data'] as List)
           .map((e) => Medicine.fromJson(e))
           .toList();
-      _medicineCache.setList(data);
+      _medicineCache.setMedicineList(data);
       return data;
     } catch (e) {
       return null;
