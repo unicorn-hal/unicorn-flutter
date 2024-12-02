@@ -3,16 +3,21 @@ import 'dart:async';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call_standby.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call_status.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/medicine_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/Call/call_api.dart';
 import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
+import 'package:unicorn_flutter/Service/Api/Medicine/medicine_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/Firestore/firestore_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 
@@ -21,6 +26,7 @@ class HomeController extends ControllerCore {
       FirebaseFirestoreService(databaseId: 'call-log');
   CallApi get _callApi => CallApi();
   DoctorApi get _doctorApi => DoctorApi();
+  MedicineApi get _medicineApi => MedicineApi();
 
   HomeController(this.context);
   BuildContext context;
@@ -58,7 +64,7 @@ class HomeController extends ControllerCore {
   ];
 
   // todo: APIから取得時に命名も見直し
-  int currentIndex = 0;
+  int carouselIndex = 0;
   final CarouselSliderController _carouselController =
       CarouselSliderController();
 
@@ -145,6 +151,35 @@ class HomeController extends ControllerCore {
     // ignore: use_build_context_synchronously
     VideoCallRoute($extra: callStandby).go(context);
     callStandbyNotifier.value = null;
+  }
+
+  Future<void> takeMedicine(Medicine medicine) async {
+    MedicineRequest medicineRequest = MedicineRequest(
+      medicineName: medicine.medicineName,
+      count: medicine.count,
+      quantity: medicine.quantity - medicine.dosage,
+      dosage: medicine.dosage,
+      reminders: medicine.reminders,
+    );
+    if (medicineRequest.quantity <= 0) {
+      final deleteRes =
+          await _medicineApi.deleteMedicine(medicineId: medicine.medicineId);
+      if (deleteRes != 204) {
+        Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+        return;
+      }
+      carouselIndex = 0;
+      carouselController.jumpToPage(carouselIndex);
+      Fluttertoast.showToast(msg: Strings.MEDICINE_TAKE_ALL_COMPLETED_MESSAGE);
+      return;
+    }
+    final putRes = await _medicineApi.putMedicine(
+        medicineId: medicine.medicineId, body: medicineRequest);
+    if (putRes == null) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      return;
+    }
+    Fluttertoast.showToast(msg: Strings.MEDICINE_TAKE_COMPLETED_MESSAGE);
   }
 
   void dispose() {

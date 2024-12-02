@@ -8,12 +8,14 @@ import 'package:unicorn_flutter/Model/Cache/Medicine/medicine_cache.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call_standby.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Home/board_tile.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Home/medicine_limit_card.dart';
 import 'package:unicorn_flutter/View/Component/Parts/health_check_button.dart';
+import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class HomeView extends StatefulWidget {
@@ -167,8 +169,8 @@ class _HomeViewState extends State<HomeView> {
                                 vertical: 10, horizontal: 10),
                             child: GestureDetector(
                               onTap: () {
-                                if (_controller.currentIndex == index) return;
-                                _controller.currentIndex = index;
+                                if (_controller.carouselIndex == index) return;
+                                _controller.carouselIndex = index;
                                 _controller.carouselController.animateToPage(
                                   index,
                                   duration: const Duration(milliseconds: 500),
@@ -180,7 +182,25 @@ class _HomeViewState extends State<HomeView> {
                                 medicine: medicine,
                                 color: _controller.colors[index % 10],
                                 buttonOnTap: () {
-                                  print('button tapped: $index');
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      final int remainingMedicine =
+                                          medicine.quantity - medicine.dosage;
+                                      return CustomDialog(
+                                        title: 'おくすりを服用します',
+                                        bodyText:
+                                            '${medicine.medicineName}を ${medicine.dosage}錠 服用しますか？\n${remainingMedicine < 0 ? '残りのすべてのおくすりが服用されます。' : '残りは $remainingMedicine錠 です。'}',
+                                        rightButtonOnTap: () async {
+                                          ProtectorNotifier().enableProtector();
+                                          await _controller
+                                              .takeMedicine(medicine);
+                                          ProtectorNotifier()
+                                              .disableProtector();
+                                        },
+                                      );
+                                    },
+                                  );
                                 },
                               ),
                             ),
@@ -193,20 +213,20 @@ class _HomeViewState extends State<HomeView> {
                           viewportFraction: 0.8,
                           enableInfiniteScroll: false,
                           onPageChanged: (index, _) {
-                            _controller.currentIndex = index;
+                            _controller.carouselIndex = index;
                             setState(() {});
                           },
                         ),
                       ),
                       DotsIndicator(
                         dotsCount: medicineCacheRef.data.length,
-                        position: _controller.currentIndex,
+                        position: _controller.carouselIndex,
                         decorator: const DotsDecorator(
                           color: Colors.grey,
                           activeColor: ColorName.mainColor,
                         ),
                         onTap: (position) {
-                          _controller.currentIndex = position;
+                          _controller.carouselIndex = position;
                           _controller.carouselController.animateToPage(
                             position,
                             duration: const Duration(milliseconds: 500),

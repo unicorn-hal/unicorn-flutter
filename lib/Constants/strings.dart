@@ -95,4 +95,8 @@ class Strings {
   // 住所情報画面でテキストフィールド内に使用できない文字列が含まれる際に表示するテキスト
   static const String PROFILE_ADDRESS_NOT_FORMAT_ERROR_MESSAGE =
       '使用できない文字列が含まれています';
+
+  // おくすりを服用した際に表示するテキスト
+  static const String MEDICINE_TAKE_COMPLETED_MESSAGE = 'おくすりを服用しました';
+  static const String MEDICINE_TAKE_ALL_COMPLETED_MESSAGE = 'すべてのおくすりを服用しました';
 }
