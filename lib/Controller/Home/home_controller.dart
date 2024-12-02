@@ -44,6 +44,19 @@ class HomeController extends ControllerCore {
     },
   ];
 
+  final List<Color> _colors = [
+    Colors.red,
+    Colors.blue,
+    Colors.green,
+    Colors.yellow,
+    Colors.purple,
+    Colors.orange,
+    Colors.pink,
+    Colors.teal,
+    Colors.indigo,
+    Colors.cyan,
+  ];
+
   // todo: APIから取得時に命名も見直し
   int currentIndex = 0;
   final CarouselSliderController _carouselController =
@@ -59,6 +72,7 @@ class HomeController extends ControllerCore {
     _callReservationsListener();
   }
 
+  List<Color> get colors => _colors;
   List<Map<String, dynamic>> get boardList => _boardList;
   CarouselSliderController get carouselController => _carouselController;
 

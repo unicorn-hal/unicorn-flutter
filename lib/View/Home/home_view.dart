@@ -181,7 +181,7 @@ class _HomeViewState extends State<HomeView> {
                                 remainingDays:
                                     (medicine.count / medicine.dosage).floor(),
                                 remainingCount: medicine.quantity,
-                                progressColor: ColorName.mainColor,
+                                progressColor: _controller.colors[index % 10],
                                 currentNum: medicine.count - medicine.quantity,
                                 totalNum: medicine.count,
                               ),
