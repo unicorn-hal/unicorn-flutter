@@ -396,11 +396,11 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                       return;
                     }
                     ProtectorNotifier().enableProtector();
-                    int res = widget.medicine != null
+                    Medicine? res = widget.medicine != null
                         ? await controller.putMedicine()
                         : await controller.postMedicine();
                     ProtectorNotifier().disableProtector();
-                    if (res != 200) {
+                    if (res == null) {
                       return;
                     }
                     // ignore: use_build_context_synchronously

@@ -7,7 +7,6 @@ import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine_request.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/reminder.dart';
-import 'package:unicorn_flutter/Model/Entity/Medicine/reminder_request.dart';
 import 'package:unicorn_flutter/Service/Api/Medicine/medicine_api.dart';
 import 'package:uuid/uuid.dart';
 import 'package:collection/collection.dart';
@@ -162,25 +161,15 @@ class MedicineSettingController extends ControllerCore {
     return displayedReminderDayOfWeek;
   }
 
-  /// List<Reminder>型のremindersをList<ReminderRequest>型に変換する関数
-  List<ReminderRequest> _createReminderRequestList(
-      {required List<Reminder> reminders}) {
-    List<ReminderRequest> reminderRequestList = [];
-    for (int i = 0; i < reminders.length; i++) {
-      reminderRequestList.add(reminders[i].toRequest());
-    }
-    return reminderRequestList;
-  }
-
   /// Medicineの情報を更新する関数
-  Future<int> putMedicine() async {
+  Future<Medicine?> putMedicine() async {
     if (_medicine!.medicineName == nameController.text &&
         _medicine.quantity == int.parse(countController.text) &&
         _medicine.dosage == _selectIndex! + 1 &&
         _medicine.reminders.length == _reminders.length) {
       Function isEqual = const ListEquality().equals;
       if (isEqual(_medicine.reminders, _reminders)) {
-        return 200;
+        return null;
       }
     }
     MedicineRequest body = MedicineRequest(
@@ -188,27 +177,27 @@ class MedicineSettingController extends ControllerCore {
       count: _medicine.count,
       quantity: int.parse(countController.text),
       dosage: _selectIndex! + 1,
-      reminders: _createReminderRequestList(reminders: _reminders),
+      reminders: _reminders,
     );
-    int res = await _medicineApi.putMedicine(
+    Medicine? res = await _medicineApi.putMedicine(
         body: body, medicineId: _medicine.medicineId);
-    if (res != 200) {
+    if (res == null) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
     return res;
   }
 
   /// Medicineの情報を登録する関数
-  Future<int> postMedicine() async {
+  Future<Medicine?> postMedicine() async {
     MedicineRequest body = MedicineRequest(
       medicineName: nameController.text,
       count: int.parse(countController.text),
       quantity: int.parse(countController.text),
       dosage: _selectIndex! + 1,
-      reminders: _createReminderRequestList(reminders: _reminders),
+      reminders: _reminders,
     );
-    int res = await _medicineApi.postMedicine(body: body);
-    if (res != 200) {
+    Medicine? res = await _medicineApi.postMedicine(body: body);
+    if (res == null) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
     return res;
