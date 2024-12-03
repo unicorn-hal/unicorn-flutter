@@ -154,25 +154,17 @@ class HomeController extends ControllerCore {
   }
 
   Future<void> takeMedicine(Medicine medicine) async {
+    int requestQuantity = medicine.quantity - medicine.dosage;
+    if (requestQuantity <= 0) {
+      requestQuantity = 0;
+    }
     MedicineRequest medicineRequest = MedicineRequest(
       medicineName: medicine.medicineName,
       count: medicine.count,
-      quantity: medicine.quantity - medicine.dosage,
+      quantity: requestQuantity,
       dosage: medicine.dosage,
       reminders: medicine.reminders,
     );
-    if (medicineRequest.quantity <= 0) {
-      final deleteRes =
-          await _medicineApi.deleteMedicine(medicineId: medicine.medicineId);
-      if (deleteRes != 204) {
-        Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-        return;
-      }
-      carouselIndex = 0;
-      carouselController.jumpToPage(carouselIndex);
-      Fluttertoast.showToast(msg: Strings.MEDICINE_TAKE_ALL_COMPLETED_MESSAGE);
-      return;
-    }
     final putRes = await _medicineApi.putMedicine(
         medicineId: medicine.medicineId, body: medicineRequest);
     if (putRes == null) {
