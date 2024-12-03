@@ -28,16 +28,36 @@ class MedicineLimitCard extends StatelessWidget {
     final int remainingQuantity = medicine.quantity;
     final int totalNum = medicine.count;
 
+    final List<Color> progressColor = [
+      Colors.green,
+      Colors.yellow,
+      Colors.red,
+    ];
+
     // totalNumとremainingQuantityから残り%を計算
     double getProgressRate() {
       return (remainingQuantity / totalNum * 100);
     }
+
+    // 残り%に応じて色を決定
+    Color getProgressColor(double progressRate) {
+      if (progressRate > 66) {
+        return progressColor[0];
+      } else if (progressRate > 33) {
+        return progressColor[1];
+      } else {
+        return progressColor[2];
+      }
+    }
+
+    final double progressRate = getProgressRate();
 
     return Container(
       width: size.width * 0.9,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color, width: 2),
         boxShadow: const [
           BoxShadow(
             color: ColorName.shadowGray,
@@ -67,13 +87,13 @@ class MedicineLimitCard extends StatelessWidget {
                   CircularPercentIndicator(
                     radius: size.width * 0.18,
                     lineWidth: 22.0,
-                    percent: getProgressRate() / 100,
+                    percent: progressRate / 100,
                     center: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         CustomText(
-                          text: getProgressRate().toInt().toString(),
+                          text: progressRate.toInt().toString(),
                           fontSize: 22,
                         ),
                         const SizedBox(width: 2),
@@ -84,7 +104,7 @@ class MedicineLimitCard extends StatelessWidget {
                       ],
                     ),
                     circularStrokeCap: CircularStrokeCap.round,
-                    progressColor: color,
+                    progressColor: getProgressColor(progressRate),
                   ),
                   CustomText(
                     text: medicineName,
