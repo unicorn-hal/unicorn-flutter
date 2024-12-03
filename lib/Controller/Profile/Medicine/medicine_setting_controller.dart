@@ -171,7 +171,7 @@ class MedicineSettingController extends ControllerCore {
         _medicine.reminders.length == _reminders.length) {
       Function isEqual = const ListEquality().equals;
       if (isEqual(_medicine.reminders, _reminders)) {
-        return null;
+        return _medicine;
       }
     }
     MedicineRequest body = MedicineRequest(

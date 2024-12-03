@@ -151,9 +151,7 @@ class _MedicineViewState extends State<MedicineView> {
                                 onTap: () {
                                   ProfileMedicineSettingRoute(
                                     $extra: medicineList[index],
-                                  )
-                                      .push(context)
-                                      .then((value) => setState(() {}));
+                                  ).push(context);
                                 },
                                 action: medicineList[index].reminders.isNotEmpty
                                     ? const Icon(
