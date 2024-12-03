@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -34,11 +35,6 @@ class MedicineLimitCard extends StatelessWidget {
       Colors.red,
     ];
 
-    // totalNumとremainingQuantityから残り%を計算
-    double getProgressRate() {
-      return (remainingQuantity / totalNum * 100);
-    }
-
     // 残り%に応じて色を決定
     Color getProgressColor(double progressRate) {
       if (progressRate > 66) {
@@ -50,7 +46,7 @@ class MedicineLimitCard extends StatelessWidget {
       }
     }
 
-    final double progressRate = getProgressRate();
+    final double progressRate = remainingQuantity / totalNum * 100;
 
     return Container(
       width: size.width * 0.9,
@@ -85,54 +81,68 @@ class MedicineLimitCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   CircularPercentIndicator(
-                    radius: size.width * 0.18,
+                    radius: size.width * 0.20,
                     lineWidth: 22.0,
                     percent: progressRate / 100,
-                    center: Row(
+                    center: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         CustomText(
-                          text: progressRate.toInt().toString(),
-                          fontSize: 22,
+                          text: '残り $remainingQuantity錠',
                         ),
                         const SizedBox(width: 2),
-                        const CustomText(
-                          text: '%',
-                          fontSize: 14,
+                        CustomText(
+                          text: '($remainingDays回分)',
+                          fontSize: 12,
                         ),
                       ],
                     ),
                     circularStrokeCap: CircularStrokeCap.round,
                     progressColor: getProgressColor(progressRate),
                   ),
-                  CustomText(
-                    text: medicineName,
-                    fontSize: 26,
-                    textOverflow: TextOverflow.ellipsis,
-                  ),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      CustomText(
+                        text: medicineName,
+                        fontSize: 26,
+                        textOverflow: TextOverflow.ellipsis,
+                      ),
                       const SizedBox(height: 4),
-                      const CustomText(
-                        text: '服用回数 / 錠数',
+                      CustomText(
+                        text: '処方数 $totalNum錠 / 1回 ${medicine.dosage}錠',
                         fontSize: 12,
                         color: ColorName.textGray,
                       ),
-                      CustomText(
-                          text: '残り $remainingDays回 / $remainingQuantity錠'),
                     ],
                   ),
                   SizedBox(
                     width: size.width * 0.6,
-                    height: 42,
-                    child: CustomButton(
-                      text: '飲む',
-                      onTap: submitOnTap,
-                      isFilledColor: true,
-                      primaryColor: color,
-                    ),
+                    height: 48,
+                    child: progressRate != 0
+                        ? CustomButton(
+                            text: '飲む',
+                            onTap: submitOnTap,
+                            isFilledColor: true,
+                            primaryColor: color,
+                          )
+                        : CustomButton(
+                            text: '飲む',
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (_) => CustomDialog(
+                                  title: 'おくすりがありません',
+                                  bodyText: '$medicineName を追加しますか？',
+                                  rightButtonText: '追加する',
+                                  rightButtonOnTap: () {
+                                    editOnTap();
+                                  },
+                                ),
+                              );
+                            },
+                            isFilledColor: true,
+                            primaryColor: Colors.grey,
+                          ),
                   ),
                 ],
               ),
