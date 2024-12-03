@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:unicorn_flutter/Service/Log/log_service.dart';
 
 import '../../Entity/HealthCheckUp/health_checkup.dart';
 
@@ -12,9 +13,9 @@ class HealthCheckupData extends ChangeNotifier {
   factory HealthCheckupData() => _instance;
   HealthCheckupData._internal();
 
-  List<HealthCheckup>? _data;
+  List<HealthCheckup> _data = [];
 
-  List<HealthCheckup>? get data => _data;
+  List<HealthCheckup> get data => _data;
 
   /// リストごとデータをセット
   void setList(List<HealthCheckup> dataList) {
@@ -24,17 +25,22 @@ class HealthCheckupData extends ChangeNotifier {
 
   /// リストにデータを追加
   void addData(HealthCheckup data) {
-    _data?.add(data);
+    _data.add(data);
     notifyListeners();
   }
 
   /// リスト内のデータを更新する
   void updateData(HealthCheckup data) {
-    final index = _data?.indexWhere(
-        (element) => element.healthCheckupId == data.healthCheckupId);
-    if (index != null && index >= 0) {
-      _data?[index] = data;
-      notifyListeners();
+    try {
+      final int index = _data.indexWhere(
+          (element) => element.healthCheckupId == data.healthCheckupId);
+
+      _data[index] = data;
+      Log.echo('HealthCheckupData.updateData: ${data.toJson()}');
+    } catch (e) {
+      Log.echo('Error: $e');
     }
+
+    notifyListeners();
   }
 }
