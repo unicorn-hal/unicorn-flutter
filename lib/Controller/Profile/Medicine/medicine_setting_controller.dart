@@ -174,7 +174,7 @@ class MedicineSettingController extends ControllerCore {
     }
     MedicineRequest body = MedicineRequest(
       medicineName: nameController.text,
-      count: _medicine.count,
+      count: int.parse(countController.text),
       quantity: int.parse(countController.text),
       dosage: _selectIndex! + 1,
       reminders: _reminders,
