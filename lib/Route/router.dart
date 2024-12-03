@@ -75,6 +75,9 @@ final routerProvider = Provider(
         TypedGoRoute<HomeRoute>(
           path: Routes.home,
         ),
+        TypedGoRoute<HomeMedicineSettingRoute>(
+          path: Routes.homeMedicineSetting,
+        ),
       ],
     ),
     TypedStatefulShellBranch<HealthCheckupBranch>(
@@ -341,6 +344,19 @@ class HomeRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) => const HomeView();
+}
+
+class HomeMedicineSettingRoute extends GoRouteData {
+  const HomeMedicineSettingRoute({
+    this.$extra,
+  });
+  final Medicine? $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      MedicineSettingView(
+        medicine: $extra,
+      );
 }
 //////////////////////////////  Home  //////////////////////////////
 
