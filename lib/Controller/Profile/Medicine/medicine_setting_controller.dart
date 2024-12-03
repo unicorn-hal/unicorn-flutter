@@ -63,12 +63,14 @@ class MedicineSettingController extends ControllerCore {
     List<DayOfWeekEnum> reminderDayOfWeek = [
       DayOfWeekEnumType.fromWeekday(now.weekday)
     ];
+    int minute = ((now.minute + 14) ~/ 15) * 15;
+    minute = minute >= 60 ? minute - 60 : minute;
     DateTime formatTime = DateTime(
       now.year,
       now.month,
       now.day,
       now.hour,
-      now.minute - now.minute % 15,
+      minute,
     );
     String reminderTime = DateFormat('HH:mm').format(formatTime);
     Reminder reminder = Reminder(
