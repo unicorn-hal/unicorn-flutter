@@ -13,8 +13,6 @@ class MedicineLimitCard extends StatelessWidget {
     required this.color,
   });
 
-  // todo: medicineクラスができたら引数を変更する
-
   final Medicine medicine;
   final VoidCallback buttonOnTap;
   final Color color;
@@ -26,12 +24,11 @@ class MedicineLimitCard extends StatelessWidget {
     final String medicineName = medicine.medicineName;
     final int remainingDays = (medicine.quantity / medicine.dosage).ceil();
     final int remainingQuantity = medicine.quantity;
-    final int currentNum = medicine.count - medicine.quantity;
     final int totalNum = medicine.count;
 
-    // currentNumとtotalNumから残り%を計算
+    // totalNumとremainingQuantityから残り%を計算
     double getProgressRate() {
-      return (currentNum / totalNum * 100);
+      return (remainingQuantity / totalNum * 100);
     }
 
     return Container(
