@@ -55,11 +55,10 @@ class HomeController extends ControllerCore {
     Colors.blue,
     Colors.green,
     Colors.orange,
-    Colors.purple,
-    Colors.amber,
     Colors.pink,
     Colors.teal,
     Colors.indigo,
+    Colors.amber,
     Colors.cyan,
   ];
 
@@ -78,7 +77,6 @@ class HomeController extends ControllerCore {
     _callReservationsListener();
   }
 
-  List<Color> get colors => _colors;
   List<Map<String, dynamic>> get boardList => _boardList;
   CarouselSliderController get carouselController => _carouselController;
 
@@ -172,6 +170,10 @@ class HomeController extends ControllerCore {
       return;
     }
     Fluttertoast.showToast(msg: Strings.MEDICINE_TAKE_COMPLETED_MESSAGE);
+  }
+
+  Color getColor(int index) {
+    return _colors[index % _colors.length];
   }
 
   void dispose() {

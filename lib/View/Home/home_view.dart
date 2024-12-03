@@ -212,7 +212,7 @@ class _HomeViewState extends State<HomeView> {
                               },
                               child: MedicineLimitCard(
                                 medicine: medicine,
-                                color: _controller.colors[index % 10],
+                                color: _controller.getColor(index),
                                 submitOnTap: () {
                                   showDialog(
                                     context: context,
