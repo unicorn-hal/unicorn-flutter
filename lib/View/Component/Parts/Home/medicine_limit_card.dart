@@ -32,8 +32,7 @@ class MedicineLimitCard extends StatelessWidget {
     }
 
     return Container(
-      width: size.width * 0.8,
-      height: size.width * 0.4,
+      width: size.width * 0.9,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -48,50 +47,51 @@ class MedicineLimitCard extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: Stack(
           children: [
-            SizedBox(
-              width: size.width * 0.3,
-              height: size.width * 0.3,
-              child: CircularPercentIndicator(
-                radius: size.width * 0.14,
-                lineWidth: 20.0,
-                percent: getProgressRate() / 100,
-                center: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    CustomText(
-                      text: getProgressRate().toInt().toString(),
-                      fontSize: 18,
-                    ),
-                    const CustomText(
-                      text: '%',
-                      fontSize: 14,
-                    ),
-                  ],
-                ),
-                circularStrokeCap: CircularStrokeCap.round,
-                progressColor: color,
+            Align(
+              alignment: Alignment.topRight,
+              child: IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () {},
               ),
             ),
             SizedBox(
-              width: size.width * 0.4,
-              height: size.width * 0.3,
+              width: size.width * 0.9,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  CircularPercentIndicator(
+                    radius: size.width * 0.18,
+                    lineWidth: 22.0,
+                    percent: getProgressRate() / 100,
+                    center: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        CustomText(
+                          text: getProgressRate().toInt().toString(),
+                          fontSize: 22,
+                        ),
+                        const SizedBox(width: 2),
+                        const CustomText(
+                          text: '%',
+                          fontSize: 14,
+                        ),
+                      ],
+                    ),
+                    circularStrokeCap: CircularStrokeCap.round,
+                    progressColor: color,
+                  ),
+                  CustomText(
+                    text: medicineName,
+                    fontSize: 26,
+                    textOverflow: TextOverflow.ellipsis,
+                  ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 4),
-                      CustomText(
-                        text: medicineName,
-                        fontSize: 24,
-                        textOverflow: TextOverflow.ellipsis,
-                      ),
                       const SizedBox(height: 4),
                       const CustomText(
                         text: '服用回数 / 錠数',
@@ -102,10 +102,9 @@ class MedicineLimitCard extends StatelessWidget {
                           text: '残り $remainingDays回 / $remainingQuantity錠'),
                     ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    height: 32,
-                    width: size.width * 0.35,
+                  SizedBox(
+                    width: size.width * 0.6,
+                    height: 42,
                     child: CustomButton(
                       text: '飲む',
                       onTap: buttonOnTap,
