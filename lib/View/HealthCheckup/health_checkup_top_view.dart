@@ -24,8 +24,8 @@ class HealthCheckupTopView extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     return Consumer(builder: (context, ref, _) {
-      final HealthCheckupData healthCheckupData =
-          ref.watch(healthCheckupDataProvider);
+      final HealthCheckupCache healthCheckupData =
+          ref.watch(healthCheckupCacheProvider);
 
       // 本日の健康診断結果を取得
       final HealthCheckup? todayHealthCheckup =

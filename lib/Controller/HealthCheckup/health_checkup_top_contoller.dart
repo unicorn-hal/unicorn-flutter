@@ -19,7 +19,7 @@ class HealthCheckupTopController extends ControllerCore {
     // 本日の日付で健康診断がシングルトンに格納されているか確認
     HealthCheckup? todayHealthCheckup;
     try {
-      todayHealthCheckup = HealthCheckupData().data.firstWhere(
+      todayHealthCheckup = HealthCheckupCache().data.firstWhere(
         (element) {
           final HealthCheckup healthCheckup = element;
           final String date =

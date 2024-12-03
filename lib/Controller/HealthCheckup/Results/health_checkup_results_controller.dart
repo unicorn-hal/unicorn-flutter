@@ -128,7 +128,7 @@ class HealthCheckupResultsController extends ControllerCore {
     // postするものと同じ日付のHealthCheckupがあるかを確認
     String? healthCheckupId =
         _getHealthCheckupIdWithDate(healthCheckupRequest.date);
-    HealthCheckup? response;
+    int? response;
 
     // その日付のHealthCheckupがあれば更新、なければ新規作成
     if (healthCheckupId != null) {
@@ -137,24 +137,14 @@ class HealthCheckupResultsController extends ControllerCore {
         healthCheckupId: healthCheckupId,
         body: healthCheckupRequest,
       );
-
-      if (response == null) {
-        Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-        return;
-      }
-
-      //成功時にはHealthCheckupDataにあるデータを更新
-      HealthCheckupData().updateData(response);
     } else {
       response =
           await _healthCheckupApi.postHealthCheckup(body: healthCheckupRequest);
+    }
 
-      if (response == null) {
-        Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-        return;
-      }
-      //成功時にはHealthCheckupDataに値を追加
-      HealthCheckupData().addData(response);
+    // レスポンスが200以外の場合はエラーメッセージを表示
+    if (response != 200) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
   }
 
@@ -190,7 +180,7 @@ class HealthCheckupResultsController extends ControllerCore {
   /// 日付を指定してその日付のHealthCheckupが存在すればhealthcheckupIdを返す
   /// [date] 日付
   String? _getHealthCheckupIdWithDate(DateTime date) {
-    List<HealthCheckup> healthCheckupList = HealthCheckupData().data ?? [];
+    List<HealthCheckup> healthCheckupList = HealthCheckupCache().data;
     for (HealthCheckup healthCheckup in healthCheckupList) {
       if (healthCheckup.date == date) {
         return healthCheckup.healthCheckupId;

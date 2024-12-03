@@ -5,13 +5,13 @@ import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import '../../Entity/HealthCheckUp/health_checkup.dart';
 
 /// HealthCheckupDataを監視するProvider
-final healthCheckupDataProvider =
-    ChangeNotifierProvider((ref) => HealthCheckupData());
+final healthCheckupCacheProvider =
+    ChangeNotifierProvider((ref) => HealthCheckupCache());
 
-class HealthCheckupData extends ChangeNotifier {
-  static final HealthCheckupData _instance = HealthCheckupData._internal();
-  factory HealthCheckupData() => _instance;
-  HealthCheckupData._internal();
+class HealthCheckupCache extends ChangeNotifier {
+  static final HealthCheckupCache _instance = HealthCheckupCache._internal();
+  factory HealthCheckupCache() => _instance;
+  HealthCheckupCache._internal();
 
   List<HealthCheckup> _data = [];
 

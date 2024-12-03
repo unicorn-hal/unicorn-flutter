@@ -146,9 +146,9 @@ class TopLoadingController extends ControllerCore {
         await _userApi.getUserHealthCheckupList(userId: uid);
 
     if (healthCheckup != null) {
-      HealthCheckupData().setList(healthCheckup);
+      HealthCheckupCache().setList(healthCheckup);
     }
-    Log.echo('HealthCheckup: ${HealthCheckupData().data}');
+    Log.echo('HealthCheckup: ${HealthCheckupCache().data}');
 
     await Future.delayed(const Duration(seconds: 1));
 

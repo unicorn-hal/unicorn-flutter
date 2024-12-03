@@ -4,18 +4,26 @@ import 'package:unicorn_flutter/Model/Entity/api_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
 import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 
+import '../../../Model/Data/HealthCheckup/health_checkup_data.dart';
+
 class HealthCheckupApi extends ApiCore with Endpoint {
   HealthCheckupApi() : super(Endpoint.healthCheckups);
 
   /// POST
   /// 健康結果登録
   /// [body] HealthCheckupRequest
-  Future<HealthCheckup?> postHealthCheckup(
-      {required HealthCheckupRequest body}) async {
+  Future<int?> postHealthCheckup({required HealthCheckupRequest body}) async {
     try {
       final ApiResponse response = await post(body.toJson());
 
-      return HealthCheckup.fromJson(response.data);
+      if (response.statusCode != 200) {
+        return response.statusCode;
+      }
+
+      //成功時にはHealthCheckupDataに値を追加
+      HealthCheckupCache().addData(HealthCheckup.fromJson(response.data));
+
+      return response.statusCode;
     } catch (e) {
       return null;
     }
