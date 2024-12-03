@@ -66,6 +66,8 @@ class MedicineApi extends ApiCore with Endpoint {
       useParameter(parameter: '/$medicineId');
       final ApiResponse response = await delete();
       _medicineCache.deleteMedicine(medicineId);
+      _medicineCache.setCarouselIndex(0);
+      _medicineCache.carouselController.jumpToPage(0);
       return response.statusCode;
     } catch (e) {
       return 500;

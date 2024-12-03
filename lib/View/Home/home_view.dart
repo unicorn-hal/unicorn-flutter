@@ -187,7 +187,7 @@ class _HomeViewState extends State<HomeView> {
                   return Column(
                     children: [
                       CarouselSlider.builder(
-                        carouselController: _controller.carouselController,
+                        carouselController: medicineCacheRef.carouselController,
                         itemCount: medicineCacheRef.data.length,
                         itemBuilder: (
                           BuildContext context,
@@ -201,9 +201,12 @@ class _HomeViewState extends State<HomeView> {
                                 vertical: 10, horizontal: 10),
                             child: GestureDetector(
                               onTap: () {
-                                if (_controller.carouselIndex == index) return;
-                                _controller.carouselIndex = index;
-                                _controller.carouselController.animateToPage(
+                                if (medicineCacheRef.carouselIndex == index) {
+                                  return;
+                                }
+                                medicineCacheRef.setCarouselIndex(index);
+                                medicineCacheRef.carouselController
+                                    .animateToPage(
                                   index,
                                   duration: const Duration(milliseconds: 500),
                                   curve: Curves.easeInOut,
@@ -250,21 +253,21 @@ class _HomeViewState extends State<HomeView> {
                           viewportFraction: 0.8,
                           enableInfiniteScroll: false,
                           onPageChanged: (index, _) {
-                            _controller.carouselIndex = index;
+                            medicineCacheRef.setCarouselIndex(index);
                             setState(() {});
                           },
                         ),
                       ),
                       DotsIndicator(
                         dotsCount: medicineCacheRef.data.length,
-                        position: _controller.carouselIndex,
+                        position: medicineCacheRef.carouselIndex,
                         decorator: const DotsDecorator(
                           color: Colors.grey,
                           activeColor: ColorName.mainColor,
                         ),
                         onTap: (position) {
-                          _controller.carouselIndex = position;
-                          _controller.carouselController.animateToPage(
+                          medicineCacheRef.setCarouselIndex(position);
+                          medicineCacheRef.carouselController.animateToPage(
                             position,
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.easeInOut,

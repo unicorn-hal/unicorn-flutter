@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
@@ -10,8 +11,11 @@ class MedicineCache extends ChangeNotifier {
   MedicineCache._internal();
 
   final List<Medicine> _data = [];
+  int _carouselIndex = 0;
+  CarouselSliderController carouselController = CarouselSliderController();
 
   List<Medicine> get data => _data;
+  int get carouselIndex => _carouselIndex;
 
   void setMedicineList(List<Medicine> dataList) {
     _data.clear();
@@ -40,5 +44,10 @@ class MedicineCache extends ChangeNotifier {
       _data.removeAt(index);
       notifyListeners();
     }
+  }
+
+  void setCarouselIndex(int index) {
+    _carouselIndex = index;
+    notifyListeners();
   }
 }

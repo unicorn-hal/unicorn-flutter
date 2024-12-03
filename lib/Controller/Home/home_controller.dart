@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -62,11 +61,6 @@ class HomeController extends ControllerCore {
     Colors.cyan,
   ];
 
-  // todo: APIから取得時に命名も見直し
-  int carouselIndex = 0;
-  final CarouselSliderController _carouselController =
-      CarouselSliderController();
-
   ValueNotifier<CallStandby?> callStandbyNotifier =
       ValueNotifier<CallStandby?>(null);
 
@@ -78,7 +72,6 @@ class HomeController extends ControllerCore {
   }
 
   List<Map<String, dynamic>> get boardList => _boardList;
-  CarouselSliderController get carouselController => _carouselController;
 
   /// 通話待機中の予約情報を取得
   void _callReservationsListener() {
@@ -151,6 +144,7 @@ class HomeController extends ControllerCore {
     callStandbyNotifier.value = null;
   }
 
+  /// おくすりの消化処理
   Future<void> takeMedicine(Medicine medicine) async {
     int requestQuantity = medicine.quantity - medicine.dosage;
     if (requestQuantity <= 0) {
