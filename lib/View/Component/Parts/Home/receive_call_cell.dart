@@ -47,7 +47,7 @@ class _ReceiveCallCellState extends State<ReceiveCallCell>
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // 波紋アニメーションの背景
+          /// 波紋アニメーションの背景
           CustomPaint(
             painter: RoundedWavePainter(
               _animationController,
@@ -58,6 +58,8 @@ class _ReceiveCallCellState extends State<ReceiveCallCell>
               height: 100,
             ),
           ),
+
+          /// カード本体
           Container(
             height: 100,
             width: deviceWidth * 0.9,
@@ -126,6 +128,7 @@ class _ReceiveCallCellState extends State<ReceiveCallCell>
   }
 }
 
+/// animationの設定
 class RoundedWavePainter extends CustomPainter {
   final Animation<double> _animation;
   final BorderRadius borderRadius;
