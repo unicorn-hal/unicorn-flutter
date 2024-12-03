@@ -45,7 +45,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
     return CustomScaffold(
       focusNode: focusNode,
       appBar: CustomAppBar(
-        title: '常備薬の登録',
+        title: 'おくすりの${widget.medicine != null ? '編集' : '登録'}',
         foregroundColor: Colors.white,
         backgroundColor: ColorName.mainColor,
         actions: widget.medicine != null
