@@ -19,6 +19,9 @@ class NormalCheckupController extends ControllerCore {
   late List<bool> _checkupValue;
   late HealthCheckupDiseaseEnum _diseaseType;
 
+  // スクロール用のコントローラー
+  final ScrollController _scrollController = ScrollController();
+
   /// 初期化
   @override
   void initialize() {
@@ -111,4 +114,7 @@ class NormalCheckupController extends ControllerCore {
       _checkupValue[i] = (i == selectedIndex);
     }
   }
+
+  // スクロールコントローラーのgetter
+  ScrollController get scrollController => _scrollController;
 }

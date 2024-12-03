@@ -7,6 +7,8 @@ import 'package:unicorn_flutter/Model/Entity/api_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
 import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 
+import '../../../Model/Data/HealthCheckup/health_checkup_data.dart';
+
 class UserApi extends ApiCore with Endpoint {
   UserApi() : super(Endpoint.users);
 
@@ -116,7 +118,7 @@ class UserApi extends ApiCore with Endpoint {
   /// [userId] ユーザーID
   /// [healthCheckupId] 健康診断ID
   /// [body] HealthCheckupRequest
-  Future<int> putUserHealthCheckup({
+  Future<int?> putUserHealthCheckup({
     required String userId,
     required String healthCheckupId,
     required HealthCheckupRequest body,
@@ -124,9 +126,16 @@ class UserApi extends ApiCore with Endpoint {
     try {
       useParameter(parameter: '/$userId/health_checkups/$healthCheckupId');
       final ApiResponse response = await put(body.toJson());
+
+      if (response.statusCode != 200) {
+        return response.statusCode;
+      }
+      //成功時にはHealthCheckupDataにあるデータを更新
+      HealthCheckupCache().updateData(HealthCheckup.fromJson(response.data));
+
       return response.statusCode;
     } catch (e) {
-      return 500;
+      return null;
     }
   }
 

@@ -19,7 +19,7 @@ class Strings {
   static const String LOADING_TEXT_BLOOD_PRESSURE = '血圧を測定中です';
 
   // 検診ボタンに使用するテキスト
-  static const String HEALTH_CHECK_BUTTON_TEXT = '今日の検診を開始する';
+  static const String HEALTH_CHECK_BUTTON_TEXT = '通常検診を開始する';
   static const String HEALTH_CHECK_BUTTON_AI = 'AI音声検診を開始する';
 
   // 生体認証に使用するテキスト

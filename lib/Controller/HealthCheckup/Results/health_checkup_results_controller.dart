@@ -6,12 +6,18 @@ import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart'
 import 'package:unicorn_flutter/Constants/Enum/health_risk_level_enum.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Data/HealthCheckup/health_checkup_data.dart';
+import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup_request.dart';
 import 'package:unicorn_flutter/Service/Api/HealthCheckup/health_checkup_api.dart';
 import 'package:unicorn_flutter/Service/Package/UrlLauncher/url_launcher_service.dart';
 
+import '../../../Model/Entity/HealthCheckUp/health_checkup.dart';
+import '../../../Service/Api/User/user_api.dart';
+
 class HealthCheckupResultsController extends ControllerCore {
   /// Serviceのインスタンス化
+  UserApi get _userApi => UserApi();
   HealthCheckupApi get _healthCheckupApi => HealthCheckupApi();
   UrlLauncherService get _urlLauncherService => UrlLauncherService();
 
@@ -62,7 +68,6 @@ class HealthCheckupResultsController extends ControllerCore {
     _diseaseExampleNameList =
         HealthCheckupDiseaseType.getDiseaseExampleNameList(diseaseType);
 
-    /// post処理
     _postHealthCheckup(today);
   }
 
@@ -112,20 +117,35 @@ class HealthCheckupResultsController extends ControllerCore {
   }
 
   /// post処理
-  /// [healthCheckupRequest] 健康診断リクエスト
-  Future<int> _postHealthCheckup(DateTime today) async {
+  Future<void> _postHealthCheckup(DateTime today) async {
     /// postに必要なデータを整形
     HealthCheckupRequest healthCheckupRequest = _makeHealthCheckupRequest(
       bodyTemperature,
       bloodPressure,
       today,
     );
-    int res =
-        await _healthCheckupApi.postHealthCheckup(body: healthCheckupRequest);
-    if (res != 200) {
+
+    // postするものと同じ日付のHealthCheckupがあるかを確認
+    String? healthCheckupId =
+        _getHealthCheckupIdWithDate(healthCheckupRequest.date);
+    int? response;
+
+    // その日付のHealthCheckupがあれば更新、なければ新規作成
+    if (healthCheckupId != null) {
+      response = await _userApi.putUserHealthCheckup(
+        userId: UserData().user!.userId,
+        healthCheckupId: healthCheckupId,
+        body: healthCheckupRequest,
+      );
+    } else {
+      response =
+          await _healthCheckupApi.postHealthCheckup(body: healthCheckupRequest);
+    }
+
+    // レスポンスが200以外の場合はエラーメッセージを表示
+    if (response != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
-    return res;
   }
 
   String get formattedDate => _formattedDate;
@@ -155,5 +175,17 @@ class HealthCheckupResultsController extends ControllerCore {
   Future<void> getDiseaseUrl(String diseaseName) {
     return _urlLauncherService
         .launchUrl('https://ja.wikipedia.org/wiki/$diseaseName');
+  }
+
+  /// 日付を指定してその日付のHealthCheckupが存在すればhealthcheckupIdを返す
+  /// [date] 日付
+  String? _getHealthCheckupIdWithDate(DateTime date) {
+    List<HealthCheckup> healthCheckupList = HealthCheckupCache().data;
+    for (HealthCheckup healthCheckup in healthCheckupList) {
+      if (healthCheckup.date == date) {
+        return healthCheckup.healthCheckupId;
+      }
+    }
+    return null;
   }
 }

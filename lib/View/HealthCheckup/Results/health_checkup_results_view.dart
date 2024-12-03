@@ -3,6 +3,7 @@ import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart'
 import 'package:unicorn_flutter/Controller/HealthCheckup/Results/health_checkup_results_controller.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
@@ -37,6 +38,11 @@ class HealthCheckupResultsView extends StatelessWidget {
       children: [
         CustomScaffold(
           isScrollable: true,
+          appBar: CustomAppBar(
+            title: '検診結果',
+            foregroundColor: Colors.white,
+            backgroundColor: ColorName.mainColor,
+          ),
           body: Center(
             child: Column(
               children: [
@@ -47,7 +53,6 @@ class HealthCheckupResultsView extends StatelessWidget {
                   ),
                   child: Container(
                     width: size.width,
-                    height: 300,
                     color: controller.healthColor.withOpacity(0.5),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -74,7 +79,6 @@ class HealthCheckupResultsView extends StatelessWidget {
                                   CustomText(
                                     text: UserData().user!.lastName +
                                         UserData().user!.firstName,
-                                    fontSize: 14,
                                   ),
                                   const CustomText(
                                     text: 'さんの検診結果',
@@ -82,6 +86,29 @@ class HealthCheckupResultsView extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6.0,
+                                  ),
+                                  child: CustomText(
+                                      text:
+                                          '体温 : ${controller.bodyTemperature}℃')),
+                              Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6.0,
+                                  ),
+                                  child: CustomText(
+                                      text:
+                                          '血圧 : ${controller.bloodPressure}mmHg')),
                             ],
                           ),
                         ),
@@ -171,58 +198,81 @@ class HealthCheckupResultsView extends StatelessWidget {
                   constraints: const BoxConstraints(
                     minHeight: 100,
                   ),
-                  child: ListView.builder(
-                    itemCount: controller.diseaseExampleNameList.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () async {
-                          await controller.getDiseaseUrl(
-                              controller.diseaseExampleNameList[index]);
-                        },
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              width: size.width * 0.9,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: ColorName.shadowGray,
+                  child: controller.diseaseExampleNameList.isEmpty
+                      //　健康時には関連する病気を表示しない
+                      ? const SizedBox(
+                          height: 200,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                  size: 50,
                                 ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16.0,
-                                    ),
-                                    child: CustomText(
-                                      text: controller
-                                          .diseaseExampleNameList[index],
-                                    ),
-                                  ),
-                                  const Padding(
-                                    padding: EdgeInsets.all(2.0),
-                                    child: Icon(
-                                      Icons.arrow_drop_down,
-                                      color: Colors.blue,
-                                      size: 36,
-                                    ),
-                                  )
-                                ],
-                              ),
+                                CustomText(
+                                  text: '回答に関連する病気はありません',
+                                ),
+                              ],
                             ),
                           ),
+                        )
+                      : ListView.builder(
+                          itemCount: controller.diseaseExampleNameList.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () async {
+                                await controller.getDiseaseUrl(
+                                    controller.diseaseExampleNameList[index]);
+                              },
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    width: size.width * 0.9,
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: ColorName.shadowGray,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0,
+                                          ),
+                                          child: CustomText(
+                                            text: controller
+                                                .diseaseExampleNameList[index],
+                                          ),
+                                        ),
+                                        const Padding(
+                                          padding: EdgeInsets.all(2.0),
+                                          child: Icon(
+                                            Icons.arrow_drop_down,
+                                            color: Colors.blue,
+                                            size: 36,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
-                )
+                ),
+                const SizedBox(
+                  height: 80,
+                ),
               ],
             ),
           ),
