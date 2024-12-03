@@ -30,11 +30,7 @@ class MedicineApi extends ApiCore with Endpoint {
   Future<Medicine?> postMedicine({required MedicineRequest body}) async {
     try {
       final ApiResponse response = await post(body.toJson());
-      // todo: API側のPOSTレスポンスが変更されたら修正する
-      final Medicine data = Medicine.fromJson({
-        ...response.data,
-        'reminders': body.reminders.map((e) => e.toJson()).toList(),
-      });
+      final Medicine data = Medicine.fromJson(response.data);
       _medicineCache.addMedicine(data);
       return data;
     } catch (e) {
