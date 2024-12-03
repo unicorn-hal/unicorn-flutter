@@ -238,7 +238,7 @@ class _HomeViewState extends State<HomeView> {
                           );
                         },
                         options: CarouselOptions(
-                          height: 160,
+                          height: 400,
                           initialPage: 0,
                           autoPlay: false,
                           viewportFraction: 0.8,
