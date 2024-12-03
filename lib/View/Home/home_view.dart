@@ -222,7 +222,7 @@ class _HomeViewState extends State<HomeView> {
                                       return CustomDialog(
                                         title: 'おくすりを服用します',
                                         bodyText:
-                                            '${medicine.medicineName}を ${medicine.dosage}錠 服用しますか？\n${remainingMedicine < 0 ? '残りのすべてのおくすりが服用されます。' : '残りは $remainingMedicine錠 です。'}',
+                                            '${medicine.medicineName} を服用しますか？\n${remainingMedicine < 0 ? '残りすべてのおくすりが消費されます。' : '残りは $remainingMedicine錠 です。'}',
                                         rightButtonOnTap: () async {
                                           ProtectorNotifier().enableProtector();
                                           await _controller
