@@ -8,6 +8,7 @@ import 'package:unicorn_flutter/Controller/bottom_navigation_bar_controller.dart
 import 'package:unicorn_flutter/Model/Cache/Medicine/medicine_cache.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call_standby.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -212,7 +213,7 @@ class _HomeViewState extends State<HomeView> {
                               child: MedicineLimitCard(
                                 medicine: medicine,
                                 color: _controller.colors[index % 10],
-                                buttonOnTap: () {
+                                submitOnTap: () {
                                   showDialog(
                                     context: context,
                                     builder: (context) {
@@ -232,6 +233,11 @@ class _HomeViewState extends State<HomeView> {
                                       );
                                     },
                                   );
+                                },
+                                editOnTap: () {
+                                  HomeMedicineSettingRoute(
+                                    $extra: medicine,
+                                  ).push(context);
                                 },
                               ),
                             ),

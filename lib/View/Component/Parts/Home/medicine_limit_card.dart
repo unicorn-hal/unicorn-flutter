@@ -9,12 +9,14 @@ class MedicineLimitCard extends StatelessWidget {
   const MedicineLimitCard({
     super.key,
     required this.medicine,
-    required this.buttonOnTap,
+    required this.submitOnTap,
+    required this.editOnTap,
     required this.color,
   });
 
   final Medicine medicine;
-  final VoidCallback buttonOnTap;
+  final VoidCallback submitOnTap;
+  final VoidCallback editOnTap;
   final Color color;
 
   @override
@@ -53,7 +55,7 @@ class MedicineLimitCard extends StatelessWidget {
               alignment: Alignment.topRight,
               child: IconButton(
                 icon: const Icon(Icons.edit),
-                onPressed: () {},
+                onPressed: editOnTap,
               ),
             ),
             SizedBox(
@@ -107,7 +109,7 @@ class MedicineLimitCard extends StatelessWidget {
                     height: 42,
                     child: CustomButton(
                       text: '飲む',
-                      onTap: buttonOnTap,
+                      onTap: submitOnTap,
                       isFilledColor: true,
                       primaryColor: color,
                     ),
