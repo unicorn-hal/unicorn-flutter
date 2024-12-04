@@ -18,7 +18,7 @@ class MedicineApi extends ApiCore with Endpoint {
       final List<Medicine> data = (response.data['data'] as List)
           .map((e) => Medicine.fromJson(e))
           .toList();
-      _medicineCache.setMedicineList(data);
+      _medicineCache.setData(data);
       return data;
     } catch (e) {
       return null;
@@ -31,7 +31,7 @@ class MedicineApi extends ApiCore with Endpoint {
     try {
       final ApiResponse response = await post(body.toJson());
       final Medicine data = Medicine.fromJson(response.data);
-      _medicineCache.addMedicine(data);
+      _medicineCache.addData(data);
       return response.statusCode;
     } catch (e) {
       return 500;
@@ -52,7 +52,7 @@ class MedicineApi extends ApiCore with Endpoint {
         ...response.data,
         'medicineID': medicineId,
       });
-      _medicineCache.updateMedicine(data);
+      _medicineCache.updateData(data);
       return response.statusCode;
     } catch (e) {
       return 500;
@@ -65,7 +65,7 @@ class MedicineApi extends ApiCore with Endpoint {
     try {
       useParameter(parameter: '/$medicineId');
       final ApiResponse response = await delete();
-      _medicineCache.deleteMedicine(medicineId);
+      _medicineCache.deleteData(medicineId);
       _medicineCache.setCarouselIndex(0);
       _medicineCache.carouselController.jumpToPage(0);
       return response.statusCode;

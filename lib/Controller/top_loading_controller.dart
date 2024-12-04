@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/fcm_topic_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/shared_preferences_keys_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Chat/chat_data.dart';
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
+import 'package:unicorn_flutter/Model/Data/Department/department_data.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account_request.dart';
@@ -14,6 +16,7 @@ import 'package:unicorn_flutter/Model/Entity/Chat/chat.dart';
 import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/Account/account_api.dart';
 import 'package:unicorn_flutter/Service/Api/AppConfig/app_config_api.dart';
@@ -29,12 +32,6 @@ import 'package:unicorn_flutter/Service/Package/LocalAuth/local_auth_service.dar
 import 'package:unicorn_flutter/Service/Package/SharedPreferences/shared_preferences_service.dart';
 import 'package:unicorn_flutter/Service/Package/SystemInfo/system_info_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
-
-import '../Model/Chat/chat_data.dart';
-import '../Model/Data/Department/department_data.dart';
-import '../Model/Cache/HealthCheckup/health_checkup_cache.dart';
-import '../Model/Entity/HealthCheckUp/health_checkup.dart';
-import '../Model/Entity/User/user_request.dart';
 
 class TopLoadingController extends ControllerCore {
   SharedPreferencesService get _sharedPreferencesService =>
@@ -146,20 +143,10 @@ class TopLoadingController extends ControllerCore {
     // 診療科一覧を取得してデータクラスに保存
     final List<Department>? departmentList =
         await _departmentApi.getDepartmentList();
-
     if (departmentList != null) {
       DepartmentData().setDepartment(departmentList);
       Log.echo('Department: ${departmentList.map((e) => e.toJson()).toList()}');
     }
-
-    /// 画面遷移
-    // if (user == null) {
-    //   _sharedPreferencesService.setBool(
-    //       SharedPreferencesKeysEnum.appInitialized.name, true);
-    //   const RegisterPhysicalInfoRoute(from: Routes.root).go(context);
-    // } else {
-    /// シングルトンにユーザー情報を保存
-    // UserData().setUser(user!);
 
     // チャット情報を取得してデータクラスに保存
     final List<Chat>? chatList = await _chatApi.getChatList();

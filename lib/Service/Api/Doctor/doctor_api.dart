@@ -1,3 +1,4 @@
+import 'package:unicorn_flutter/Model/Cache/Doctor/Information/doctor_information_cache.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Model/Entity/api_response.dart';
@@ -5,6 +6,9 @@ import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
 import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 
 class DoctorApi extends ApiCore with Endpoint {
+  final DoctorInformationCache _doctorInformationCache =
+      DoctorInformationCache();
+
   DoctorApi() : super(Endpoint.doctors);
 
   /// GET
@@ -51,7 +55,9 @@ class DoctorApi extends ApiCore with Endpoint {
     try {
       useParameter(parameter: '/$doctorId');
       final ApiResponse response = await get();
-      return Doctor.fromJson(response.data);
+      final Doctor data = Doctor.fromJson(response.data);
+      _doctorInformationCache.addData(data);
+      return data;
     } catch (e) {
       return null;
     }

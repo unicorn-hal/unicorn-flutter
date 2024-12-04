@@ -31,9 +31,6 @@ class DoctorInformationController extends ControllerCore {
   // APIで医師情報を取得
   Future<Doctor?> getDoctor() async {
     final Doctor? doctor = await _doctorApi.getDoctor(doctorId: _doctorId);
-    if (doctor != null) {
-      DoctorInformationCache().addDoctor(doctor);
-    }
     return doctor;
   }
 
