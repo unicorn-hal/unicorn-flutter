@@ -7,7 +7,7 @@ import 'package:unicorn_flutter/Model/Entity/api_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
 import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 
-import '../../../Model/Data/HealthCheckup/health_checkup_data.dart';
+import '../../../Model/Cache/HealthCheckup/health_checkup_cache.dart';
 
 class UserApi extends ApiCore with Endpoint {
   UserApi() : super(Endpoint.users);

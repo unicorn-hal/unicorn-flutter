@@ -32,7 +32,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 
 import '../Model/Chat/chat_data.dart';
 import '../Model/Data/Department/department_data.dart';
-import '../Model/Data/HealthCheckup/health_checkup_data.dart';
+import '../Model/Cache/HealthCheckup/health_checkup_cache.dart';
 import '../Model/Entity/HealthCheckUp/health_checkup.dart';
 import '../Model/Entity/User/user_request.dart';
 
@@ -152,17 +152,6 @@ class TopLoadingController extends ControllerCore {
       Log.echo('Department: ${departmentList.map((e) => e.toJson()).toList()}');
     }
 
-    /// 検診結果の取得とシングルトンへの保存
-    final List<HealthCheckup>? healthCheckup =
-        await _userApi.getUserHealthCheckupList(userId: uid);
-
-    if (healthCheckup != null) {
-      HealthCheckupCache().setList(healthCheckup);
-    }
-    Log.echo('HealthCheckup: ${HealthCheckupCache().data}');
-
-    await Future.delayed(const Duration(seconds: 1));
-
     /// 画面遷移
     // if (user == null) {
     //   _sharedPreferencesService.setBool(
@@ -178,6 +167,10 @@ class TopLoadingController extends ControllerCore {
       ChatData().setChat(chatList);
       Log.echo('Chat: ${chatList.map((e) => e.toJson()).toList()}');
     }
+
+    // キャッシュ処理
+    // 検診結果の取得とキャッシュへの保存
+    await _userApi.getUserHealthCheckupList(userId: uid);
 
     // おくすり情報を取得してキャッシュに保存
     await _medicineApi.getMedicineList();
