@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/fcm_topic_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/shared_preferences_keys_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
-import 'package:unicorn_flutter/Model/Cache/Medicine/medicine_cache.dart';
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account.dart';
@@ -13,7 +12,6 @@ import 'package:unicorn_flutter/Model/Entity/Account/account_request.dart';
 import 'package:unicorn_flutter/Model/Entity/AppConfig/app_config.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat.dart';
 import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
-import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Route/router.dart';
@@ -181,11 +179,8 @@ class TopLoadingController extends ControllerCore {
       Log.echo('Chat: ${chatList.map((e) => e.toJson()).toList()}');
     }
 
-    final List<Medicine>? medicineList = await _medicineApi.getMedicineList();
-    if (medicineList != null) {
-      MedicineCache().setMedicineList(medicineList);
-      Log.echo('Medicine: ${medicineList.map((e) => e.toJson()).toList()}');
-    }
+    // おくすり情報を取得してキャッシュに保存
+    await _medicineApi.getMedicineList();
 
     // デバッグ用
     // todo: 本番環境では削除
