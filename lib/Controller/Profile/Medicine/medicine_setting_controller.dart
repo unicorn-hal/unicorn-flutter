@@ -164,14 +164,14 @@ class MedicineSettingController extends ControllerCore {
   }
 
   /// Medicineの情報を更新する関数
-  Future<Medicine?> putMedicine() async {
+  Future<int> putMedicine() async {
     if (_medicine!.medicineName == nameController.text &&
         _medicine.quantity == int.parse(countController.text) &&
         _medicine.dosage == _selectIndex! + 1 &&
         _medicine.reminders.length == _reminders.length) {
       Function isEqual = const ListEquality().equals;
       if (isEqual(_medicine.reminders, _reminders)) {
-        return _medicine;
+        return 200;
       }
     }
     MedicineRequest body = MedicineRequest(
@@ -181,16 +181,16 @@ class MedicineSettingController extends ControllerCore {
       dosage: _selectIndex! + 1,
       reminders: _reminders,
     );
-    Medicine? res = await _medicineApi.putMedicine(
+    int res = await _medicineApi.putMedicine(
         body: body, medicineId: _medicine.medicineId);
-    if (res == null) {
+    if (res != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
     return res;
   }
 
   /// Medicineの情報を登録する関数
-  Future<Medicine?> postMedicine() async {
+  Future<int> postMedicine() async {
     MedicineRequest body = MedicineRequest(
       medicineName: nameController.text,
       count: int.parse(countController.text),
@@ -198,8 +198,8 @@ class MedicineSettingController extends ControllerCore {
       dosage: _selectIndex! + 1,
       reminders: _reminders,
     );
-    Medicine? res = await _medicineApi.postMedicine(body: body);
-    if (res == null) {
+    int res = await _medicineApi.postMedicine(body: body);
+    if (res != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
     return res;

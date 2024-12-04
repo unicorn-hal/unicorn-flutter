@@ -159,7 +159,7 @@ class HomeController extends ControllerCore {
     );
     final putRes = await _medicineApi.putMedicine(
         medicineId: medicine.medicineId, body: medicineRequest);
-    if (putRes == null) {
+    if (putRes != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
       return;
     }

@@ -27,21 +27,21 @@ class MedicineApi extends ApiCore with Endpoint {
 
   /// POST
   /// [body] MedicineRequest
-  Future<Medicine?> postMedicine({required MedicineRequest body}) async {
+  Future<int> postMedicine({required MedicineRequest body}) async {
     try {
       final ApiResponse response = await post(body.toJson());
       final Medicine data = Medicine.fromJson(response.data);
       _medicineCache.addMedicine(data);
-      return data;
+      return response.statusCode;
     } catch (e) {
-      return null;
+      return 500;
     }
   }
 
   /// PUT
   /// [medicineId] 薬ID
   /// [body] MedicineRequest
-  Future<Medicine?> putMedicine({
+  Future<int> putMedicine({
     required MedicineRequest body,
     required String medicineId,
   }) async {
@@ -53,9 +53,9 @@ class MedicineApi extends ApiCore with Endpoint {
         'medicineID': medicineId,
       });
       _medicineCache.updateMedicine(data);
-      return data;
+      return response.statusCode;
     } catch (e) {
-      return null;
+      return 500;
     }
   }
 
