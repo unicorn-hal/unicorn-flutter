@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:unicorn_flutter/Constants/strings.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:unicorn_flutter/Controller/Profile/Medicine/medicine_controller.dart';
+import 'package:unicorn_flutter/Model/Cache/Medicine/medicine_cache.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Route/router.dart';
-import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
@@ -40,45 +40,11 @@ class _MedicineViewState extends State<MedicineView> {
               height: deviceHeight * 0.5,
               width: deviceWidth * 0.9,
               child: SingleChildScrollView(
-                child: FutureBuilder<List<Medicine>?>(
-                  future: controller.getMedicineList(),
-                  builder: (context, AsyncSnapshot<List<Medicine>?> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: deviceWidth * 0.9,
-                            height: 48,
-                            padding: const EdgeInsets.only(
-                              top: 10,
-                            ),
-                            child: const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  left: 5,
-                                ),
-                                child: CustomText(text: 'Myおくすり'),
-                              ),
-                            ),
-                          ),
-                          const Padding(
-                            padding: EdgeInsets.only(top: 100),
-                            child: CustomLoadingAnimation(
-                              text: Strings.LOADING_TEXT,
-                              iconColor: Colors.grey,
-                              textColor: Colors.grey,
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                    if (!snapshot.hasData) {
-                      // todo: エラー時の処理
-                      return Container();
-                    }
-                    List<Medicine> medicineList = snapshot.data!;
+                child: Consumer(
+                  builder: (context, ref, _) {
+                    final medicineCacheRef = ref.watch(medicineCacheProvider);
+                    final List<Medicine> medicineList = medicineCacheRef.data;
+
                     if (medicineList.isEmpty) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,8 +70,7 @@ class _MedicineViewState extends State<MedicineView> {
                             child: GestureDetector(
                               onTap: () {
                                 const ProfileMedicineSettingRoute()
-                                    .push(context)
-                                    .then((value) => setState(() {}));
+                                    .push(context);
                               },
                               child: DottedBorder(
                                 dashPattern: const [15, 10],
@@ -186,9 +151,7 @@ class _MedicineViewState extends State<MedicineView> {
                                 onTap: () {
                                   ProfileMedicineSettingRoute(
                                     $extra: medicineList[index],
-                                  )
-                                      .push(context)
-                                      .then((value) => setState(() {}));
+                                  ).push(context);
                                 },
                                 action: medicineList[index].reminders.isNotEmpty
                                     ? const Icon(

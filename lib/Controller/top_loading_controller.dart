@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/fcm_topic_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/shared_preferences_keys_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Cache/Medicine/medicine_cache.dart';
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account.dart';
@@ -12,6 +13,7 @@ import 'package:unicorn_flutter/Model/Entity/Account/account_request.dart';
 import 'package:unicorn_flutter/Model/Entity/AppConfig/app_config.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat.dart';
 import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Route/router.dart';
@@ -19,6 +21,7 @@ import 'package:unicorn_flutter/Service/Api/Account/account_api.dart';
 import 'package:unicorn_flutter/Service/Api/AppConfig/app_config_api.dart';
 import 'package:unicorn_flutter/Service/Api/Chat/chat_api.dart';
 import 'package:unicorn_flutter/Service/Api/Department/department_api.dart';
+import 'package:unicorn_flutter/Service/Api/Medicine/medicine_api.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_service.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudMessaging/cloud_messaging_service.dart';
@@ -48,6 +51,7 @@ class TopLoadingController extends ControllerCore {
   UserApi get _userApi => UserApi();
   ChatApi get _chatApi => ChatApi();
   DepartmentApi get _departmentApi => DepartmentApi();
+  MedicineApi get _medicineApi => MedicineApi();
   LocalAuthService get _localAuthService => LocalAuthService();
 
   BuildContext context;
@@ -175,6 +179,12 @@ class TopLoadingController extends ControllerCore {
     if (chatList != null) {
       ChatData().setChat(chatList);
       Log.echo('Chat: ${chatList.map((e) => e.toJson()).toList()}');
+    }
+
+    final List<Medicine>? medicineList = await _medicineApi.getMedicineList();
+    if (medicineList != null) {
+      MedicineCache().setMedicineList(medicineList);
+      Log.echo('Medicine: ${medicineList.map((e) => e.toJson()).toList()}');
     }
 
     // デバッグ用
@@ -358,7 +368,7 @@ class TopLoadingController extends ControllerCore {
 
     Log.toast('データを初期化しました');
   }
-  
+
   /// 通知設定を登録したことがあるかどうか
   Future<bool> _getNotificationInitialized() async {
     bool? notificationInitialized = await _sharedPreferencesService

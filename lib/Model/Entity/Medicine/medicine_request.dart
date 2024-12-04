@@ -1,11 +1,11 @@
-import 'package:unicorn_flutter/Model/Entity/Medicine/reminder_request.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/reminder.dart';
 
 class MedicineRequest {
   final String medicineName;
   final int count;
   final int quantity;
   final int dosage;
-  final List<ReminderRequest> reminders;
+  final List<Reminder> reminders;
 
   MedicineRequest({
     required this.medicineName,
@@ -21,9 +21,8 @@ class MedicineRequest {
       count: json['count'],
       quantity: json['quantity'],
       dosage: json['dosage'],
-      reminders: (json['reminders'] as List)
-          .map((e) => ReminderRequest.fromJson(e))
-          .toList(),
+      reminders:
+          (json['reminders'] as List).map((e) => Reminder.fromJson(e)).toList(),
     );
   }
 

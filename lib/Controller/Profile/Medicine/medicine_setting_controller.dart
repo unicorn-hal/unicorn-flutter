@@ -7,7 +7,6 @@ import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine_request.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/reminder.dart';
-import 'package:unicorn_flutter/Model/Entity/Medicine/reminder_request.dart';
 import 'package:unicorn_flutter/Service/Api/Medicine/medicine_api.dart';
 import 'package:uuid/uuid.dart';
 import 'package:collection/collection.dart';
@@ -63,12 +62,14 @@ class MedicineSettingController extends ControllerCore {
     List<DayOfWeekEnum> reminderDayOfWeek = [
       DayOfWeekEnumType.fromWeekday(now.weekday)
     ];
+    int minute = ((now.minute + 14) ~/ 15) * 15;
+    minute = minute >= 60 ? minute - 60 : minute;
     DateTime formatTime = DateTime(
       now.year,
       now.month,
       now.day,
       now.hour,
-      now.minute - now.minute % 15,
+      minute,
     );
     String reminderTime = DateFormat('HH:mm').format(formatTime);
     Reminder reminder = Reminder(
@@ -162,16 +163,6 @@ class MedicineSettingController extends ControllerCore {
     return displayedReminderDayOfWeek;
   }
 
-  /// List<Reminder>型のremindersをList<ReminderRequest>型に変換する関数
-  List<ReminderRequest> _createReminderRequestList(
-      {required List<Reminder> reminders}) {
-    List<ReminderRequest> reminderRequestList = [];
-    for (int i = 0; i < reminders.length; i++) {
-      reminderRequestList.add(reminders[i].toRequest());
-    }
-    return reminderRequestList;
-  }
-
   /// Medicineの情報を更新する関数
   Future<int> putMedicine() async {
     if (_medicine!.medicineName == nameController.text &&
@@ -185,10 +176,10 @@ class MedicineSettingController extends ControllerCore {
     }
     MedicineRequest body = MedicineRequest(
       medicineName: nameController.text,
-      count: _medicine.count,
+      count: int.parse(countController.text),
       quantity: int.parse(countController.text),
       dosage: _selectIndex! + 1,
-      reminders: _createReminderRequestList(reminders: _reminders),
+      reminders: _reminders,
     );
     int res = await _medicineApi.putMedicine(
         body: body, medicineId: _medicine.medicineId);
@@ -205,7 +196,7 @@ class MedicineSettingController extends ControllerCore {
       count: int.parse(countController.text),
       quantity: int.parse(countController.text),
       dosage: _selectIndex! + 1,
-      reminders: _createReminderRequestList(reminders: _reminders),
+      reminders: _reminders,
     );
     int res = await _medicineApi.postMedicine(body: body);
     if (res != 200) {

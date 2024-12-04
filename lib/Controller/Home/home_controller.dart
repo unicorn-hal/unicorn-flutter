@@ -1,18 +1,22 @@
 import 'dart:async';
 
-import 'package:carousel_slider/carousel_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call_standby.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call_status.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
+import 'package:unicorn_flutter/Model/Entity/Medicine/medicine_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/Call/call_api.dart';
 import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
+import 'package:unicorn_flutter/Service/Api/Medicine/medicine_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/Firestore/firestore_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 
@@ -21,6 +25,7 @@ class HomeController extends ControllerCore {
       FirebaseFirestoreService(databaseId: 'call-log');
   CallApi get _callApi => CallApi();
   DoctorApi get _doctorApi => DoctorApi();
+  MedicineApi get _medicineApi => MedicineApi();
 
   HomeController(this.context);
   BuildContext context;
@@ -44,30 +49,17 @@ class HomeController extends ControllerCore {
     },
   ];
 
-  // todo: 仮データ
-  final List<Map<String, dynamic>> _medicineList = [
-    {
-      'name': 'カロナール',
-      'remainingDays': 7,
-      'remainingCount': 7,
-      'progressColor': Colors.green,
-      'currentNum': 2,
-      'totalNum': 14,
-    },
-    {
-      'name': 'アポトキシン4869',
-      'remainingDays': 5,
-      'remainingCount': 30,
-      'progressColor': Colors.red,
-      'currentNum': 8,
-      'totalNum': 25,
-    },
+  final List<Color> _colors = [
+    Colors.red,
+    Colors.blue,
+    Colors.green,
+    Colors.orange,
+    Colors.pink,
+    Colors.teal,
+    Colors.indigo,
+    Colors.amber,
+    Colors.cyan,
   ];
-
-  // todo: APIから取得時に命名も見直し
-  int currentIndex = 0;
-  final CarouselSliderController _carouselController =
-      CarouselSliderController();
 
   ValueNotifier<CallStandby?> callStandbyNotifier =
       ValueNotifier<CallStandby?>(null);
@@ -80,8 +72,6 @@ class HomeController extends ControllerCore {
   }
 
   List<Map<String, dynamic>> get boardList => _boardList;
-  List<Map<String, dynamic>> get medicineList => _medicineList;
-  CarouselSliderController get carouselController => _carouselController;
 
   /// 通話待機中の予約情報を取得
   void _callReservationsListener() {
@@ -152,6 +142,32 @@ class HomeController extends ControllerCore {
     // ignore: use_build_context_synchronously
     VideoCallRoute($extra: callStandby).go(context);
     callStandbyNotifier.value = null;
+  }
+
+  /// おくすりの消化処理
+  Future<void> takeMedicine(Medicine medicine) async {
+    int requestQuantity = medicine.quantity - medicine.dosage;
+    if (requestQuantity <= 0) {
+      requestQuantity = 0;
+    }
+    MedicineRequest medicineRequest = MedicineRequest(
+      medicineName: medicine.medicineName,
+      count: medicine.count,
+      quantity: requestQuantity,
+      dosage: medicine.dosage,
+      reminders: medicine.reminders,
+    );
+    final putRes = await _medicineApi.putMedicine(
+        medicineId: medicine.medicineId, body: medicineRequest);
+    if (putRes != 200) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      return;
+    }
+    Fluttertoast.showToast(msg: Strings.MEDICINE_TAKE_COMPLETED_MESSAGE);
+  }
+
+  Color getColor(int index) {
+    return _colors[index % _colors.length];
   }
 
   void dispose() {

@@ -10,6 +10,7 @@ mixin Routes {
 
   // home
   static const String home = '/home';
+  static const String homeMedicineSetting = '/home/medicine/setting';
 
   // health_checkup
   static const String healthCheckup = '/health_checkup';

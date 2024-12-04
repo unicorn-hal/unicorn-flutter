@@ -1,3 +1,4 @@
+import 'package:unicorn_flutter/Model/Cache/Medicine/medicine_cache.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine_request.dart';
 import 'package:unicorn_flutter/Model/Entity/api_response.dart';
@@ -5,6 +6,8 @@ import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
 import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 
 class MedicineApi extends ApiCore with Endpoint {
+  final MedicineCache _medicineCache = MedicineCache();
+
   MedicineApi() : super(Endpoint.medicines);
 
   /// GET
@@ -12,9 +15,11 @@ class MedicineApi extends ApiCore with Endpoint {
   Future<List<Medicine>?> getMedicineList() async {
     try {
       final ApiResponse response = await get();
-      return (response.data['data'] as List)
+      final List<Medicine> data = (response.data['data'] as List)
           .map((e) => Medicine.fromJson(e))
           .toList();
+      _medicineCache.setMedicineList(data);
+      return data;
     } catch (e) {
       return null;
     }
@@ -25,6 +30,8 @@ class MedicineApi extends ApiCore with Endpoint {
   Future<int> postMedicine({required MedicineRequest body}) async {
     try {
       final ApiResponse response = await post(body.toJson());
+      final Medicine data = Medicine.fromJson(response.data);
+      _medicineCache.addMedicine(data);
       return response.statusCode;
     } catch (e) {
       return 500;
@@ -41,6 +48,11 @@ class MedicineApi extends ApiCore with Endpoint {
     try {
       useParameter(parameter: '/$medicineId');
       final ApiResponse response = await put(body.toJson());
+      final Medicine data = Medicine.fromJson({
+        ...response.data,
+        'medicineID': medicineId,
+      });
+      _medicineCache.updateMedicine(data);
       return response.statusCode;
     } catch (e) {
       return 500;
@@ -53,6 +65,9 @@ class MedicineApi extends ApiCore with Endpoint {
     try {
       useParameter(parameter: '/$medicineId');
       final ApiResponse response = await delete();
+      _medicineCache.deleteMedicine(medicineId);
+      _medicineCache.setCarouselIndex(0);
+      _medicineCache.carouselController.jumpToPage(0);
       return response.statusCode;
     } catch (e) {
       return 500;

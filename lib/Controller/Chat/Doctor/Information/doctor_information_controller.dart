@@ -1,4 +1,4 @@
-import 'package:unicorn_flutter/Model/Data/Doctor/Information/doctor_information_data.dart';
+import 'package:unicorn_flutter/Model/Cache/Doctor/Information/doctor_information_cache.dart';
 import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
 
 import '../../../../Model/Entity/Doctor/doctor.dart';
@@ -10,13 +10,13 @@ class DoctorInformationController extends ControllerCore {
     this._doctorId,
   );
 
-  late List<Doctor>? _doctorInformationData;
+  late List<Doctor>? _doctorInformationCache;
   final String _doctorId;
   late bool _exist;
 
   @override
   void initialize() {
-    _doctorInformationData = DoctorInformationData().data;
+    _doctorInformationCache = DoctorInformationCache().data;
     _exist = _checkExist();
   }
 
@@ -24,7 +24,7 @@ class DoctorInformationController extends ControllerCore {
 
   // キャッシュしたデータの中に指定したIDの医師情報があるかを確認
   bool _checkExist() {
-    return _doctorInformationData!
+    return _doctorInformationCache!
         .any((element) => element.doctorId == _doctorId);
   }
 
@@ -32,14 +32,14 @@ class DoctorInformationController extends ControllerCore {
   Future<Doctor?> getDoctor() async {
     final Doctor? doctor = await _doctorApi.getDoctor(doctorId: _doctorId);
     if (doctor != null) {
-      DoctorInformationData().addDoctor(doctor);
+      DoctorInformationCache().addDoctor(doctor);
     }
     return doctor;
   }
 
   //キャッシュから医師情報を取得
   Future<Doctor> getDoctorFromCache() async {
-    return _doctorInformationData!.firstWhere((element) {
+    return _doctorInformationCache!.firstWhere((element) {
       return element.doctorId == _doctorId;
     });
   }
