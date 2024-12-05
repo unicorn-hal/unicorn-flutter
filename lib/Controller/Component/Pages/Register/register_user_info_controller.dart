@@ -10,9 +10,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:unicorn_flutter/Constants/regexp_constants.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_info.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Route/routes.dart';
@@ -91,83 +93,116 @@ class RegisterUserInfoController extends ControllerCore {
       if (_imageFile == null) {
         return null;
       }
-      if (from == Routes.profile) {
-        ProtectorNotifier().enableProtector();
-      } else {
-        _protector.value = true;
-      }
       String getUrl = await _cloudStorageService.uploadUserAvatar(
-        UserData().user!.userId,
+        AccountData().account!.uid,
         _imageFile!,
       );
       return getUrl;
     } catch (e) {
       Log.echo('Failed to upload image: $e');
-    } finally {
-      if (from == Routes.profile) {
-        ProtectorNotifier().disableProtector();
-      } else {
-        _protector.value = false;
-      }
     }
     return null;
   }
 
-  Future<void> submit(UserRequest userRequest) async {
-    if (validateField() == false) {
-      return;
-    }
-    if (_image == null &&
-        _userData.user!.phoneNumber == phoneNumberTextController.text &&
-        _userData.user!.email == emailTextController.text &&
-        _userData.user!.occupation == occupationTextController.text) {
-      const ProfileRoute().go(context);
-      return;
-    }
-    if (_imageFile != null) {
-      _iconImageUrl = await _uploadImage();
-    }
-
-    UserInfo userInfo = UserInfo(
-      iconImageUrl: _iconImageUrl,
-      phoneNumber: phoneNumberTextController.text,
-      email: emailTextController.text,
-      occupation: occupationTextController.text,
-    );
-
-    userRequest.iconImageUrl = userInfo.iconImageUrl;
-    userRequest.phoneNumber = userInfo.phoneNumber;
-    userRequest.email = userInfo.email;
-    userRequest.occupation = userInfo.occupation;
-
-    if (from == Routes.profile) {
-      ProtectorNotifier().enableProtector();
-      int statusCode = await _userApi.putUser(
-          userId: _userData.user!.userId, body: userRequest);
-      ProtectorNotifier().disableProtector();
-      if (statusCode != 200) {
-        Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-      } else {
-        // シングルトンに登録した値をセットする
-        _userData.setUser(User.fromJson(userRequest.toJson()));
-        Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
-      }
-      const ProfileRoute().go(context);
-      return;
-    }
-
-    _protector.value = true;
+  /// ユーザー情報を登録する
+  Future<void> _postUser(UserRequest userRequest) async {
     int statusCode = await _userApi.postUser(body: userRequest);
-    _protector.value = false;
-    if (statusCode == 400 || statusCode == 500) {
+    if (statusCode != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
-      return;
+      throw Exception('Failed to post user');
     }
+    // シングルトンに登録した値をセットする
+    _userData.setUser(User.fromJson(userRequest.toJson()));
     Fluttertoast.showToast(msg: Strings.PROFILE_REGISTRATION_COMPLETED_MESSAGE);
-    const HomeRoute().push(context);
   }
 
-  bool validateField() {
+  /// 通知設定を登録する
+  Future<void> _postUserNotification() async {
+    UserNotification? userNotification = await _userApi.postUserNotification(
+      userId: _userData.user!.userId,
+      body: UserNotification(
+        isHospitalNews: true,
+        isMedicineReminder: true,
+        isRegularHealthCheckup: true,
+      ),
+    );
+    if (userNotification == null) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      throw Exception('Failed to post user notification');
+    }
+  }
+
+  /// ユーザー情報を更新する
+  Future<void> _putUser(UserRequest userRequest) async {
+    int statusCode = await _userApi.putUser(
+        userId: _userData.user!.userId, body: userRequest);
+    if (statusCode != 200) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      throw Exception('Failed to put user');
+    }
+    // シングルトンに登録した値をセットする
+    _userData.setUser(User.fromJson(userRequest.toJson()));
+    Fluttertoast.showToast(msg: Strings.PROFILE_EDIT_COMPLETED_MESSAGE);
+  }
+
+  /// 登録ボタンを押した時の処理
+  Future<void> submit(UserRequest userRequest) async {
+    if (_validateField() == false) {
+      return;
+    }
+
+    try {
+      _protectorHandler(true);
+
+      if (_imageFile != null) {
+        _iconImageUrl = await _uploadImage();
+      }
+
+      UserInfo userInfo = UserInfo(
+        iconImageUrl: _iconImageUrl,
+        phoneNumber: phoneNumberTextController.text,
+        email: emailTextController.text,
+        occupation: occupationTextController.text,
+      );
+
+      userRequest.userId = AccountData().account!.uid;
+      userRequest.iconImageUrl = userInfo.iconImageUrl;
+      userRequest.phoneNumber = userInfo.phoneNumber;
+      userRequest.email = userInfo.email;
+      userRequest.occupation = userInfo.occupation;
+
+      switch (from) {
+        case Routes.registerAddressInfo:
+          await _postUser(userRequest);
+          await _postUserNotification();
+
+          _protectorHandler(false);
+          const HomeRoute().push(context);
+          break;
+        case Routes.profile:
+          if (_image == null &&
+              _userData.user!.phoneNumber == phoneNumberTextController.text &&
+              _userData.user!.email == emailTextController.text &&
+              _userData.user!.occupation == occupationTextController.text) {
+            _protectorHandler(false);
+            const ProfileRoute().go(context);
+            return;
+          }
+          await _putUser(userRequest);
+
+          _protectorHandler(false);
+          const ProfileRoute().go(context);
+          break;
+        default:
+          break;
+      }
+    } catch (e) {
+      _protectorHandler(false);
+      Log.echo('Failed to submit: $e');
+    }
+  }
+
+  bool _validateField() {
     List<String> emptyMessageField = [];
     phoneNumberTextController.text.isEmpty
         ? emptyMessageField.add("電話番号")
@@ -184,6 +219,24 @@ class RegisterUserInfoController extends ControllerCore {
       return false;
     }
     return true;
+  }
+
+  /// プロテクターのハンドラー
+  /// [value] プロテクターの値
+  void _protectorHandler(bool value) {
+    if (value) {
+      if (from == Routes.profile) {
+        ProtectorNotifier().enableProtector();
+      } else {
+        _protector.value = true;
+      }
+    } else {
+      if (from == Routes.profile) {
+        ProtectorNotifier().disableProtector();
+      } else {
+        _protector.value = false;
+      }
+    }
   }
 
   /// メモリリークを防ぐためdispose
