@@ -97,7 +97,8 @@ class ProfileTopController extends ControllerCore {
         title: 'お問い合わせ',
         icon: Icons.question_mark,
         onTap: () async {
-          await launchUrl('https://forms.gle/YhZ2TMW3iXbAx4Vx5');
+          await _urlLauncherService
+              .launchUrl('https://forms.gle/YhZ2TMW3iXbAx4Vx5');
         },
       ),
     ];
@@ -111,11 +112,6 @@ class ProfileTopController extends ControllerCore {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
     return userNotification;
-  }
-
-  /// urlをたたく関数
-  Future<void> launchUrl(String url) async {
-    await _urlLauncherService.launchUrl(url);
   }
 
   /// 各関数の実装
