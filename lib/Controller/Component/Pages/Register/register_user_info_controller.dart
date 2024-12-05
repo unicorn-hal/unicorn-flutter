@@ -22,6 +22,7 @@ import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudStorage/cloud_storage_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/Service/Package/ImageUtils/image_utils_service.dart';
+import 'package:unicorn_flutter/Service/Package/LocalAuth/local_auth_service.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 
@@ -30,6 +31,7 @@ class RegisterUserInfoController extends ControllerCore {
   FirebaseCloudStorageService get _cloudStorageService =>
       FirebaseCloudStorageService();
   ImageUtilsService get _imageUtilsService => ImageUtilsService();
+  LocalAuthService get _localAuthService => LocalAuthService();
   UserApi get _userApi => UserApi();
 
   /// コンストラクタ
@@ -172,14 +174,22 @@ class RegisterUserInfoController extends ControllerCore {
       userRequest.occupation = userInfo.occupation;
 
       switch (from) {
-        case Routes.registerAddressInfo:
+        case Routes.registerAddressInfo: // 初回登録
           await _postUser(userRequest);
           await _postUserNotification();
 
+          LocalAuthStatus localAuthStatus =
+              await _localAuthService.getLocalAuthStatus();
+
           _protectorHandler(false);
-          const HomeRoute().push(context);
+          if (localAuthStatus == LocalAuthStatus.failed) {
+            const HomeRoute().push(context);
+          } else {
+            const RegisterLocalAuthRoute().push(context);
+          }
+
           break;
-        case Routes.profile:
+        case Routes.profile: // プロフィール編集
           if (_image == null &&
               _userData.user!.phoneNumber == phoneNumberTextController.text &&
               _userData.user!.email == emailTextController.text &&
