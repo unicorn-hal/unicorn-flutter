@@ -15,9 +15,9 @@ import 'package:unicorn_flutter/Model/Entity/AppConfig/app_config.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat.dart';
 import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
-import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/Api/Account/account_api.dart';
 import 'package:unicorn_flutter/Service/Api/AppConfig/app_config_api.dart';
 import 'package:unicorn_flutter/Service/Api/Chat/chat_api.dart';
@@ -109,7 +109,7 @@ class TopLoadingController extends ControllerCore {
       uid = authUser.uid;
 
       /// 起動フラグが立っていない場合はTokenの再取得
-      if (appInitialized == false || appInitialized == null) {
+      if (appInitialized == false) {
         /// Firebase: FCMトークンを取得
         await _cloudMessagingInitialize();
 
@@ -155,66 +155,29 @@ class TopLoadingController extends ControllerCore {
       Log.echo('Chat: ${chatList.map((e) => e.toJson()).toList()}');
     }
 
-    // キャッシュ処理
-    // 検診結果の取得とキャッシュへの保存
-    await _userApi.getUserHealthCheckupList(userId: uid);
+    if (user == null) {
+      // 初回起動時の処理
+      // SharedPreferences: 起動フラグ
+      _sharedPreferencesService.setBool(
+          SharedPreferencesKeysEnum.appInitialized.name, true);
 
-    // おくすり情報を取得してキャッシュに保存
-    await _medicineApi.getMedicineList();
+      RegisterPhysicalInfoRoute(
+        from: Routes.root,
+        $extra: UserRequest(),
+      ).go(context);
+    } else {
+      // 通常起動時の処理
+      UserData().setUser(user!);
 
-    // デバッグ用
-    // todo: 本番環境では削除
-    await _userApi.postUser(
-        body: UserRequest.fromJson({
-      'userID': uid,
-      'firstName': '太郎',
-      'lastName': '山田',
-      'email': 'test@test.com',
-      'gender': 'male',
-      'birthDate': '1990-01-01',
-      'address': '東京都新宿区1-1-1',
-      'postalCode': '1000001',
-      'phoneNumber': '09012345678',
-      'iconImageUrl': 'https://placehold.jp/150x150.png',
-      'bodyHeight': 180.5,
-      'bodyWeight': 75.5,
-      'occupation': 'エンジニア',
-    }));
+      // キャッシュ処理
+      // 検診結果の取得とキャッシュへの保存
+      await _userApi.getUserHealthCheckupList(userId: uid);
 
-    UserData().setUser(User.fromJson({
-      'userID': uid,
-      'firstName': '太郎',
-      'lastName': '山田',
-      'email': 'test@test.com',
-      'gender': 'male',
-      'birthDate': '1990-01-01',
-      'address': '東京都,新宿区,1-1-1',
-      'postalCode': '1000001',
-      'phoneNumber': '09012345678',
-      'iconImageUrl': 'https://placehold.jp/150x150.png',
-      'bodyHeight': 180.5,
-      'bodyWeight': 75.5,
-      'occupation': 'エンジニア',
-    }));
+      // おくすり情報を取得してキャッシュに保存
+      await _medicineApi.getMedicineList();
 
-    /// 通知設定を登録したことがあるかどうかを取得し、未登録の場合は登録する
-    bool notificationInitialized = await _getNotificationInitialized();
-    if (!notificationInitialized) {
-      UserNotification? userNotification = await _postUserNotification();
-      if (userNotification == null) {
-        /// 通信エラー時
-        Log.echo('userNotification: $userNotification');
-        return;
-      }
-      await _sharedPreferencesService.setBool(
-          SharedPreferencesKeysEnum.notificationInitialized.name, true);
+      const HomeRoute().go(context);
     }
-
-    /// SharedPreferences: 起動フラグ
-    _sharedPreferencesService.setBool(
-        SharedPreferencesKeysEnum.appInitialized.name, true);
-
-    const HomeRoute().go(context);
   }
 
   Future<String> get appVersion async {
@@ -342,34 +305,5 @@ class TopLoadingController extends ControllerCore {
         SharedPreferencesKeysEnum.appInitialized.name, false);
 
     Log.toast('データを初期化しました');
-  }
-
-  /// 通知設定を登録したことがあるかどうか
-  Future<bool> _getNotificationInitialized() async {
-    bool? notificationInitialized = await _sharedPreferencesService
-        .getBool(SharedPreferencesKeysEnum.notificationInitialized.name);
-    if (notificationInitialized == null) {
-      /// 通知設定未登録の場合はfalseをsetする
-      _sharedPreferencesService.setBool(
-          SharedPreferencesKeysEnum.notificationInitialized.name, false);
-      return false;
-    }
-    return notificationInitialized;
-  }
-
-  /// 通知設定を登録する
-  Future<UserNotification?> _postUserNotification() async {
-    UserNotification? userNotification = await _userApi.postUserNotification(
-      userId: uid,
-      body: UserNotification(
-        isHospitalNews: true,
-        isMedicineReminder: true,
-        isRegularHealthCheckup: true,
-      ),
-    );
-    if (userNotification == null) {
-      Log.echo('Error: 通信エラー');
-    }
-    return userNotification;
   }
 }
