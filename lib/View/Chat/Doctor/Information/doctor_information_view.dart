@@ -101,7 +101,7 @@ class DoctorInformationView extends StatelessWidget {
                             child: GestureDetector(
                               onTap: () {
                                 ChatDoctorSearchRoute(
-                                  initialDepartmentId: department.departmentId,
+                                  departmentId: department.departmentId,
                                 ).pushReplacement(context);
                               },
                               child: DepartmentBadge(

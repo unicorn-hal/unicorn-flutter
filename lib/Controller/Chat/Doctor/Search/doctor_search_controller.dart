@@ -12,7 +12,7 @@ class DoctorSearchController extends ControllerCore {
   DoctorApi get _doctorApi => DoctorApi();
 
   DoctorSearchController({
-    this.initialDepartmentId,
+    this.departmentId,
   });
 
   // テキストコントローラーの初期化
@@ -24,17 +24,17 @@ class DoctorSearchController extends ControllerCore {
   late List<Department> _departmentList;
 
   // 医師情報画面からの検索条件
-  final String? initialDepartmentId;
+  final String? departmentId;
 
   @override
   void initialize() {
     _departmentList = DepartmentData().data;
     _selectedDepartmentIndex = null;
 
-    if (initialDepartmentId != null) {
+    if (departmentId != null) {
       // 初期選択科目がある場合は、その科目を選択状態にする
       _selectedDepartmentIndex = _departmentList
-          .indexWhere((element) => element.departmentId == initialDepartmentId);
+          .indexWhere((element) => element.departmentId == departmentId);
     }
   }
 
