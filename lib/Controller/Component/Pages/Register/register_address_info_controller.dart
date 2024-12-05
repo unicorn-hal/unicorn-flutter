@@ -168,6 +168,7 @@ class RegisterAddressInfoController extends ControllerCore {
       _protector.value = false;
     }
     if (addressFromPostalCode == null) {
+      Fluttertoast.showToast(msg: Strings.POSTAL_CODE_VALIDATE_TEXT);
       return;
     }
 
