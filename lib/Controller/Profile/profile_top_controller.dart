@@ -10,11 +10,13 @@ import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
+import 'package:unicorn_flutter/Service/Package/UrlLauncher/url_launcher_service.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 class ProfileTopController extends ControllerCore {
   /// Serviceのインスタンス化
   UserApi get _userApi => UserApi();
+  UrlLauncherService get _urlLauncherService => UrlLauncherService();
 
   /// コンストラクタ
   ProfileTopController(
@@ -90,7 +92,14 @@ class ProfileTopController extends ControllerCore {
             ProfileRegisterUserInfoRoute(
               $extra: userRequest,
             ).push(context);
-          })
+          }),
+      ProfileDetail(
+        title: 'お問い合わせ',
+        icon: Icons.info,
+        onTap: () async {
+          await launchUrl('');
+        },
+      ),
     ];
   }
 
@@ -102,6 +111,11 @@ class ProfileTopController extends ControllerCore {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
     return userNotification;
+  }
+
+  /// urlをたたく関数
+  Future<void> launchUrl(String url) async {
+    await _urlLauncherService.launchUrl(url);
   }
 
   /// 各関数の実装
