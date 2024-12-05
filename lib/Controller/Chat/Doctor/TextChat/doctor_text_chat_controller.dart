@@ -67,7 +67,7 @@ class DoctorTextChatController extends ControllerCore {
     await _getMessageHistory();
 
     // メッセージの受信を開始
-    _listenNewMessage();
+    await _listenNewMessage();
 
     // 予約メッセージがある場合は送信
     if (_reserveMessage != null) {
@@ -127,7 +127,7 @@ class DoctorTextChatController extends ControllerCore {
   }
 
   /// メッセージの受信を開始
-  void _listenNewMessage() {
+  Future<void> _listenNewMessage() async {
     late StompClient stompClient;
     String wsUrl =
         '${dotenv.env['UNICORN_API_BASEURL']!.replaceFirst(RegExp('https'), 'ws')}/ws';
