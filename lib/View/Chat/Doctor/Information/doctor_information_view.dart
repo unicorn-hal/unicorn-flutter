@@ -98,8 +98,15 @@ class DoctorInformationView extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                               horizontal: 4,
                             ),
-                            child: DepartmentBadge(
-                              name: department.departmentName,
+                            child: GestureDetector(
+                              onTap: () {
+                                ChatDoctorSearchRoute(
+                                  initialDepartmentId: department.departmentId,
+                                ).pushReplacement(context);
+                              },
+                              child: DepartmentBadge(
+                                name: department.departmentName,
+                              ),
                             ),
                           ),
                       ],
