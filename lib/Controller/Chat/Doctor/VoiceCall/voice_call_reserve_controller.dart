@@ -63,7 +63,6 @@ class VoiceCallReserveController extends ControllerCore {
     ProtectorNotifier().disableProtector();
 
     if (response != 200) {
-      // todo: エラー処理
       Fluttertoast.showToast(msg: Strings.VOICE_CALL_RESERVE_ERROR_TEXT);
       return;
     }
@@ -222,6 +221,26 @@ class VoiceCallReserveController extends ControllerCore {
       if (reservedString == targetStartTime) {
         return false;
       }
+    }
+    return true;
+  }
+
+  /// 予約日時が過去であるかのチェック
+  bool availableTimeCheck(String timeSlot) {
+    final DateTime now = DateTime.now();
+    final DateTime slotStart = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      int.parse(
+        timeSlot.split('〜').first.split(':')[0],
+      ),
+      int.parse(
+        timeSlot.split('〜').first.split(':')[1],
+      ),
+    );
+    if (now.isAfter(slotStart)) {
+      return false;
     }
     return true;
   }
