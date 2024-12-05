@@ -3,10 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Route/router.dart';
-import 'package:unicorn_flutter/Service/Api/Chat/chat_api.dart';
 import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
-
 import '../../../../Model/Data/Account/account_data.dart';
 import '../../../../Model/Entity/Call/call.dart';
 import '../../../../Model/Entity/Call/call_request.dart';
@@ -17,14 +15,13 @@ import '../../../Core/controller_core.dart';
 class VoiceCallReserveController extends ControllerCore {
   CallApi get _callApi => CallApi();
   DoctorApi get _doctorApi => DoctorApi();
-  ChatApi get _chatApi => ChatApi();
 
   VoiceCallReserveController(this.context, this._doctor);
 
   BuildContext? context;
   final Doctor _doctor;
 
-  late DateTime? _reserveDate;
+  DateTime? _reserveDate;
   int? selectedTimeSlotIndex;
 
   DateTime _calendarDate =
