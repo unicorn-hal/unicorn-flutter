@@ -95,7 +95,7 @@ class ProfileTopController extends ControllerCore {
           }),
       ProfileDetail(
         title: 'お問い合わせ',
-        icon: Icons.info,
+        icon: Icons.question_mark,
         onTap: () async {
           await launchUrl('');
         },
