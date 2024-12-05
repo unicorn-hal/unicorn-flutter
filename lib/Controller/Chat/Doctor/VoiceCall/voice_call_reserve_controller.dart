@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Service/Api/Chat/chat_api.dart';
 import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
@@ -16,6 +17,7 @@ import '../../../Core/controller_core.dart';
 class VoiceCallReserveController extends ControllerCore {
   CallApi get _callApi => CallApi();
   DoctorApi get _doctorApi => DoctorApi();
+  ChatApi get _chatApi => ChatApi();
 
   VoiceCallReserveController(this.context, this._doctor);
 
@@ -32,10 +34,7 @@ class VoiceCallReserveController extends ControllerCore {
       _generateHalfHourSlots(_doctor.callSupportHours);
 
   @override
-  void initialize() async {
-    // 初期値は現在時刻
-    _reserveDate = DateTime.now();
-  }
+  void initialize() async {}
 
   Doctor get doctor => _doctor;
 
@@ -239,6 +238,7 @@ class VoiceCallReserveController extends ControllerCore {
         timeSlot.split('〜').first.split(':')[1],
       ),
     );
+
     if (now.isAfter(slotStart)) {
       return false;
     }

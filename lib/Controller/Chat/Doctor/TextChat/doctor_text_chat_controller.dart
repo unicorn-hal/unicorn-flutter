@@ -17,6 +17,7 @@ import 'package:unicorn_flutter/Model/Entity/Chat/message_request.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Service/Api/Chat/chat_api.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
+import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 import '../../../../Model/Entity/Chat/message_response.dart';
 import '../../../Core/controller_core.dart';
@@ -64,15 +65,17 @@ class DoctorTextChatController extends ControllerCore {
     } else {
       _chatId = await _getChatId();
     }
-    await _getMessageHistory();
-
-    // メッセージの受信を開始
-    await _listenNewMessage();
 
     // 予約メッセージがある場合は送信
     if (_reserveMessage != null) {
       await sendReserveMessage();
     }
+
+    // チャットIDからメッセージ履歴を取得
+    await _getMessageHistory();
+
+    // メッセージの受信を開始
+    await _listenNewMessage();
   }
 
   /// 該当医師とのチャット履歴があるかチェックする
@@ -222,8 +225,10 @@ class DoctorTextChatController extends ControllerCore {
       senderId: AccountData().account!.uid,
       content: _reserveMessage!,
     );
+    ProtectorNotifier().enableProtector();
     final MessageResponse? response =
         await _chatApi.postMessage(body: message, chatId: _chatId);
+    ProtectorNotifier().disableProtector();
 
     // nullの場合はエラーを表示
     if (response == null) {
