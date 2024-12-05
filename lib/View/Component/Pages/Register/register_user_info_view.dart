@@ -150,7 +150,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                       hintText: '01201234567',
                       width: deviceWidth * 0.85,
                       height: 44,
-                      keyboardType: TextInputType.phone,
+                      keyboardType: TextInputType.number,
                       controller: _controller.phoneNumberTextController,
                       maxLines: 1,
                       maxLength: 12,
