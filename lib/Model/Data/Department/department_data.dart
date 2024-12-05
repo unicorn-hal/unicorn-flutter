@@ -1,5 +1,6 @@
 import '../../Entity/Department/department.dart';
 
+// todo: Cacheに移行
 class DepartmentData {
   static final DepartmentData _instance = DepartmentData._internal();
   factory DepartmentData() => _instance;
