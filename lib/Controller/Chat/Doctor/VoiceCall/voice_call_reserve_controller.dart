@@ -5,7 +5,7 @@ import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
-import '../../../../Model/Data/Account/account_data.dart';
+import '../../../../Model/Data/User/user_data.dart';
 import '../../../../Model/Entity/Call/call.dart';
 import '../../../../Model/Entity/Call/call_request.dart';
 import '../../../../Model/Entity/Doctor/doctor.dart';
@@ -45,7 +45,7 @@ class VoiceCallReserveController extends ControllerCore {
     // 予約日時を結合
     CallRequest body = CallRequest(
       doctorId: _doctor.doctorId,
-      userId: AccountData().account!.uid,
+      userId: UserData().user!.userId,
       callStartTime: _reserveDate!,
       // 一旦固定で30分間に設定
       callEndTime: _reserveDate!.add(
