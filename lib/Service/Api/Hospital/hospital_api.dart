@@ -55,6 +55,7 @@ class HospitalApi extends ApiCore with Endpoint {
   /// 病院の新規おしらせ取得
   Future<List<HospitalNews>?> getHospitalNews() async {
     try {
+      useParameter(parameter: '/news');
       final ApiResponse response = await get();
       final List<HospitalNews> data = (response.data['data'] as List)
           .map((e) => HospitalNews.fromJson(e))
