@@ -207,7 +207,7 @@ class VoiceCallReserveController extends ControllerCore {
     int index,
   ) {
     if (reservedCalls == null) {
-      return availableTimeCheck(timeSlots[index]);
+      return _availableTimeCheck(timeSlots[index]);
     }
 
     String targetStartTime = (timeSlots[index].split('〜').first);
@@ -219,11 +219,11 @@ class VoiceCallReserveController extends ControllerCore {
       }
     }
 
-    return availableTimeCheck(timeSlots[index]);
+    return _availableTimeCheck(timeSlots[index]);
   }
 
   /// 予約日時が過去であるかのチェック
-  bool availableTimeCheck(String timeSlot) {
+  bool _availableTimeCheck(String timeSlot) {
     // 確認する値が現在時刻より後であればtrueを返す
     if (!_calendarDate.isBefore(DateTime.now())) {
       return true;
