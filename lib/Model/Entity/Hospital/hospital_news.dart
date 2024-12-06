@@ -6,7 +6,7 @@ class HospitalNews {
   final String hospitalName;
   final String title;
   final String content;
-  final String imageUrl;
+  final String? imageUrl;
   final String relatedUrl;
   final DateTime postedDate;
 
@@ -16,7 +16,7 @@ class HospitalNews {
     required this.hospitalName,
     required this.title,
     required this.content,
-    required this.imageUrl,
+    this.imageUrl,
     required this.relatedUrl,
     required this.postedDate,
   });
