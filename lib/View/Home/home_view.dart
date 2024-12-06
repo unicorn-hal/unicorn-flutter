@@ -3,6 +3,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Controller/Home/home_controller.dart';
 import 'package:unicorn_flutter/Controller/bottom_navigation_bar_controller.dart';
 import 'package:unicorn_flutter/Model/Cache/Medicine/medicine_cache.dart';
@@ -241,9 +242,10 @@ class _HomeViewState extends State<HomeView> {
                 children: [
                   const CustomText(text: 'お知らせ・掲示板'),
                   IconButton(
-                    onPressed: () => setState(() {
-                      _controller.getHospitalNews(reload: true);
-                    }),
+                    onPressed: () async {
+                      await _controller.getHospitalNews(reload: true);
+                      setState(() {});
+                    },
                     icon: const Icon(Icons.refresh_rounded),
                   ),
                 ],
@@ -280,6 +282,8 @@ class _HomeViewState extends State<HomeView> {
                   return SizedBox(
                     child: BoardTile(
                       title: hospitalNews[index].title,
+                      subtitle:
+                          '${DateFormat('yyyy-MM-dd HH:mm').format(hospitalNews[index].postedDate)} - ${hospitalNews[index].hospitalName}',
                       content: hospitalNews[index].content,
                       imageUrl: hospitalNews[index].imageUrl,
                       onTap: () =>
