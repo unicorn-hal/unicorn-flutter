@@ -85,7 +85,6 @@ class UserApi extends ApiCore with Endpoint {
           .toList();
       return data;
     } catch (e) {
-      print(e);
       return null;
     }
   }
