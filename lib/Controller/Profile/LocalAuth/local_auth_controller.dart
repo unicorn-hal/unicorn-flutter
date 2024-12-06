@@ -1,14 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/shared_preferences_keys_enum.dart';
+import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/Package/LocalAuth/local_auth_service.dart';
 import 'package:unicorn_flutter/Service/Package/SharedPreferences/shared_preferences_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
-import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 
-class LocalAuthController {
+class LocalAuthController extends ControllerCore {
   final SharedPreferencesService _sharedPreferencesService =
       SharedPreferencesService();
   final LocalAuthService _localAuthService = LocalAuthService();
+
+  bool _useAppbar = false;
+  bool useLocalAuth = true;
+
+  LocalAuthController({required super.from});
+
+  @override
+  void initialize() {
+    if (from == Routes.profile) {
+      _useAppbar = true;
+    }
+  }
+
+  bool get useAppbar => _useAppbar;
 
   Future<bool> _getUseLocalAuth() async {
     return await _sharedPreferencesService
@@ -35,35 +50,19 @@ class LocalAuthController {
     if (useLocalAuth) {
       bool isAuthenticated = false;
       try {
-        await _localAuthService.authenticate();
-        isAuthenticated = true;
+        isAuthenticated = await _localAuthService.authenticate() ?? false;
       } catch (error) {
         Log.toast('Local Authentication failed');
-        _showAuthFailedDialog(context, useLocalAuth);
+        await _setUseLocalAuth(false);
       }
 
       if (!isAuthenticated) {
+        await _setUseLocalAuth(false);
         return false;
       }
+    } else {
+      await _setUseLocalAuth(false);
     }
     return true;
-  }
-
-  void _showAuthFailedDialog(BuildContext context, bool useLocalAuth) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return CustomDialog(
-          title: '認証に失敗しました',
-          bodyText: '再度認証を行ってください',
-          rightButtonText: 'もう一度行う',
-          customButtonCount: 2,
-          rightButtonOnTap: () {
-            Navigator.of(context).pop();
-            checkLocalAuth(context, useLocalAuth);
-          },
-        );
-      },
-    );
   }
 }

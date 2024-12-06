@@ -321,6 +321,19 @@ class RegisterUserInfoRoute extends GoRouteData {
       );
 }
 
+@TypedGoRoute<RegisterLocalAuthRoute>(
+  path: Routes.registerLocalAuth,
+)
+class RegisterLocalAuthRoute extends GoRouteData {
+  const RegisterLocalAuthRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const LocalAuthView(
+        from: Routes.registerUserInfo,
+      );
+}
+
 @TypedGoRoute<VideoCallRoute>(
   path: Routes.videoCall,
 )
@@ -529,7 +542,9 @@ class ProfileLocalAuthRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const LocalAuthView();
+      const LocalAuthView(
+        from: Routes.profile,
+      );
 }
 
 class ProfileAppInformationRoute extends GoRouteData {

@@ -6,7 +6,7 @@ import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart'
 import 'package:unicorn_flutter/Constants/Enum/health_risk_level_enum.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
-import 'package:unicorn_flutter/Model/Data/HealthCheckup/health_checkup_data.dart';
+import 'package:unicorn_flutter/Model/Cache/HealthCheckup/health_checkup_cache.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup_request.dart';
 import 'package:unicorn_flutter/Service/Api/HealthCheckup/health_checkup_api.dart';

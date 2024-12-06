@@ -82,22 +82,22 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                         child: const Padding(
                           padding: EdgeInsets.only(bottom: 10),
                           child: Align(
-                              alignment: Alignment.topCenter,
-                              child: Column(
-                                children: [
-                                  CustomText(
-                                    text: 'Address',
-                                    color:
-                                        ColorName.profileInputBackgroundColor,
-                                    fontSize: 24,
-                                  ),
-                                  CustomText(
-                                    text: '住所情報を入力してください',
-                                    color: ColorName.textBlack,
-                                    fontSize: 24,
-                                  ),
-                                ],
-                              )),
+                            alignment: Alignment.topCenter,
+                            child: Column(
+                              children: [
+                                CustomText(
+                                  text: 'Address',
+                                  color: ColorName.profileInputBackgroundColor,
+                                  fontSize: 24,
+                                ),
+                                CustomText(
+                                  text: '住所情報を入力してください',
+                                  color: ColorName.textBlack,
+                                  fontSize: 24,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -111,29 +111,30 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: Container(
-                              width: deviceWidth * 0.8,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                  color: ColorName.profileInputButtonColor,
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: Icon(
-                                      Icons.location_on_outlined,
-                                      color: Colors.white,
-                                      size: 30,
-                                    ),
-                                  ),
-                                  CustomText(
-                                    text: '現在地から自動入力する',
-                                    fontSize: 20,
+                            width: deviceWidth * 0.8,
+                            height: 60,
+                            decoration: BoxDecoration(
+                                color: ColorName.profileInputButtonColor,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 10),
+                                  child: Icon(
+                                    Icons.location_on_outlined,
                                     color: Colors.white,
+                                    size: 30,
                                   ),
-                                ],
-                              )),
+                                ),
+                                CustomText(
+                                  text: '現在地から自動入力する',
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -168,29 +169,30 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                           child: Align(
                             alignment: Alignment.center,
                             child: Container(
-                                width: deviceWidth * 0.3,
-                                height: 48,
-                                decoration: BoxDecoration(
-                                    color: ColorName.profileInputButtonColor,
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.only(right: 5),
-                                      child: Icon(
-                                        Icons.search_outlined,
-                                        color: Colors.white,
-                                        size: 30,
-                                      ),
-                                    ),
-                                    CustomText(
-                                      text: '検索',
-                                      fontSize: 20,
+                              width: deviceWidth * 0.3,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                  color: ColorName.profileInputButtonColor,
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(right: 5),
+                                    child: Icon(
+                                      Icons.search_outlined,
                                       color: Colors.white,
+                                      size: 30,
                                     ),
-                                  ],
-                                )),
+                                  ),
+                                  CustomText(
+                                    text: '検索',
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         )
                       ],
@@ -291,27 +293,28 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
           ),
         ),
         ValueListenableBuilder(
-            valueListenable: _controller.protector,
-            builder: (context, value, child) {
-              if (value == false) {
-                return Container();
-              }
-              return Column(
-                children: [
-                  Expanded(
-                    child: Container(
-                      color: Colors.black.withOpacity(0.5),
-                      child: Center(
-                        child: LoadingAnimationWidget.fourRotatingDots(
-                          color: Colors.amber,
-                          size: 54,
-                        ),
+          valueListenable: _controller.protector,
+          builder: (context, value, child) {
+            if (value == false) {
+              return Container();
+            }
+            return Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    color: Colors.black.withOpacity(0.5),
+                    child: Center(
+                      child: LoadingAnimationWidget.fourRotatingDots(
+                        color: Colors.amber,
+                        size: 54,
                       ),
                     ),
                   ),
-                ],
-              );
-            })
+                ),
+              ],
+            );
+          },
+        )
       ],
     );
   }

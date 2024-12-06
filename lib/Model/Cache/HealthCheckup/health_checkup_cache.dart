@@ -13,13 +13,13 @@ class HealthCheckupCache extends ChangeNotifier {
   factory HealthCheckupCache() => _instance;
   HealthCheckupCache._internal();
 
-  List<HealthCheckup> _data = [];
-
+  final List<HealthCheckup> _data = [];
   List<HealthCheckup> get data => _data;
 
   /// リストごとデータをセット
-  void setList(List<HealthCheckup> dataList) {
-    _data = dataList;
+  void setData(List<HealthCheckup> dataList) {
+    _data.clear();
+    _data.addAll(dataList);
     notifyListeners();
   }
 

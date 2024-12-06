@@ -5,18 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/fcm_topic_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/shared_preferences_keys_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
-import 'package:unicorn_flutter/Model/Cache/Medicine/medicine_cache.dart';
+import 'package:unicorn_flutter/Model/Chat/chat_data.dart';
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
+import 'package:unicorn_flutter/Model/Data/Department/department_data.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account.dart';
 import 'package:unicorn_flutter/Model/Entity/Account/account_request.dart';
 import 'package:unicorn_flutter/Model/Entity/AppConfig/app_config.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat.dart';
 import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
-import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
-import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
+import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/Api/Account/account_api.dart';
 import 'package:unicorn_flutter/Service/Api/AppConfig/app_config_api.dart';
 import 'package:unicorn_flutter/Service/Api/Chat/chat_api.dart';
@@ -31,12 +32,6 @@ import 'package:unicorn_flutter/Service/Package/LocalAuth/local_auth_service.dar
 import 'package:unicorn_flutter/Service/Package/SharedPreferences/shared_preferences_service.dart';
 import 'package:unicorn_flutter/Service/Package/SystemInfo/system_info_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
-
-import '../Model/Chat/chat_data.dart';
-import '../Model/Data/Department/department_data.dart';
-import '../Model/Data/HealthCheckup/health_checkup_data.dart';
-import '../Model/Entity/HealthCheckUp/health_checkup.dart';
-import '../Model/Entity/User/user_request.dart';
 
 class TopLoadingController extends ControllerCore {
   SharedPreferencesService get _sharedPreferencesService =>
@@ -114,7 +109,7 @@ class TopLoadingController extends ControllerCore {
       uid = authUser.uid;
 
       /// 起動フラグが立っていない場合はTokenの再取得
-      if (appInitialized == false || appInitialized == null) {
+      if (appInitialized == false) {
         /// Firebase: FCMトークンを取得
         await _cloudMessagingInitialize();
 
@@ -148,31 +143,10 @@ class TopLoadingController extends ControllerCore {
     // 診療科一覧を取得してデータクラスに保存
     final List<Department>? departmentList =
         await _departmentApi.getDepartmentList();
-
     if (departmentList != null) {
       DepartmentData().setDepartment(departmentList);
       Log.echo('Department: ${departmentList.map((e) => e.toJson()).toList()}');
     }
-
-    /// 検診結果の取得とシングルトンへの保存
-    final List<HealthCheckup>? healthCheckup =
-        await _userApi.getUserHealthCheckupList(userId: uid);
-
-    if (healthCheckup != null) {
-      HealthCheckupCache().setList(healthCheckup);
-    }
-    Log.echo('HealthCheckup: ${HealthCheckupCache().data}');
-
-    await Future.delayed(const Duration(seconds: 1));
-
-    /// 画面遷移
-    // if (user == null) {
-    //   _sharedPreferencesService.setBool(
-    //       SharedPreferencesKeysEnum.appInitialized.name, true);
-    //   const RegisterPhysicalInfoRoute(from: Routes.root).go(context);
-    // } else {
-    /// シングルトンにユーザー情報を保存
-    // UserData().setUser(user!);
 
     // チャット情報を取得してデータクラスに保存
     final List<Chat>? chatList = await _chatApi.getChatList();
@@ -181,65 +155,29 @@ class TopLoadingController extends ControllerCore {
       Log.echo('Chat: ${chatList.map((e) => e.toJson()).toList()}');
     }
 
-    final List<Medicine>? medicineList = await _medicineApi.getMedicineList();
-    if (medicineList != null) {
-      MedicineCache().setMedicineList(medicineList);
-      Log.echo('Medicine: ${medicineList.map((e) => e.toJson()).toList()}');
+    if (user == null) {
+      // 初回起動時の処理
+      // SharedPreferences: 起動フラグ
+      _sharedPreferencesService.setBool(
+          SharedPreferencesKeysEnum.appInitialized.name, true);
+
+      RegisterPhysicalInfoRoute(
+        from: Routes.root,
+        $extra: UserRequest(),
+      ).go(context);
+    } else {
+      // 通常起動時の処理
+      UserData().setUser(user!);
+
+      // キャッシュ処理
+      // 検診結果の取得とキャッシュへの保存
+      await _userApi.getUserHealthCheckupList(userId: uid);
+
+      // おくすり情報を取得してキャッシュに保存
+      await _medicineApi.getMedicineList();
+
+      const HomeRoute().go(context);
     }
-
-    // デバッグ用
-    // todo: 本番環境では削除
-    await _userApi.postUser(
-        body: UserRequest.fromJson({
-      'userID': uid,
-      'firstName': '太郎',
-      'lastName': '山田',
-      'email': 'test@test.com',
-      'gender': 'male',
-      'birthDate': '1990-01-01',
-      'address': '東京都新宿区1-1-1',
-      'postalCode': '1000001',
-      'phoneNumber': '09012345678',
-      'iconImageUrl': 'https://placehold.jp/150x150.png',
-      'bodyHeight': 180.5,
-      'bodyWeight': 75.5,
-      'occupation': 'エンジニア',
-    }));
-
-    UserData().setUser(User.fromJson({
-      'userID': uid,
-      'firstName': '太郎',
-      'lastName': '山田',
-      'email': 'test@test.com',
-      'gender': 'male',
-      'birthDate': '1990-01-01',
-      'address': '東京都,新宿区,1-1-1',
-      'postalCode': '1000001',
-      'phoneNumber': '09012345678',
-      'iconImageUrl': 'https://placehold.jp/150x150.png',
-      'bodyHeight': 180.5,
-      'bodyWeight': 75.5,
-      'occupation': 'エンジニア',
-    }));
-
-    /// 通知設定を登録したことがあるかどうかを取得し、未登録の場合は登録する
-    bool notificationInitialized = await _getNotificationInitialized();
-    if (!notificationInitialized) {
-      UserNotification? userNotification = await _postUserNotification();
-      if (userNotification == null) {
-        /// 通信エラー時
-        Log.echo('userNotification: $userNotification');
-        return;
-      }
-      await _sharedPreferencesService.setBool(
-          SharedPreferencesKeysEnum.notificationInitialized.name, true);
-    }
-
-    /// SharedPreferences: 起動フラグ
-    _sharedPreferencesService.setBool(
-        SharedPreferencesKeysEnum.appInitialized.name, true);
-
-    const HomeRoute().go(context);
   }
 
   Future<String> get appVersion async {
@@ -367,34 +305,5 @@ class TopLoadingController extends ControllerCore {
         SharedPreferencesKeysEnum.appInitialized.name, false);
 
     Log.toast('データを初期化しました');
-  }
-
-  /// 通知設定を登録したことがあるかどうか
-  Future<bool> _getNotificationInitialized() async {
-    bool? notificationInitialized = await _sharedPreferencesService
-        .getBool(SharedPreferencesKeysEnum.notificationInitialized.name);
-    if (notificationInitialized == null) {
-      /// 通知設定未登録の場合はfalseをsetする
-      _sharedPreferencesService.setBool(
-          SharedPreferencesKeysEnum.notificationInitialized.name, false);
-      return false;
-    }
-    return notificationInitialized;
-  }
-
-  /// 通知設定を登録する
-  Future<UserNotification?> _postUserNotification() async {
-    UserNotification? userNotification = await _userApi.postUserNotification(
-      userId: uid,
-      body: UserNotification(
-        isHospitalNews: true,
-        isMedicineReminder: true,
-        isRegularHealthCheckup: true,
-      ),
-    );
-    if (userNotification == null) {
-      Log.echo('Error: 通信エラー');
-    }
-    return userNotification;
   }
 }

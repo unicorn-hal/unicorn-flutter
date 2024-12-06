@@ -99,4 +99,7 @@ class Strings {
   // おくすりを服用した際に表示するテキスト
   static const String MEDICINE_TAKE_COMPLETED_MESSAGE = 'おくすりを服用しました';
   static const String MEDICINE_TAKE_ALL_COMPLETED_MESSAGE = 'すべてのおくすりを服用しました';
+
+  // 有効な郵便番号が入力されていない際に表示するテキスト
+  static const String POSTAL_CODE_VALIDATE_TEXT = '郵便番号が正しく入力されていません';
 }

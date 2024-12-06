@@ -17,18 +17,18 @@ class MedicineCache extends ChangeNotifier {
   List<Medicine> get data => _data;
   int get carouselIndex => _carouselIndex;
 
-  void setMedicineList(List<Medicine> dataList) {
+  void setData(List<Medicine> dataList) {
     _data.clear();
     _data.addAll(dataList);
     notifyListeners();
   }
 
-  void addMedicine(Medicine data) {
+  void addData(Medicine data) {
     _data.add(data);
     notifyListeners();
   }
 
-  void updateMedicine(Medicine data) {
+  void updateData(Medicine data) {
     final index =
         _data.indexWhere((element) => element.medicineId == data.medicineId);
     if (index != -1) {
@@ -37,7 +37,7 @@ class MedicineCache extends ChangeNotifier {
     }
   }
 
-  void deleteMedicine(String medicineId) {
+  void deleteData(String medicineId) {
     final index =
         _data.indexWhere((element) => element.medicineId == medicineId);
     if (index != -1) {

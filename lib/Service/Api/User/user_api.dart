@@ -7,7 +7,7 @@ import 'package:unicorn_flutter/Model/Entity/api_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
 import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 
-import '../../../Model/Data/HealthCheckup/health_checkup_data.dart';
+import '../../../Model/Cache/HealthCheckup/health_checkup_cache.dart';
 
 class UserApi extends ApiCore with Endpoint {
   UserApi() : super(Endpoint.users);
@@ -32,9 +32,11 @@ class UserApi extends ApiCore with Endpoint {
     try {
       useParameter(parameter: '/$userId/health_checkups');
       final ApiResponse response = await get();
-      return (response.data['data'] as List)
+      final List<HealthCheckup> data = (response.data['data'] as List)
           .map((e) => HealthCheckup.fromJson(e))
           .toList();
+      HealthCheckupCache().setData(data);
+      return data;
     } catch (e) {
       return null;
     }

@@ -3,7 +3,7 @@ import 'package:unicorn_flutter/Constants/Enum/health_checkup_result_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup.dart';
 
-import '../../Model/Data/HealthCheckup/health_checkup_data.dart';
+import '../../Model/Cache/HealthCheckup/health_checkup_cache.dart';
 
 class HealthCheckupTopController extends ControllerCore {
   // コンストラクタ

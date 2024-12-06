@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_result_enum.dart';
 import 'package:unicorn_flutter/Controller/HealthCheckup/health_checkup_top_contoller.dart';
-import 'package:unicorn_flutter/Model/Data/HealthCheckup/health_checkup_data.dart';
+import 'package:unicorn_flutter/Model/Cache/HealthCheckup/health_checkup_cache.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';

@@ -6,6 +6,7 @@ mixin Routes {
   static const String registerAddressInfo = '/register/address_info';
   static const String registerPhysicalInfo = '/register/physical_info';
   static const String registerUserInfo = '/register/user_info';
+  static const String registerLocalAuth = '/register/local_auth';
   static const String videoCall = '/video_call';
 
   // home

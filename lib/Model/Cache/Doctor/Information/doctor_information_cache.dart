@@ -7,10 +7,9 @@ class DoctorInformationCache {
   DoctorInformationCache._internal();
 
   final List<Doctor> _data = [];
-
   List<Doctor> get data => _data;
 
-  void addDoctor(Doctor data) {
+  void addData(Doctor data) {
     _data.add(data);
   }
 }
