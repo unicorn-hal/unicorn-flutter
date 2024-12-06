@@ -283,7 +283,7 @@ class _HomeViewState extends State<HomeView> {
                     child: BoardTile(
                       title: hospitalNews[index].title,
                       subtitle:
-                          '${DateFormat('yyyy-MM-dd HH:mm').format(hospitalNews[index].postedDate)} - ${hospitalNews[index].hospitalName}',
+                          '${DateFormat('yyyy-MM-dd HH:mm').format(hospitalNews[index].postedDate.toLocal())} - ${hospitalNews[index].hospitalName}',
                       content: hospitalNews[index].content,
                       imageUrl: hospitalNews[index].imageUrl,
                       onTap: () =>
