@@ -204,13 +204,13 @@ class VoiceCallReserveController extends ControllerCore {
   /// 取得した通話対応可能時間のリストと比較してboolを返す
   bool isAvailableTimeSlot(
     List<Call>? reservedCalls,
-    String targetTimeSlot,
+    int index,
   ) {
     if (reservedCalls == null) {
-      return true;
+      return availableTimeCheck(timeSlots[index]);
     }
 
-    String targetStartTime = (targetTimeSlot.split('〜').first);
+    String targetStartTime = (timeSlots[index].split('〜').first);
     for (Call call in reservedCalls) {
       final String reservedString =
           call.callStartTime.toLocal().toString().substring(11, 16);
@@ -218,11 +218,17 @@ class VoiceCallReserveController extends ControllerCore {
         return false;
       }
     }
-    return true;
+
+    return availableTimeCheck(timeSlots[index]);
   }
 
   /// 予約日時が過去であるかのチェック
   bool availableTimeCheck(String timeSlot) {
+    // 確認する値が現在時刻より後であればtrueを返す
+    if (!_calendarDate.isBefore(DateTime.now())) {
+      return true;
+    }
+
     final DateTime now = DateTime.now();
     final DateTime slotStart = DateTime(
       now.year,

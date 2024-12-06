@@ -280,15 +280,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                                     controller.isAvailableTimeSlot(
                                         events![controller.normalizeDate(
                                             controller.calendarDate)],
-                                        controller.timeSlots[index]);
-
-                                // 今日の過去の時間の場合は選択不可に
-                                if (controller.calendarDate
-                                    .isBefore(DateTime.now())) {
-                                  isAvailableTime =
-                                      controller.availableTimeCheck(
-                                          controller.timeSlots[index]);
-                                }
+                                        index);
 
                                 return GestureDetector(
                                   onTap: () {
