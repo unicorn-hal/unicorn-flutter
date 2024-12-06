@@ -1,3 +1,4 @@
+import 'package:unicorn_flutter/Model/Entity/Call/call_reservation.dart';
 import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup.dart';
 import 'package:unicorn_flutter/Model/Entity/HealthCheckUp/health_checkup_request.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user.dart';
@@ -66,6 +67,25 @@ class UserApi extends ApiCore with Endpoint {
       final ApiResponse response = await get();
       return UserNotification.fromJson(response.data);
     } catch (e) {
+      return null;
+    }
+  }
+
+  /// GTE
+  /// 通話予約取得
+  /// [userId] ユーザーID
+  Future<List<CallReservation>?> getUserCallReservation({
+    required String userId,
+  }) async {
+    try {
+      useParameter(parameter: '/$userId/calls');
+      final ApiResponse response = await get();
+      final List<CallReservation> data = (response.data['data'] as List)
+          .map((e) => CallReservation.fromJson(e))
+          .toList();
+      return data;
+    } catch (e) {
+      print(e);
       return null;
     }
   }
