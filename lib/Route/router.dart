@@ -169,6 +169,9 @@ final routerProvider = Provider(
         TypedGoRoute<ProfileCallReservationRoute>(
           path: Routes.profileCallReservation,
         ),
+        TypedGoRoute<ProfileCallReservationDoctorTextChatRoute>(
+          path: Routes.profileCallReservationDoctorTextChat,
+        ),
       ],
     ),
   ],
@@ -663,5 +666,15 @@ class ProfileCallReservationRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       const CallReservationView();
+}
+
+class ProfileCallReservationDoctorTextChatRoute extends GoRouteData {
+  const ProfileCallReservationDoctorTextChatRoute(this.$extra);
+  final Doctor $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => DoctorTextChatView(
+        doctor: $extra,
+      );
 }
 //////////////////////////////  profile  //////////////////////////////
