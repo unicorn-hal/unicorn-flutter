@@ -69,7 +69,7 @@ class Strings {
   static const String REQUEST_PERMISSION_ERROR_TEXT =
       '端末設定から連絡先へのアクセスを許可してください';
 
-  // メールアドレスが未登録に表示するテキスト
+  // メールアドレスが未登録のときに表示するテキスト
   static const String FAMILY_EMAIL_NOT_REGISTERED_TEXT = 'メールアドレスが登録されていません';
 
   // メールアドレス登録時のvalidateに使うテキスト
@@ -82,6 +82,7 @@ class Strings {
   static const String VOICE_CALL_DISABLE_ERROR_TEXT =
       'この時間は予約できません。他の時間を選択してください';
   static const String VOICE_CALL_RESERVE_ERROR_TEXT = '通話予約に失敗しました';
+  static const String CALL_RESERVATION_NOT_REGISTERED_TEXT = '通話予約が存在しません';
 
   // ユーザープロフィール登録完了時に表示するテキスト
   static const String PROFILE_REGISTRATION_COMPLETED_MESSAGE =
