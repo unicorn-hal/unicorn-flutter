@@ -94,7 +94,7 @@ class ProfileTopController extends ControllerCore {
             ).push(context);
           }),
       ProfileDetail(
-        title: 'お問い合わせ',
+        title: '問い合わせ',
         icon: Icons.question_mark,
         onTap: () async {
           await _urlLauncherService
