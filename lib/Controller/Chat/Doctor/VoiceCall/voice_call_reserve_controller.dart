@@ -5,8 +5,7 @@ import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
-
-import '../../../../Model/Data/Account/account_data.dart';
+import '../../../../Model/Data/User/user_data.dart';
 import '../../../../Model/Entity/Call/call.dart';
 import '../../../../Model/Entity/Call/call_request.dart';
 import '../../../../Model/Entity/Doctor/doctor.dart';
@@ -22,7 +21,7 @@ class VoiceCallReserveController extends ControllerCore {
   BuildContext? context;
   final Doctor _doctor;
 
-  late DateTime? _reserveDate;
+  DateTime? _reserveDate;
   int? selectedTimeSlotIndex;
 
   DateTime _calendarDate =
@@ -32,10 +31,7 @@ class VoiceCallReserveController extends ControllerCore {
       _generateHalfHourSlots(_doctor.callSupportHours);
 
   @override
-  void initialize() async {
-    // 初期値は現在時刻
-    _reserveDate = DateTime.now();
-  }
+  void initialize() async {}
 
   Doctor get doctor => _doctor;
 
@@ -49,7 +45,7 @@ class VoiceCallReserveController extends ControllerCore {
     // 予約日時を結合
     CallRequest body = CallRequest(
       doctorId: _doctor.doctorId,
-      userId: AccountData().account!.uid,
+      userId: UserData().user!.userId,
       callStartTime: _reserveDate!,
       // 一旦固定で30分間に設定
       callEndTime: _reserveDate!.add(
@@ -63,7 +59,6 @@ class VoiceCallReserveController extends ControllerCore {
     ProtectorNotifier().disableProtector();
 
     if (response != 200) {
-      // todo: エラー処理
       Fluttertoast.showToast(msg: Strings.VOICE_CALL_RESERVE_ERROR_TEXT);
       return;
     }
@@ -209,19 +204,46 @@ class VoiceCallReserveController extends ControllerCore {
   /// 取得した通話対応可能時間のリストと比較してboolを返す
   bool isAvailableTimeSlot(
     List<Call>? reservedCalls,
-    String targetTimeSlot,
+    int index,
   ) {
     if (reservedCalls == null) {
-      return true;
+      return _availableTimeCheck(timeSlots[index]);
     }
 
-    String targetStartTime = (targetTimeSlot.split('〜').first);
+    String targetStartTime = (timeSlots[index].split('〜').first);
     for (Call call in reservedCalls) {
       final String reservedString =
           call.callStartTime.toLocal().toString().substring(11, 16);
       if (reservedString == targetStartTime) {
         return false;
       }
+    }
+
+    return _availableTimeCheck(timeSlots[index]);
+  }
+
+  /// 予約日時が過去であるかのチェック
+  bool _availableTimeCheck(String timeSlot) {
+    // 確認する値が現在時刻より後であればtrueを返す
+    if (!_calendarDate.isBefore(DateTime.now())) {
+      return true;
+    }
+
+    final DateTime now = DateTime.now();
+    final DateTime slotStart = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      int.parse(
+        timeSlot.split('〜').first.split(':')[0],
+      ),
+      int.parse(
+        timeSlot.split('〜').first.split(':')[1],
+      ),
+    );
+
+    if (now.isAfter(slotStart)) {
+      return false;
     }
     return true;
   }

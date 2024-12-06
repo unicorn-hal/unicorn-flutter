@@ -17,7 +17,9 @@ import '../../../../Route/router.dart';
 import '../../../Component/Parts/user_info_tile.dart';
 
 class DoctorSearchView extends StatefulWidget {
-  const DoctorSearchView({super.key});
+  const DoctorSearchView({super.key, this.departmentId});
+
+  final String? departmentId;
 
   @override
   State<DoctorSearchView> createState() => _DoctorSearchViewState();
@@ -29,7 +31,7 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
   @override
   void initState() {
     super.initState();
-    controller = DoctorSearchController();
+    controller = DoctorSearchController(departmentId: widget.departmentId);
   }
 
   @override

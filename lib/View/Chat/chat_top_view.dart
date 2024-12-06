@@ -135,8 +135,7 @@ class ChatTopView extends StatelessWidget {
             buttonSize: 80,
             buttonColor: ColorName.mainColor,
             onTap: () {
-              // todo: 医師を探す画面へ遷移
-              const ChatDoctorSearchRoute().push(context);
+              ChatDoctorSearchRoute().push(context);
             },
             icon: const Icon(
               Icons.search,

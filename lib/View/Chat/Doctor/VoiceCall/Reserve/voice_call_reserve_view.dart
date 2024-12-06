@@ -275,11 +275,12 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                               ),
                               itemCount: controller.timeSlots.length,
                               itemBuilder: (context, index) {
+                                // 予約済みの時間かどうかを判定
                                 bool isAvailableTime =
                                     controller.isAvailableTimeSlot(
                                         events![controller.normalizeDate(
                                             controller.calendarDate)],
-                                        controller.timeSlots[index]);
+                                        index);
 
                                 return GestureDetector(
                                   onTap: () {

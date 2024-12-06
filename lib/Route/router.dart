@@ -461,10 +461,14 @@ class ChatDoctorVoiceCallReserveRoute extends GoRouteData {
 }
 
 class ChatDoctorSearchRoute extends GoRouteData {
-  const ChatDoctorSearchRoute();
+  ChatDoctorSearchRoute({this.departmentId});
+
+  String? departmentId;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => DoctorSearchView();
+  Widget build(BuildContext context, GoRouterState state) => DoctorSearchView(
+        departmentId: departmentId,
+      );
 }
 
 class ChatAiTextChatRoute extends GoRouteData {

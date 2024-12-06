@@ -11,7 +11,9 @@ import '../../../Core/controller_core.dart';
 class DoctorSearchController extends ControllerCore {
   DoctorApi get _doctorApi => DoctorApi();
 
-  DoctorSearchController();
+  DoctorSearchController({
+    this.departmentId,
+  });
 
   // テキストコントローラーの初期化
   final TextEditingController _hospitalNameController = TextEditingController();
@@ -21,10 +23,19 @@ class DoctorSearchController extends ControllerCore {
   late int? _selectedDepartmentIndex;
   late List<Department> _departmentList;
 
+  // 医師情報画面からの検索条件
+  final String? departmentId;
+
   @override
   void initialize() {
     _departmentList = DepartmentData().data;
     _selectedDepartmentIndex = null;
+
+    if (departmentId != null) {
+      // 初期選択科目がある場合は、その科目を選択状態にする
+      _selectedDepartmentIndex = _departmentList
+          .indexWhere((element) => element.departmentId == departmentId);
+    }
   }
 
   // 科目リストのgetter
