@@ -105,9 +105,10 @@ class _CallReservationViewState extends State<CallReservationView> {
                                         await controller.deleteCallReservation(
                                             callReservationList[index]
                                                 .callReservationId);
-                                    if (res == 204) {
-                                      setState(() {});
+                                    if (res != 204) {
+                                      return;
                                     }
+                                    setState(() {});
                                   },
                                 );
                               },
