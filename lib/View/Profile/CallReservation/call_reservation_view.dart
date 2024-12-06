@@ -59,13 +59,22 @@ class _CallReservationViewState extends State<CallReservationView> {
                 if (!snapshot.hasData) {
                   return Container();
                 }
-                List<CallReservation>? callReservationList = snapshot.data;
+                List<CallReservation> callReservationList = snapshot.data!;
+                if (callReservationList.isEmpty) {
+                  return const Padding(
+                    padding: EdgeInsets.only(
+                      top: 100,
+                    ),
+                    child: CustomText(
+                        text: Strings.CALL_RESERVATION_NOT_REGISTERED_TEXT),
+                  );
+                }
                 return SizedBox(
                   width: deviceWidth * 0.9,
                   child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: callReservationList!.length,
+                    itemCount: callReservationList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
@@ -78,9 +87,7 @@ class _CallReservationViewState extends State<CallReservationView> {
                               '${DateFormat('HH:mm').format(callReservationList[index].callStartTime)} ~ ${DateFormat('HH:mm').format(callReservationList[index].callEndTime)}',
                           doctorIconUrl:
                               callReservationList[index].doctor.doctorIconUrl,
-                          chatButtonOnTap: () async {
-                            await controller.getCallReservation();
-                          },
+                          chatButtonOnTap: () {},
                           deleteButtonOnTap: () {
                             showDialog<void>(
                               context: context,
@@ -88,7 +95,15 @@ class _CallReservationViewState extends State<CallReservationView> {
                                 return CustomDialog(
                                   title: Strings.DIALOG_TITLE_CAVEAT,
                                   bodyText: Strings.DIALOG_BODY_TEXT_DELETE,
-                                  rightButtonOnTap: () {},
+                                  rightButtonOnTap: () async {
+                                    int res =
+                                        await controller.deleteCallReservation(
+                                            callReservationList[index]
+                                                .callReservationId);
+                                    if (res == 204) {
+                                      setState(() {});
+                                    }
+                                  },
                                 );
                               },
                             );
