@@ -58,6 +58,7 @@ dependencies:
   tutorial_coach_mark: ^1.2.12
   cloud_firestore: ^5.4.0
   collection: ^1.18.0
+  flutter_launcher_icons: ^0.14.2
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +74,11 @@ flutter_gen:
     exclude:
       - .env.develop
       - .env.release
+
+flutter_icons:
+  ios: true
+  image_path: "assets/images/launcher/unicorn_app_icon.png"
+  remove_alpha_ios: true
 
 flutter:
   uses-material-design: true
