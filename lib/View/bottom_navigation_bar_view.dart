@@ -87,16 +87,7 @@ class _BottomNavigationBarViewState extends State<BottomNavigationBarView>
                   selectedIndex: controller.navigationShell.currentIndex,
                   backgroundColor: Colors.white,
                   indicatorColor: ColorName.mainColor.withOpacity(0.2),
-                  destinations: const [
-                    NavigationDestination(icon: Icon(Icons.home), label: 'ホーム'),
-                    NavigationDestination(
-                        icon: Icon(Icons.health_and_safety_outlined),
-                        label: '検診'),
-                    NavigationDestination(
-                        icon: Icon(Icons.chat), label: 'チャット'),
-                    NavigationDestination(
-                        icon: Icon(Icons.person), label: 'プロフィール'),
-                  ],
+                  destinations: controller.destination(),
                   onDestinationSelected: (index) {
                     controller.goBranch(index);
                   },
