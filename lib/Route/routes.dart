@@ -50,4 +50,5 @@ mixin Routes {
   static const String profileChronicDisease = '/profile/chronic_disease';
   static const String profileChronicDiseaseSearch =
       '/profile/chronic_disease/search';
+  static const String profileCallReservation = '/profile/call_reservation';
 }
