@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
-import 'package:unicorn_flutter/Model/Data/Department/department_data.dart';
-import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
-import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
-import 'package:unicorn_flutter/View/Component/CustomWidget/custom_modal.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/call_reservation_tile.dart';
-import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
-import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class CallReservationView extends StatefulWidget {
   const CallReservationView({super.key});
@@ -21,77 +15,9 @@ class CallReservationView extends StatefulWidget {
 class _CallReservationViewState extends State<CallReservationView> {
   @override
   Widget build(BuildContext context) {
-    bool test = true;
     double deviceWidth = MediaQuery.of(context).size.width;
-    double deviceHeight = MediaQuery.of(context).size.height;
     return CustomScaffold(
       isScrollable: true,
-      appBar: CustomAppBar(
-        backgroundColor: ColorName.mainColor,
-        actions: [
-          CustomButton(
-            text: '全ての予約',
-            onTap: () {
-              showModalBottomSheet(
-                useRootNavigator: true,
-                backgroundColor: Colors.transparent,
-                isScrollControlled: true,
-                context: context,
-                builder: (BuildContext context) {
-                  return CustomModal(
-                    title: '',
-                    leftButtonOnTap: () {},
-                    topMargin: 100,
-                    content: StatefulBuilder(
-                        builder: (context, StateSetter setState) {
-                      return SizedBox(
-                        width: deviceWidth * 0.9,
-                        height: deviceHeight * 0.6,
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: DepartmentData().data.length + 1,
-                          itemBuilder: (BuildContext context, int index) {
-                            if (index == 0) {
-                              return CommonItemTile(
-                                title: '全ての予約',
-                                action: test
-                                    ? const Icon(
-                                        Icons.check,
-                                        color: Colors.blue,
-                                      )
-                                    : null,
-                                onTap: () {
-                                  setState(() {});
-                                },
-                              );
-                            } else {
-                              return CommonItemTile(
-                                title: DepartmentData()
-                                    .data[index - 1]
-                                    .departmentName,
-                                action: test
-                                    ? const Icon(
-                                        Icons.check,
-                                        color: Colors.blue,
-                                      )
-                                    : null,
-                                onTap: () {
-                                  setState(() {});
-                                },
-                              );
-                            }
-                          },
-                        ),
-                      );
-                    }),
-                  );
-                },
-              );
-            },
-            isFilledColor: true,
-          )
-        ],
-      ),
       body: SizedBox(
         width: deviceWidth,
         child: Column(
