@@ -86,6 +86,9 @@ class _BottomNavigationBarViewState extends State<BottomNavigationBarView>
                 NavigationBar(
                   selectedIndex: controller.navigationShell.currentIndex,
                   backgroundColor: Colors.white,
+                  surfaceTintColor: Colors.white,
+                  elevation: 4.0,
+                  shadowColor: Colors.amber,
                   indicatorColor: ColorName.mainColor.withOpacity(0.2),
                   destinations: controller.destination(),
                   onDestinationSelected: (index) {

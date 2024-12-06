@@ -38,7 +38,7 @@ class BottomNavigationBarController {
           scale: 20.0,
         ),
         selectedIcon: Assets.images.bottomNavBar.home.image(
-          scale: 18.0,
+          scale: 16.0,
           color: ColorName.mainColor,
         ),
         label: 'ホーム',
@@ -48,7 +48,7 @@ class BottomNavigationBarController {
           scale: 20.0,
         ),
         selectedIcon: Assets.images.bottomNavBar.healthCheckup.image(
-          scale: 18.0,
+          scale: 16.0,
           color: ColorName.mainColor,
         ),
         label: '検診',
@@ -58,7 +58,7 @@ class BottomNavigationBarController {
           scale: 20.0,
         ),
         selectedIcon: Assets.images.bottomNavBar.chat.image(
-          scale: 18.0,
+          scale: 16.0,
           color: ColorName.mainColor,
         ),
         label: 'チャット',
@@ -68,7 +68,7 @@ class BottomNavigationBarController {
           scale: 20.0,
         ),
         selectedIcon: Assets.images.bottomNavBar.profile.image(
-          scale: 18.0,
+          scale: 16.0,
           color: ColorName.mainColor,
         ),
         label: 'プロフィール',
