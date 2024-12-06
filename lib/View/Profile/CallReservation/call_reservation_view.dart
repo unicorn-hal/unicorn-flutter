@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/CallReservation/call_reservation_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call_reservation.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -87,7 +88,11 @@ class _CallReservationViewState extends State<CallReservationView> {
                               '${DateFormat('HH:mm').format(callReservationList[index].callStartTime)} ~ ${DateFormat('HH:mm').format(callReservationList[index].callEndTime)}',
                           doctorIconUrl:
                               callReservationList[index].doctor.doctorIconUrl,
-                          chatButtonOnTap: () {},
+                          chatButtonOnTap: () {
+                            ProfileCallReservationDoctorTextChatRoute(
+                                    callReservationList[index].doctor)
+                                .push(context);
+                          },
                           deleteButtonOnTap: () {
                             showDialog<void>(
                               context: context,
