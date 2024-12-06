@@ -7,6 +7,7 @@ import 'package:unicorn_flutter/Controller/Home/home_controller.dart';
 import 'package:unicorn_flutter/Controller/bottom_navigation_bar_controller.dart';
 import 'package:unicorn_flutter/Model/Cache/Medicine/medicine_cache.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call_standby.dart';
+import 'package:unicorn_flutter/Model/Entity/Hospital/hospital_news.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
@@ -154,7 +155,6 @@ class _HomeViewState extends State<HomeView> {
                                   duration: const Duration(milliseconds: 500),
                                   curve: Curves.easeInOut,
                                 );
-                                setState(() {});
                               },
                               child: MedicineLimitCard(
                                 medicine: medicine,
@@ -197,7 +197,6 @@ class _HomeViewState extends State<HomeView> {
                           enableInfiniteScroll: false,
                           onPageChanged: (index, _) {
                             medicineCacheRef.setCarouselIndex(index);
-                            setState(() {});
                           },
                         ),
                       ),
@@ -215,7 +214,6 @@ class _HomeViewState extends State<HomeView> {
                             duration: const Duration(milliseconds: 500),
                             curve: Curves.easeInOut,
                           );
-                          setState(() {});
                         },
                       ),
                     ],
@@ -234,27 +232,61 @@ class _HomeViewState extends State<HomeView> {
             topHeight: 10,
             bottomHeight: 0,
           ),
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-              padding: EdgeInsets.only(left: 20, top: 10, bottom: 20),
-              child: CustomText(text: 'お知らせ・掲示板'),
+              padding: const EdgeInsets.only(left: 20, top: 10, bottom: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const CustomText(text: 'お知らせ・掲示板'),
+                  IconButton(
+                    onPressed: () => setState(() {
+                      _controller.getHospitalNews(reload: true);
+                    }),
+                    icon: const Icon(Icons.refresh_rounded),
+                  ),
+                ],
+              ),
             ),
           ),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: _controller.boardList.length,
-            itemBuilder: (BuildContext context, int index) {
-              return SizedBox(
-                child: BoardTile(
-                  title: _controller.boardList[index]['title'],
-                  content: _controller.boardList[index]['content'],
-                  imageUrl: _controller.boardList[index]['imageUrl'],
-                  onTap: () {
-                    // todo: タップ時の処理
-                  },
-                ),
+          FutureBuilder(
+            future: _controller.getHospitalNews(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState != ConnectionState.done) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.hasError) {
+                return const Center(
+                  child: CustomText(text: 'お知らせの取得に失敗しました'),
+                );
+              }
+              if (snapshot.data == null) {
+                return const Center(
+                  child: CustomText(text: 'お知らせはありません'),
+                );
+              }
+
+              List<HospitalNews> hospitalNews =
+                  snapshot.data as List<HospitalNews>;
+
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: hospitalNews.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    child: BoardTile(
+                      title: hospitalNews[index].title,
+                      content: hospitalNews[index].content,
+                      imageUrl: hospitalNews[index].imageUrl,
+                      onTap: () =>
+                          _controller.launchUrl(hospitalNews[index].relatedUrl),
+                    ),
+                  );
+                },
               );
             },
           )
