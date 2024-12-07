@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unicorn_flutter/Route/navigation_shell.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
-import 'package:unicorn_flutter/gen/assets.gen.dart';
-import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class BottomNavigationBarController {
   late StatefulNavigationShell navigationShell;
@@ -28,53 +26,5 @@ class BottomNavigationBarController {
       index,
       initialLocation: index == navigationShell.currentIndex,
     );
-  }
-
-  /// アイテムの返却
-  List<NavigationDestination> destination() {
-    List<NavigationDestination> destinations = [
-      NavigationDestination(
-        icon: Assets.images.bottomNavBar.home.image(
-          scale: 20.0,
-        ),
-        selectedIcon: Assets.images.bottomNavBar.home.image(
-          scale: 16.0,
-          color: ColorName.mainColor,
-        ),
-        label: 'ホーム',
-      ),
-      NavigationDestination(
-        icon: Assets.images.bottomNavBar.healthCheckup.image(
-          scale: 20.0,
-        ),
-        selectedIcon: Assets.images.bottomNavBar.healthCheckup.image(
-          scale: 16.0,
-          color: ColorName.mainColor,
-        ),
-        label: '検診',
-      ),
-      NavigationDestination(
-        icon: Assets.images.bottomNavBar.chat.image(
-          scale: 20.0,
-        ),
-        selectedIcon: Assets.images.bottomNavBar.chat.image(
-          scale: 16.0,
-          color: ColorName.mainColor,
-        ),
-        label: 'チャット',
-      ),
-      NavigationDestination(
-        icon: Assets.images.bottomNavBar.profile.image(
-          scale: 20.0,
-        ),
-        selectedIcon: Assets.images.bottomNavBar.profile.image(
-          scale: 16.0,
-          color: ColorName.mainColor,
-        ),
-        label: 'プロフィール',
-      ),
-    ];
-
-    return destinations;
   }
 }
