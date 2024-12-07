@@ -271,23 +271,24 @@ class _HomeViewState extends State<HomeView> {
                 );
               }
 
-              List<HospitalNews> hospitalNews =
+              List<HospitalNews> hospitalNewsList =
                   snapshot.data as List<HospitalNews>;
 
               return ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: hospitalNews.length,
+                itemCount: hospitalNewsList.length,
                 itemBuilder: (BuildContext context, int index) {
+                  final HospitalNews hospitalNews = hospitalNewsList[index];
                   return SizedBox(
                     child: BoardTile(
-                      title: hospitalNews[index].title,
+                      title: hospitalNews.title,
                       subtitle:
-                          '${DateFormat('yyyy-MM-dd HH:mm').format(hospitalNews[index].postedDate.toLocal())} - ${hospitalNews[index].hospitalName}',
-                      content: hospitalNews[index].content,
-                      imageUrl: hospitalNews[index].imageUrl,
+                          '${DateFormat('yyyy/MM/dd HH:mm').format(hospitalNews.postedDate.toLocal())} - ${hospitalNews.hospitalName}',
+                      content: hospitalNews.content,
+                      imageUrl: hospitalNews.imageUrl,
                       onTap: () =>
-                          _controller.launchUrl(hospitalNews[index].relatedUrl),
+                          _controller.launchUrl(hospitalNews.relatedUrl),
                     ),
                   );
                 },
