@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:unicorn_flutter/Controller/bottom_navigation_bar_controller.dart';
@@ -89,7 +90,7 @@ class _BottomNavigationBarViewState extends State<BottomNavigationBarView>
                   surfaceTintColor: Colors.white,
                   elevation: 4.0,
                   shadowColor: Colors.amber,
-                  indicatorColor: ColorName.mainColor.withOpacity(0.2),
+                  indicatorColor: Colors.transparent,
                   destinations: controller.destination(),
                   onDestinationSelected: (index) {
                     controller.goBranch(index);
