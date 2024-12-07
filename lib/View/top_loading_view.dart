@@ -3,7 +3,6 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:unicorn_flutter/Controller/top_loading_controller.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
-import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
