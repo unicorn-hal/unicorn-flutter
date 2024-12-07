@@ -6,48 +6,37 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
+import 'package:unicorn_flutter/Model/Cache/Hospital/hospital_news_cache.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call_standby.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call_status.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
+import 'package:unicorn_flutter/Model/Entity/Hospital/hospital_news.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/Call/call_api.dart';
 import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
+import 'package:unicorn_flutter/Service/Api/Hospital/hospital_api.dart';
 import 'package:unicorn_flutter/Service/Api/Medicine/medicine_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/Firestore/firestore_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
+import 'package:unicorn_flutter/Service/Package/UrlLauncher/url_launcher_service.dart';
 
 class HomeController extends ControllerCore {
   FirebaseFirestoreService get _firestoreService =>
       FirebaseFirestoreService(databaseId: 'call-log');
+  UrlLauncherService get _urlLauncherService => UrlLauncherService();
   CallApi get _callApi => CallApi();
   DoctorApi get _doctorApi => DoctorApi();
   MedicineApi get _medicineApi => MedicineApi();
+  HospitalApi get _hospitalApi => HospitalApi();
 
   HomeController(this.context);
   BuildContext context;
 
-  // todo: 仮データ
-  final List<Map<String, dynamic>> _boardList = [
-    {
-      'title': 'タイトル1',
-      'content': '内容1',
-      'imageUrl': 'https://picsum.photos/200/300',
-    },
-    {
-      'title': 'タイトル2',
-      'content': '内容2',
-      'imageUrl': 'https://picsum.photos/200/300',
-    },
-    {
-      'title': 'タイトル3',
-      'content': '内容3',
-      'imageUrl': 'https://picsum.photos/200/300',
-    },
-  ];
+  late DateTime _today;
 
   final List<Color> _colors = [
     Colors.red,
@@ -68,10 +57,11 @@ class HomeController extends ControllerCore {
 
   @override
   void initialize() async {
+    _today = DateTime.now();
     _callReservationsListener();
   }
 
-  List<Map<String, dynamic>> get boardList => _boardList;
+  String get today => DateFormat('yyyy年MM月dd日 (E)', 'ja_JP').format(_today);
 
   /// 通話待機中の予約情報を取得
   void _callReservationsListener() {
@@ -168,6 +158,23 @@ class HomeController extends ControllerCore {
 
   Color getColor(int index) {
     return _colors[index % _colors.length];
+  }
+
+  /// 病院からのお知らせを取得
+  Future<List<HospitalNews>?> getHospitalNews({
+    bool reload = false,
+  }) async {
+    HospitalNewsCache cache = HospitalNewsCache();
+    if (cache.data.isNotEmpty && !reload) {
+      return cache.data;
+    }
+
+    return await _hospitalApi.getHospitalNews();
+  }
+
+  /// URLを開く
+  Future<void> launchUrl(String url) async {
+    await _urlLauncherService.launchUrl(url);
   }
 
   void dispose() {
