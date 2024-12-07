@@ -21,73 +21,81 @@ class TopLoadingView extends StatelessWidget {
     }
     final double deviceHeight = MediaQuery.of(context).size.height;
 
-    return CustomScaffold(
-      isAppbar: false,
-      body: Container(
-        height: deviceHeight,
-        color: ColorName.topLoadingBackground,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Assets.images.topLoading.image(),
-              const SizedBox(height: 16),
-              LoadingAnimationWidget.fourRotatingDots(
-                color: Colors.amber,
-                size: 54,
-              ),
-              const SizedBox(height: 16),
-              const CustomText(
-                text: 'Loading ...',
-                fontWeight: FontWeight.w500,
-              ),
-              const SizedBox(height: 48),
-              FutureBuilder(
-                future: controller.appVersion,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return CustomText(
-                      text: 'v${snapshot.data}',
-                      color: ColorName.textGray,
-                      fontWeight: FontWeight.w300,
-                      fontSize: 12,
-                    );
-                  } else {
-                    return const SizedBox();
-                  }
-                },
-              ),
-              FutureBuilder(
-                  future: controller.checkReleaseBuild(),
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: Assets.images.topLoadingBackground.provider(),
+          fit: BoxFit.cover,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Container(
+          height: deviceHeight,
+          color: Colors.transparent,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Assets.images.topLoading.image(),
+                const SizedBox(height: 16),
+                LoadingAnimationWidget.fourRotatingDots(
+                  color: Colors.amber,
+                  size: 54,
+                ),
+                const SizedBox(height: 16),
+                const CustomText(
+                  text: 'Loading ...',
+                  fontWeight: FontWeight.w500,
+                ),
+                const SizedBox(height: 48),
+                FutureBuilder(
+                  future: controller.appVersion,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      bool isReleaseBuild = snapshot.data!;
-                      if (isReleaseBuild) {
-                        return const SizedBox();
-                      } else {
-                        return Column(
-                          children: [
-                            const CustomText(
-                              text: 'DEBUG BUILD',
-                              color: ColorName.textGray,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 12,
-                            ),
-                            const SizedBox(height: 8),
-                            CustomButton(
-                              text: 'データ初期化',
-                              onTap: () {
-                                controller.clearData();
-                              },
-                            )
-                          ],
-                        );
-                      }
+                      return CustomText(
+                        text: 'v${snapshot.data}',
+                        color: ColorName.textGray,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 12,
+                      );
                     } else {
                       return const SizedBox();
                     }
-                  }),
-            ],
+                  },
+                ),
+                FutureBuilder(
+                    future: controller.checkReleaseBuild(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        bool isReleaseBuild = snapshot.data!;
+                        if (isReleaseBuild) {
+                          return const SizedBox();
+                        } else {
+                          return Column(
+                            children: [
+                              const CustomText(
+                                text: 'DEBUG BUILD',
+                                color: ColorName.textGray,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12,
+                              ),
+                              const SizedBox(height: 8),
+                              CustomButton(
+                                text: 'データ初期化',
+                                onTap: () {
+                                  controller.clearData();
+                                },
+                              )
+                            ],
+                          );
+                        }
+                      } else {
+                        return const SizedBox();
+                      }
+                    }),
+              ],
+            ),
           ),
         ),
       ),
