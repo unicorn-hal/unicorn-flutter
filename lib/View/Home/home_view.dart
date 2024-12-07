@@ -13,6 +13,7 @@ import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
@@ -256,18 +257,27 @@ class _HomeViewState extends State<HomeView> {
             future: _controller.getHospitalNews(),
             builder: (context, snapshot) {
               if (snapshot.connectionState != ConnectionState.done) {
-                return const Center(
-                  child: CircularProgressIndicator(),
+                return const SizedBox(
+                  height: 200,
+                  child: Center(
+                    child: CustomIndicator(),
+                  ),
                 );
               }
               if (snapshot.hasError) {
                 return const Center(
-                  child: CustomText(text: 'お知らせの取得に失敗しました'),
+                  child: SizedBox(
+                    height: 200,
+                    child: CustomText(text: 'お知らせの取得に失敗しました'),
+                  ),
                 );
               }
               if (snapshot.data == null) {
                 return const Center(
-                  child: CustomText(text: 'お知らせはありません'),
+                  child: SizedBox(
+                    height: 200,
+                    child: CustomText(text: 'お知らせはありません'),
+                  ),
                 );
               }
 
