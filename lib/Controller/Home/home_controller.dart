@@ -36,6 +36,8 @@ class HomeController extends ControllerCore {
   HomeController(this.context);
   BuildContext context;
 
+  late DateTime _today;
+
   final List<Color> _colors = [
     Colors.red,
     Colors.blue,
@@ -55,8 +57,11 @@ class HomeController extends ControllerCore {
 
   @override
   void initialize() async {
+    _today = DateTime.now();
     _callReservationsListener();
   }
+
+  String get today => DateFormat('yyyy年MM月dd日 (E)', 'ja_JP').format(_today);
 
   /// 通話待機中の予約情報を取得
   void _callReservationsListener() {

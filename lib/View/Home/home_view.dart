@@ -74,8 +74,7 @@ class _HomeViewState extends State<HomeView> {
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20, top: 10),
-                    child: CustomText(text: '10月25日金曜日'),
-                    // todo: 現在の日付を取得する
+                    child: CustomText(text: _controller.today),
                   ),
                 ),
                 const SpacerAndDivider(
