@@ -7,6 +7,8 @@ import 'package:unicorn_flutter/Route/router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:unicorn_flutter/firebase_options.dart';
 
+import 'gen/colors.gen.dart';
+
 void main() async {
   await dotenv.load(fileName: kDebugMode ? '.env.develop' : '.env.release');
   await Firebase.initializeApp(
@@ -36,6 +38,26 @@ class MyApp extends ConsumerWidget {
             TargetPlatform.android: CupertinoPageTransitionsBuilder(),
             TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
           },
+        ),
+        navigationBarTheme: NavigationBarThemeData(
+          labelTextStyle: MaterialStateProperty.resolveWith<TextStyle>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.selected)) {
+                return const TextStyle(
+                  color: ColorName.mainColor,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'NotoSansJP',
+                  fontSize: 12,
+                );
+              }
+              return const TextStyle(
+                color: ColorName.textGray,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'NotoSansJP',
+                fontSize: 10,
+              );
+            },
+          ),
         ),
       ),
     );

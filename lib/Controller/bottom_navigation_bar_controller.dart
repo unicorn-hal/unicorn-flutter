@@ -18,6 +18,7 @@ class BottomNavigationBarController {
   /// 指定したインデックスのブランチに移動する
   void goBranch(int index) {
     if (index == navigationShell.currentIndex) {
+      navigationShell.goBranch(index, initialLocation: true);
       return;
     }
 

@@ -5,6 +5,8 @@ import 'package:unicorn_flutter/Controller/bottom_navigation_bar_controller.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
+import '../gen/assets.gen.dart';
+
 class ProtectorNotifier extends ChangeNotifier {
   static final ProtectorNotifier _instance = ProtectorNotifier._internal();
   factory ProtectorNotifier() => _instance;
@@ -86,16 +88,51 @@ class _BottomNavigationBarViewState extends State<BottomNavigationBarView>
                 NavigationBar(
                   selectedIndex: controller.navigationShell.currentIndex,
                   backgroundColor: Colors.white,
-                  indicatorColor: ColorName.mainColor.withOpacity(0.2),
-                  destinations: const [
-                    NavigationDestination(icon: Icon(Icons.home), label: 'ホーム'),
+                  surfaceTintColor: Colors.white,
+                  elevation: 4.0,
+                  indicatorColor: Colors.transparent,
+                  destinations: [
                     NavigationDestination(
-                        icon: Icon(Icons.health_and_safety_outlined),
-                        label: '検診'),
+                      icon: Assets.images.bottomNavBar.home.image(
+                        scale: 20.0,
+                      ),
+                      selectedIcon: Assets.images.bottomNavBar.home.image(
+                        scale: 16.0,
+                        color: ColorName.mainColor,
+                      ),
+                      label: 'ホーム',
+                    ),
                     NavigationDestination(
-                        icon: Icon(Icons.chat), label: 'チャット'),
+                      icon: Assets.images.bottomNavBar.healthCheckup.image(
+                        scale: 20.0,
+                      ),
+                      selectedIcon:
+                          Assets.images.bottomNavBar.healthCheckup.image(
+                        scale: 16.0,
+                        color: ColorName.mainColor,
+                      ),
+                      label: '検診',
+                    ),
                     NavigationDestination(
-                        icon: Icon(Icons.person), label: 'プロフィール'),
+                      icon: Assets.images.bottomNavBar.chat.image(
+                        scale: 20.0,
+                      ),
+                      selectedIcon: Assets.images.bottomNavBar.chat.image(
+                        scale: 16.0,
+                        color: ColorName.mainColor,
+                      ),
+                      label: 'チャット',
+                    ),
+                    NavigationDestination(
+                      icon: Assets.images.bottomNavBar.profile.image(
+                        scale: 20.0,
+                      ),
+                      selectedIcon: Assets.images.bottomNavBar.profile.image(
+                        scale: 16.0,
+                        color: ColorName.mainColor,
+                      ),
+                      label: 'プロフィール',
+                    ),
                   ],
                   onDestinationSelected: (index) {
                     controller.goBranch(index);

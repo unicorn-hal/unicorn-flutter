@@ -88,6 +88,7 @@ flutter:
     - .env.release
     - assets/images/
     - assets/images/icons/
+    - assets/images/bottom_nav_bar/
     - assets/sounds/
 
   fonts:
