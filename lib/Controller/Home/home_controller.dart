@@ -36,25 +36,6 @@ class HomeController extends ControllerCore {
   HomeController(this.context);
   BuildContext context;
 
-  // todo: 仮データ
-  final List<Map<String, dynamic>> _boardList = [
-    {
-      'title': 'タイトル1',
-      'content': '内容1',
-      'imageUrl': 'https://picsum.photos/200/300',
-    },
-    {
-      'title': 'タイトル2',
-      'content': '内容2',
-      'imageUrl': 'https://picsum.photos/200/300',
-    },
-    {
-      'title': 'タイトル3',
-      'content': '内容3',
-      'imageUrl': 'https://picsum.photos/200/300',
-    },
-  ];
-
   final List<Color> _colors = [
     Colors.red,
     Colors.blue,
@@ -76,8 +57,6 @@ class HomeController extends ControllerCore {
   void initialize() async {
     _callReservationsListener();
   }
-
-  List<Map<String, dynamic>> get boardList => _boardList;
 
   /// 通話待機中の予約情報を取得
   void _callReservationsListener() {
