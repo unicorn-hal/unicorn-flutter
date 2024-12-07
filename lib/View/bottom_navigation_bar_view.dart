@@ -90,7 +90,6 @@ class _BottomNavigationBarViewState extends State<BottomNavigationBarView>
                   backgroundColor: Colors.white,
                   surfaceTintColor: Colors.white,
                   elevation: 4.0,
-                  shadowColor: Colors.amber,
                   indicatorColor: Colors.transparent,
                   destinations: [
                     NavigationDestination(
