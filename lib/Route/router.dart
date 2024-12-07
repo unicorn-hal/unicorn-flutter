@@ -30,6 +30,7 @@ import 'package:unicorn_flutter/View/HealthCheckup/health_checkup_top_view.dart'
 import 'package:unicorn_flutter/View/Home/home_view.dart';
 import 'package:unicorn_flutter/View/Component/Pages/Register/register_address_info_view.dart';
 import 'package:unicorn_flutter/View/Profile/AppInformation/license_view.dart';
+import 'package:unicorn_flutter/View/Profile/CallReservation/call_reservation_view.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/chronic_disease_view.dart';
 import 'package:unicorn_flutter/View/Profile/ChronicDisease/disease_search_view.dart';
 import 'package:unicorn_flutter/View/Profile/FamilyEmail/family_email_register_view.dart';
@@ -164,6 +165,12 @@ final routerProvider = Provider(
         ),
         TypedGoRoute<ProfileChronicDiseaseSearchRoute>(
           path: Routes.profileChronicDiseaseSearch,
+        ),
+        TypedGoRoute<ProfileCallReservationRoute>(
+          path: Routes.profileCallReservation,
+        ),
+        TypedGoRoute<ProfileCallReservationDoctorTextChatRoute>(
+          path: Routes.profileCallReservationDoctorTextChat,
         ),
       ],
     ),
@@ -650,6 +657,24 @@ class ProfileChronicDiseaseSearchRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) => DiseaseSearchView(
         chronicDiseaseList: $extra,
+      );
+}
+
+class ProfileCallReservationRoute extends GoRouteData {
+  const ProfileCallReservationRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const CallReservationView();
+}
+
+class ProfileCallReservationDoctorTextChatRoute extends GoRouteData {
+  const ProfileCallReservationDoctorTextChatRoute(this.$extra);
+  final Doctor $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => DoctorTextChatView(
+        doctor: $extra,
       );
 }
 //////////////////////////////  profile  //////////////////////////////

@@ -101,6 +101,10 @@ class ProfileTopController extends ControllerCore {
               .launchUrl('https://forms.gle/YhZ2TMW3iXbAx4Vx5');
         },
       ),
+      ProfileDetail(
+          title: '通話予約',
+          icon: Icons.call,
+          onTap: () => const ProfileCallReservationRoute().push(context)),
     ];
   }
 
