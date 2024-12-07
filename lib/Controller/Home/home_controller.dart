@@ -185,11 +185,7 @@ class HomeController extends ControllerCore {
       return cache.data;
     }
 
-    final res = await _hospitalApi.getHospitalNews();
-    if (res == null) {
-      return null;
-    }
-    return res;
+    return await _hospitalApi.getHospitalNews();
   }
 
   /// URLを開く
