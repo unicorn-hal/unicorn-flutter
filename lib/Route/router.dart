@@ -166,6 +166,9 @@ final routerProvider = Provider(
         TypedGoRoute<ProfileChronicDiseaseSearchRoute>(
           path: Routes.profileChronicDiseaseSearch,
         ),
+        TypedGoRoute<ProfileChronicDiseaseAiTextChatRoute>(
+          path: Routes.profileChronicDiseaseAiTextChat,
+        ),
         TypedGoRoute<ProfileCallReservationRoute>(
           path: Routes.profileCallReservation,
         ),
@@ -658,6 +661,14 @@ class ProfileChronicDiseaseSearchRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => DiseaseSearchView(
         chronicDiseaseList: $extra,
       );
+}
+
+class ProfileChronicDiseaseAiTextChatRoute extends GoRouteData {
+  const ProfileChronicDiseaseAiTextChatRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const AiTextChatView();
 }
 
 class ProfileCallReservationRoute extends GoRouteData {
