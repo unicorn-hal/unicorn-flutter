@@ -103,4 +103,7 @@ class Strings {
 
   // 有効な郵便番号が入力されていない際に表示するテキスト
   static const String POSTAL_CODE_VALIDATE_TEXT = '郵便番号が正しく入力されていません';
+
+  // 生体認証が端末で利用できない際に表示するテキスト
+  static const String LOCAL_AUTH_NOT_AVAILABLE_TEXT = 'この端末では生体認証は利用できません';
 }

@@ -10,6 +10,7 @@ import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_request.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
+import 'package:unicorn_flutter/Service/Package/LocalAuth/local_auth_service.dart';
 import 'package:unicorn_flutter/Service/Package/UrlLauncher/url_launcher_service.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
@@ -17,6 +18,7 @@ class ProfileTopController extends ControllerCore {
   /// Serviceのインスタンス化
   UserApi get _userApi => UserApi();
   UrlLauncherService get _urlLauncherService => UrlLauncherService();
+  LocalAuthService get _localAuthService => LocalAuthService();
 
   /// コンストラクタ
   ProfileTopController(
@@ -46,7 +48,15 @@ class ProfileTopController extends ControllerCore {
       ProfileDetail(
           title: 'セキュリティ',
           icon: Icons.lock,
-          onTap: () => const ProfileLocalAuthRoute().push(context)),
+          onTap: () async {
+            if (await _localAuthService.getLocalAuthStatus() ==
+                LocalAuthStatus.failed) {
+              Fluttertoast.showToast(
+                  msg: Strings.LOCAL_AUTH_NOT_AVAILABLE_TEXT);
+              return;
+            }
+            const ProfileLocalAuthRoute().push(context);
+          }),
       ProfileDetail(
           title: 'おくすり',
           icon: Icons.medical_services,
