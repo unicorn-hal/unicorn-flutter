@@ -75,16 +75,17 @@ class ChatTopView extends StatelessWidget {
                 ChatData chatData = ref.watch(chatDataProvider);
                 if (chatData.data.isEmpty) {
                   // チャット履歴がない場合は履歴がありませんを表示
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 16.0,
-                    ),
-                    child: SizedBox(
-                      width: size.width * 0.9,
-                      height: 400,
-                      child: const Center(
-                        child: CustomText(
-                          text: 'やりとりした先生がいません',
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 16.0,
+                      ),
+                      child: SizedBox(
+                        width: size.width * 0.9,
+                        child: const Center(
+                          child: CustomText(
+                            text: 'やりとりした先生がいません',
+                          ),
                         ),
                       ),
                     ),
