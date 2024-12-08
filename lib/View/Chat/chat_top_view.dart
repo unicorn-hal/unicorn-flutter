@@ -6,6 +6,7 @@ import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
+import 'package:unicorn_flutter/View/Component/Parts/image_banner.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_info_tile.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
@@ -27,29 +28,12 @@ class ChatTopView extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: () {
-                    // AIチャット画面へ遷移
-                    const ChatAiTextChatRoute().push(context);
-                  },
-                  child: Container(
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: ColorName.shadowGray,
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ]),
-                    child: Assets.images.banner.aiTextChatBanner.image(),
-                  ),
-                ),
+              ImageBanner(
+                image: Assets.images.banner.aiTextChatBanner.image(),
+                onTap: () {
+                  // AIチャット画面へ遷移
+                  const ChatAiTextChatRoute().push(context);
+                },
               ),
 
               const SpacerAndDivider(
