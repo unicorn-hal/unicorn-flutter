@@ -233,7 +233,9 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                   child: FittedBox(
                     fit: BoxFit.cover,
                     child: CustomDrumRoll(
-                      maxDate: DateTime.now(),
+                      maxDate: DateTime.now().subtract(
+                        const Duration(days: 1),
+                      ),
                       minDate: DateTime(1900, 1, 1),
                       initValue: _controller.birthDate,
                       drumRollType: DrumRollType.date,

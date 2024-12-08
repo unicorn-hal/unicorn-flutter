@@ -40,7 +40,7 @@ class RegisterPhysicalInfoController extends ControllerCore {
   /// initialize()
   @override
   void initialize() {
-    _birthDate = DateTime.now();
+    _birthDate = DateTime.now().subtract(const Duration(days: 1));
     _setDefaultValue();
   }
 
