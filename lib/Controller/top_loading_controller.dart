@@ -23,6 +23,7 @@ import 'package:unicorn_flutter/Service/Api/AppConfig/app_config_api.dart';
 import 'package:unicorn_flutter/Service/Api/Chat/chat_api.dart';
 import 'package:unicorn_flutter/Service/Api/Department/department_api.dart';
 import 'package:unicorn_flutter/Service/Api/Medicine/medicine_api.dart';
+import 'package:unicorn_flutter/Service/Api/PrimaryDoctor/primary_doctor_api.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_service.dart';
 import 'package:unicorn_flutter/Service/Firebase/CloudMessaging/cloud_messaging_service.dart';
@@ -32,6 +33,8 @@ import 'package:unicorn_flutter/Service/Package/LocalAuth/local_auth_service.dar
 import 'package:unicorn_flutter/Service/Package/SharedPreferences/shared_preferences_service.dart';
 import 'package:unicorn_flutter/Service/Package/SystemInfo/system_info_service.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
+
+import '../Model/Entity/Doctor/doctor.dart';
 
 class TopLoadingController extends ControllerCore {
   SharedPreferencesService get _sharedPreferencesService =>
@@ -48,6 +51,7 @@ class TopLoadingController extends ControllerCore {
   DepartmentApi get _departmentApi => DepartmentApi();
   MedicineApi get _medicineApi => MedicineApi();
   LocalAuthService get _localAuthService => LocalAuthService();
+  PrimaryDoctorApi get _primaryDoctorApi => PrimaryDoctorApi();
 
   BuildContext context;
   TopLoadingController(this.context);
@@ -154,6 +158,12 @@ class TopLoadingController extends ControllerCore {
       ChatData().setChat(chatList);
       Log.echo('Chat: ${chatList.map((e) => e.toJson()).toList()}');
     }
+
+    // 主治医情報を取得してデータクラスに保存
+    final List<Doctor> primaryDoctorList =
+        await _primaryDoctorApi.getPrimaryDoctorList() ?? [];
+
+    print(primaryDoctorList.map((e) => e.toJson()).toList());
 
     if (user == null) {
       // 初回起動時の処理

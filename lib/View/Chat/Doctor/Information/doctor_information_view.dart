@@ -25,6 +25,22 @@ class DoctorInformationView extends StatelessWidget {
         DoctorInformationController(doctorId);
     final Size size = MediaQuery.of(context).size;
     return CustomScaffold(
+      actions: [
+        GestureDetector(
+          onTap: () async {
+            await controller.postPrimaryDoctor();
+          },
+          child: const Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 8.0,
+            ),
+            child: CustomText(
+              text: '主治医登録をする',
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
       isScrollable: true,
       body: FutureBuilder<Doctor?>(
         future: controller.exist
