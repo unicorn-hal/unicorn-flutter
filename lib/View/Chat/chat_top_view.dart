@@ -6,6 +6,7 @@ import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
+import 'package:unicorn_flutter/View/Component/Parts/image_banner.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_info_tile.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
@@ -27,29 +28,12 @@ class ChatTopView extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: GestureDetector(
-                  onTap: () {
-                    // AIチャット画面へ遷移
-                    const ChatAiTextChatRoute().push(context);
-                  },
-                  child: Container(
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: ColorName.shadowGray,
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
-                          ),
-                        ]),
-                    child: Assets.images.banner.aiTextChatBanner.image(),
-                  ),
-                ),
+              ImageBanner(
+                image: Assets.images.banner.aiTextChatBanner.image(),
+                onTap: () {
+                  // AIチャット画面へ遷移
+                  const ChatAiTextChatRoute().push(context);
+                },
               ),
 
               const SpacerAndDivider(
@@ -71,33 +55,33 @@ class ChatTopView extends StatelessWidget {
                   ),
                 ),
               ),
-              Consumer(builder: (context, ref, _) {
-                ChatData chatData = ref.watch(chatDataProvider);
-                if (chatData.data.isEmpty) {
-                  // チャット履歴がない場合は履歴がありませんを表示
-                  return Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 16.0,
-                      ),
-                      child: SizedBox(
-                        width: size.width * 0.9,
-                        child: const Center(
-                          child: CustomText(
-                            text: 'やりとりした先生がいません',
+              Consumer(
+                builder: (context, ref, _) {
+                  ChatData chatData = ref.watch(chatDataProvider);
+                  if (chatData.data.isEmpty) {
+                    // チャット履歴がない場合は履歴がありませんを表示
+                    return Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 16.0,
+                        ),
+                        child: SizedBox(
+                          width: size.width * 0.9,
+                          child: const Center(
+                            child: CustomText(
+                              text: 'やりとりした先生がいません',
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                }
-                // チャット履歴がある場合はリスト表示
-                return Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 4.0,
-                    ),
-                    child: SizedBox(
+                    );
+                  }
+                  // チャット履歴がある場合はリスト表示
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0,
+                      ),
                       child: Column(
                         children: [
                           Expanded(
@@ -133,54 +117,55 @@ class ChatTopView extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ),
-                );
-              }),
+                  );
+                },
+              ),
             ],
           ),
         ),
 
         /// 医師を探すボタン
         Positioned(
-            bottom: 20,
-            right: 20,
-            child: GestureDetector(
-              onTap: () {
-                // 医師検索画面へ遷移
-                ChatDoctorSearchRoute().push(context);
-              },
-              child: Container(
-                width: 160,
-                height: 50,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: ColorName.shadowGray,
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                  color: ColorName.mainColor,
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.search,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                    CustomText(
-                      text: '医師を探す',
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
-                  ],
-                ),
+          bottom: 20,
+          right: 20,
+          child: GestureDetector(
+            onTap: () {
+              // 医師検索画面へ遷移
+              ChatDoctorSearchRoute().push(context);
+            },
+            child: Container(
+              width: 160,
+              height: 50,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(30)),
+                boxShadow: [
+                  BoxShadow(
+                    color: ColorName.shadowGray,
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+                color: ColorName.mainColor,
               ),
-            )),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.search,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                  CustomText(
+                    text: '医師を探す',
+                    color: Colors.white,
+                    fontSize: 14,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

@@ -100,7 +100,6 @@ class DiseaseSearchController extends ControllerCore {
       for (int i = 0; i < _famousDiseaseList!.length; i++) {
         _registrationCheck.add(false);
       }
-      ProtectorNotifier().disableProtector();
       return _famousDiseaseList;
     }
 

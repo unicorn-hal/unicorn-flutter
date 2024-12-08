@@ -8,9 +8,11 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
-import 'package:unicorn_flutter/View/Component/Parts/ai_announce_banner.dart';
+import 'package:unicorn_flutter/View/Component/Parts/image_banner.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
+import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class ChronicDiseaseView extends StatefulWidget {
@@ -31,213 +33,203 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
+    double deviceHeight = MediaQuery.of(context).size.height;
     return CustomScaffold(
-      isScrollable: true,
       body: SizedBox(
-        width: deviceWidth,
-        child: FutureBuilder<List<ChronicDisease>?>(
-          future: controller.getChronicDiseaseList(),
-          builder: (context, AsyncSnapshot<List<ChronicDisease>?> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10,
-                    ),
-                    child: SizedBox(
-                      width: deviceWidth * 0.9,
-                      height: 48,
-                      child: const Align(
-                        alignment: Alignment.centerLeft,
-                        child: CustomText(text: '体のお悩み'),
-                      ),
-                    ),
-                  ),
-                  AiAnnounceBanner(
-                    title: Strings.AI_BANNER_TITLE_ASK,
-                    description: Strings.AI_BANNER_DESCRIPTION_ASK,
-                    bannerColor: ColorName.shadowGray,
-                    imageBackgroundColor: ColorName.mainColor,
-                    onTap: () {
-                      const ChatAiTextChatRoute().push(context);
-                      // todo: 後で引数とか入れるかも
-                    },
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 100),
-                    child: CustomLoadingAnimation(
-                      text: Strings.LOADING_TEXT,
-                      iconColor: Colors.grey,
-                      textColor: Colors.grey,
-                    ),
-                  ),
-                ],
-              );
-            }
-            if (!snapshot.hasData) {
-              // todo: エラー時の処理
-              return const CustomText(text: 'エラーやん');
-            }
-            List<ChronicDisease> chronicDiseaseList = snapshot.data!;
-            if (chronicDiseaseList.isEmpty) {
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10,
-                    ),
-                    child: SizedBox(
-                      width: deviceWidth * 0.9,
-                      height: 48,
-                      child: const Align(
-                        alignment: Alignment.centerLeft,
-                        child: CustomText(text: '体のお悩み'),
-                      ),
-                    ),
-                  ),
-                  AiAnnounceBanner(
-                    title: Strings.AI_BANNER_TITLE_ASK,
-                    description: Strings.AI_BANNER_DESCRIPTION_ASK,
-                    bannerColor: ColorName.shadowGray,
-                    imageBackgroundColor: ColorName.mainColor,
-                    onTap: () {
-                      const ChatAiTextChatRoute().push(context);
-                      // todo: 後で引数とか入れるかも
-                    },
-                  ),
-                  SizedBox(
-                    width: deviceWidth * 0.9,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: GestureDetector(
-                        onTap: () {
-                          const ProfileChronicDiseaseSearchRoute()
-                              .push(context)
-                              .then((value) => setState(() {}));
-                        },
-                        child: DottedBorder(
-                          dashPattern: const [15, 10],
-                          borderType: BorderType.RRect,
-                          radius: const Radius.circular(20),
-                          child: SizedBox(
+        height: deviceHeight,
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            ImageBanner(
+              image: Assets.images.banner.aiTextChatBanner.image(),
+              onTap: () {
+                // AIチャット画面へ遷移
+                const ProfileChronicDiseaseAiTextChatRoute().push(context);
+              },
+            ),
+            const SpacerAndDivider(
+              topHeight: 10,
+              bottomHeight: 10,
+            ),
+            Expanded(
+              child: SizedBox(
+                width: deviceWidth,
+                child: FutureBuilder<List<ChronicDisease>?>(
+                  future: controller.getChronicDiseaseList(),
+                  builder:
+                      (context, AsyncSnapshot<List<ChronicDisease>?> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Column(
+                        children: [
+                          SizedBox(
                             width: deviceWidth * 0.9,
-                            height: 200,
-                            child: const Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.add,
-                                  color: Colors.grey,
-                                  size: 22,
-                                ),
-                                CustomText(
-                                  text: 'お悩みを登録する',
-                                  color: ColorName.textGray,
-                                  fontSize: 14,
-                                )
-                              ],
+                            height: 48,
+                            child: const Align(
+                              alignment: Alignment.centerLeft,
+                              child: CustomText(text: '体のお悩み'),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            }
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 10,
-                  ),
-                  child: SizedBox(
-                    width: deviceWidth * 0.9,
-                    height: 48,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                          const Padding(
+                            padding: EdgeInsets.only(top: 100),
+                            child: CustomLoadingAnimation(
+                              text: Strings.LOADING_TEXT,
+                              iconColor: Colors.grey,
+                              textColor: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    if (!snapshot.hasData) {
+                      // todo: エラー時の処理
+                      return const CustomText(text: 'エラーやん');
+                    }
+                    List<ChronicDisease> chronicDiseaseList = snapshot.data!;
+                    if (chronicDiseaseList.isEmpty) {
+                      return Column(
+                        children: [
+                          SizedBox(
+                            width: deviceWidth * 0.9,
+                            height: 48,
+                            child: const Align(
+                              alignment: Alignment.centerLeft,
+                              child: CustomText(text: '体のお悩み'),
+                            ),
+                          ),
+                          SizedBox(
+                            width: deviceWidth * 0.9,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: GestureDetector(
+                                onTap: () {
+                                  const ProfileChronicDiseaseSearchRoute()
+                                      .push(context)
+                                      .then((value) => setState(() {}));
+                                },
+                                child: DottedBorder(
+                                  dashPattern: const [15, 10],
+                                  borderType: BorderType.RRect,
+                                  radius: const Radius.circular(20),
+                                  child: SizedBox(
+                                    width: deviceWidth * 0.9,
+                                    height: 200,
+                                    child: const Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.add,
+                                          color: Colors.grey,
+                                          size: 22,
+                                        ),
+                                        CustomText(
+                                          text: 'お悩みを登録する',
+                                          color: ColorName.textGray,
+                                          fontSize: 14,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    return Column(
                       children: [
-                        const CustomText(text: '体のお悩み'),
-                        IconButton(
-                          onPressed: () {
-                            ProfileChronicDiseaseSearchRoute(
-                              $extra: chronicDiseaseList,
-                            ).push(context).then((value) => setState(() {}));
-                          },
-                          icon: const Icon(
-                            Icons.add,
-                            color: Colors.blue,
+                        SizedBox(
+                          width: deviceWidth * 0.9,
+                          height: 48,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const CustomText(text: '体のお悩み'),
+                              IconButton(
+                                onPressed: () {
+                                  ProfileChronicDiseaseSearchRoute(
+                                    $extra: chronicDiseaseList,
+                                  )
+                                      .push(context)
+                                      .then((value) => setState(() {}));
+                                },
+                                icon: const Icon(
+                                  Icons.add,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: SizedBox(
+                            width: deviceWidth * 0.9,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: chronicDiseaseList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 5,
+                                  ),
+                                  child: CommonItemTile(
+                                    title:
+                                        chronicDiseaseList[index].diseaseName,
+                                    tileHeight: 60,
+                                    boxDecoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 1,
+                                        color: Colors.grey,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    action: IconButton(
+                                      onPressed: () {
+                                        showDialog<void>(
+                                          context: context,
+                                          builder: (_) {
+                                            return CustomDialog(
+                                              title:
+                                                  Strings.DIALOG_TITLE_CAVEAT,
+                                              bodyText: Strings
+                                                  .DIALOG_BODY_TEXT_DELETE,
+                                              rightButtonOnTap: () async {
+                                                ProtectorNotifier()
+                                                    .enableProtector();
+                                                await controller
+                                                    .deleteChronicDisease(
+                                                        chronicDiseaseList[
+                                                                index]
+                                                            .chronicDiseaseId);
+                                                ProtectorNotifier()
+                                                    .disableProtector();
+                                                setState(() {});
+                                              },
+                                            );
+                                          },
+                                        );
+                                      },
+                                      icon: const Icon(
+                                        Icons.delete_outline,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ],
-                    ),
-                  ),
-                ),
-                AiAnnounceBanner(
-                  title: Strings.AI_BANNER_TITLE_ASK,
-                  description: Strings.AI_BANNER_DESCRIPTION_ASK,
-                  bannerColor: ColorName.shadowGray,
-                  imageBackgroundColor: ColorName.mainColor,
-                  onTap: () {
-                    const ChatAiTextChatRoute().push(context);
-                    // todo: 後で引数とか入れるかも
+                    );
                   },
                 ),
-                SizedBox(
-                  width: deviceWidth * 0.9,
-                  child: ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: chronicDiseaseList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 5,
-                        ),
-                        child: CommonItemTile(
-                          title: chronicDiseaseList[index].diseaseName,
-                          tileHeight: 60,
-                          boxDecoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.grey,
-                            ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          action: IconButton(
-                            onPressed: () {
-                              showDialog<void>(
-                                context: context,
-                                builder: (_) {
-                                  return CustomDialog(
-                                    title: Strings.DIALOG_TITLE_CAVEAT,
-                                    bodyText: Strings.DIALOG_BODY_TEXT_DELETE,
-                                    rightButtonOnTap: () async {
-                                      ProtectorNotifier().enableProtector();
-                                      await controller.deleteChronicDisease(
-                                          chronicDiseaseList[index]
-                                              .chronicDiseaseId);
-                                      ProtectorNotifier().disableProtector();
-                                      setState(() {});
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.delete_outline,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            );
-          },
+              ),
+            ),
+          ],
         ),
       ),
     );
