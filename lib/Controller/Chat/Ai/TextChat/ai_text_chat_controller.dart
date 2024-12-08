@@ -52,7 +52,7 @@ class AiTextChatController extends ControllerCore {
                     ${AppDataConstant.appDescription}
 
                     # ユーザーの情報を以下に記載します
-                    名前: ${_user.firstName + _user.lastName}
+                    名前: ${_user.lastName + _user.firstName}
                     生年月日: ${_user.birthDate}
                     身長: ${_user.bodyHeight}
                     体重: ${_user.bodyWeight}
