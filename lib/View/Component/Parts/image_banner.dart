@@ -5,17 +5,17 @@ class ImageBanner extends StatelessWidget {
   const ImageBanner({
     super.key,
     required this.image,
-    required this.onTap,
+    this.onTap,
   });
   final Image image;
-  final Function onTap;
+  final Function? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: () => onTap.call(),
+        onTap: () => onTap?.call(),
         child: Container(
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
