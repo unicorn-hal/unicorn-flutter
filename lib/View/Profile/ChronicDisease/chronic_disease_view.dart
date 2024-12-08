@@ -46,7 +46,7 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
               image: Assets.images.banner.aiTextChatBanner.image(),
               onTap: () {
                 // AIチャット画面へ遷移
-                const ChatAiTextChatRoute().push(context);
+                const ProfileChronicDiseaseAiTextChatRoute().push(context);
               },
             ),
             const SpacerAndDivider(
