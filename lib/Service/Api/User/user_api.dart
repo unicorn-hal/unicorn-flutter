@@ -71,7 +71,7 @@ class UserApi extends ApiCore with Endpoint {
     }
   }
 
-  /// GTE
+  /// GET
   /// 通話予約取得
   /// [userId] ユーザーID
   Future<List<CallReservation>?> getUserCallReservation({
