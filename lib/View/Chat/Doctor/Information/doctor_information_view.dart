@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/Information/doctor_information_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Route/router.dart';
@@ -26,20 +27,28 @@ class DoctorInformationView extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     return CustomScaffold(
       actions: [
-        GestureDetector(
-          onTap: () async {
-            await controller.postPrimaryDoctor();
-          },
-          child: const Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 8.0,
-            ),
-            child: CustomText(
-              text: '主治医登録をする',
-              color: Colors.white,
-            ),
-          ),
-        ),
+        ValueListenableBuilder(
+            valueListenable: controller.primary,
+            builder: (context, value, child) {
+              return GestureDetector(
+                onTap: () async {
+                  if (value) {
+                    await controller.deletePrimaryDoctors();
+                  } else {
+                    await controller.postPrimaryDoctors();
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                  ),
+                  child: CustomText(
+                    text: value ? '主治医登録を解除' : '主治医登録する',
+                    color: Colors.white,
+                  ),
+                ),
+              );
+            }),
       ],
       isScrollable: true,
       body: FutureBuilder<Doctor?>(

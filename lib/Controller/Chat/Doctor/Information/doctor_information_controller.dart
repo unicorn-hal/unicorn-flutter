@@ -1,7 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Model/Cache/Doctor/Information/doctor_information_cache.dart';
+import 'package:unicorn_flutter/Model/Cache/Doctor/PrimaryDoctors/primary_doctors_cache.dart';
 import 'package:unicorn_flutter/Model/Entity/PrimaryDoctor/primary_doctors_request.dart';
 import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
 import 'package:unicorn_flutter/Service/Api/PrimaryDoctor/primary_doctor_api.dart';
+import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 import '../../../../Model/Entity/Doctor/doctor.dart';
 import '../../../Core/controller_core.dart';
@@ -16,14 +22,17 @@ class DoctorInformationController extends ControllerCore {
   late List<Doctor>? _doctorInformationCache;
   final String _doctorId;
   late bool _exist;
+  late ValueNotifier<bool> _primary;
 
   @override
   void initialize() {
     _doctorInformationCache = DoctorInformationCache().data;
     _exist = _checkExist();
+    _primary = ValueNotifier(isPrimaryDoctor());
   }
 
   bool get exist => _exist;
+  ValueNotifier<bool> get primary => _primary;
 
   // キャッシュしたデータの中に指定したIDの医師情報があるかを確認
   bool _checkExist() {
@@ -33,6 +42,7 @@ class DoctorInformationController extends ControllerCore {
 
   // APIで医師情報を取得
   Future<Doctor?> getDoctor() async {
+    await cacheDoctorList();
     final Doctor? doctor = await _doctorApi.getDoctor(doctorId: _doctorId);
     return doctor;
   }
@@ -44,10 +54,59 @@ class DoctorInformationController extends ControllerCore {
     });
   }
 
+  /// 主治医として登録されているリストをキャッシュに保存
+  Future<void> cacheDoctorList() async {
+    if (PrimaryDoctorsCache().data == null) {
+      await _primaryDoctorApi.getPrimaryDoctorList();
+      print('主治医リスト取得完了 ${PrimaryDoctorsCache().data}');
+    }
+  }
+
   /// 主治医として登録
-  Future<void> postPrimaryDoctor() async {
-    PrimaryDoctorsRequest body = PrimaryDoctorsRequest(doctorIds: [_doctorId]);
+  Future<void> postPrimaryDoctors() async {
+    // キャッシュに保存されている主治医リストを取得
+    List<String> doctorIds = PrimaryDoctorsCache().data!;
+    // 新たに主治医として登録する医師IDを追加
+    doctorIds.add(_doctorId);
+    // 主治医登録APIを実行
+    ProtectorNotifier().enableProtector();
+    PrimaryDoctorsRequest body = PrimaryDoctorsRequest(doctorIds: doctorIds);
     final int response = await _primaryDoctorApi.postPrimaryDoctors(body: body);
-    print(response);
+    ProtectorNotifier().disableProtector();
+
+    if (response != 200) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+    }
+    print('主治医登録完了 ${PrimaryDoctorsCache().data}');
+
+    _primary.value = isPrimaryDoctor();
+  }
+
+  /// 主治医登録を解除
+  Future<void> deletePrimaryDoctors() async {
+    // キャッシュに保存されている主治医リストを取得
+    List<String> doctorIds = PrimaryDoctorsCache().data!;
+    // 主治医として登録されている医師IDを削除
+    doctorIds.remove(_doctorId);
+    // 主治医登録解除APIを実行
+    ProtectorNotifier().enableProtector();
+    PrimaryDoctorsRequest body = PrimaryDoctorsRequest(doctorIds: doctorIds);
+    final int response = await _primaryDoctorApi.postPrimaryDoctors(body: body);
+    ProtectorNotifier().disableProtector();
+
+    if (response != 200) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+    }
+    print('主治医登録解除完了 ${PrimaryDoctorsCache().data}');
+
+    _primary.value = isPrimaryDoctor();
+  }
+
+  bool isPrimaryDoctor() {
+    print('主 ${PrimaryDoctorsCache().data}');
+    if (PrimaryDoctorsCache().data == null) {
+      return false;
+    }
+    return PrimaryDoctorsCache().data!.contains(_doctorId);
   }
 }

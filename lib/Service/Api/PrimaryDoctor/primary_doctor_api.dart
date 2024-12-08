@@ -1,3 +1,4 @@
+import 'package:unicorn_flutter/Model/Cache/Doctor/PrimaryDoctors/primary_doctors_cache.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Model/Entity/PrimaryDoctor/primary_doctors_request.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
@@ -11,9 +12,12 @@ class PrimaryDoctorApi extends ApiCore with Endpoint {
   Future<List<Doctor>?> getPrimaryDoctorList() async {
     try {
       final response = await get();
-      return (response.data['data'] as List)
+      List<Doctor> doctors = (response.data['data'] as List)
           .map((e) => Doctor.fromJson(e))
           .toList();
+      List<String> doctorIds = doctors.map((e) => e.doctorId).toList();
+      PrimaryDoctorsCache().setData(doctorIds);
+      return doctors;
     } catch (e) {
       return null;
     }
@@ -24,6 +28,9 @@ class PrimaryDoctorApi extends ApiCore with Endpoint {
   Future<int> postPrimaryDoctors({required PrimaryDoctorsRequest body}) async {
     try {
       final response = await post(body.toJson());
+      if (response.statusCode == 200) {
+        PrimaryDoctorsCache().setData(body.doctorIds);
+      }
       return response.statusCode;
     } catch (e) {
       return 500;
