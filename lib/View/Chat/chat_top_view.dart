@@ -5,6 +5,7 @@ import 'package:unicorn_flutter/Model/Chat/chat_data.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_info_tile.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
@@ -49,6 +50,11 @@ class ChatTopView extends StatelessWidget {
                     child: Assets.images.banner.aiTextChatBanner.image(),
                   ),
                 ),
+              ),
+
+              const SpacerAndDivider(
+                topHeight: 10,
+                bottomHeight: 10,
               ),
 
               /// やりとり履歴表示部
