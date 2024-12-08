@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Chat/chat_top_controller.dart';
 import 'package:unicorn_flutter/Model/Chat/chat_data.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
-import 'package:unicorn_flutter/View/Component/Parts/ai_announce_banner.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_info_tile.dart';
+import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class ChatTopView extends StatelessWidget {
@@ -26,36 +25,25 @@ class ChatTopView extends StatelessWidget {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              /// AIアナウンスバナー表示部
-              const Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 8.0,
-                  horizontal: 16.0,
-                ),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: CustomText(
-                    text: 'AIチャット',
-                    fontSize: 18,
-                  ),
-                ),
+              const SizedBox(
+                height: 10,
               ),
+
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 8.0,
-                ),
-                child: SizedBox(
-                  width: size.width * 0.9,
-                  child: AiAnnounceBanner(
-                    title: Strings.AI_BANNER_TITLE_HEALTHCHECK,
-                    description: Strings.AI_BANNER_DESCRIPTION_HEALTHCHECK,
-                    bannerColor: ColorName.shadowGray,
-                    imageBackgroundColor: ColorName.mainColor,
-                    onTap: () {
-                      // todo: AIチャット画面へ遷移
-                      ChatAiTextChatRoute().push(context);
-                    },
-                  ),
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: ColorName.shadowGray,
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 3),
+                        ),
+                      ]),
+                  child: Assets.images.banner.aiTextChatBanner.image(),
                 ),
               ),
 
