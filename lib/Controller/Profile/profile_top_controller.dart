@@ -46,17 +46,17 @@ class ProfileTopController extends ControllerCore {
           icon: Icons.mail,
           onTap: () => const ProfileFamilyEmailRoute().push(context)),
       ProfileDetail(
-          title: 'セキュリティ',
-          icon: Icons.lock,
-          onTap: () async {
-            if (await _localAuthService.getLocalAuthStatus() ==
-                LocalAuthStatus.failed) {
-              Fluttertoast.showToast(
-                  msg: Strings.LOCAL_AUTH_NOT_AVAILABLE_TEXT);
-              return;
-            }
-            const ProfileLocalAuthRoute().push(context);
-          }),
+        title: 'セキュリティ',
+        icon: Icons.lock,
+        onTap: () async {
+          if (await _localAuthService.getLocalAuthStatus() ==
+              LocalAuthStatus.failed) {
+            Fluttertoast.showToast(msg: Strings.LOCAL_AUTH_NOT_AVAILABLE_TEXT);
+            return;
+          }
+          const ProfileLocalAuthRoute().push(context);
+        },
+      ),
       ProfileDetail(
           title: 'おくすり',
           icon: Icons.medical_services,
