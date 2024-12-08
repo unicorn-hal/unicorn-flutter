@@ -1,7 +1,7 @@
 class EmergencyRequest {
   final String userId;
-  final String userLatitude;
-  final String userLongitude;
+  final double userLatitude;
+  final double userLongitude;
 
   EmergencyRequest({
     required this.userId,
