@@ -20,7 +20,6 @@ class ChatTopView extends StatelessWidget {
     return Stack(
       children: [
         CustomScaffold(
-          isScrollable: true,
           body: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -86,33 +85,47 @@ class ChatTopView extends StatelessWidget {
                   );
                 }
                 // チャット履歴がある場合はリスト表示
-                return Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 4.0,
-                  ),
-                  width: size.width,
-                  constraints: const BoxConstraints(
-                    minHeight: 400,
-                  ),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: chatData.data.length,
-                    itemBuilder: (context, index) {
-                      return UserInfoTile(
-                        onTap: () {
-                          // todo: それぞれのチャット画面へ遷移
-                          ChatDoctorInformationRoute(
-                            chatData.data[index].doctor.doctorId,
-                          ).push(context);
-                        },
-                        userName: chatData.data[index].doctor.lastName +
-                            chatData.data[index].doctor.firstName,
-                        description:
-                            '${chatData.data[index].latestMessageText}',
-                        imageUrl: chatData.data[index].doctor.doctorIconUrl,
-                      );
-                    },
+                return Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 4.0,
+                    ),
+                    child: SizedBox(
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: chatData.data.length,
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  children: [
+                                    UserInfoTile(
+                                      onTap: () {
+                                        ChatDoctorInformationRoute(
+                                          chatData.data[index].doctor.doctorId,
+                                        ).push(context);
+                                      },
+                                      userName: chatData
+                                              .data[index].doctor.lastName +
+                                          chatData.data[index].doctor.firstName,
+                                      description:
+                                          '${chatData.data[index].latestMessageText}',
+                                      imageUrl: chatData
+                                          .data[index].doctor.doctorIconUrl,
+                                    ),
+                                    if (index == chatData.data.length - 1)
+                                      const SizedBox(
+                                        height: 60,
+                                      ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 );
               }),
