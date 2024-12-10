@@ -51,24 +51,24 @@ class UnicornStatusType {
     }
   }
 
-  static String toExpressiveString(UnicornStatusEnum value) {
+  static String toLogString(UnicornStatusEnum value) {
     switch (value) {
       case UnicornStatusEnum.request:
-        return 'Unicorn要請中';
+        return 'Unicornを要請しました';
       case UnicornStatusEnum.userWaiting:
         return 'ユーザー待機中';
       case UnicornStatusEnum.dispatch:
-        return 'Unicorn出発';
+        return 'Unicornが出発しました';
       case UnicornStatusEnum.moving:
-        return 'Unicorn移動中';
+        return 'Unicornが移動中です';
       case UnicornStatusEnum.arrival:
-        return 'Unicorn到着';
+        return 'Unicornが到着しました';
       case UnicornStatusEnum.complete:
         return '対応完了';
       case UnicornStatusEnum.failure:
         return '失敗';
       default:
-        return 'Unicorn要請中';
+        return 'Unicornを要請しました';
     }
   }
 }
