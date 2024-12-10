@@ -1,7 +1,7 @@
 import 'package:unicorn_flutter/Constants/Enum/unicorn_status_enum.dart';
 
 class UnicornSupport {
-  final UnicornStatusEnum status;
+  final EmergencyStatusEnum status;
   final String robotId;
   final String robotName;
   final double? robotLatitude;
@@ -17,7 +17,7 @@ class UnicornSupport {
 
   factory UnicornSupport.fromJson(Map<String, dynamic> json) {
     return UnicornSupport(
-      status: UnicornStatusType.fromString(json['status']),
+      status: EmergencyStatusType.fromString(json['status']),
       robotId: json['robotID'],
       robotName: json['robotName'],
       robotLatitude: json['robotLatitude'],
@@ -27,7 +27,7 @@ class UnicornSupport {
 
   Map<String, dynamic> toJson() {
     return {
-      'status': UnicornStatusType.toStringValue(status),
+      'status': EmergencyStatusType.toStringValue(status),
       'robotID': robotId,
       'robotName': robotName,
       'robotLatitude': robotLatitude,
