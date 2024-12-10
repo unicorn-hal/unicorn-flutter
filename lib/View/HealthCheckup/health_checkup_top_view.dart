@@ -9,7 +9,9 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/View/Component/Parts/HealthCheck/health_past_tile.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/View/Component/Parts/health_check_button.dart';
+import 'package:unicorn_flutter/View/Component/Parts/image_banner.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -36,14 +38,7 @@ class HealthCheckupTopView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            /// 今日の検診結果・ボタン表示部
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: CustomText(
-                text: '今日の検診',
-                fontSize: 20,
-              ),
-            ),
+            const HeaderTitle(title: '本日の検診'),
 
             /// 本日の検診記録があるかどうか
             if (todayHealthCheckup != null)
@@ -222,12 +217,11 @@ class HealthCheckupTopView extends StatelessWidget {
               )
             else
               // 本日の検診記録がない場合はへッダー画像を表示
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: AspectRatio(
-                  aspectRatio: 3 / 2,
-                  child: Assets.images.healthCheckupHeader.image(
-                    fit: BoxFit.cover,
+              Center(
+                child: SizedBox(
+                  width: size.width * 0.9,
+                  child: ImageBanner(
+                    image: Assets.images.healthCheckupHeader.image(),
                   ),
                 ),
               ),
@@ -251,49 +245,25 @@ class HealthCheckupTopView extends StatelessWidget {
                         },
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    // AI音声検診ボタン
-                    Stack(
-                      children: [
-                        SizedBox(
-                          height: 80,
-                          child: HealthCheckButton(
-                            onTap: () {
-                              const AiCheckupRoute().push(context);
-                            },
-                            aiCheck: true,
-                          ),
-                        ),
-                        Positioned(
-                          top: 0,
-                          right: 0,
-                          child: SizedBox(
-                            width: 100,
-                            height: 60,
-                            child: Assets.images.healthCheckupMark.image(
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),
             ),
 
+            const HeaderTitle(title: 'AI検診'),
+
+            /// AI検診ボタン
+            ImageBanner(
+              image: Assets.images.banner.aiCheckupBanner.image(),
+              onTap: () {
+                const AiCheckupRoute().push(context);
+              },
+            ),
+
             const SpacerAndDivider(),
 
             ///過去の検診結果表示部
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: CustomText(
-                text: '過去の検診',
-                fontSize: 20,
-              ),
-            ),
+            const HeaderTitle(title: '過去の検診'),
             healthCheckupData.data.isEmpty
                 ? Padding(
                     padding: const EdgeInsets.symmetric(

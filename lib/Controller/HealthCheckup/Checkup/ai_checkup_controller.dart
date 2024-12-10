@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:unicorn_flutter/Constants/Enum/chatgpt_role.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_message.dart';
@@ -10,13 +12,17 @@ import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_response.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/ChatGPT/chatgpt_service.dart';
+import 'package:unicorn_flutter/Service/Package/PermissionHandler/permission_handler_service.dart';
 import 'package:unicorn_flutter/Service/Package/SpeechToText/speech_to_text_service.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import '../../../View/bottom_navigation_bar_view.dart';
 import '../../Core/controller_core.dart';
 
 class AiCheckupController extends ControllerCore {
   final SpeechToTextService _speechToTextService = SpeechToTextService();
   ChatGPTService get _chatGPTService => ChatGPTService();
+  PermissionHandlerService get _permissionHandlerService =>
+      PermissionHandlerService();
 
   // コンストラクタ
   AiCheckupController(this.context);
@@ -29,6 +35,7 @@ class AiCheckupController extends ControllerCore {
   final int _baseHealthPoint = 3;
   bool _isListening = false;
   bool _isDone = false;
+  late bool _isAvailable;
 
   // オーディオを初期化
   final _audioPlayer = AudioPlayer();
@@ -36,11 +43,26 @@ class AiCheckupController extends ControllerCore {
   @override
   void initialize() async {
     _aiText = ValueNotifier<String>(_aiTextDefault);
-    await _speechToTextService.initialize();
+    // 音声認識の初期化
+    _isAvailable = await _speechToTextService.initialize();
+    if (!_isAvailable) {
+      await _showErrorDialog();
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+    }
   }
 
   /// 音声認識を開始
-  void startListening() {
+  Future<void> startListening() async {
+    bool available = await _permissionHandlerService
+        .requestPermission(Permission.microphone);
+
+    if (!available) {
+      Fluttertoast.showToast(msg: 'マイクの使用が許可されていません');
+
+      return;
+    }
+
     if (_isListening) return;
     HapticFeedback.heavyImpact();
     // 音声開始効果音を再生
@@ -155,6 +177,25 @@ class AiCheckupController extends ControllerCore {
       return false;
     }
     return true;
+  }
+
+  ///　マイクの権限が許可されていない場合のエラーダイアログ
+  Future<void> _showErrorDialog() async {
+    await showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return CustomDialog(
+          title: 'エラー',
+          bodyText: 'AI検診を利用するためには「マイク」の許可が必要です。',
+          rightButtonOnTap: () async {
+            await _permissionHandlerService.openAppSettings();
+          },
+          rightButtonText: '端末設定を開く',
+          leftButtonText: '戻る',
+        );
+      },
+    );
   }
 
   // 音声認識中かを取得
