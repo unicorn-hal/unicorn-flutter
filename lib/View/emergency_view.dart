@@ -9,19 +9,34 @@ import 'package:unicorn_flutter/View/Component/Parts/blinking_widget.dart';
 import 'package:unicorn_flutter/View/Component/Parts/google_map_viewer.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-class EmergencyView extends StatelessWidget {
+class EmergencyView extends StatefulWidget {
   const EmergencyView({super.key});
+
+  @override
+  State<EmergencyView> createState() => _EmergencyViewState();
+}
+
+class _EmergencyViewState extends State<EmergencyView> {
+  late EmergencyController controller;
 
   // todo: Controllerから取得する
   final String startPointText = 'ユニコーン病院';
+
   final String destinationPointText = '東京都西新宿1-1-100';
-  final LatLng startPoint = const LatLng(35.681236, 139.767125); // 東京駅
-  final LatLng destinationPoint = const LatLng(35.690921, 139.700258); // 新宿駅
+
+  final LatLng startPoint = const LatLng(35.681236, 139.767125);
+  // 東京駅
+  final LatLng destinationPoint = const LatLng(35.690921, 139.700258);
+  // 新宿駅
+
+  @override
+  void initState() {
+    super.initState();
+    controller = EmergencyController();
+  }
 
   @override
   Widget build(BuildContext context) {
-    EmergencyController controller = EmergencyController();
-
     Size size = MediaQuery.of(context).size;
 
     return CustomScaffold(
@@ -29,14 +44,15 @@ class EmergencyView extends StatelessWidget {
       isScrollable: true,
       body: SafeArea(
         child: SizedBox(
-          height: size.height,
+          width: size.width,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 height: size.height * 0.2,
                 width: size.width * 0.9,
+                margin: const EdgeInsets.symmetric(vertical: 30),
                 decoration: BoxDecoration(
                   color: Colors.red.shade100,
                   border: Border.all(
@@ -45,7 +61,6 @@ class EmergencyView extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                alignment: Alignment.center,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -61,7 +76,7 @@ class EmergencyView extends StatelessWidget {
                         BlinkingWidget(
                           duration: const Duration(milliseconds: 1000),
                           child: CustomText(
-                            text: 'ユニコーンを要請しています',
+                            text: 'Unicornを要請しています',
                             color: Colors.red.shade700,
                             fontSize: 20,
                           ),
@@ -103,24 +118,28 @@ class EmergencyView extends StatelessWidget {
                 valueListenable: controller.supportLog,
                 builder: (context, value, _) {
                   return SizedBox(
-                    height: size.height * 0.2,
                     width: size.width * 0.9,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const CustomText(
                           text: 'サポートログ',
                           fontSize: 16,
                         ),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: value.length,
-                            itemBuilder: (context, index) {
-                              return CustomText(
-                                text: value[index],
-                                fontSize: 12,
-                              );
-                            },
-                          ),
+                        const Divider(),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: value.length,
+                          itemBuilder: (context, index) {
+                            return CustomText(
+                              text: value[index],
+                              fontSize: 12,
+                            );
+                          },
+                        ),
+                        const SizedBox(
+                          height: 30,
                         ),
                       ],
                     ),
@@ -134,10 +153,15 @@ class EmergencyView extends StatelessWidget {
                     return const SizedBox();
                   }
                   return SizedBox(
-                    height: size.height * 0.6,
+                    width: size.width * 0.9,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const CustomText(
+                          text: '地図情報',
+                          fontSize: 16,
+                        ),
+                        const Divider(),
                         SizedBox(
                           width: size.width * 0.9,
                           child: Row(
@@ -145,11 +169,27 @@ class EmergencyView extends StatelessWidget {
                               Icon(
                                 Icons.location_on,
                                 color: Colors.green.shade700,
-                                size: 30,
+                                size: 24,
                               ),
                               CustomText(
                                 text: startPointText,
-                                fontSize: 16,
+                                fontSize: 14,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: size.width * 0.9,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                color: Colors.purpleAccent.shade700,
+                                size: 24,
+                              ),
+                              CustomText(
+                                text: destinationPointText,
+                                fontSize: 14,
                               ),
                             ],
                           ),
@@ -161,11 +201,11 @@ class EmergencyView extends StatelessWidget {
                               Icon(
                                 Icons.location_on,
                                 color: Colors.red.shade700,
-                                size: 30,
+                                size: 24,
                               ),
                               CustomText(
                                 text: destinationPointText,
-                                fontSize: 16,
+                                fontSize: 14,
                               ),
                             ],
                           ),
@@ -186,6 +226,8 @@ class EmergencyView extends StatelessWidget {
                           child: GoogleMapViewer(
                             point: startPoint,
                             destination: destinationPoint,
+                            current:
+                                LatLng(35.68512387081999, 139.74371112483735),
                           ),
                         ),
                       ],
