@@ -48,6 +48,7 @@ class EmergencyController extends ControllerCore {
         _updateSupportLog(_emergencyStatus.value);
       }
     });
+
     await _connectWebSocket();
   }
 
@@ -128,14 +129,15 @@ class EmergencyController extends ControllerCore {
     final UnicornStatusEnum status =
         UnicornStatusType.fromString(json['status']);
     _emergencyStatus.value = status;
-    _updateSupportLog(status);
 
     UnicornSupport? unicornSupport;
+    int? waitingNumber;
     Log.echo('Emergency Status: $status');
     switch (status) {
       case UnicornStatusEnum.request:
         break;
       case UnicornStatusEnum.userWaiting:
+        waitingNumber = json['waitingNumber'];
         break;
       case UnicornStatusEnum.dispatch:
         unicornSupport = UnicornSupport.fromJson(json);
@@ -153,13 +155,17 @@ class EmergencyController extends ControllerCore {
       case UnicornStatusEnum.failure:
         break;
     }
+    _updateSupportLog(status, waitingNumber: waitingNumber);
   }
 
   /// サポートログを更新
   /// [status] 現在の状態
-  void _updateSupportLog(UnicornStatusEnum status) {
-    final String now = DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now());
+  void _updateSupportLog(UnicornStatusEnum status, {int? waitingNumber}) {
+    final String now = DateFormat('HH:mm:ss').format(DateTime.now());
     final String log = UnicornStatusType.toLogString(status);
-    _supportLog.value = List.from(_supportLog.value)..add('[$now] $log');
+    final String waitingLog =
+        waitingNumber != null ? '($waitingNumber人待ち)' : '';
+    _supportLog.value = List.from(_supportLog.value)
+      ..add('[$now] $log $waitingLog');
   }
 }
