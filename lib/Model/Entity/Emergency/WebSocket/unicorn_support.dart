@@ -1,4 +1,4 @@
-import 'package:unicorn_flutter/Constants/Enum/unicorn_status_enum.dart';
+import 'package:unicorn_flutter/Constants/Enum/emergency_status_enum.dart';
 
 class UnicornSupport {
   final EmergencyStatusEnum status;
