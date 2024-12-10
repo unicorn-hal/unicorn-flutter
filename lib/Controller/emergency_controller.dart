@@ -1,11 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 import 'package:unicorn_flutter/Constants/Enum/unicorn_status_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
+import 'package:unicorn_flutter/Model/Entity/Emergency/WebSocket/unicorn_support.dart';
 import 'package:unicorn_flutter/Model/Entity/Emergency/emergency_request.dart';
 import 'package:unicorn_flutter/Service/Api/Unicorn/unicorn_api.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
@@ -15,12 +19,17 @@ class EmergencyController extends ControllerCore {
   LocationService get _locationService => LocationService();
   UnicornApi get _unicornApi => UnicornApi();
 
-  late final ValueNotifier<UnicornStatusEnum> _emergencyStatus =
+  final ValueNotifier<UnicornStatusEnum> _emergencyStatus =
       ValueNotifier(UnicornStatusEnum.request);
   final ValueNotifier<bool> _wsConnectionStatus = ValueNotifier(false);
+  final ValueNotifier<bool> _useMap = ValueNotifier(false);
+  final ValueNotifier<List<String>> _supportLog = ValueNotifier(<String>[]);
 
   @override
   void initialize() async {
+    _emergencyStatus.value = UnicornStatusEnum.request;
+    _updateSupportLog(_emergencyStatus.value);
+
     _listenWsConnectionStatus((value) async {
       try {
         Log.echo('WebSocketConnectionStatus: $value');
@@ -33,14 +42,17 @@ class EmergencyController extends ControllerCore {
         if (statusCode != 200) {
           throw Exception('Emergency Request Error');
         }
-        _emergencyStatus.value = UnicornStatusEnum.userWaiting;
       } catch (e) {
         Log.echo('Emergency Error: $e');
         _emergencyStatus.value = UnicornStatusEnum.failure;
+        _updateSupportLog(_emergencyStatus.value);
       }
     });
     await _connectWebSocket();
   }
+
+  ValueNotifier<bool> get useMap => _useMap;
+  ValueNotifier<List<String>> get supportLog => _supportLog;
 
   /// ユーザーの現在地を取得
   Future<LatLng?> _getUserCurrentLocation() async {
@@ -85,9 +97,7 @@ class EmergencyController extends ControllerCore {
 
           stompClient.subscribe(
             destination: destination,
-            callback: (StompFrame frame) {
-              Log.echo('WebSocketCallback: ${frame.body}');
-            },
+            callback: wsCallback,
           );
         },
         onWebSocketError: (dynamic error) {
@@ -108,5 +118,48 @@ class EmergencyController extends ControllerCore {
     _wsConnectionStatus.addListener(() {
       callback(_wsConnectionStatus.value);
     });
+  }
+
+  /// destinationからのコールバック関数
+  void wsCallback(StompFrame frame) {
+    Log.echo('WebSocket Received: ${frame.body}');
+    final Map<String, dynamic> json =
+        jsonDecode(frame.body!) as Map<String, dynamic>;
+    final UnicornStatusEnum status =
+        UnicornStatusType.fromString(json['status']);
+    _emergencyStatus.value = status;
+    _updateSupportLog(status);
+
+    UnicornSupport? unicornSupport;
+    Log.echo('Emergency Status: $status');
+    switch (status) {
+      case UnicornStatusEnum.request:
+        break;
+      case UnicornStatusEnum.userWaiting:
+        break;
+      case UnicornStatusEnum.dispatch:
+        unicornSupport = UnicornSupport.fromJson(json);
+        break;
+      case UnicornStatusEnum.moving:
+        unicornSupport = UnicornSupport.fromJson(json);
+        _useMap.value = true;
+        break;
+      case UnicornStatusEnum.arrival:
+        unicornSupport = UnicornSupport.fromJson(json);
+        break;
+      case UnicornStatusEnum.complete:
+        unicornSupport = UnicornSupport.fromJson(json);
+        break;
+      case UnicornStatusEnum.failure:
+        break;
+    }
+  }
+
+  /// サポートログを更新
+  /// [status] 現在の状態
+  void _updateSupportLog(UnicornStatusEnum status) {
+    final String now = DateFormat('yyyy/MM/dd HH:mm:ss').format(DateTime.now());
+    final String log = UnicornStatusType.toLogString(status);
+    _supportLog.value = List.from(_supportLog.value)..add('[$now] $log');
   }
 }

@@ -32,6 +32,7 @@ class EmergencyView extends StatelessWidget {
           height: size.height,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 height: size.height * 0.2,
@@ -98,63 +99,99 @@ class EmergencyView extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(
-                height: size.height * 0.6,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.9,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.location_on,
-                            color: Colors.green.shade700,
-                            size: 30,
-                          ),
-                          CustomText(
-                            text: startPointText,
-                            fontSize: 16,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.9,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.location_on,
-                            color: Colors.red.shade700,
-                            size: 30,
-                          ),
-                          CustomText(
-                            text: destinationPointText,
-                            fontSize: 16,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SpacerAndDivider(
-                      topHeight: 0,
-                      bottomHeight: 10,
-                    ),
-                    Container(
-                      height: size.height * 0.4,
-                      width: size.width * 0.95,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 1,
+              ValueListenableBuilder(
+                valueListenable: controller.supportLog,
+                builder: (context, value, _) {
+                  return SizedBox(
+                    height: size.height * 0.2,
+                    width: size.width * 0.9,
+                    child: Column(
+                      children: [
+                        const CustomText(
+                          text: 'サポートログ',
+                          fontSize: 16,
                         ),
-                      ),
-                      child: GoogleMapViewer(
-                        point: startPoint,
-                        destination: destinationPoint,
-                      ),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: value.length,
+                            itemBuilder: (context, index) {
+                              return CustomText(
+                                text: value[index],
+                                fontSize: 12,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
+              ),
+              ValueListenableBuilder(
+                valueListenable: controller.useMap,
+                builder: (context, value, _) {
+                  if (!value) {
+                    return const SizedBox();
+                  }
+                  return SizedBox(
+                    height: size.height * 0.6,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: size.width * 0.9,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                color: Colors.green.shade700,
+                                size: 30,
+                              ),
+                              CustomText(
+                                text: startPointText,
+                                fontSize: 16,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: size.width * 0.9,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                color: Colors.red.shade700,
+                                size: 30,
+                              ),
+                              CustomText(
+                                text: destinationPointText,
+                                fontSize: 16,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SpacerAndDivider(
+                          topHeight: 0,
+                          bottomHeight: 10,
+                        ),
+                        Container(
+                          height: size.height * 0.4,
+                          width: size.width * 0.95,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
+                          ),
+                          child: GoogleMapViewer(
+                            point: startPoint,
+                            destination: destinationPoint,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ],
           ),
