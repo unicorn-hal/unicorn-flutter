@@ -24,6 +24,7 @@ class EmergencyController extends ControllerCore {
   final ValueNotifier<bool> _wsConnectionStatus = ValueNotifier(false);
   final ValueNotifier<bool> _useMap = ValueNotifier(false);
   final ValueNotifier<List<String>> _supportLog = ValueNotifier(<String>[]);
+  final ValueNotifier<UnicornSupport?> _unicornSupport = ValueNotifier(null);
 
   @override
   void initialize() async {
@@ -54,6 +55,7 @@ class EmergencyController extends ControllerCore {
 
   ValueNotifier<bool> get useMap => _useMap;
   ValueNotifier<List<String>> get supportLog => _supportLog;
+  ValueNotifier<UnicornSupport?> get unicornSupport => _unicornSupport;
 
   /// ユーザーの現在地を取得
   Future<LatLng?> _getUserCurrentLocation() async {
@@ -130,7 +132,6 @@ class EmergencyController extends ControllerCore {
         EmergencyStatusType.fromString(json['status']);
     _emergencyStatus.value = status;
 
-    UnicornSupport? unicornSupport;
     int? waitingNumber;
     Log.echo('Emergency Status: $status');
     switch (status) {
@@ -140,17 +141,17 @@ class EmergencyController extends ControllerCore {
         waitingNumber = json['waitingNumber'];
         break;
       case EmergencyStatusEnum.dispatch:
-        unicornSupport = UnicornSupport.fromJson(json);
+        _unicornSupport.value = UnicornSupport.fromJson(json);
         break;
       case EmergencyStatusEnum.moving:
-        unicornSupport = UnicornSupport.fromJson(json);
+        _unicornSupport.value = UnicornSupport.fromJson(json);
         _useMap.value = true;
         break;
       case EmergencyStatusEnum.arrival:
-        unicornSupport = UnicornSupport.fromJson(json);
+        _unicornSupport.value = UnicornSupport.fromJson(json);
         break;
       case EmergencyStatusEnum.complete:
-        unicornSupport = UnicornSupport.fromJson(json);
+        _unicornSupport.value = UnicornSupport.fromJson(json);
         break;
       case EmergencyStatusEnum.failure:
         break;
