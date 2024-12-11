@@ -10,24 +10,29 @@ class HeaderTitle extends StatelessWidget {
       vertical: 8.0,
       horizontal: 16.0,
     ),
+    this.useBorder = true,
   });
 
   final String title;
   final EdgeInsetsGeometry padding;
   final double fontSize;
+  final bool useBorder;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: padding,
       child: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: Colors.white,
-          border: Border(
-            bottom: BorderSide(
-              color: Colors.grey,
-              width: 2,
-            ),
-          ),
+          border: useBorder
+              ? const Border(
+                  bottom: BorderSide(
+                    color: Colors.grey,
+                    width: 2,
+                  ),
+                )
+              : null,
         ),
         child: CustomText(
           text: title,
