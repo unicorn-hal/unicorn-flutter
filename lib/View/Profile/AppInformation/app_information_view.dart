@@ -6,6 +6,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_anima
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class AppInformationView extends StatelessWidget {
@@ -20,14 +21,14 @@ class AppInformationView extends StatelessWidget {
         width: deviceWidth,
         child: Column(
           children: [
-            Container(
-              width: deviceWidth * 0.9,
-              padding: const EdgeInsets.only(
-                left: 5,
-                top: 20,
-                bottom: 10,
+            const SizedBox(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: HeaderTitle(
+                  title: 'アプリ情報',
+                  useBorder: false,
+                ),
               ),
-              child: const CustomText(text: 'アプリ情報'),
             ),
             FutureBuilder<String>(
               future: controller.getAppVersion(),

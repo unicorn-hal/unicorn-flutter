@@ -8,6 +8,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class MedicineView extends StatefulWidget {
@@ -38,7 +39,7 @@ class _MedicineViewState extends State<MedicineView> {
           children: [
             SizedBox(
               height: deviceHeight * 0.5,
-              width: deviceWidth * 0.9,
+              width: deviceWidth,
               child: SingleChildScrollView(
                 child: Consumer(
                   builder: (context, ref, _) {
@@ -49,24 +50,17 @@ class _MedicineViewState extends State<MedicineView> {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            width: deviceWidth * 0.9,
-                            height: 48,
-                            padding: const EdgeInsets.only(
-                              top: 10,
-                            ),
-                            child: const Align(
+                          const SizedBox(
+                            child: Align(
                               alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  left: 5,
-                                ),
-                                child: CustomText(text: 'Myおくすり'),
+                              child: HeaderTitle(
+                                title: 'Myおくすり',
+                                useBorder: false,
                               ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 20),
+                            padding: const EdgeInsets.only(top: 10),
                             child: GestureDetector(
                               onTap: () {
                                 const ProfileMedicineSettingRoute()
@@ -104,35 +98,30 @@ class _MedicineViewState extends State<MedicineView> {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Container(
-                          width: deviceWidth * 0.9,
-                          height: 48,
-                          padding: const EdgeInsets.only(
-                            top: 10,
-                          ),
+                        SizedBox(
+                          width: deviceWidth,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Expanded(
                                 flex: 3,
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 5,
-                                  ),
-                                  child: CustomText(text: 'Myおくすり'),
+                                child: HeaderTitle(
+                                  title: 'Myおくすり',
+                                  useBorder: false,
                                 ),
                               ),
                               Expanded(
                                 flex: 1,
-                                child: IconButton(
-                                  onPressed: () {
+                                child: GestureDetector(
+                                  onTap: () {
                                     const ProfileMedicineSettingRoute()
                                         .push(context)
                                         .then((value) => setState(() {}));
                                   },
-                                  icon: const Icon(
+                                  child: const Icon(
                                     Icons.add,
                                     color: Colors.blue,
+                                    size: 30,
                                   ),
                                 ),
                               ),

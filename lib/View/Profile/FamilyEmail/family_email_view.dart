@@ -8,6 +8,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_info_tile.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -46,23 +47,31 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: deviceWidth * 0.9,
-                  height: 48,
+                  width: deviceWidth,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const CustomText(text: '登録済み'),
-                      IconButton(
-                        onPressed: () {
-                          const ProfileFamilyEmailRegisterRoute()
-                              .push(context)
-                              .then((value) => setState(() {}));
-                        },
-                        icon: const Icon(
-                          Icons.add,
-                          size: 30,
-                          color: Colors.blue,
+                      const Expanded(
+                        flex: 3,
+                        child: HeaderTitle(
+                          title: '登録済み',
+                          useBorder: false,
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          onTap: () {
+                            const ProfileFamilyEmailRegisterRoute()
+                                .push(context)
+                                .then((value) => setState(() {}));
+                          },
+                          child: const Icon(
+                            Icons.add,
+                            size: 30,
+                            color: Colors.blue,
+                          ),
                         ),
                       ),
                     ],

@@ -9,6 +9,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_anima
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/call_reservation_tile.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 
 class CallReservationView extends StatefulWidget {
   const CallReservationView({super.key});
@@ -34,14 +35,12 @@ class _CallReservationViewState extends State<CallReservationView> {
         width: deviceWidth,
         child: Column(
           children: [
-            Container(
-              width: deviceWidth * 0.9,
-              padding: const EdgeInsets.only(
-                left: 5,
-                top: 20,
-                bottom: 10,
+            SizedBox(
+              width: deviceWidth,
+              child: const HeaderTitle(
+                title: '通話予約',
+                useBorder: false,
               ),
-              child: const CustomText(text: '通話予約'),
             ),
             FutureBuilder<List<CallReservation>?>(
               future: controller.getCallReservation(),
