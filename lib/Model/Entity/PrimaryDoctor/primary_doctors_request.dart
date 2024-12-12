@@ -1,19 +1,19 @@
 class PrimaryDoctorsRequest {
-  final List<String> doctorIds;
+  final String doctorId;
 
   PrimaryDoctorsRequest({
-    required this.doctorIds,
+    required this.doctorId,
   });
 
   factory PrimaryDoctorsRequest.fromJson(Map<String, dynamic> json) {
     return PrimaryDoctorsRequest(
-      doctorIds: (json['doctorIDs'] as List).map((e) => e.toString()).toList(),
+      doctorId: json['doctorID'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'doctorIDs': doctorIds,
+      'doctorID': doctorId,
     };
   }
 }

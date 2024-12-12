@@ -1,6 +1,7 @@
 import 'package:unicorn_flutter/Model/Cache/Doctor/PrimaryDoctors/primary_doctors_cache.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Model/Entity/PrimaryDoctor/primary_doctors_request.dart';
+import 'package:unicorn_flutter/Model/Entity/api_response.dart';
 import 'package:unicorn_flutter/Service/Api/Core/api_core.dart';
 import 'package:unicorn_flutter/Service/Api/Core/endpoint.dart';
 
@@ -25,11 +26,11 @@ class PrimaryDoctorApi extends ApiCore with Endpoint {
 
   /// POST
   /// [body] PrimaryDoctorsRequest
-  Future<int> postPrimaryDoctors({required PrimaryDoctorsRequest body}) async {
+  Future<int> postPrimaryDoctor({required PrimaryDoctorsRequest body}) async {
     try {
       final response = await post(body.toJson());
       if (response.statusCode == 200) {
-        PrimaryDoctorsCache().setData(body.doctorIds);
+        PrimaryDoctorsCache().addData(body.doctorId);
       }
       return response.statusCode;
     } catch (e) {
@@ -37,13 +38,17 @@ class PrimaryDoctorApi extends ApiCore with Endpoint {
     }
   }
 
-  /// PUT
-  /// [body] PrimaryDoctorsRequest
-  Future<int> putPrimaryDoctors({
-    required PrimaryDoctorsRequest body,
+  /// DELETE
+  Future<int> deletePrimaryDoctor({
+    required String doctorId,
   }) async {
     try {
-      final response = await put(body.toJson());
+      useParameter(parameter: '/$doctorId');
+      final ApiResponse response = await delete();
+      print(response.statusCode);
+      if (response.statusCode == 204) {
+        PrimaryDoctorsCache().removeData(doctorId);
+      }
       return response.statusCode;
     } catch (e) {
       return 500;
