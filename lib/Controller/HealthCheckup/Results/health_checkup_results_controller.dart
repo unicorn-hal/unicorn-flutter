@@ -93,7 +93,7 @@ class HealthCheckupResultsController extends ControllerCore {
     String bloodPressure,
     DateTime today,
   ) {
-    String date = DateFormat('yyyy年MM月dd日').format(today);
+    String displayDate = DateFormat('yyyy年MM月dd日').format(today);
     String diseaseExampleName;
 
     /// 疾患例名を取得
@@ -102,12 +102,12 @@ class HealthCheckupResultsController extends ControllerCore {
       /// それ以外は疾患例名リストの先頭を取得
       diseaseExampleName = '健康';
     } else {
-      diseaseExampleName = diseaseExampleNameList[0];
+      diseaseExampleName = _diseaseExampleNameList.join('・');
     }
 
     /// 診断書のテキストを作成
     String medicalRecord =
-        '## $date\n 体温: bloodPressure\n 血圧: bodyTemperature\n 診断: 軽度の$diseaseExampleName';
+        '# $displayDate\n## 通常検診\n体温: $bloodPressure\n血圧: $bodyTemperature\n診断: $diseaseExampleName\n';
     return HealthCheckupRequest(
       date: DateFormat('yyyy-MM-dd').parse(today.toString()),
       bodyTemperature: double.parse(bodyTemperature),
