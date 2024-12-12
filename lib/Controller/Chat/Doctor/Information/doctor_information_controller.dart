@@ -49,6 +49,7 @@ class DoctorInformationController extends ControllerCore {
 
   //キャッシュから医師情報を取得
   Future<Doctor> getDoctorFromCache() async {
+    await cacheDoctorList();
     return _doctorInformationCache!.firstWhere((element) {
       return element.doctorId == _doctorId;
     });
@@ -64,14 +65,10 @@ class DoctorInformationController extends ControllerCore {
 
   /// 主治医として登録
   Future<void> postPrimaryDoctors() async {
-    // キャッシュに保存されている主治医リストを取得
-    List<String> doctorIds = PrimaryDoctorsCache().data!;
-    // 新たに主治医として登録する医師IDを追加
-    doctorIds.add(_doctorId);
     // 主治医登録APIを実行
     ProtectorNotifier().enableProtector();
-    PrimaryDoctorsRequest body = PrimaryDoctorsRequest(doctorIds: doctorIds);
-    final int response = await _primaryDoctorApi.postPrimaryDoctors(body: body);
+    PrimaryDoctorsRequest body = PrimaryDoctorsRequest(doctorId: _doctorId);
+    final int response = await _primaryDoctorApi.postPrimaryDoctor(body: body);
     ProtectorNotifier().disableProtector();
 
     if (response != 200) {
@@ -84,17 +81,13 @@ class DoctorInformationController extends ControllerCore {
 
   /// 主治医登録を解除
   Future<void> deletePrimaryDoctors() async {
-    // キャッシュに保存されている主治医リストを取得
-    List<String> doctorIds = PrimaryDoctorsCache().data!;
-    // 主治医として登録されている医師IDを削除
-    doctorIds.remove(_doctorId);
     // 主治医登録解除APIを実行
     ProtectorNotifier().enableProtector();
-    PrimaryDoctorsRequest body = PrimaryDoctorsRequest(doctorIds: doctorIds);
-    final int response = await _primaryDoctorApi.postPrimaryDoctors(body: body);
+    final int response =
+        await _primaryDoctorApi.deletePrimaryDoctor(doctorId: _doctorId);
     ProtectorNotifier().disableProtector();
 
-    if (response != 200) {
+    if (response != 204) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
     print('主治医登録解除完了 ${PrimaryDoctorsCache().data}');
