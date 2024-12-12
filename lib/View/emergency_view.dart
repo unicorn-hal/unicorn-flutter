@@ -223,11 +223,21 @@ class _EmergencyViewState extends State<EmergencyView> {
                               width: 1,
                             ),
                           ),
-                          child: GoogleMapViewer(
-                            point: startPoint,
-                            destination: destinationPoint,
-                            current:
-                                LatLng(35.68512387081999, 139.74371112483735),
+                          child: ValueListenableBuilder(
+                            valueListenable: controller.unicornSupport,
+                            builder: (context, value, _) {
+                              if (value == null ||
+                                  value.robotLatitude == null ||
+                                  value.robotLongitude == null) {
+                                return const SizedBox();
+                              }
+                              return GoogleMapViewer(
+                                point: startPoint,
+                                destination: destinationPoint,
+                                current: LatLng(value.robotLatitude!,
+                                    value.robotLongitude!),
+                              );
+                            },
                           ),
                         ),
                       ],
