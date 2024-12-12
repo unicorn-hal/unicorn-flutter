@@ -13,4 +13,8 @@ class PrimaryDoctorsCache {
   void addData(String data) {
     _data!.add(data);
   }
+
+  void removeData(String data) {
+    _data!.remove(data);
+  }
 }
