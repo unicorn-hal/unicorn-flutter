@@ -106,8 +106,12 @@ class HealthCheckupResultsController extends ControllerCore {
     }
 
     /// 診断書のテキストを作成
-    String medicalRecord =
-        '# $displayDate\n## 通常検診\n体温: $bloodPressure\n血圧: $bodyTemperature\n診断: $diseaseExampleName\n';
+    String medicalRecord = '# $displayDate\n'
+        '## 通常検診\n'
+        '体温: $bodyTemperature℃\n'
+        '血圧: $bloodPressure\n'
+        '診断: $diseaseExampleName\n';
+
     return HealthCheckupRequest(
       date: DateFormat('yyyy-MM-dd').parse(today.toString()),
       bodyTemperature: double.parse(bodyTemperature),
