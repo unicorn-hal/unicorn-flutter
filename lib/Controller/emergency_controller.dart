@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,6 +11,8 @@ import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Emergency/WebSocket/unicorn_support.dart';
 import 'package:unicorn_flutter/Model/Entity/Emergency/emergency_request.dart';
+import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/Route/routes.dart';
 import 'package:unicorn_flutter/Service/Api/Unicorn/unicorn_api.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/Service/Package/Location/location_service.dart';
@@ -25,6 +27,9 @@ class EmergencyController extends ControllerCore {
   final ValueNotifier<bool> _useMap = ValueNotifier(false);
   final ValueNotifier<List<String>> _supportLog = ValueNotifier(<String>[]);
   final ValueNotifier<UnicornSupport?> _unicornSupport = ValueNotifier(null);
+
+  EmergencyController(this.context);
+  BuildContext context;
 
   @override
   void initialize() async {
@@ -149,6 +154,9 @@ class EmergencyController extends ControllerCore {
         break;
       case EmergencyStatusEnum.arrival:
         _unicornSupport.value = UnicornSupport.fromJson(json);
+        Future.delayed(const Duration(seconds: 3), () {
+          const ProgressRoute(from: Routes.emergency).go(context);
+        });
         break;
       case EmergencyStatusEnum.complete:
         _unicornSupport.value = UnicornSupport.fromJson(json);
@@ -168,5 +176,12 @@ class EmergencyController extends ControllerCore {
         waitingNumber != null ? '($waitingNumber人待ち)' : '';
     _supportLog.value = List.from(_supportLog.value)
       ..add('[$now] $log $waitingLog');
+  }
+
+  void dispose() {
+    _wsConnectionStatus.dispose();
+    _useMap.dispose();
+    _supportLog.dispose();
+    _unicornSupport.dispose();
   }
 }

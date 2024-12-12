@@ -32,7 +32,13 @@ class _EmergencyViewState extends State<EmergencyView> {
   @override
   void initState() {
     super.initState();
-    controller = EmergencyController();
+    controller = EmergencyController(context);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
