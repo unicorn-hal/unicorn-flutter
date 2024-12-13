@@ -12,6 +12,7 @@ class CommonItemTile extends StatelessWidget {
     this.tileHeight = 50,
     this.fontSize = 14,
     this.boxDecoration = const BoxDecoration(
+      color: Colors.white,
       border: BorderDirectional(
         bottom: BorderSide(
           width: 1,
