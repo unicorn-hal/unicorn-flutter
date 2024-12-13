@@ -61,6 +61,8 @@ class _CustomTextfieldState extends State<CustomTextfield> {
             },
             textAlignVertical: TextAlignVertical.center,
             style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontFamily: 'Noto_Sans_JP',
               color: widget.textColor,
               fontSize: 16,
               height: 1.5,
