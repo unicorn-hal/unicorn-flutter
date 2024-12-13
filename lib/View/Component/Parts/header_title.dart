@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
-import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class HeaderTitle extends StatelessWidget {
   const HeaderTitle({
@@ -25,7 +24,7 @@ class HeaderTitle extends StatelessWidget {
       padding: padding,
       child: Container(
         decoration: BoxDecoration(
-          color: ColorName.mainColor,
+          color: Colors.blue,
           borderRadius: const BorderRadius.all(
             Radius.circular(20),
           ),
