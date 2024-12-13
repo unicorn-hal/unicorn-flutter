@@ -1,4 +1,3 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/ChronicDisease/chronic_disease_controller.dart';
@@ -12,9 +11,9 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.d
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
 import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/View/Component/Parts/image_banner.dart';
+import 'package:unicorn_flutter/View/Component/Parts/register_content_tile.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
-import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class ChronicDiseaseView extends StatefulWidget {
   const ChronicDiseaseView({super.key});
@@ -97,43 +96,13 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                               useBorder: false,
                             ),
                           ),
-                          SizedBox(
-                            width: deviceWidth * 0.9,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: GestureDetector(
-                                onTap: () {
-                                  const ProfileChronicDiseaseSearchRoute()
-                                      .push(context)
-                                      .then((value) => setState(() {}));
-                                },
-                                child: DottedBorder(
-                                  dashPattern: const [15, 10],
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(20),
-                                  child: SizedBox(
-                                    width: deviceWidth * 0.9,
-                                    height: 200,
-                                    child: const Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.add,
-                                          color: Colors.grey,
-                                          size: 22,
-                                        ),
-                                        CustomText(
-                                          text: 'お悩みを登録する',
-                                          color: ColorName.textGray,
-                                          fontSize: 14,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                          RegisterContentTile(
+                            tileText: 'お悩みを登録する',
+                            onTap: () {
+                              const ProfileChronicDiseaseSearchRoute()
+                                  .push(context)
+                                  .then((value) => setState(() {}));
+                            },
                           ),
                         ],
                       );
