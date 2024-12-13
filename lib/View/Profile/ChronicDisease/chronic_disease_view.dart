@@ -115,8 +115,11 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                             children: [
                               const Expanded(
                                 flex: 3,
-                                child: HeaderTitle(
-                                  title: '体のお悩み',
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: HeaderTitle(
+                                    title: '体のお悩み',
+                                  ),
                                 ),
                               ),
                               Expanded(

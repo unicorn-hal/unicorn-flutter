@@ -52,7 +52,6 @@ class _FamilyEmailSyncContactViewState
               alignment: Alignment.centerLeft,
               child: HeaderTitle(
                 title: '未登録',
-                useBorder: false,
               ),
             ),
             FutureBuilder<List<FamilyEmailPostRequest>?>(
