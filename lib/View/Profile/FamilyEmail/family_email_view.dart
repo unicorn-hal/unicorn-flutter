@@ -121,20 +121,17 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
                               ),
                             ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: UserInfoTile(
-                              onTap: () {
-                                ProfileFamilyEmailRegisterRoute(
-                                        $extra: familyEmailList[index])
-                                    .push(context)
-                                    .then((value) => setState(() {}));
-                              },
-                              imageUrl: familyEmailList[index].iconImageUrl,
-                              userName:
-                                  '${familyEmailList[index].lastName} ${familyEmailList[index].firstName}',
-                              description: familyEmailList[index].email,
-                            ),
+                          child: UserInfoTile(
+                            onTap: () {
+                              ProfileFamilyEmailRegisterRoute(
+                                      $extra: familyEmailList[index])
+                                  .push(context)
+                                  .then((value) => setState(() {}));
+                            },
+                            imageUrl: familyEmailList[index].iconImageUrl,
+                            userName:
+                                '${familyEmailList[index].lastName} ${familyEmailList[index].firstName}',
+                            description: familyEmailList[index].email,
                           ),
                         );
                       },
