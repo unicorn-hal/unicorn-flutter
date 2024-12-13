@@ -110,20 +110,36 @@ class ChatTopView extends StatelessWidget {
                     itemCount: chatData.data.length,
                     itemBuilder: (context, index) {
                       final Chat data = chatData.data[index];
-                      return UserInfoTile(
-                        onTap: () {
-                          ChatDoctorInformationRoute(
-                            data.doctor.doctorId,
-                          ).push(context);
-                        },
-                        userName: data.doctor.lastName + data.doctor.firstName,
-                        description: '${data.latestMessageText}',
-                        imageUrl: data.doctor.doctorIconUrl,
-                        badge: controller.isPrimaryDoctor(data.doctor.doctorId)
-                            ? Assets.images.icons.primaryDoctorIcon.image(
-                                fit: BoxFit.cover,
-                              )
-                            : null,
+                      return Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            top: BorderSide(
+                              color: index == 0
+                                  ? Colors.grey.shade300
+                                  : Colors.transparent,
+                            ),
+                            bottom: const BorderSide(
+                              color: ColorName.shadowGray,
+                            ),
+                          ),
+                        ),
+                        child: UserInfoTile(
+                          onTap: () {
+                            ChatDoctorInformationRoute(
+                              data.doctor.doctorId,
+                            ).push(context);
+                          },
+                          userName:
+                              data.doctor.lastName + data.doctor.firstName,
+                          description: '${data.latestMessageText}',
+                          imageUrl: data.doctor.doctorIconUrl,
+                          badge:
+                              controller.isPrimaryDoctor(data.doctor.doctorId)
+                                  ? Assets.images.icons.primaryDoctorIcon.image(
+                                      fit: BoxFit.cover,
+                                    )
+                                  : null,
+                        ),
                       );
                     },
                   ),
