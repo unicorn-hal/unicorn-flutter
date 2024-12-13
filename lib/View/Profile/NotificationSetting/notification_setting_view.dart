@@ -51,9 +51,11 @@ class _NotificationSettingViewState extends State<NotificationSettingView> {
             children: [
               SizedBox(
                 width: deviceWidth,
-                child: const HeaderTitle(
-                  title: '通知設定',
-                  useBorder: false,
+                child: const Align(
+                  alignment: Alignment.centerLeft,
+                  child: HeaderTitle(
+                    title: '通知設定',
+                  ),
                 ),
               ),
               CommonItemTile(

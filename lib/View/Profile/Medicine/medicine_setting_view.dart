@@ -15,6 +15,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -102,7 +103,11 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                             padding: EdgeInsets.only(
                               left: 5,
                             ),
-                            child: CustomText(text: 'おくすりの名称'),
+                            child: HeaderTitle(
+                              title: 'おくすりの名称',
+                              padding: EdgeInsets.zero,
+                              fontSize: 14,
+                            ),
                           ),
                         ),
                       ),
@@ -128,11 +133,18 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                   top: 20,
                                   bottom: 20,
                                 ),
-                                child: const Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 5,
+                                child: const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 5,
+                                    ),
+                                    child: HeaderTitle(
+                                      title: 'おくすりの量',
+                                      padding: EdgeInsets.zero,
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                  child: CustomText(text: 'おくすりの量'),
                                 ),
                               ),
                               Padding(
@@ -169,11 +181,18 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                   top: 20,
                                   bottom: 20,
                                 ),
-                                child: const Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 5,
+                                child: const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 5,
+                                    ),
+                                    child: HeaderTitle(
+                                      title: '1回の服用量',
+                                      padding: EdgeInsets.zero,
+                                      fontSize: 14,
+                                    ),
                                   ),
-                                  child: CustomText(text: '1回の服用量'),
                                 ),
                               ),
                               Padding(
@@ -217,7 +236,11 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                               padding: EdgeInsets.only(
                                 left: 5,
                               ),
-                              child: CustomText(text: 'リマインダーを設定'),
+                              child: HeaderTitle(
+                                title: 'リマインダーを設定',
+                                padding: EdgeInsets.zero,
+                                fontSize: 14,
+                              ),
                             ),
                             IconButton(
                               onPressed: () {

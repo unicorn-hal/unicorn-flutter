@@ -26,7 +26,6 @@ class AppInformationView extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: HeaderTitle(
                   title: 'アプリ情報',
-                  useBorder: false,
                 ),
               ),
             ),

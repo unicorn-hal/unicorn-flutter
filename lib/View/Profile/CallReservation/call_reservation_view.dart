@@ -35,11 +35,10 @@ class _CallReservationViewState extends State<CallReservationView> {
         width: deviceWidth,
         child: Column(
           children: [
-            SizedBox(
-              width: deviceWidth,
-              child: const HeaderTitle(
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: HeaderTitle(
                 title: '通話予約',
-                useBorder: false,
               ),
             ),
             FutureBuilder<List<CallReservation>?>(

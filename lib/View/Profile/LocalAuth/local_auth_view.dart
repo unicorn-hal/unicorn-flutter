@@ -98,9 +98,11 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                   visible: _controller.useAppbar,
                   child: SizedBox(
                     width: deviceWidth,
-                    child: const HeaderTitle(
-                      title: 'セキュリティ',
-                      useBorder: false,
+                    child: const Align(
+                      alignment: Alignment.centerLeft,
+                      child: HeaderTitle(
+                        title: 'セキュリティ',
+                      ),
                     ),
                   ),
                 ),

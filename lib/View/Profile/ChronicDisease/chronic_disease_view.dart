@@ -67,7 +67,6 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                             alignment: Alignment.centerLeft,
                             child: HeaderTitle(
                               title: '体のお悩み',
-                              useBorder: false,
                             ),
                           ),
                           Padding(
@@ -93,7 +92,6 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                             alignment: Alignment.centerLeft,
                             child: HeaderTitle(
                               title: '体のお悩み',
-                              useBorder: false,
                             ),
                           ),
                           RegisterContentTile(
@@ -119,7 +117,6 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                                 flex: 3,
                                 child: HeaderTitle(
                                   title: '体のお悩み',
-                                  useBorder: false,
                                 ),
                               ),
                               Expanded(

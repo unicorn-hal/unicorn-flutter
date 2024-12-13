@@ -57,7 +57,6 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                   alignment: Alignment.centerLeft,
                   child: HeaderTitle(
                     title: 'お悩みを追加する',
-                    useBorder: false,
                   ),
                 ),
                 SizedBox(
@@ -203,7 +202,6 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                     alignment: Alignment.centerLeft,
                     child: HeaderTitle(
                       title: 'よくあるお悩み',
-                      useBorder: false,
                     ),
                   ),
                 ),

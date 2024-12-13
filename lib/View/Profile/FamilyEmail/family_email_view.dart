@@ -54,9 +54,11 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
                     children: [
                       const Expanded(
                         flex: 3,
-                        child: HeaderTitle(
-                          title: '登録済み',
-                          useBorder: false,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: HeaderTitle(
+                            title: '登録済み',
+                          ),
                         ),
                       ),
                       Expanded(

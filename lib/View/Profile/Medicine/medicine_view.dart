@@ -55,7 +55,6 @@ class _MedicineViewState extends State<MedicineView> {
                               alignment: Alignment.centerLeft,
                               child: HeaderTitle(
                                 title: 'Myおくすり',
-                                useBorder: false,
                               ),
                             ),
                           ),
@@ -78,9 +77,11 @@ class _MedicineViewState extends State<MedicineView> {
                             children: [
                               const Expanded(
                                 flex: 3,
-                                child: HeaderTitle(
-                                  title: 'Myおくすり',
-                                  useBorder: false,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: HeaderTitle(
+                                    title: 'Myおくすり',
+                                  ),
                                 ),
                               ),
                               Expanded(
