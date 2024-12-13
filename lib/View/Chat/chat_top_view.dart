@@ -6,6 +6,7 @@ import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/View/Component/Parts/image_banner.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_info_tile.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
@@ -42,17 +43,10 @@ class ChatTopView extends StatelessWidget {
               ),
 
               /// やりとり履歴表示部
-              const Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 8.0,
-                  horizontal: 16.0,
-                ),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: CustomText(
-                    text: 'やりとりしたことある先生',
-                    fontSize: 18,
-                  ),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: HeaderTitle(
+                  title: 'やりとりしたことがある先生',
                 ),
               ),
               Consumer(
