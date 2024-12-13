@@ -15,7 +15,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
-import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
+import 'package:unicorn_flutter/View/Component/Parts/field_title.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -103,10 +103,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                             padding: EdgeInsets.only(
                               left: 5,
                             ),
-                            child: HeaderTitle(
+                            child: FieldTitle(
                               title: 'おくすりの名称',
-                              padding: EdgeInsets.zero,
-                              fontSize: 14,
                             ),
                           ),
                         ),
@@ -139,10 +137,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                     padding: EdgeInsets.only(
                                       left: 5,
                                     ),
-                                    child: HeaderTitle(
+                                    child: FieldTitle(
                                       title: 'おくすりの量',
-                                      padding: EdgeInsets.zero,
-                                      fontSize: 14,
                                     ),
                                   ),
                                 ),
@@ -187,10 +183,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                     padding: EdgeInsets.only(
                                       left: 5,
                                     ),
-                                    child: HeaderTitle(
+                                    child: FieldTitle(
                                       title: '1回の服用量',
-                                      padding: EdgeInsets.zero,
-                                      fontSize: 14,
                                     ),
                                   ),
                                 ),
@@ -236,10 +230,9 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                               padding: EdgeInsets.only(
                                 left: 5,
                               ),
-                              child: HeaderTitle(
+                              child: FieldTitle(
                                 title: 'リマインダーを設定',
-                                padding: EdgeInsets.zero,
-                                fontSize: 14,
+                                icon: Icons.calendar_today,
                               ),
                             ),
                             IconButton(

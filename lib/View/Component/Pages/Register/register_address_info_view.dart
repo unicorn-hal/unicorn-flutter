@@ -9,6 +9,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
+import 'package:unicorn_flutter/View/Component/Parts/field_title.dart';
 import 'package:unicorn_flutter/View/Component/Parts/google_map_viewer.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -140,9 +141,8 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                     ),
                     const Padding(
                       padding: EdgeInsets.only(top: 30, bottom: 10),
-                      child: CustomText(
-                        text: '郵便番号（ハイフンなし）',
-                        fontSize: 20,
+                      child: FieldTitle(
+                        title: '郵便番号（ハイフンなし）',
                       ),
                     ),
                     Row(
@@ -199,9 +199,8 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                     ),
                     const Padding(
                       padding: EdgeInsets.only(top: 20, bottom: 10),
-                      child: CustomText(
-                        text: '都道府県',
-                        fontSize: 20,
+                      child: FieldTitle(
+                        title: '都道府県',
                       ),
                     ),
                     CustomDropdown(
@@ -216,9 +215,8 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                     ),
                     const Padding(
                       padding: EdgeInsets.only(top: 20, bottom: 10),
-                      child: CustomText(
-                        text: '市区町村',
-                        fontSize: 20,
+                      child: FieldTitle(
+                        title: '市区町村',
                       ),
                     ),
                     CustomTextfield(
@@ -235,9 +233,8 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                     ),
                     const Padding(
                       padding: EdgeInsets.only(top: 20, bottom: 10),
-                      child: CustomText(
-                        text: '部屋番号など',
-                        fontSize: 20,
+                      child: FieldTitle(
+                        title: '部屋番号など',
                       ),
                     ),
                     CustomTextfield(

@@ -12,6 +12,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
+import 'package:unicorn_flutter/View/Component/Parts/field_title.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class RegisterPhysicalInfoView extends StatefulWidget {
@@ -98,9 +99,8 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 30, bottom: 10),
-                  child: CustomText(
-                    text: 'お名前',
-                    fontSize: 20,
+                  child: FieldTitle(
+                    title: 'お名前',
                   ),
                 ),
                 Row(
@@ -128,9 +128,9 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 30, bottom: 10),
-                  child: CustomText(
-                    text: '性別',
-                    fontSize: 20,
+                  child: FieldTitle(
+                    title: '性別',
+                    icon: Icons.male,
                   ),
                 ),
                 Row(
@@ -223,9 +223,9 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 20, bottom: 10),
-                  child: CustomText(
-                    text: '生年月日',
-                    fontSize: 20,
+                  child: FieldTitle(
+                    title: '生年月日',
+                    icon: Icons.calendar_today,
                   ),
                 ),
                 SizedBox(
@@ -248,9 +248,8 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                 ),
                 const Padding(
                   padding: EdgeInsets.only(top: 30, bottom: 10),
-                  child: CustomText(
-                    text: '身長・体重',
-                    fontSize: 20,
+                  child: FieldTitle(
+                    title: '身長・体重',
                   ),
                 ),
                 Row(

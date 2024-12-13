@@ -8,6 +8,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
+import 'package:unicorn_flutter/View/Component/Parts/field_title.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -101,9 +102,8 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                     ),
                     const Padding(
                       padding: EdgeInsets.only(top: 30),
-                      child: CustomText(
-                        text: 'プロフィール画像',
-                        fontSize: 20,
+                      child: FieldTitle(
+                        title: 'プロフィール画像',
                       ),
                     ),
                     Padding(
@@ -141,9 +141,8 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                     ),
                     const Padding(
                       padding: EdgeInsets.only(bottom: 10),
-                      child: CustomText(
-                        text: '電話番号（ハイフンなし）',
-                        fontSize: 20,
+                      child: FieldTitle(
+                        title: '電話番号（ハイフンなし）',
                       ),
                     ),
                     CustomTextfield(
@@ -157,9 +156,8 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                     ),
                     const Padding(
                       padding: EdgeInsets.only(top: 20, bottom: 10),
-                      child: CustomText(
-                        text: 'メールアドレス',
-                        fontSize: 20,
+                      child: FieldTitle(
+                        title: 'メールアドレス',
                       ),
                     ),
                     CustomTextfield(
@@ -172,9 +170,8 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                     ),
                     const Padding(
                       padding: EdgeInsets.only(top: 20, bottom: 10),
-                      child: CustomText(
-                        text: '職業',
-                        fontSize: 20,
+                      child: FieldTitle(
+                        title: '職業',
                       ),
                     ),
                     CustomTextfield(
