@@ -23,40 +23,49 @@ class ProfileTopView extends StatelessWidget {
         children: [
           Consumer(builder: (context, ref, _) {
             UserData userData = ref.watch(userDataProvider);
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 15,
-                  ),
-                  child: UserImageCircle(
-                    imageUrl: userData.user!.iconImageUrl,
-                    imageSize: 120,
-                  ),
+            return Container(
+              width: 150,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(50),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 20,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 15,
+                    ),
+                    child: UserImageCircle(
+                      imageUrl: userData.user!.iconImageUrl,
+                      imageSize: 120,
+                    ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomText(
-                        text: userData.user!.lastName,
-                        fontSize: 30,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      CustomText(
-                        text: userData.user!.firstName,
-                        fontSize: 30,
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 20,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CustomText(
+                          text: userData.user!.lastName,
+                          fontSize: 30,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        CustomText(
+                          text: userData.user!.firstName,
+                          fontSize: 30,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           }),
           Container(
