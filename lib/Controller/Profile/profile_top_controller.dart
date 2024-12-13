@@ -34,47 +34,21 @@ class ProfileTopController extends ControllerCore {
   void initialize() {
     _cellData = [
       ProfileDetail(
-          title: 'アプリ情報',
-          icon: Icons.info,
-          onTap: () => const ProfileAppInformationRoute().push(context)),
-      ProfileDetail(
-          title: '持病設定',
-          icon: Icons.sick,
-          onTap: () => const ProfileChronicDiseaseRoute().push(context)),
-      ProfileDetail(
-          title: '家族メール',
-          icon: Icons.mail,
-          onTap: () => const ProfileFamilyEmailRoute().push(context)),
-      ProfileDetail(
-        title: 'セキュリティ',
-        icon: Icons.lock,
-        onTap: () async {
-          if (await _localAuthService.getLocalAuthStatus() ==
-              LocalAuthStatus.failed) {
-            Fluttertoast.showToast(msg: Strings.LOCAL_AUTH_NOT_AVAILABLE_TEXT);
-            return;
-          }
-          const ProfileLocalAuthRoute().push(context);
-        },
-      ),
+          title: '通話予約',
+          icon: Icons.call,
+          onTap: () => const ProfileCallReservationRoute().push(context)),
       ProfileDetail(
           title: 'おくすり',
           icon: Icons.medical_services,
           onTap: () => const ProfileMedicineRoute().push(context)),
       ProfileDetail(
-        title: '通知設定',
-        icon: Icons.notifications,
-        onTap: () async {
-          ProtectorNotifier().enableProtector();
-          UserNotification? userNotification = await getUserNotification();
-          ProtectorNotifier().disableProtector();
-          if (userNotification == null) {
-            return;
-          }
-          ProfileNotificationSettingRoute($extra: userNotification)
-              .push(context);
-        },
-      ),
+          title: '家族メール',
+          icon: Icons.mail,
+          onTap: () => const ProfileFamilyEmailRoute().push(context)),
+      ProfileDetail(
+          title: '持病設定',
+          icon: Icons.sick,
+          onTap: () => const ProfileChronicDiseaseRoute().push(context)),
       ProfileDetail(
         title: '身体情報',
         icon: Icons.man,
@@ -104,6 +78,32 @@ class ProfileTopController extends ControllerCore {
             ).push(context);
           }),
       ProfileDetail(
+        title: 'セキュリティ',
+        icon: Icons.lock,
+        onTap: () async {
+          if (await _localAuthService.getLocalAuthStatus() ==
+              LocalAuthStatus.failed) {
+            Fluttertoast.showToast(msg: Strings.LOCAL_AUTH_NOT_AVAILABLE_TEXT);
+            return;
+          }
+          const ProfileLocalAuthRoute().push(context);
+        },
+      ),
+      ProfileDetail(
+        title: '通知設定',
+        icon: Icons.notifications,
+        onTap: () async {
+          ProtectorNotifier().enableProtector();
+          UserNotification? userNotification = await getUserNotification();
+          ProtectorNotifier().disableProtector();
+          if (userNotification == null) {
+            return;
+          }
+          ProfileNotificationSettingRoute($extra: userNotification)
+              .push(context);
+        },
+      ),
+      ProfileDetail(
         title: '問い合わせ',
         icon: Icons.question_mark,
         onTap: () async {
@@ -112,9 +112,9 @@ class ProfileTopController extends ControllerCore {
         },
       ),
       ProfileDetail(
-          title: '通話予約',
-          icon: Icons.call,
-          onTap: () => const ProfileCallReservationRoute().push(context)),
+          title: 'アプリ情報',
+          icon: Icons.info,
+          onTap: () => const ProfileAppInformationRoute().push(context)),
     ];
   }
 
