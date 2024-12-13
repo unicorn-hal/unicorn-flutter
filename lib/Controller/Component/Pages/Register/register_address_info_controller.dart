@@ -84,6 +84,7 @@ class RegisterAddressInfoController extends ControllerCore {
               value: _entryItemStrings.indexOf(e),
               child: CustomText(
                 text: e,
+                fontWeight: FontWeight.normal,
               ),
             ))
         .toList();
