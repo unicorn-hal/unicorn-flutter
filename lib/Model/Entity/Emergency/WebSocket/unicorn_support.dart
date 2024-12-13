@@ -2,15 +2,15 @@ import 'package:unicorn_flutter/Constants/Enum/emergency_status_enum.dart';
 
 class UnicornSupport {
   final EmergencyStatusEnum status;
-  final String robotId;
-  final String robotName;
+  final String? robotId;
+  final String? robotName;
   final double? robotLatitude;
   final double? robotLongitude;
 
   UnicornSupport({
     required this.status,
-    required this.robotId,
-    required this.robotName,
+    this.robotId,
+    this.robotName,
     this.robotLatitude,
     this.robotLongitude,
   });
