@@ -9,7 +9,10 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/ai_announce_banner.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_info_tile.dart';
+import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
+
+import '../../Model/Entity/Chat/chat.dart';
 
 class ChatTopView extends StatelessWidget {
   const ChatTopView({super.key});
@@ -106,18 +109,21 @@ class ChatTopView extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: chatData.data.length,
                     itemBuilder: (context, index) {
+                      final Chat data = chatData.data[index];
                       return UserInfoTile(
                         onTap: () {
-                          // todo: それぞれのチャット画面へ遷移
                           ChatDoctorInformationRoute(
-                            chatData.data[index].doctor.doctorId,
+                            data.doctor.doctorId,
                           ).push(context);
                         },
-                        userName: chatData.data[index].doctor.lastName +
-                            chatData.data[index].doctor.firstName,
-                        description:
-                            '${chatData.data[index].latestMessageText}',
-                        imageUrl: chatData.data[index].doctor.doctorIconUrl,
+                        userName: data.doctor.lastName + data.doctor.firstName,
+                        description: '${data.latestMessageText}',
+                        imageUrl: data.doctor.doctorIconUrl,
+                        badge: controller.isPrimaryDoctor(data.doctor.doctorId)
+                            ? Assets.images.icons.primaryDoctorIcon.image(
+                                fit: BoxFit.cover,
+                              )
+                            : null,
                       );
                     },
                   ),

@@ -14,6 +14,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.d
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 import '../../../../Route/router.dart';
+import '../../../../gen/assets.gen.dart';
 import '../../../Component/Parts/user_info_tile.dart';
 
 class DoctorSearchView extends StatefulWidget {
@@ -308,8 +309,13 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                               },
                               userName: doctor.lastName + doctor.firstName,
                               description:
-                                  '病院: ${doctor.hospital.hospitalName} 診療科: ${doctor.departments.map((e) => e.departmentName).join(',')}',
+                                  '病院: ${doctor.hospital.hospitalName} 診療科: ${doctor.departments.first.departmentName}',
                               imageUrl: doctor.doctorIconUrl,
+                              badge: controller.isPrimaryDoctor(doctor.doctorId)
+                                  ? Assets.images.icons.primaryDoctorIcon.image(
+                                      fit: BoxFit.cover,
+                                    )
+                                  : null,
                             ),
                           );
                         });
