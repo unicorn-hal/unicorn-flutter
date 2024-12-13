@@ -98,32 +98,27 @@ class _FamilyEmailSyncContactViewState
                           ),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: UserInfoTile(
-                          onTap: () async {
-                            int res = await controller
-                                .postFamilyEmail(familyEmailRequestList[index]);
-                            if (res != 200) {
-                              return;
-                            }
-                            await controller.updateFamilyEmail();
-                            setState(() {});
-                          },
-                          localImage:
-                              familyEmailRequestList[index].avatar != null &&
-                                      familyEmailRequestList[index]
-                                          .avatar!
-                                          .isNotEmpty
-                                  ? controller.uint8ListToImage(
-                                      familyEmailRequestList[index].avatar!)
-                                  : null,
-                          userName:
-                              '${familyEmailRequestList[index].lastName} ${familyEmailRequestList[index].firstName}',
-                          description: familyEmailRequestList[index].email == ''
-                              ? 'メールアドレス未設定'
-                              : familyEmailRequestList[index].email,
-                        ),
+                      child: UserInfoTile(
+                        onTap: () async {
+                          int res = await controller
+                              .postFamilyEmail(familyEmailRequestList[index]);
+                          if (res != 200) {
+                            return;
+                          }
+                          await controller.updateFamilyEmail();
+                          setState(() {});
+                        },
+                        localImage: familyEmailRequestList[index].avatar !=
+                                    null &&
+                                familyEmailRequestList[index].avatar!.isNotEmpty
+                            ? controller.uint8ListToImage(
+                                familyEmailRequestList[index].avatar!)
+                            : null,
+                        userName:
+                            '${familyEmailRequestList[index].lastName} ${familyEmailRequestList[index].firstName}',
+                        description: familyEmailRequestList[index].email == ''
+                            ? 'メールアドレス未設定'
+                            : familyEmailRequestList[index].email,
                       ),
                     );
                   },
