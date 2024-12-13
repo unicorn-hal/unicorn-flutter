@@ -101,14 +101,6 @@ class UserInfoTile extends StatelessWidget {
                   borderRadius: BorderRadius.all(
                     Radius.circular(2.0),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: ColorName.shadowGray,
-                      spreadRadius: 1,
-                      blurRadius: 2,
-                      offset: Offset(0, 1),
-                    ),
-                  ],
                 ),
                 width: 30,
                 height: 30,

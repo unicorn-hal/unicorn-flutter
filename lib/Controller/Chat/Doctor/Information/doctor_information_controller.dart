@@ -28,7 +28,7 @@ class DoctorInformationController extends ControllerCore {
   void initialize() {
     _doctorInformationCache = DoctorInformationCache().data;
     _exist = _checkExist();
-    _primary = ValueNotifier(isPrimaryDoctor());
+    _primary = ValueNotifier(isPrimaryDoctor(_doctorId));
   }
 
   bool get exist => _exist;
@@ -76,7 +76,7 @@ class DoctorInformationController extends ControllerCore {
     }
     print('主治医登録完了 ${PrimaryDoctorsCache().data}');
 
-    _primary.value = isPrimaryDoctor();
+    _primary.value = isPrimaryDoctor(_doctorId);
   }
 
   /// 主治医登録を解除
@@ -92,14 +92,13 @@ class DoctorInformationController extends ControllerCore {
     }
     print('主治医登録解除完了 ${PrimaryDoctorsCache().data}');
 
-    _primary.value = isPrimaryDoctor();
+    _primary.value = isPrimaryDoctor(_doctorId);
   }
 
-  bool isPrimaryDoctor() {
-    print('主 ${PrimaryDoctorsCache().data}');
-    if (PrimaryDoctorsCache().data == null) {
-      return false;
-    }
-    return PrimaryDoctorsCache().data!.contains(_doctorId);
+  /// 主治医に登録している医者かどうかを判定する
+  /// [doctorId] 医者ID
+  bool isPrimaryDoctor(String doctorId) {
+    List<String> doctorList = PrimaryDoctorsCache().data ?? [];
+    return doctorList.contains(doctorId);
   }
 }
