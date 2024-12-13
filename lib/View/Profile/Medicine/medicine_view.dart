@@ -7,7 +7,7 @@ import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
-import 'package:dotted_border/dotted_border.dart';
+import 'package:unicorn_flutter/View/Component/Parts/register_content_tile.dart';
 import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -59,38 +59,11 @@ class _MedicineViewState extends State<MedicineView> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: GestureDetector(
-                              onTap: () {
-                                const ProfileMedicineSettingRoute()
-                                    .push(context);
-                              },
-                              child: DottedBorder(
-                                dashPattern: const [15, 10],
-                                borderType: BorderType.RRect,
-                                radius: const Radius.circular(20),
-                                child: SizedBox(
-                                  width: deviceWidth * 0.9,
-                                  height: 200,
-                                  child: const Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.add,
-                                        color: Colors.grey,
-                                        size: 22,
-                                      ),
-                                      CustomText(
-                                        text: 'おくすりを登録する',
-                                        color: ColorName.textGray,
-                                        fontSize: 14,
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
+                          RegisterContentTile(
+                            tileText: 'おくすりを登録する',
+                            onTap: () {
+                              const ProfileMedicineSettingRoute().push(context);
+                            },
                           ),
                         ],
                       );
