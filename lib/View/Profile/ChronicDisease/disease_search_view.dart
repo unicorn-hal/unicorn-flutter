@@ -164,6 +164,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                             .diseaseList![index].diseaseName,
                                         tileHeight: 60,
                                         boxDecoration: BoxDecoration(
+                                          color: Colors.white,
                                           border: Border.all(
                                             width: 1,
                                             color: Colors.grey,
