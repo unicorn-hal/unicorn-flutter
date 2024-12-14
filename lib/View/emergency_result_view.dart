@@ -38,6 +38,12 @@ class EmergencyResultView extends StatelessWidget {
               ),
             ],
           ),
+          const SizedBox(height: 8),
+          const CustomText(
+            text: 'Unicornの対応履歴が記録されました',
+            fontSize: 12,
+            color: Colors.grey,
+          ),
           const SizedBox(height: 64),
           CustomButton(
             text: 'ホームへ',

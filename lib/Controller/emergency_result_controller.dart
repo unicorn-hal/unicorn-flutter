@@ -1,4 +1,5 @@
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Cache/HealthCheckup/health_checkup_cache.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
@@ -43,9 +44,8 @@ class EmergencyResultController extends ControllerCore {
       ),
     );
     if (res != 200) {
-      Fluttertoast.showToast(msg: '検診結果の更新に失敗しました。');
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
       return;
     }
-    Fluttertoast.showToast(msg: '検診結果を更新しました。');
   }
 }

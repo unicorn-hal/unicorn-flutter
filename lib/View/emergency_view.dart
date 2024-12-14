@@ -234,6 +234,9 @@ class _EmergencyViewState extends State<EmergencyView> {
                   );
                 },
               ),
+              const SizedBox(
+                height: 16,
+              ),
               ValueListenableBuilder(
                 valueListenable: controller.supportLog,
                 builder: (context, value, _) {
