@@ -45,25 +45,17 @@ class _DoctorInformationViewState extends State<DoctorInformationView> {
             ),
             child: Row(
               children: [
-                controller.primary
-                    ? const Icon(
-                        Icons.verified_sharp,
-                        color: Colors.yellow,
-                      )
-                    : const Icon(
-                        Icons.verified_outlined,
-                        color: Colors.white,
-                      ),
+                Icon(
+                  controller.primary
+                      ? Icons.verified_sharp
+                      : Icons.verified_outlined,
+                  color: controller.primary ? Colors.yellow : Colors.white,
+                ),
                 const SizedBox(width: 4),
-                controller.primary
-                    ? const CustomText(
-                        text: '主治医解除',
-                        color: Colors.white,
-                      )
-                    : const CustomText(
-                        text: '主治医登録',
-                        color: Colors.white,
-                      ),
+                CustomText(
+                  text: controller.primary ? '主治医解除' : '主治医登録',
+                  color: Colors.white,
+                )
               ],
             ),
           ),
