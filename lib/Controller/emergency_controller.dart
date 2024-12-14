@@ -24,6 +24,10 @@ class EmergencyController extends ControllerCore {
   LocationService get _locationService => LocationService();
   UnicornApi get _unicornApi => UnicornApi();
 
+  bool isInitUnicornStartPoint = false;
+  LatLng? unicornStartPoint;
+  LatLng? userCurrentLocation;
+
   late StompClient stompClient;
 
   final ValueNotifier<EmergencyStatusEnum> _emergencyStatus =
@@ -76,16 +80,21 @@ class EmergencyController extends ControllerCore {
     return LatLng(position.latitude, position.longitude);
   }
 
+  /// 位置情報から住所を取得
+  Future<String?> getAddressFromLatLng(LatLng location) async {
+    return await _locationService.getAddressFromLatLng(location);
+  }
+
   /// API通信
   Future<int> _postEmergencyRequest() async {
-    LatLng? userCurrentLocation = await _getUserCurrentLocation();
+    userCurrentLocation = await _getUserCurrentLocation();
     if (userCurrentLocation == null) {
       return 500;
     }
     EmergencyRequest emergencyRequest = EmergencyRequest(
       userId: UserData().user!.userId,
-      userLatitude: userCurrentLocation.latitude,
-      userLongitude: userCurrentLocation.longitude,
+      userLatitude: userCurrentLocation!.latitude,
+      userLongitude: userCurrentLocation!.longitude,
     );
     final int statusCode = await _unicornApi.postEmergency(
       body: emergencyRequest,
@@ -158,10 +167,18 @@ class EmergencyController extends ControllerCore {
         break;
       case EmergencyStatusEnum.moving:
         _unicornSupport.value = UnicornSupport.fromJson(json);
+        if (!isInitUnicornStartPoint) {
+          isInitUnicornStartPoint = true;
+          unicornStartPoint = LatLng(
+            _unicornSupport.value!.robotLatitude!,
+            _unicornSupport.value!.robotLongitude!,
+          );
+        }
         _useMap.value = true;
         break;
       case EmergencyStatusEnum.arrival:
         _unicornSupport.value = UnicornSupport.fromJson(json);
+        _updateSupportLog(status);
         await Future.delayed(const Duration(seconds: 3));
         const ProgressRoute(from: Routes.emergency).go(context);
         return;

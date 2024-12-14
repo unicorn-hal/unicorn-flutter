@@ -19,16 +19,6 @@ class EmergencyView extends StatefulWidget {
 class _EmergencyViewState extends State<EmergencyView> {
   late EmergencyController controller;
 
-  // todo: Controllerから取得する
-  final String startPointText = 'ユニコーン病院';
-
-  final String destinationPointText = '東京都西新宿1-1-100';
-
-  final LatLng startPoint = const LatLng(35.681236, 139.767125);
-  // 東京駅
-  final LatLng destinationPoint = const LatLng(35.690921, 139.700258);
-  // 新宿駅
-
   @override
   void initState() {
     super.initState();
@@ -121,38 +111,6 @@ class _EmergencyViewState extends State<EmergencyView> {
                 ),
               ),
               ValueListenableBuilder(
-                valueListenable: controller.supportLog,
-                builder: (context, value, _) {
-                  return SizedBox(
-                    width: size.width * 0.9,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const CustomText(
-                          text: 'サポートログ',
-                          fontSize: 16,
-                        ),
-                        const Divider(),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: value.length,
-                          itemBuilder: (context, index) {
-                            return CustomText(
-                              text: value[index],
-                              fontSize: 12,
-                            );
-                          },
-                        ),
-                        const SizedBox(
-                          height: 30,
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-              ValueListenableBuilder(
                 valueListenable: controller.useMap,
                 builder: (context, value, _) {
                   if (!value) {
@@ -177,8 +135,8 @@ class _EmergencyViewState extends State<EmergencyView> {
                                 color: Colors.green.shade700,
                                 size: 24,
                               ),
-                              CustomText(
-                                text: startPointText,
+                              const CustomText(
+                                text: 'Unicorn待機拠点: HAL東京',
                                 fontSize: 14,
                               ),
                             ],
@@ -193,9 +151,30 @@ class _EmergencyViewState extends State<EmergencyView> {
                                 color: Colors.purpleAccent.shade700,
                                 size: 24,
                               ),
-                              CustomText(
-                                text: destinationPointText,
-                                fontSize: 14,
+                              ValueListenableBuilder(
+                                valueListenable: controller.unicornSupport,
+                                builder: (context, value, _) {
+                                  if (value == null ||
+                                      value.robotLatitude == null ||
+                                      value.robotLongitude == null) {
+                                    return const SizedBox();
+                                  }
+                                  return FutureBuilder(
+                                    future: controller.getAddressFromLatLng(
+                                        LatLng(value.robotLatitude!,
+                                            value.robotLongitude!)),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Container();
+                                      }
+                                      return CustomText(
+                                        text: snapshot.data.toString(),
+                                        fontSize: 14,
+                                      );
+                                    },
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -209,9 +188,20 @@ class _EmergencyViewState extends State<EmergencyView> {
                                 color: Colors.red.shade700,
                                 size: 24,
                               ),
-                              CustomText(
-                                text: destinationPointText,
-                                fontSize: 14,
+                              FutureBuilder(
+                                future: controller.getAddressFromLatLng(
+                                  controller.userCurrentLocation!,
+                                ),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Container();
+                                  }
+                                  return CustomText(
+                                    text: snapshot.data.toString(),
+                                    fontSize: 14,
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -238,13 +228,45 @@ class _EmergencyViewState extends State<EmergencyView> {
                                 return const SizedBox();
                               }
                               return GoogleMapViewer(
-                                point: startPoint,
-                                destination: destinationPoint,
+                                point: controller.unicornStartPoint!,
+                                destination: controller.userCurrentLocation,
                                 current: LatLng(value.robotLatitude!,
                                     value.robotLongitude!),
                               );
                             },
                           ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+              ValueListenableBuilder(
+                valueListenable: controller.supportLog,
+                builder: (context, value, _) {
+                  return SizedBox(
+                    width: size.width * 0.9,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const CustomText(
+                          text: 'サポートログ',
+                          fontSize: 16,
+                        ),
+                        const Divider(),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: value.length,
+                          itemBuilder: (context, index) {
+                            return CustomText(
+                              text: value[index],
+                              fontSize: 12,
+                            );
+                          },
+                        ),
+                        const SizedBox(
+                          height: 30,
                         ),
                       ],
                     ),
