@@ -48,9 +48,17 @@ class _AiCheckupViewState extends State<AiCheckupView> {
                       backgroundColor: Colors.white,
                       child: Assets.images.icons.uniIcon.image(),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CustomText(text: '体のことについて教えてください'),
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CustomText(text: '体のことについて教えてください'),
+                      ),
                     )
                   ],
                 ),
