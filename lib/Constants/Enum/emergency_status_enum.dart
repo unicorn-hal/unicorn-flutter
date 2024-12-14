@@ -1,4 +1,5 @@
 enum EmergencyStatusEnum {
+  allShutdown,
   request,
   userWaiting,
   dispatch,
@@ -11,6 +12,8 @@ enum EmergencyStatusEnum {
 class EmergencyStatusType {
   static EmergencyStatusEnum fromString(String value) {
     switch (value) {
+      case 'all_shutdown':
+        return EmergencyStatusEnum.allShutdown;
       case 'request':
         return EmergencyStatusEnum.request;
       case 'user_waiting':
@@ -32,6 +35,8 @@ class EmergencyStatusType {
 
   static String toStringValue(EmergencyStatusEnum value) {
     switch (value) {
+      case EmergencyStatusEnum.allShutdown:
+        return 'all_shutdown';
       case EmergencyStatusEnum.request:
         return 'request';
       case EmergencyStatusEnum.userWaiting:
@@ -53,6 +58,8 @@ class EmergencyStatusType {
 
   static String toLogString(EmergencyStatusEnum value) {
     switch (value) {
+      case EmergencyStatusEnum.allShutdown:
+        return '対応可能なUnicornがいません';
       case EmergencyStatusEnum.request:
         return 'Unicornを要請しました';
       case EmergencyStatusEnum.userWaiting:

@@ -1,7 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -20,6 +23,8 @@ import 'package:unicorn_flutter/Service/Package/Location/location_service.dart';
 class EmergencyController extends ControllerCore {
   LocationService get _locationService => LocationService();
   UnicornApi get _unicornApi => UnicornApi();
+
+  late StompClient stompClient;
 
   final ValueNotifier<EmergencyStatusEnum> _emergencyStatus =
       ValueNotifier(EmergencyStatusEnum.request);
@@ -95,7 +100,6 @@ class EmergencyController extends ControllerCore {
     final String destination =
         '/topic/unicorn/users/${UserData().user!.userId}';
 
-    late StompClient stompClient;
     stompClient = StompClient(
       config: StompConfig(
         url: wsUrl,
@@ -114,7 +118,6 @@ class EmergencyController extends ControllerCore {
         },
         onDisconnect: (StompFrame frame) {
           Log.echo('WebSocket: Disconnected');
-          _wsConnectionStatus.value = false;
         },
       ),
     );
@@ -129,7 +132,7 @@ class EmergencyController extends ControllerCore {
   }
 
   /// destinationからのコールバック関数
-  void wsCallback(StompFrame frame) {
+  void wsCallback(StompFrame frame) async {
     Log.echo('WebSocket Received: ${frame.body}');
     final Map<String, dynamic> json =
         jsonDecode(frame.body!) as Map<String, dynamic>;
@@ -140,6 +143,11 @@ class EmergencyController extends ControllerCore {
     int? waitingNumber;
     Log.echo('Emergency Status: $status');
     switch (status) {
+      case EmergencyStatusEnum.allShutdown:
+        await Future.delayed(const Duration(seconds: 1));
+        Fluttertoast.showToast(msg: '対応できるUnicornが不在のため、緊急要請を取り消しました');
+        const HomeRoute().go(context);
+        break;
       case EmergencyStatusEnum.request:
         break;
       case EmergencyStatusEnum.userWaiting:
@@ -154,10 +162,9 @@ class EmergencyController extends ControllerCore {
         break;
       case EmergencyStatusEnum.arrival:
         _unicornSupport.value = UnicornSupport.fromJson(json);
-        Future.delayed(const Duration(seconds: 3), () {
-          const ProgressRoute(from: Routes.emergency).go(context);
-        });
-        break;
+        await Future.delayed(const Duration(seconds: 3));
+        const ProgressRoute(from: Routes.emergency).go(context);
+        return;
       case EmergencyStatusEnum.complete:
         _unicornSupport.value = UnicornSupport.fromJson(json);
         break;
@@ -179,9 +186,11 @@ class EmergencyController extends ControllerCore {
   }
 
   void dispose() {
-    _wsConnectionStatus.dispose();
+    _wsConnectionStatus.removeListener(() {});
     _useMap.dispose();
     _supportLog.dispose();
     _unicornSupport.dispose();
+    _wsConnectionStatus.dispose();
+    stompClient.deactivate();
   }
 }
