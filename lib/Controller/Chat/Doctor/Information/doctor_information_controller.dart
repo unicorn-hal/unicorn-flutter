@@ -63,7 +63,10 @@ class DoctorInformationController extends ControllerCore {
 
     if (response != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      return;
     }
+    // 成功時のトースト表示
+    Fluttertoast.showToast(msg: Strings.SUCCESS_PRIMARY_DOCTOR_TEXT);
   }
 
   /// 主治医登録を解除
@@ -76,7 +79,10 @@ class DoctorInformationController extends ControllerCore {
 
     if (response != 204) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      return;
     }
+    // 成功時のトースト表示
+    Fluttertoast.showToast(msg: Strings.SUCCESS_DELETE_PRIMARY_DOCTOR_TEXT);
   }
 
   /// 主治医に登録している医者かどうかを判定する

@@ -103,4 +103,10 @@ class Strings {
 
   // 有効な郵便番号が入力されていない際に表示するテキスト
   static const String POSTAL_CODE_VALIDATE_TEXT = '郵便番号が正しく入力されていません';
+
+  // 主治医登録時に表示するテキスト
+  static const String SUCCESS_PRIMARY_DOCTOR_TEXT = '主治医に登録しました';
+
+  // 主治医登録解除時に表示するテキスト
+  static const String SUCCESS_DELETE_PRIMARY_DOCTOR_TEXT = '主治医登録を解除しました';
 }
