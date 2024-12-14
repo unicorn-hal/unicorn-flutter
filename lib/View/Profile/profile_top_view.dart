@@ -94,10 +94,7 @@ class ProfileTopView extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.all(10),
                     child: ProfileDetailCell(
-                      icon: Icon(
-                        controller.cellData[index].icon,
-                        color: ColorName.mainColor,
-                      ),
+                      iconImage: controller.cellData[index].iconImage,
                       title: controller.cellData[index].title,
                       onTap: () => controller.cellData[index].onTap.call(),
                     ),

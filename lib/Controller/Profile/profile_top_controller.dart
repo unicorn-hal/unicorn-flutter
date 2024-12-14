@@ -13,6 +13,8 @@ import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Package/LocalAuth/local_auth_service.dart';
 import 'package:unicorn_flutter/Service/Package/UrlLauncher/url_launcher_service.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
+import 'package:unicorn_flutter/gen/assets.gen.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class ProfileTopController extends ControllerCore {
   /// Serviceのインスタンス化
@@ -35,23 +37,28 @@ class ProfileTopController extends ControllerCore {
     _cellData = [
       ProfileDetail(
           title: '通話予約',
-          icon: Icons.call,
+          iconImage: Assets.images.icons.callReservationIcon
+              .image(color: ColorName.mainColor),
           onTap: () => const ProfileCallReservationRoute().push(context)),
       ProfileDetail(
           title: 'おくすり',
-          icon: Icons.medical_services,
+          iconImage: Assets.images.icons.medicineIcon
+              .image(color: ColorName.mainColor),
           onTap: () => const ProfileMedicineRoute().push(context)),
       ProfileDetail(
           title: '家族メール',
-          icon: Icons.mail,
+          iconImage: Assets.images.icons.familyEmailIcon
+              .image(color: ColorName.mainColor),
           onTap: () => const ProfileFamilyEmailRoute().push(context)),
       ProfileDetail(
           title: '持病設定',
-          icon: Icons.sick,
+          iconImage: Assets.images.icons.chronicDiseaseIcon
+              .image(color: ColorName.mainColor),
           onTap: () => const ProfileChronicDiseaseRoute().push(context)),
       ProfileDetail(
         title: '身体情報',
-        icon: Icons.man,
+        iconImage: Assets.images.icons.physicalInfoIcon
+            .image(color: ColorName.mainColor),
         onTap: () {
           final UserRequest userRequest = UserData().getUserWithRequest();
           ProfileRegisterPhysicalInfoRoute(
@@ -61,7 +68,8 @@ class ProfileTopController extends ControllerCore {
       ),
       ProfileDetail(
           title: '住所設定',
-          icon: Icons.home,
+          iconImage: Assets.images.icons.addressInfoIcon
+              .image(color: ColorName.mainColor),
           onTap: () {
             final UserRequest userRequest = UserData().getUserWithRequest();
             ProfileRegisterAddressInfoRoute(
@@ -70,7 +78,8 @@ class ProfileTopController extends ControllerCore {
           }),
       ProfileDetail(
           title: 'ユーザー設定',
-          icon: Icons.manage_accounts,
+          iconImage: Assets.images.bottomNavBar.profile
+              .image(color: ColorName.mainColor),
           onTap: () {
             final UserRequest userRequest = UserData().getUserWithRequest();
             ProfileRegisterUserInfoRoute(
@@ -79,7 +88,8 @@ class ProfileTopController extends ControllerCore {
           }),
       ProfileDetail(
         title: 'セキュリティ',
-        icon: Icons.lock,
+        iconImage:
+            Assets.images.icons.localAuthIcon.image(color: ColorName.mainColor),
         onTap: () async {
           if (await _localAuthService.getLocalAuthStatus() ==
               LocalAuthStatus.failed) {
@@ -91,7 +101,8 @@ class ProfileTopController extends ControllerCore {
       ),
       ProfileDetail(
         title: '通知設定',
-        icon: Icons.notifications,
+        iconImage: Assets.images.icons.notificationSettingIcon
+            .image(color: ColorName.mainColor),
         onTap: () async {
           ProtectorNotifier().enableProtector();
           UserNotification? userNotification = await getUserNotification();
@@ -105,7 +116,8 @@ class ProfileTopController extends ControllerCore {
       ),
       ProfileDetail(
         title: '問い合わせ',
-        icon: Icons.question_mark,
+        iconImage:
+            Assets.images.icons.inquiryIcon.image(color: ColorName.mainColor),
         onTap: () async {
           await _urlLauncherService
               .launchUrl('https://forms.gle/YhZ2TMW3iXbAx4Vx5');
@@ -113,7 +125,8 @@ class ProfileTopController extends ControllerCore {
       ),
       ProfileDetail(
           title: 'アプリ情報',
-          icon: Icons.info,
+          iconImage: Assets.images.icons.informationIcon
+              .image(color: ColorName.mainColor),
           onTap: () => const ProfileAppInformationRoute().push(context)),
     ];
   }
