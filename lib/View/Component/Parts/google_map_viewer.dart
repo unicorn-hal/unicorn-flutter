@@ -52,10 +52,8 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
         _point = widget.point;
         _destination = widget.destination;
         _current = widget.current;
-        _polylines.clear();
       });
       if (_destination != null) {
-        _fetchRoute();
         _animateCameraToBounds();
       } else {
         try {
