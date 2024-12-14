@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/AppInformation/app_information_controller.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -17,17 +18,17 @@ class AppInformationView extends StatelessWidget {
     AppInformationController controller = AppInformationController();
     double deviceWidth = MediaQuery.of(context).size.width;
     return CustomScaffold(
+      appBar: CustomAppBar(
+        title: 'アプリ情報',
+        foregroundColor: Colors.white,
+        backgroundColor: ColorName.mainColor,
+      ),
       body: SizedBox(
         width: deviceWidth,
         child: Column(
           children: [
             const SizedBox(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: HeaderTitle(
-                  title: 'アプリ情報',
-                ),
-              ),
+              height: 10,
             ),
             FutureBuilder<String>(
               future: controller.getAppVersion(),

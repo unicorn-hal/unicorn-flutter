@@ -41,6 +41,7 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
       isScrollable: true,
       focusNode: focusNode,
       appBar: CustomAppBar(
+        title: '連絡先を登録',
         foregroundColor: Colors.white,
         backgroundColor: ColorName.mainColor,
         actions: widget.familyEmail != null

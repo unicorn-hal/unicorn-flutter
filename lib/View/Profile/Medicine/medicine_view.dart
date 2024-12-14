@@ -4,6 +4,7 @@ import 'package:unicorn_flutter/Controller/Profile/Medicine/medicine_controller.
 import 'package:unicorn_flutter/Model/Cache/Medicine/medicine_cache.dart';
 import 'package:unicorn_flutter/Model/Entity/Medicine/medicine.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
@@ -31,6 +32,11 @@ class _MedicineViewState extends State<MedicineView> {
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     return CustomScaffold(
+      appBar: CustomAppBar(
+        title: 'Myおくすり',
+        foregroundColor: Colors.white,
+        backgroundColor: ColorName.mainColor,
+      ),
       body: SizedBox(
         width: deviceWidth,
         height: deviceHeight,
@@ -54,7 +60,7 @@ class _MedicineViewState extends State<MedicineView> {
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: HeaderTitle(
-                                title: 'Myおくすり',
+                                title: '登録済みのおくすり',
                               ),
                             ),
                           ),
@@ -80,7 +86,7 @@ class _MedicineViewState extends State<MedicineView> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: HeaderTitle(
-                                    title: 'Myおくすり',
+                                    title: '登録済みのおくすり',
                                   ),
                                 ),
                               ),

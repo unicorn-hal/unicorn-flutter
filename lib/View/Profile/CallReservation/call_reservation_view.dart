@@ -4,12 +4,14 @@ import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/CallReservation/call_reservation_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Call/call_reservation.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/call_reservation_tile.dart';
 import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class CallReservationView extends StatefulWidget {
   const CallReservationView({super.key});
@@ -30,17 +32,16 @@ class _CallReservationViewState extends State<CallReservationView> {
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
     return CustomScaffold(
+      appBar: CustomAppBar(
+        title: '通話予約',
+        foregroundColor: Colors.white,
+        backgroundColor: ColorName.mainColor,
+      ),
       isScrollable: true,
       body: SizedBox(
         width: deviceWidth,
         child: Column(
           children: [
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: HeaderTitle(
-                title: '通話予約',
-              ),
-            ),
             FutureBuilder<List<CallReservation>?>(
               future: controller.getCallReservation(),
               builder:

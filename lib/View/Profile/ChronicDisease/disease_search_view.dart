@@ -3,6 +3,7 @@ import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/ChronicDisease/disease_search_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart';
 import 'package:unicorn_flutter/Model/Entity/Disease/disease.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -39,6 +40,11 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
     double topPaddingHeight = MediaQuery.of(context).padding.top;
 
     return CustomScaffold(
+      appBar: CustomAppBar(
+        title: 'お悩みを登録',
+        foregroundColor: Colors.white,
+        backgroundColor: ColorName.mainColor,
+      ),
       isScrollable: true,
       focusNode: focusNode,
       body: Container(
@@ -56,7 +62,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: HeaderTitle(
-                    title: 'お悩みを追加する',
+                    title: 'お悩みを検索',
                   ),
                 ),
                 SizedBox(

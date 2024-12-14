@@ -3,6 +3,7 @@ import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/ChronicDisease/chronic_disease_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -14,6 +15,7 @@ import 'package:unicorn_flutter/View/Component/Parts/image_banner.dart';
 import 'package:unicorn_flutter/View/Component/Parts/register_content_tile.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class ChronicDiseaseView extends StatefulWidget {
   const ChronicDiseaseView({super.key});
@@ -35,6 +37,11 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     return CustomScaffold(
+      appBar: CustomAppBar(
+        title: '体のお悩み',
+        foregroundColor: Colors.white,
+        backgroundColor: ColorName.mainColor,
+      ),
       body: SizedBox(
         height: deviceHeight,
         child: Column(
@@ -66,7 +73,7 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: HeaderTitle(
-                              title: '体のお悩み',
+                              title: '登録済みのお悩み',
                             ),
                           ),
                           Padding(
@@ -91,7 +98,7 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                           const Align(
                             alignment: Alignment.centerLeft,
                             child: HeaderTitle(
-                              title: '体のお悩み',
+                              title: '登録済みのお悩み',
                             ),
                           ),
                           RegisterContentTile(
@@ -118,7 +125,7 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                                 child: Align(
                                   alignment: Alignment.centerLeft,
                                   child: HeaderTitle(
-                                    title: '体のお悩み',
+                                    title: '登録済みのお悩み',
                                   ),
                                 ),
                               ),

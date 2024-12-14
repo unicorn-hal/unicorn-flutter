@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/Information/doctor_information_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -26,6 +27,11 @@ class DoctorInformationView extends StatelessWidget {
         DoctorInformationController(doctorId);
     final Size size = MediaQuery.of(context).size;
     return CustomScaffold(
+      appBar: CustomAppBar(
+        title: '医師情報',
+        foregroundColor: Colors.white,
+        backgroundColor: ColorName.mainColor,
+      ),
       isScrollable: true,
       body: FutureBuilder<Doctor?>(
         future: controller.exist

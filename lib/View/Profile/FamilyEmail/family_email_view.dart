@@ -57,7 +57,7 @@ class _FamilyEmailViewState extends State<FamilyEmailView> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: HeaderTitle(
-                            title: '登録済み',
+                            title: '登録済みの連絡先',
                           ),
                         ),
                       ),

@@ -51,7 +51,7 @@ class _FamilyEmailSyncContactViewState
             const Align(
               alignment: Alignment.centerLeft,
               child: HeaderTitle(
-                title: '未登録',
+                title: '未登録の連絡先',
               ),
             ),
             FutureBuilder<List<FamilyEmailPostRequest>?>(
