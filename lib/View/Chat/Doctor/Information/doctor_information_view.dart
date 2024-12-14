@@ -6,6 +6,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dar
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -63,54 +64,66 @@ class DoctorInformationView extends StatelessWidget {
                 ),
 
                 /// 医師名・科目表示部
-                SizedBox(
-                  height: 40,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  child: Column(
                     children: [
-                      CustomText(
-                        text: doctor.lastName + doctor.firstName,
-                        fontSize: 26,
+                      SizedBox(
+                        height: 40,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            CustomText(
+                              text: doctor.lastName + doctor.firstName,
+                              fontSize: 26,
+                            ),
+                            const CustomText(
+                              text: '先生',
+                              fontSize: 20,
+                            ),
+                          ],
+                        ),
                       ),
-                      const CustomText(
-                        text: '先生',
-                        fontSize: 20,
+
+                      /// 科目カード表示部
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Container(
+                          constraints: const BoxConstraints(
+                            minWidth: 10,
+                          ),
+                          height: 60,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              for (final department in doctor.departments)
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 4,
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      ChatDoctorSearchRoute(
+                                        departmentId: department.departmentId,
+                                      ).pushReplacement(context);
+                                    },
+                                    child: DepartmentBadge(
+                                      name: department.departmentName,
+                                    ),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
-                  ),
-                ),
-
-                /// 科目カード表示部
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Container(
-                    constraints: const BoxConstraints(
-                      minWidth: 10,
-                    ),
-                    height: 60,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        for (final department in doctor.departments)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 4,
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                ChatDoctorSearchRoute(
-                                  departmentId: department.departmentId,
-                                ).pushReplacement(context);
-                              },
-                              child: DepartmentBadge(
-                                name: department.departmentName,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
                   ),
                 ),
 
@@ -212,9 +225,9 @@ class DoctorInformationView extends StatelessWidget {
                       vertical: 8.0,
                       horizontal: 16.0,
                     ),
-                    child: CustomText(
-                      text: 'この医師について',
-                      fontSize: 20,
+                    child: HeaderTitle(
+                      title: 'この医師について',
+                      padding: EdgeInsets.zero,
                     ),
                   ),
                 ),
@@ -222,6 +235,7 @@ class DoctorInformationView extends StatelessWidget {
                   width: size.width * 0.9,
                   height: 140,
                   decoration: BoxDecoration(
+                    color: Colors.white,
                     border: Border.all(
                       color: ColorName.shadowGray,
                       width: 2,

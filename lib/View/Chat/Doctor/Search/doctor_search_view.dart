@@ -10,6 +10,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -63,163 +64,170 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
           ),
 
           /// 検索内容入力部
-          SizedBox(
-            width: size.width,
-            height: 54,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+          Container(
+            decoration: const BoxDecoration(color: Colors.white),
+            child: Column(
               children: [
                 SizedBox(
-                  width: size.width * 0.25,
-                  child: const Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 16.0),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.apartment,
-                            color: ColorName.mainColor,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(2.0),
-                            child: CustomText(
-                              text: '病院名',
-                              fontSize: 14,
+                  width: size.width,
+                  height: 54,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: size.width * 0.25,
+                        child: const Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 16.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.apartment,
+                                  color: ColorName.mainColor,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(2.0),
+                                  child: CustomText(
+                                    text: '病院名',
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: size.width * 0.75,
-                  child: Center(
-                    child: CustomTextfield(
-                      width: size.width * 0.7,
-                      height: 44,
-                      hintText: '病院名を入力してください',
-                      controller: controller.hospitalNameController,
-                      maxLength: 20,
-                      maxLines: 1,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            width: size.width,
-            height: 54,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: size.width * 0.25,
-                  child: const Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 16.0),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.healing,
-                            color: ColorName.mainColor,
+                      SizedBox(
+                        width: size.width * 0.75,
+                        child: Center(
+                          child: CustomTextfield(
+                            width: size.width * 0.7,
+                            height: 44,
+                            hintText: '病院名を入力してください',
+                            controller: controller.hospitalNameController,
+                            maxLength: 20,
+                            maxLines: 1,
                           ),
-                          Padding(
-                            padding: EdgeInsets.all(2.0),
-                            child: CustomText(
-                              text: '診察科',
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
                 SizedBox(
-                  width: size.width * 0.6,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 0, vertical: 4.0),
-                      child: CustomDropdown(
-                        height: 44,
-                        dropdownItems: [
-                          // 未選択だけはnullをセット
-                          const DropdownMenuItem(
-                            value: null,
-                            child: CustomText(
-                              text: '未選択',
-                              fontSize: 12,
+                  width: size.width,
+                  height: 54,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: size.width * 0.25,
+                        child: const Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 16.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.healing,
+                                  color: ColorName.mainColor,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(2.0),
+                                  child: CustomText(
+                                    text: '診察科',
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          for (Department department
-                              in controller.departmentList)
-                            DropdownMenuItem(
-                              value:
-                                  controller.departmentList.indexOf(department),
-                              child: CustomText(
-                                text: department.departmentName,
-                                fontSize: 12,
-                              ),
-                            ),
-                        ],
-                        selectIndex: controller.selectedDepartmentIndex,
-                        onChanged: (int? value) {
-                          // valueをセット。"未選択"の場合はnullが入る
-                          controller.chaneDepartqmentIndex(value);
-                        },
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          SizedBox(
-            width: size.width,
-            height: 54,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: size.width * 0.25,
-                  child: const Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 16.0),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.face,
-                            color: ColorName.mainColor,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(2.0),
-                            child: CustomText(
-                              text: '医師名',
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: size.width * 0.75,
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 4.0),
-                      child: CustomTextfield(
+                      SizedBox(
                         width: size.width * 0.6,
-                        height: 44,
-                        hintText: '名前を入力してください',
-                        controller: controller.doctorNameController,
-                        maxLength: 10,
-                        maxLines: 1,
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 0, vertical: 4.0),
+                            child: CustomDropdown(
+                              height: 44,
+                              dropdownItems: [
+                                // 未選択だけはnullをセット
+                                const DropdownMenuItem(
+                                  value: null,
+                                  child: CustomText(
+                                    text: '未選択',
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                for (Department department
+                                    in controller.departmentList)
+                                  DropdownMenuItem(
+                                    value: controller.departmentList
+                                        .indexOf(department),
+                                    child: CustomText(
+                                      text: department.departmentName,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                              ],
+                              selectIndex: controller.selectedDepartmentIndex,
+                              onChanged: (int? value) {
+                                // valueをセット。"未選択"の場合はnullが入る
+                                controller.chaneDepartqmentIndex(value);
+                              },
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: size.width,
+                  height: 54,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: size.width * 0.25,
+                        child: const Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 16.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.face,
+                                  color: ColorName.mainColor,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.all(2.0),
+                                  child: CustomText(
+                                    text: '医師名',
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: size.width * 0.75,
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
+                            child: CustomTextfield(
+                              width: size.width * 0.6,
+                              height: 44,
+                              hintText: '名前を入力してください',
+                              controller: controller.doctorNameController,
+                              maxLength: 10,
+                              maxLines: 1,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -253,7 +261,10 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: EdgeInsets.all(8.0),
-                  child: CustomText(text: '検索結果'),
+                  child: HeaderTitle(
+                    title: '検索結果',
+                    padding: EdgeInsets.zero,
+                  ),
                 ),
               ),
               FutureBuilder<List<Doctor>>(
