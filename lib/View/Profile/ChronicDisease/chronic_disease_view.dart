@@ -161,6 +161,7 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                                         chronicDiseaseList[index].diseaseName,
                                     tileHeight: 60,
                                     boxDecoration: BoxDecoration(
+                                      color: Colors.white,
                                       border: Border.all(
                                         width: 1,
                                         color: Colors.grey,
