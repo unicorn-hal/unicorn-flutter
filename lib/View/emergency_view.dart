@@ -100,10 +100,23 @@ class _EmergencyViewState extends State<EmergencyView> {
                           size: 24,
                         ),
                         const SizedBox(width: 10),
-                        CustomText(
-                          text: '体温・血圧・心拍数を送信中',
-                          color: Colors.blue.shade700,
-                          fontSize: 15,
+                        ValueListenableBuilder(
+                          valueListenable: controller.supportLog,
+                          builder: (context, value, _) {
+                            if (value.isEmpty) {
+                              return CustomText(
+                                text: 'Unicorn待機中',
+                                color: Colors.blue.shade700,
+                                fontSize: 15,
+                              );
+                            }
+                            return CustomText(
+                              text: value.last.replaceAll(
+                                  RegExp(r'\[\d{2}:\d{2}:\d{2}\]'), ''),
+                              color: Colors.blue.shade700,
+                              fontSize: 15,
+                            );
+                          },
                         ),
                       ],
                     ),
