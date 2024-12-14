@@ -10,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 import 'package:unicorn_flutter/Constants/Enum/emergency_status_enum.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Emergency/WebSocket/unicorn_support.dart';
@@ -36,7 +37,6 @@ class EmergencyController extends ControllerCore {
   final ValueNotifier<EmergencyStatusEnum> _emergencyStatus =
       ValueNotifier(EmergencyStatusEnum.request);
   final ValueNotifier<bool> _wsConnectionStatus = ValueNotifier(false);
-  final ValueNotifier<bool> _useMap = ValueNotifier(false);
   final ValueNotifier<List<String>> _supportLog = ValueNotifier(<String>[]);
   final ValueNotifier<UnicornSupport?> _unicornSupport = ValueNotifier(null);
 
@@ -67,7 +67,6 @@ class EmergencyController extends ControllerCore {
     await _connectWebSocket();
   }
 
-  ValueNotifier<bool> get useMap => _useMap;
   ValueNotifier<List<String>> get supportLog => _supportLog;
   ValueNotifier<UnicornSupport?> get unicornSupport => _unicornSupport;
 
@@ -118,7 +117,7 @@ class EmergencyController extends ControllerCore {
 
           stompClient.subscribe(
             destination: destination,
-            callback: wsCallback,
+            callback: _wsCallback,
           );
         },
         onWebSocketError: (dynamic error) {
@@ -141,7 +140,7 @@ class EmergencyController extends ControllerCore {
   }
 
   /// destinationからのコールバック関数
-  void wsCallback(StompFrame frame) async {
+  void _wsCallback(StompFrame frame) async {
     Log.echo('WebSocket Received: ${frame.body}');
     final Map<String, dynamic> json =
         jsonDecode(frame.body!) as Map<String, dynamic>;
@@ -149,24 +148,27 @@ class EmergencyController extends ControllerCore {
         EmergencyStatusType.fromString(json['status']);
     _emergencyStatus.value = status;
 
-    int? waitingNumber;
     Log.echo('Emergency Status: $status');
     switch (status) {
       case EmergencyStatusEnum.allShutdown:
+        _updateSupportLog(status);
         await Future.delayed(const Duration(seconds: 1));
-        Fluttertoast.showToast(msg: '対応できるUnicornが不在のため、緊急要請を取り消しました');
+        Fluttertoast.showToast(msg: Strings.UNICORN_NOT_FOUND_TEXT);
         const HomeRoute().go(context);
         break;
       case EmergencyStatusEnum.request:
+        _updateSupportLog(status);
         break;
       case EmergencyStatusEnum.userWaiting:
-        waitingNumber = json['waitingNumber'];
+        _updateSupportLog(status, waitingNumber: json['waitingNumber']);
         break;
       case EmergencyStatusEnum.dispatch:
         _unicornSupport.value = UnicornSupport.fromJson(json);
+        _updateSupportLog(status);
         break;
       case EmergencyStatusEnum.moving:
         _unicornSupport.value = UnicornSupport.fromJson(json);
+        _updateSupportLog(status);
         if (!isInitUnicornStartPoint) {
           isInitUnicornStartPoint = true;
           unicornStartPoint = LatLng(
@@ -174,7 +176,6 @@ class EmergencyController extends ControllerCore {
             _unicornSupport.value!.robotLongitude!,
           );
         }
-        _useMap.value = true;
         break;
       case EmergencyStatusEnum.arrival:
         _unicornSupport.value = UnicornSupport.fromJson(json);
@@ -184,11 +185,12 @@ class EmergencyController extends ControllerCore {
         return;
       case EmergencyStatusEnum.complete:
         _unicornSupport.value = UnicornSupport.fromJson(json);
+        _updateSupportLog(status);
         break;
       case EmergencyStatusEnum.failure:
+        _updateSupportLog(status);
         break;
     }
-    _updateSupportLog(status, waitingNumber: waitingNumber);
   }
 
   /// サポートログを更新
@@ -204,7 +206,6 @@ class EmergencyController extends ControllerCore {
 
   void dispose() {
     _wsConnectionStatus.removeListener(() {});
-    _useMap.dispose();
     _supportLog.dispose();
     _unicornSupport.dispose();
     _wsConnectionStatus.dispose();

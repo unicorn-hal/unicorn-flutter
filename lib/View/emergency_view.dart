@@ -111,9 +111,9 @@ class _EmergencyViewState extends State<EmergencyView> {
                 ),
               ),
               ValueListenableBuilder(
-                valueListenable: controller.useMap,
+                valueListenable: controller.unicornSupport,
                 builder: (context, value, _) {
-                  if (!value) {
+                  if (value == null) {
                     return const SizedBox();
                   }
                   return SizedBox(
@@ -219,22 +219,15 @@ class _EmergencyViewState extends State<EmergencyView> {
                               width: 1,
                             ),
                           ),
-                          child: ValueListenableBuilder(
-                            valueListenable: controller.unicornSupport,
-                            builder: (context, value, _) {
-                              if (value == null ||
-                                  value.robotLatitude == null ||
-                                  value.robotLongitude == null) {
-                                return const SizedBox();
-                              }
-                              return GoogleMapViewer(
-                                point: controller.unicornStartPoint!,
-                                destination: controller.userCurrentLocation,
-                                current: LatLng(value.robotLatitude!,
-                                    value.robotLongitude!),
-                              );
-                            },
-                          ),
+                          child: (value.robotLatitude == null ||
+                                  value.robotLongitude == null)
+                              ? const SizedBox()
+                              : GoogleMapViewer(
+                                  point: controller.unicornStartPoint!,
+                                  destination: controller.userCurrentLocation,
+                                  current: LatLng(value.robotLatitude!,
+                                      value.robotLongitude!),
+                                ),
                         ),
                       ],
                     ),
