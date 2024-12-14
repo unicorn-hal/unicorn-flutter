@@ -17,4 +17,11 @@ class PrimaryDoctorsCache {
   void removeData(String data) {
     _data!.remove(data);
   }
+
+  /// 主治医に登録している医者かどうかを判定する
+  /// [doctorId] 医者ID
+  bool isPrimaryDoctor(String doctorId) {
+    List<String> doctorList = _data ?? [];
+    return doctorList.contains(doctorId);
+  }
 }

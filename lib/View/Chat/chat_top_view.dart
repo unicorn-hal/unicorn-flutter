@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Chat/chat_top_controller.dart';
+import 'package:unicorn_flutter/Model/Cache/Doctor/PrimaryDoctors/primary_doctors_cache.dart';
 import 'package:unicorn_flutter/Model/Chat/chat_data.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -133,12 +134,12 @@ class ChatTopView extends StatelessWidget {
                               data.doctor.lastName + data.doctor.firstName,
                           description: '${data.latestMessageText}',
                           imageUrl: data.doctor.doctorIconUrl,
-                          badge:
-                              controller.isPrimaryDoctor(data.doctor.doctorId)
-                                  ? Assets.images.icons.primaryDoctorIcon.image(
-                                      fit: BoxFit.cover,
-                                    )
-                                  : null,
+                          badge: PrimaryDoctorsCache()
+                                  .isPrimaryDoctor(data.doctor.doctorId)
+                              ? Assets.images.icons.primaryDoctorIcon.image(
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
                         ),
                       );
                     },

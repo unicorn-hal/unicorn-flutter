@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Model/Data/Department/department_data.dart';
 import 'package:unicorn_flutter/Service/Api/Doctor/doctor_api.dart';
 
-import '../../../../Model/Cache/Doctor/PrimaryDoctors/primary_doctors_cache.dart';
 import '../../../../Model/Entity/Department/department.dart';
 import '../../../../Model/Entity/Doctor/doctor.dart';
 import '../../../Core/controller_core.dart';
@@ -65,12 +64,5 @@ class DoctorSearchController extends ControllerCore {
               : null,
         ) ??
         [];
-  }
-
-  /// 主治医に登録している医者かどうかを判定する
-  /// [doctorId] 医者ID
-  bool isPrimaryDoctor(String doctorId) {
-    List<String> doctorList = PrimaryDoctorsCache().data ?? [];
-    return doctorList.contains(doctorId);
   }
 }

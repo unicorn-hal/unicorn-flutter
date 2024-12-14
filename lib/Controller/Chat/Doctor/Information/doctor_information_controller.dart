@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Model/Cache/Doctor/Information/doctor_information_cache.dart';
@@ -28,7 +26,7 @@ class DoctorInformationController extends ControllerCore {
   void initialize() {
     _doctorInformationCache = DoctorInformationCache().data;
     _exist = _checkExist();
-    _primary = isPrimaryDoctor(_doctorId);
+    _primary = PrimaryDoctorsCache().isPrimaryDoctor(_doctorId);
   }
 
   bool get exist => _exist;
@@ -83,12 +81,5 @@ class DoctorInformationController extends ControllerCore {
     }
     // 成功時のトースト表示
     Fluttertoast.showToast(msg: Strings.SUCCESS_DELETE_PRIMARY_DOCTOR_TEXT);
-  }
-
-  /// 主治医に登録している医者かどうかを判定する
-  /// [doctorId] 医者ID
-  bool isPrimaryDoctor(String doctorId) {
-    List<String> doctorList = PrimaryDoctorsCache().data ?? [];
-    return doctorList.contains(doctorId);
   }
 }
