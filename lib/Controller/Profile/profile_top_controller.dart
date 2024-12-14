@@ -37,27 +37,27 @@ class ProfileTopController extends ControllerCore {
     _cellData = [
       ProfileDetail(
           title: '通話予約',
-          iconImage: Assets.images.icons.callReservationIcon
+          iconImage: Assets.images.profileDetail.callReservationIcon
               .image(color: ColorName.mainColor),
           onTap: () => const ProfileCallReservationRoute().push(context)),
       ProfileDetail(
           title: 'おくすり',
-          iconImage: Assets.images.icons.medicineIcon
+          iconImage: Assets.images.profileDetail.medicineIcon
               .image(color: ColorName.mainColor),
           onTap: () => const ProfileMedicineRoute().push(context)),
       ProfileDetail(
           title: '家族メール',
-          iconImage: Assets.images.icons.familyEmailIcon
+          iconImage: Assets.images.profileDetail.familyEmailIcon
               .image(color: ColorName.mainColor),
           onTap: () => const ProfileFamilyEmailRoute().push(context)),
       ProfileDetail(
           title: '持病設定',
-          iconImage: Assets.images.icons.chronicDiseaseIcon
+          iconImage: Assets.images.profileDetail.chronicDiseaseIcon
               .image(color: ColorName.mainColor),
           onTap: () => const ProfileChronicDiseaseRoute().push(context)),
       ProfileDetail(
         title: '身体情報',
-        iconImage: Assets.images.icons.physicalInfoIcon
+        iconImage: Assets.images.profileDetail.physicalInfoIcon
             .image(color: ColorName.mainColor),
         onTap: () {
           final UserRequest userRequest = UserData().getUserWithRequest();
@@ -68,7 +68,7 @@ class ProfileTopController extends ControllerCore {
       ),
       ProfileDetail(
           title: '住所設定',
-          iconImage: Assets.images.icons.addressInfoIcon
+          iconImage: Assets.images.profileDetail.addressInfoIcon
               .image(color: ColorName.mainColor),
           onTap: () {
             final UserRequest userRequest = UserData().getUserWithRequest();
@@ -88,8 +88,8 @@ class ProfileTopController extends ControllerCore {
           }),
       ProfileDetail(
         title: 'セキュリティ',
-        iconImage:
-            Assets.images.icons.localAuthIcon.image(color: ColorName.mainColor),
+        iconImage: Assets.images.profileDetail.localAuthIcon
+            .image(color: ColorName.mainColor),
         onTap: () async {
           if (await _localAuthService.getLocalAuthStatus() ==
               LocalAuthStatus.failed) {
@@ -101,7 +101,7 @@ class ProfileTopController extends ControllerCore {
       ),
       ProfileDetail(
         title: '通知設定',
-        iconImage: Assets.images.icons.notificationSettingIcon
+        iconImage: Assets.images.profileDetail.notificationSettingIcon
             .image(color: ColorName.mainColor),
         onTap: () async {
           ProtectorNotifier().enableProtector();
@@ -116,8 +116,8 @@ class ProfileTopController extends ControllerCore {
       ),
       ProfileDetail(
         title: '問い合わせ',
-        iconImage:
-            Assets.images.icons.inquiryIcon.image(color: ColorName.mainColor),
+        iconImage: Assets.images.profileDetail.inquiryIcon
+            .image(color: ColorName.mainColor),
         onTap: () async {
           await _urlLauncherService
               .launchUrl('https://forms.gle/YhZ2TMW3iXbAx4Vx5');
@@ -125,7 +125,7 @@ class ProfileTopController extends ControllerCore {
       ),
       ProfileDetail(
           title: 'アプリ情報',
-          iconImage: Assets.images.icons.informationIcon
+          iconImage: Assets.images.profileDetail.informationIcon
               .image(color: ColorName.mainColor),
           onTap: () => const ProfileAppInformationRoute().push(context)),
     ];
