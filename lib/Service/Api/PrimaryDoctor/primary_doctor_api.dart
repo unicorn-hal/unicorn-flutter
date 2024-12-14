@@ -45,7 +45,6 @@ class PrimaryDoctorApi extends ApiCore with Endpoint {
     try {
       useParameter(parameter: '/$doctorId');
       final ApiResponse response = await delete();
-      print(response.statusCode);
       if (response.statusCode == 204) {
         PrimaryDoctorsCache().removeData(doctorId);
       }

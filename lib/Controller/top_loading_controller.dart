@@ -49,6 +49,7 @@ class TopLoadingController extends ControllerCore {
   DepartmentApi get _departmentApi => DepartmentApi();
   MedicineApi get _medicineApi => MedicineApi();
   LocalAuthService get _localAuthService => LocalAuthService();
+  PrimaryDoctorApi get _primaryDoctorApi => PrimaryDoctorApi();
 
   BuildContext context;
   TopLoadingController(this.context);
@@ -176,6 +177,9 @@ class TopLoadingController extends ControllerCore {
 
       // おくすり情報を取得してキャッシュに保存
       await _medicineApi.getMedicineList();
+
+      // 主治医として登録されているリストをキャッシュに保存
+      await _primaryDoctorApi.getPrimaryDoctorList();
 
       const HomeRoute().go(context);
     }

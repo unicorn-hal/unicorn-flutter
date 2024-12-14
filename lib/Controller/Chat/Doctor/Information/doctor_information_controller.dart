@@ -22,17 +22,17 @@ class DoctorInformationController extends ControllerCore {
   late List<Doctor>? _doctorInformationCache;
   final String _doctorId;
   late bool _exist;
-  late ValueNotifier<bool> _primary;
+  late bool _primary;
 
   @override
   void initialize() {
     _doctorInformationCache = DoctorInformationCache().data;
     _exist = _checkExist();
-    _primary = ValueNotifier(isPrimaryDoctor(_doctorId));
+    _primary = isPrimaryDoctor(_doctorId);
   }
 
   bool get exist => _exist;
-  ValueNotifier<bool> get primary => _primary;
+  bool get primary => _primary;
 
   // キャッシュしたデータの中に指定したIDの医師情報があるかを確認
   bool _checkExist() {
@@ -42,25 +42,15 @@ class DoctorInformationController extends ControllerCore {
 
   // APIで医師情報を取得
   Future<Doctor?> getDoctor() async {
-    await cacheDoctorList();
     final Doctor? doctor = await _doctorApi.getDoctor(doctorId: _doctorId);
     return doctor;
   }
 
   //キャッシュから医師情報を取得
   Future<Doctor> getDoctorFromCache() async {
-    await cacheDoctorList();
     return _doctorInformationCache!.firstWhere((element) {
       return element.doctorId == _doctorId;
     });
-  }
-
-  /// 主治医として登録されているリストをキャッシュに保存
-  Future<void> cacheDoctorList() async {
-    if (PrimaryDoctorsCache().data == null) {
-      await _primaryDoctorApi.getPrimaryDoctorList();
-      print('主治医リスト取得完了 ${PrimaryDoctorsCache().data}');
-    }
   }
 
   /// 主治医として登録
@@ -74,9 +64,6 @@ class DoctorInformationController extends ControllerCore {
     if (response != 200) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
-    print('主治医登録完了 ${PrimaryDoctorsCache().data}');
-
-    _primary.value = isPrimaryDoctor(_doctorId);
   }
 
   /// 主治医登録を解除
@@ -90,9 +77,6 @@ class DoctorInformationController extends ControllerCore {
     if (response != 204) {
       Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
     }
-    print('主治医登録解除完了 ${PrimaryDoctorsCache().data}');
-
-    _primary.value = isPrimaryDoctor(_doctorId);
   }
 
   /// 主治医に登録している医者かどうかを判定する

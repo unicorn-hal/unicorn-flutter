@@ -32,48 +32,41 @@ class _DoctorInformationViewState extends State<DoctorInformationView> {
     final Size size = MediaQuery.of(context).size;
     return CustomScaffold(
       actions: [
-        ValueListenableBuilder(
-          valueListenable: controller.primary,
-          builder: (context, value, child) {
-            return GestureDetector(
-              onTap: () async {
-                if (value) {
-                  await controller.deletePrimaryDoctors();
-                } else {
-                  await controller.postPrimaryDoctors();
-                }
-                setState(() {});
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                ),
-                child: Row(
-                  children: [
-                    value
-                        ? const Icon(
-                            Icons.verified_sharp,
-                            color: Colors.yellow,
-                          )
-                        : const Icon(
-                            Icons.verified_outlined,
-                            color: Colors.white,
-                          ),
-                    const SizedBox(width: 4),
-                    value
-                        ? const CustomText(
-                            text: '主治医解除',
-                            color: Colors.white,
-                          )
-                        : const CustomText(
-                            text: '主治医登録',
-                            color: Colors.white,
-                          ),
-                  ],
-                ),
-              ),
-            );
+        GestureDetector(
+          onTap: () async {
+            controller.primary
+                ? await controller.deletePrimaryDoctors()
+                : await controller.postPrimaryDoctors();
+            setState(() {});
           },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10.0,
+            ),
+            child: Row(
+              children: [
+                controller.primary
+                    ? const Icon(
+                        Icons.verified_sharp,
+                        color: Colors.yellow,
+                      )
+                    : const Icon(
+                        Icons.verified_outlined,
+                        color: Colors.white,
+                      ),
+                const SizedBox(width: 4),
+                controller.primary
+                    ? const CustomText(
+                        text: '主治医解除',
+                        color: Colors.white,
+                      )
+                    : const CustomText(
+                        text: '主治医登録',
+                        color: Colors.white,
+                      ),
+              ],
+            ),
+          ),
         ),
       ],
       isScrollable: true,
@@ -124,7 +117,7 @@ class _DoctorInformationViewState extends State<DoctorInformationView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      controller.isPrimaryDoctor(doctor.doctorId)
+                      controller.primary
                           ? Padding(
                               padding: const EdgeInsets.only(right: 10),
                               child: Container(
