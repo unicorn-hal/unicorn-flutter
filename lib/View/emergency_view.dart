@@ -190,7 +190,7 @@ class _EmergencyViewState extends State<EmergencyView> {
                               ),
                               FutureBuilder(
                                 future: controller.getAddressFromLatLng(
-                                  controller.userCurrentLocation!,
+                                  controller.userLocation!,
                                 ),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
@@ -223,8 +223,8 @@ class _EmergencyViewState extends State<EmergencyView> {
                                   value.robotLongitude == null)
                               ? const SizedBox()
                               : GoogleMapViewer(
-                                  point: controller.unicornStartPoint!,
-                                  destination: controller.userCurrentLocation,
+                                  point: controller.unicornStartLocation!,
+                                  destination: controller.userLocation,
                                   current: LatLng(value.robotLatitude!,
                                       value.robotLongitude!),
                                 ),

@@ -28,11 +28,11 @@ class EmergencyController extends ControllerCore {
   EmergencyController(this.context);
   BuildContext context;
 
-  bool isInitUnicornStartPoint = false;
-  LatLng? unicornStartPoint;
-  LatLng? userCurrentLocation;
+  bool _isInitUnicornStartLocation = false;
+  LatLng? _unicornStartLocation; // ユニコーンの出発地点
+  LatLng? _userLocation; // ユーザーの現在地
 
-  late StompClient stompClient;
+  late StompClient _stompClient;
 
   final ValueNotifier<EmergencyStatusEnum> _emergencyStatus =
       ValueNotifier(EmergencyStatusEnum.request);
@@ -42,9 +42,13 @@ class EmergencyController extends ControllerCore {
 
   @override
   void initialize() async {
-    _emergencyStatus.value = EmergencyStatusEnum.request;
+    // 初回ログを追加
     _updateSupportLog(_emergencyStatus.value);
 
+    // WebSocket接続
+    await _connectWebSocket();
+
+    // WebSocket接続状態を監視
     _listenWsConnectionStatus((value) async {
       try {
         Log.echo('WebSocketConnectionStatus: $value');
@@ -53,7 +57,6 @@ class EmergencyController extends ControllerCore {
         }
         // [API] Unicornを要請
         final int statusCode = await _postEmergencyRequest();
-        Log.echo('Emergency Request Status: $statusCode');
         if (statusCode != 200) {
           throw Exception('Emergency Request Error');
         }
@@ -63,12 +66,13 @@ class EmergencyController extends ControllerCore {
         _updateSupportLog(_emergencyStatus.value);
       }
     });
-
-    await _connectWebSocket();
   }
 
   ValueNotifier<List<String>> get supportLog => _supportLog;
   ValueNotifier<UnicornSupport?> get unicornSupport => _unicornSupport;
+
+  LatLng? get unicornStartLocation => _unicornStartLocation;
+  LatLng? get userLocation => _userLocation;
 
   /// ユーザーの現在地を取得
   Future<LatLng?> _getUserCurrentLocation() async {
@@ -79,21 +83,16 @@ class EmergencyController extends ControllerCore {
     return LatLng(position.latitude, position.longitude);
   }
 
-  /// 位置情報から住所を取得
-  Future<String?> getAddressFromLatLng(LatLng location) async {
-    return await _locationService.getAddressFromLatLng(location);
-  }
-
-  /// API通信
+  /// 緊急要請を送信
   Future<int> _postEmergencyRequest() async {
-    userCurrentLocation = await _getUserCurrentLocation();
-    if (userCurrentLocation == null) {
+    _userLocation = await _getUserCurrentLocation();
+    if (_userLocation == null) {
       return 500;
     }
     EmergencyRequest emergencyRequest = EmergencyRequest(
       userId: UserData().user!.userId,
-      userLatitude: userCurrentLocation!.latitude,
-      userLongitude: userCurrentLocation!.longitude,
+      userLatitude: _userLocation!.latitude,
+      userLongitude: _userLocation!.longitude,
     );
     final int statusCode = await _unicornApi.postEmergency(
       body: emergencyRequest,
@@ -108,14 +107,14 @@ class EmergencyController extends ControllerCore {
     final String destination =
         '/topic/unicorn/users/${UserData().user!.userId}';
 
-    stompClient = StompClient(
+    _stompClient = StompClient(
       config: StompConfig(
         url: wsUrl,
         onConnect: (StompFrame frame) async {
           Log.echo('WebSocket: Connected');
           _wsConnectionStatus.value = true;
 
-          stompClient.subscribe(
+          _stompClient.subscribe(
             destination: destination,
             callback: _wsCallback,
           );
@@ -129,7 +128,7 @@ class EmergencyController extends ControllerCore {
         },
       ),
     );
-    stompClient.activate();
+    _stompClient.activate();
   }
 
   /// WebSocketの状態をListen
@@ -152,6 +151,8 @@ class EmergencyController extends ControllerCore {
     switch (status) {
       case EmergencyStatusEnum.allShutdown:
         _updateSupportLog(status);
+
+        // 稼働中のユニコーンが見つからない場合はHomeに戻る
         await Future.delayed(const Duration(seconds: 1));
         Fluttertoast.showToast(msg: Strings.UNICORN_NOT_FOUND_TEXT);
         const HomeRoute().go(context);
@@ -169,9 +170,11 @@ class EmergencyController extends ControllerCore {
       case EmergencyStatusEnum.moving:
         _unicornSupport.value = UnicornSupport.fromJson(json);
         _updateSupportLog(status);
-        if (!isInitUnicornStartPoint) {
-          isInitUnicornStartPoint = true;
-          unicornStartPoint = LatLng(
+
+        // ユニコーンの出発地点を設定
+        if (!_isInitUnicornStartLocation) {
+          _isInitUnicornStartLocation = true;
+          _unicornStartLocation = LatLng(
             _unicornSupport.value!.robotLatitude!,
             _unicornSupport.value!.robotLongitude!,
           );
@@ -180,6 +183,8 @@ class EmergencyController extends ControllerCore {
       case EmergencyStatusEnum.arrival:
         _unicornSupport.value = UnicornSupport.fromJson(json);
         _updateSupportLog(status);
+
+        // 到着後、3秒後にProgressRouteへ遷移
         await Future.delayed(const Duration(seconds: 3));
         const ProgressRoute(from: Routes.emergency).go(context);
         return;
@@ -195,6 +200,7 @@ class EmergencyController extends ControllerCore {
 
   /// サポートログを更新
   /// [status] 現在の状態
+  /// [waitingNumber] 待ち人数
   void _updateSupportLog(EmergencyStatusEnum status, {int? waitingNumber}) {
     final String now = DateFormat('HH:mm:ss').format(DateTime.now());
     final String log = EmergencyStatusType.toLogString(status);
@@ -204,11 +210,16 @@ class EmergencyController extends ControllerCore {
       ..add('[$now] $log $waitingLog');
   }
 
+  /// 位置情報から住所を取得
+  Future<String?> getAddressFromLatLng(LatLng location) async {
+    return await _locationService.getAddressFromLatLng(location);
+  }
+
   void dispose() {
     _wsConnectionStatus.removeListener(() {});
     _supportLog.dispose();
     _unicornSupport.dispose();
     _wsConnectionStatus.dispose();
-    stompClient.deactivate();
+    _stompClient.deactivate();
   }
 }
