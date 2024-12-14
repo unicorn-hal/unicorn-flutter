@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/Information/doctor_information_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Route/router.dart';
@@ -34,28 +33,48 @@ class _DoctorInformationViewState extends State<DoctorInformationView> {
     return CustomScaffold(
       actions: [
         ValueListenableBuilder(
-            valueListenable: controller.primary,
-            builder: (context, value, child) {
-              return GestureDetector(
-                onTap: () async {
-                  if (value) {
-                    await controller.deletePrimaryDoctors();
-                  } else {
-                    await controller.postPrimaryDoctors();
-                  }
-                  setState(() {});
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8.0,
-                  ),
-                  child: CustomText(
-                    text: value ? '主治医登録を解除' : '主治医登録する',
-                    color: Colors.white,
-                  ),
+          valueListenable: controller.primary,
+          builder: (context, value, child) {
+            return GestureDetector(
+              onTap: () async {
+                if (value) {
+                  await controller.deletePrimaryDoctors();
+                } else {
+                  await controller.postPrimaryDoctors();
+                }
+                setState(() {});
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10.0,
                 ),
-              );
-            }),
+                child: Row(
+                  children: [
+                    value
+                        ? const Icon(
+                            Icons.verified_sharp,
+                            color: Colors.yellow,
+                          )
+                        : const Icon(
+                            Icons.verified_outlined,
+                            color: Colors.white,
+                          ),
+                    const SizedBox(width: 4),
+                    value
+                        ? const CustomText(
+                            text: '主治医解除',
+                            color: Colors.white,
+                          )
+                        : const CustomText(
+                            text: '主治医登録',
+                            color: Colors.white,
+                          ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
       ],
       isScrollable: true,
       body: FutureBuilder<Doctor?>(
@@ -79,251 +98,245 @@ class _DoctorInformationViewState extends State<DoctorInformationView> {
           final Doctor doctor = snapshot.data!;
 
           return Center(
-            child: Stack(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
+                const SizedBox(
+                  height: 10,
+                ),
 
-                    /// 医師画像表示部
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        height: 200,
-                        child: UserImageCircle(
-                          imageSize: 200,
-                          imageUrl: doctor.doctorIconUrl,
-                        ),
-                      ),
+                /// 医師画像表示部
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    height: 200,
+                    child: UserImageCircle(
+                      imageSize: 200,
+                      imageUrl: doctor.doctorIconUrl,
                     ),
+                  ),
+                ),
 
-                    /// 医師名・科目表示部
-                    SizedBox(
-                      height: 40,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          CustomText(
-                            text: doctor.lastName + doctor.firstName,
-                            fontSize: 26,
-                          ),
-                          const CustomText(
-                            text: '先生',
-                            fontSize: 20,
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    /// 科目カード表示部
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Container(
-                        constraints: const BoxConstraints(
-                          minWidth: 10,
-                        ),
-                        height: 60,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            for (final department in doctor.departments)
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 4,
+                /// 医師名・科目表示部
+                SizedBox(
+                  height: 40,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      controller.isPrimaryDoctor(doctor.doctorId)
+                          ? Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Container(
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    ChatDoctorSearchRoute(
-                                      departmentId: department.departmentId,
-                                    ).pushReplacement(context);
-                                  },
-                                  child: DepartmentBadge(
-                                    name: department.departmentName,
-                                  ),
-                                ),
+                                width: 30,
+                                height: 30,
+                                child: Assets.images.icons.primaryDoctorIcon
+                                    .image(),
                               ),
-                          ],
-                        ),
+                            )
+                          : const SizedBox(),
+                      CustomText(
+                        text: doctor.lastName + doctor.firstName,
+                        fontSize: 26,
                       ),
-                    ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      const CustomText(
+                        text: '先生',
+                        fontSize: 20,
+                      ),
+                    ],
+                  ),
+                ),
 
-                    /// 通話予約&チャット画面へ遷移するボタン
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                /// 科目カード表示部
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    constraints: const BoxConstraints(
+                      minWidth: 10,
+                    ),
+                    height: 60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              ChatDoctorTextChatRoute($extra: doctor)
-                                  .push(context);
-                            },
-                            child: Container(
-                              width: 160,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: ColorName.shadowGray,
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                    offset: Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.chat,
-                                    color: ColorName.mainColor,
-                                    size: 40,
-                                  ),
-                                  CustomText(
-                                    text: 'チャット',
-                                    fontSize: 14,
-                                  ),
-                                ],
+                        for (final department in doctor.departments)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 4,
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                ChatDoctorSearchRoute(
+                                  departmentId: department.departmentId,
+                                ).pushReplacement(context);
+                              },
+                              child: DepartmentBadge(
+                                name: department.departmentName,
                               ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: GestureDetector(
-                            onTap: () {
-                              ChatDoctorVoiceCallReserveRoute(doctor)
-                                  .push(context);
-                            },
-                            child: Container(
-                              width: 160,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: ColorName.shadowGray,
-                                    spreadRadius: 2,
-                                    blurRadius: 5,
-                                    offset: Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: const Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.call,
-                                    color: ColorName.mainColor,
-                                    size: 40,
-                                  ),
-                                  CustomText(
-                                    text: '通話予約',
-                                    fontSize: 14,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
+                  ),
+                ),
 
-                    const Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20,
+                /// 通話予約&チャット画面へ遷移するボタン
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          ChatDoctorTextChatRoute($extra: doctor).push(context);
+                        },
+                        child: Container(
+                          width: 160,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: ColorName.shadowGray,
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.chat,
+                                color: ColorName.mainColor,
+                                size: 40,
+                              ),
+                              CustomText(
+                                text: 'チャット',
+                                fontSize: 14,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      child: SpacerAndDivider(),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          ChatDoctorVoiceCallReserveRoute(doctor).push(context);
+                        },
+                        child: Container(
+                          width: 160,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: ColorName.shadowGray,
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.call,
+                                color: ColorName.mainColor,
+                                size: 40,
+                              ),
+                              CustomText(
+                                text: '通話予約',
+                                fontSize: 14,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
 
-                    /// 医師情報表示部
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
+                const Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20,
+                  ),
+                  child: SpacerAndDivider(),
+                ),
+
+                /// 医師情報表示部
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 8.0,
+                      horizontal: 16.0,
+                    ),
+                    child: CustomText(
+                      text: 'この医師について',
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                Container(
+                  width: size.width * 0.9,
+                  height: 140,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: ColorName.shadowGray,
+                      width: 2,
+                    ),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
                         padding: EdgeInsets.symmetric(
                           vertical: 8.0,
                           horizontal: 16.0,
                         ),
                         child: CustomText(
-                          text: 'この医師について',
-                          fontSize: 20,
+                          text: '対応可能時間',
+                          fontSize: 18,
                         ),
                       ),
-                    ),
-                    Container(
-                      width: size.width * 0.9,
-                      height: 140,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: ColorName.shadowGray,
-                          width: 2,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8.0,
+                          horizontal: 16.0,
+                        ),
+                        child: CustomText(
+                            text: 'チャット: ${doctor.chatSupportHours}'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8.0,
+                          horizontal: 16.0,
+                        ),
+                        child: CustomText(
+                          text: '通話: ${doctor.callSupportHours}',
                         ),
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(
-                              vertical: 8.0,
-                              horizontal: 16.0,
-                            ),
-                            child: CustomText(
-                              text: '対応可能時間',
-                              fontSize: 18,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8.0,
-                              horizontal: 16.0,
-                            ),
-                            child: CustomText(
-                                text: 'チャット: ${doctor.chatSupportHours}'),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8.0,
-                              horizontal: 16.0,
-                            ),
-                            child: CustomText(
-                              text: '通話: ${doctor.callSupportHours}',
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    )
-                  ],
-                ),
-                Positioned(
-                  top: 10,
-                  right: 10,
-                  child: Container(
-                    width: 60,
-                    height: 60,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: controller.isPrimaryDoctor(doctor.doctorId)
-                        ? Assets.images.icons.primaryDoctorIcon
-                            .image(fit: BoxFit.cover)
-                        : Assets.images.icons.normalDoctorIcon
-                            .image(fit: BoxFit.cover),
+                    ],
                   ),
                 ),
+                const SizedBox(
+                  height: 20,
+                )
               ],
             ),
           );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
-import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class UserInfoTile extends StatelessWidget {
   const UserInfoTile({
@@ -37,7 +36,12 @@ class UserInfoTile extends StatelessWidget {
             height: 70,
             color: tileColor,
             child: Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.only(
+                top: 4,
+                bottom: 4,
+                left: 10,
+                right: 4,
+              ),
               child: Row(
                 children: [
                   SizedBox(
