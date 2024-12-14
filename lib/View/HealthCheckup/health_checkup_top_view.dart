@@ -232,9 +232,12 @@ class HealthCheckupTopView extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: CustomText(text: '↓さあ、検診を開始しましょう↓'),
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                      ),
+                      padding: const EdgeInsets.all(4.0),
+                      child: const CustomText(text: '↓さあ、検診を開始しましょう↓'),
                     ),
                     // 通常検診ボタン
                     SizedBox(
