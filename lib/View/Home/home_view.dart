@@ -68,13 +68,16 @@ class _HomeViewState extends State<HomeView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 10),
-                    child: CustomText(
-                      text: _controller.today,
-                      fontSize: 20,
+                Container(
+                  decoration: const BoxDecoration(color: Colors.white),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20, top: 10),
+                      child: CustomText(
+                        text: _controller.today,
+                        fontSize: 20,
+                      ),
                     ),
                   ),
                 ),
@@ -218,23 +221,26 @@ class _HomeViewState extends State<HomeView> {
           ),
           Align(
             alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, top: 10, bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const CustomText(
-                    text: 'お知らせ・掲示板',
-                    fontSize: 20,
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      await _controller.getHospitalNews(reload: true);
-                      setState(() {});
-                    },
-                    icon: const Icon(Icons.refresh_rounded),
-                  ),
-                ],
+            child: Container(
+              decoration: const BoxDecoration(color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 20, top: 10, bottom: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const CustomText(
+                      text: 'お知らせ・掲示板',
+                      fontSize: 20,
+                    ),
+                    IconButton(
+                      onPressed: () async {
+                        await _controller.getHospitalNews(reload: true);
+                        setState(() {});
+                      },
+                      icon: const Icon(Icons.refresh_rounded),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
