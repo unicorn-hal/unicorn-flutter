@@ -24,6 +24,9 @@ class EmergencyController extends ControllerCore {
   LocationService get _locationService => LocationService();
   UnicornApi get _unicornApi => UnicornApi();
 
+  EmergencyController(this.context);
+  BuildContext context;
+
   bool isInitUnicornStartPoint = false;
   LatLng? unicornStartPoint;
   LatLng? userCurrentLocation;
@@ -36,9 +39,6 @@ class EmergencyController extends ControllerCore {
   final ValueNotifier<bool> _useMap = ValueNotifier(false);
   final ValueNotifier<List<String>> _supportLog = ValueNotifier(<String>[]);
   final ValueNotifier<UnicornSupport?> _unicornSupport = ValueNotifier(null);
-
-  EmergencyController(this.context);
-  BuildContext context;
 
   @override
   void initialize() async {
