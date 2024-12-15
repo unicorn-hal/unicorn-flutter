@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
+import 'package:unicorn_flutter/gen/assets.gen.dart';
 
 class GoogleMapViewer extends StatefulWidget {
   const GoogleMapViewer({
@@ -29,6 +30,8 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
   late LatLng? _current;
 
   final Set<Polyline> _polylines = {};
+
+  BitmapDescriptor? _unicornPin;
 
   @override
   void initState() {
@@ -68,6 +71,9 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
   }
 
   Future<void> _fetchRoute() async {
+    _unicornPin = await BitmapDescriptor.asset(
+        const ImageConfiguration(size: Size(48, 48)),
+        Assets.images.icons.unicornPin.path);
     String apiKey = dotenv.env['GOOGLE_MAP_API_KEY']!;
     final response = await http.get(Uri.parse(
         'https://maps.googleapis.com/maps/api/directions/json?origin=${_point.latitude},${_point.longitude}&destination=${_destination!.latitude},${_destination!.longitude}&key=$apiKey'));
@@ -182,6 +188,15 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
         ),
         polylines: _polylines,
         markers: {
+          if (_current != null)
+            Marker(
+              markerId: const MarkerId('current'),
+              position: _current!,
+              infoWindow: const InfoWindow(title: 'Current Location'),
+              icon: _unicornPin ??
+                  BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueYellow),
+            ),
           Marker(
             markerId: const MarkerId('point'),
             position: _point,
@@ -194,14 +209,6 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
               markerId: const MarkerId('destination'),
               position: _destination!,
               infoWindow: const InfoWindow(title: 'Destination'),
-            ),
-          if (_current != null)
-            Marker(
-              markerId: const MarkerId('current'),
-              position: _current!,
-              infoWindow: const InfoWindow(title: 'Current Location'),
-              icon: BitmapDescriptor.defaultMarkerWithHue(
-                  BitmapDescriptor.hueMagenta),
             ),
         },
       ),
