@@ -94,6 +94,7 @@ class UserInfoTile extends StatelessWidget {
             // バッジがある場合は右寄せに表示
             if (badge != null)
               Container(
+                padding: const EdgeInsets.only(right: 10),
                 clipBehavior: Clip.antiAlias,
                 decoration: const BoxDecoration(
                   color: Colors.white,
