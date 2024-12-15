@@ -6,8 +6,8 @@ class FieldTitle extends StatelessWidget {
   const FieldTitle({
     super.key,
     required this.title,
-    this.fontSize = 15,
     this.padding = EdgeInsets.zero,
+    this.fontSize = 15,
     this.icon = Icons.edit,
     this.iconColor = ColorName.mainColor,
   });
