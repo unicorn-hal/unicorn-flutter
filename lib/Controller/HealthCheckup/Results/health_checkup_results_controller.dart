@@ -110,7 +110,8 @@ class HealthCheckupResultsController extends ControllerCore {
         '## 通常検診\n'
         '体温: $bodyTemperature℃\n'
         '血圧: $bloodPressure\n'
-        '診断: $diseaseExampleName\n';
+        '診断:\n'
+        'もしかして $diseaseExampleName\n';
 
     return HealthCheckupRequest(
       date: DateFormat('yyyy-MM-dd').parse(today.toString()),
