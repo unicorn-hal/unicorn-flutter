@@ -109,4 +109,11 @@ class Strings {
 
   // 主治医登録解除時に表示するテキスト
   static const String SUCCESS_DELETE_PRIMARY_DOCTOR_TEXT = '主治医登録を解除しました';
+
+  // 生体認証が端末で利用できない際に表示するテキスト
+  static const String LOCAL_AUTH_NOT_AVAILABLE_TEXT = 'この端末では生体認証は利用できません';
+
+  // 対応できるUnicornがいない際に表示するテキスト
+  static const String UNICORN_NOT_FOUND_TEXT =
+      '対応できるUnicornが不在のため、緊急要請を取り消しました';
 }

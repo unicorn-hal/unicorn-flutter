@@ -3,6 +3,7 @@ mixin Routes {
   static const String root = '/';
   static const String emergency = '/emergency';
   static const String emergencyProgress = '/emergency/progress';
+  static const String emergencyResult = '/emergency/result';
   static const String registerAddressInfo = '/register/address_info';
   static const String registerPhysicalInfo = '/register/physical_info';
   static const String registerUserInfo = '/register/user_info';
@@ -50,6 +51,8 @@ mixin Routes {
   static const String profileChronicDisease = '/profile/chronic_disease';
   static const String profileChronicDiseaseSearch =
       '/profile/chronic_disease/search';
+  static const String profileChronicDiseaseAiTextChat =
+      '/profile/chronic_disease/ai/text_chat';
   static const String profileCallReservation = '/profile/call_reservation';
   static const String profileCallReservationDoctorTextChat =
       '/profile/call_reservation/doctor/text_chat';

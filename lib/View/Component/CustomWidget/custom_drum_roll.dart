@@ -108,7 +108,7 @@ class _CustomDrumRollState extends State<CustomDrumRoll> {
         child: CustomText(
           text: widget.drumRollType == DrumRollType.time
               ? DateFormat('HH:mm').format(_currentValue)
-              : DateFormat('yyyy MM/dd').format(_currentValue),
+              : DateFormat('yyyy/MM/dd').format(_currentValue),
           color: Colors.blue,
         ),
       ),

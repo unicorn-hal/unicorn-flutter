@@ -45,6 +45,7 @@ import 'package:unicorn_flutter/View/Profile/profile_top_view.dart';
 import 'package:unicorn_flutter/View/Profile/LocalAuth/local_auth_view.dart';
 import 'package:unicorn_flutter/View/Component/Pages/Register/register_user_info_view.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
+import 'package:unicorn_flutter/View/emergency_result_view.dart';
 import 'package:unicorn_flutter/View/emergency_view.dart';
 import 'package:unicorn_flutter/View/top_loading_view.dart';
 import 'routes.dart';
@@ -166,6 +167,9 @@ final routerProvider = Provider(
         TypedGoRoute<ProfileChronicDiseaseSearchRoute>(
           path: Routes.profileChronicDiseaseSearch,
         ),
+        TypedGoRoute<ProfileChronicDiseaseAiTextChatRoute>(
+          path: Routes.profileChronicDiseaseAiTextChat,
+        ),
         TypedGoRoute<ProfileCallReservationRoute>(
           path: Routes.profileCallReservation,
         ),
@@ -250,14 +254,34 @@ class EmergencyRoute extends GoRouteData {
       const EmergencyView();
 }
 
+@TypedGoRoute<EmergencyResultRoute>(
+  path: Routes.emergencyResult,
+)
+class EmergencyResultRoute extends GoRouteData {
+  const EmergencyResultRoute({
+    required this.bodyTemperature,
+    required this.bloodPressure,
+  });
+
+  final double bodyTemperature;
+  final String bloodPressure;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      EmergencyResultView(
+        bodyTemperature: bodyTemperature,
+        bloodPressure: bloodPressure,
+      );
+}
+
 @TypedGoRoute<ProgressRoute>(
   path: Routes.emergencyProgress,
 )
 class ProgressRoute extends GoRouteData {
   const ProgressRoute({
     required this.from,
-    required this.diseaseType,
-    required this.healthPoint,
+    this.diseaseType = HealthCheckupDiseaseEnum.badFeel,
+    this.healthPoint = 0,
   });
 
   final String from;
@@ -658,6 +682,14 @@ class ProfileChronicDiseaseSearchRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => DiseaseSearchView(
         chronicDiseaseList: $extra,
       );
+}
+
+class ProfileChronicDiseaseAiTextChatRoute extends GoRouteData {
+  const ProfileChronicDiseaseAiTextChatRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const AiTextChatView();
 }
 
 class ProfileCallReservationRoute extends GoRouteData {
