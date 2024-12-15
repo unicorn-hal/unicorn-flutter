@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
@@ -49,14 +51,16 @@ class ProgressController extends ControllerCore {
     }
     await Future.delayed(const Duration(seconds: 3));
 
+    // 体温と血圧をランダムに生成
+    double bodyTemperature = _generateRandomBodyTemperature();
+    String bloodPressure = _generateRandomBloodPressure();
+
     // それぞれの画面に遷移
     if (from == Routes.emergency) {
-      // todo: 画面遷移
+      EmergencyResultRoute(
+              bloodPressure: bloodPressure, bodyTemperature: bodyTemperature)
+          .go(context);
     } else {
-      // 体温と血圧をランダムに生成
-      double bodyTemperature = _generateRandomBodyTemperature();
-      String bloodPressure = _generateRandomBloodPressure();
-
       healthPoint = _updateHealthPoint(bodyTemperature, bloodPressure);
       CheckupResultRoute(
         $extra: diseaseType,

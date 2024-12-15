@@ -113,4 +113,22 @@ class LocationService {
       return null;
     }
   }
+
+  /// 緯度経度から住所を取得するサービス
+  Future<String?> getAddressFromLatLng(LatLng position) async {
+    try {
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
+      Placemark placemark = placemarks[0];
+      String address = '${placemark.administrativeArea}'
+          '${placemark.locality}'
+          '${placemark.subLocality}'
+          '${placemark.name}';
+
+      return address;
+    } catch (e) {
+      Log.echo('Error: $e');
+      return null;
+    }
+  }
 }

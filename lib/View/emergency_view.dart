@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:unicorn_flutter/Controller/emergency_controller.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
@@ -8,14 +9,27 @@ import 'package:unicorn_flutter/View/Component/Parts/blinking_widget.dart';
 import 'package:unicorn_flutter/View/Component/Parts/google_map_viewer.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
-class EmergencyView extends StatelessWidget {
+class EmergencyView extends StatefulWidget {
   const EmergencyView({super.key});
 
-  // todo: Controllerから取得する
-  final String startPointText = 'ユニコーン病院';
-  final String destinationPointText = '東京都西新宿1-1-100';
-  final LatLng startPoint = const LatLng(35.681236, 139.767125); // 東京駅
-  final LatLng destinationPoint = const LatLng(35.690921, 139.700258); // 新宿駅
+  @override
+  State<EmergencyView> createState() => _EmergencyViewState();
+}
+
+class _EmergencyViewState extends State<EmergencyView> {
+  late EmergencyController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = EmergencyController(context);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +40,15 @@ class EmergencyView extends StatelessWidget {
       isScrollable: true,
       body: SafeArea(
         child: SizedBox(
-          height: size.height,
+          width: size.width,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
                 height: size.height * 0.2,
                 width: size.width * 0.9,
+                margin: const EdgeInsets.symmetric(vertical: 30),
                 decoration: BoxDecoration(
                   color: Colors.red.shade100,
                   border: Border.all(
@@ -41,7 +57,6 @@ class EmergencyView extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                alignment: Alignment.center,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -57,7 +72,7 @@ class EmergencyView extends StatelessWidget {
                         BlinkingWidget(
                           duration: const Duration(milliseconds: 1000),
                           child: CustomText(
-                            text: 'ユニコーンを要請しています',
+                            text: 'Unicornを要請しています',
                             color: Colors.red.shade700,
                             fontSize: 20,
                           ),
@@ -85,73 +100,187 @@ class EmergencyView extends StatelessWidget {
                           size: 24,
                         ),
                         const SizedBox(width: 10),
-                        CustomText(
-                          text: '体温・血圧・心拍数を送信中',
-                          color: Colors.blue.shade700,
-                          fontSize: 15,
+                        ValueListenableBuilder(
+                          valueListenable: controller.supportLog,
+                          builder: (context, value, _) {
+                            if (value.isEmpty) {
+                              return CustomText(
+                                text: 'Unicorn待機中',
+                                color: Colors.blue.shade700,
+                                fontSize: 15,
+                              );
+                            }
+                            return CustomText(
+                              text: value.last.replaceAll(
+                                  RegExp(r'\[\d{2}:\d{2}:\d{2}\]'), ''),
+                              color: Colors.blue.shade700,
+                              fontSize: 15,
+                            );
+                          },
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-              SizedBox(
-                height: size.height * 0.6,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: size.width * 0.9,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.location_on,
-                            color: Colors.green.shade700,
-                            size: 30,
-                          ),
-                          CustomText(
-                            text: startPointText,
-                            fontSize: 16,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: size.width * 0.9,
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.location_on,
-                            color: Colors.red.shade700,
-                            size: 30,
-                          ),
-                          CustomText(
-                            text: destinationPointText,
-                            fontSize: 16,
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SpacerAndDivider(
-                      topHeight: 0,
-                      bottomHeight: 10,
-                    ),
-                    Container(
-                      height: size.height * 0.4,
-                      width: size.width * 0.95,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 1,
+              ValueListenableBuilder(
+                valueListenable: controller.unicornSupport,
+                builder: (context, value, _) {
+                  if (value == null) {
+                    return const SizedBox();
+                  }
+                  return SizedBox(
+                    width: size.width * 0.9,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const CustomText(
+                          text: '地図情報',
+                          fontSize: 16,
                         ),
-                      ),
-                      child: GoogleMapViewer(
-                        point: startPoint,
-                        destination: destinationPoint,
-                      ),
+                        const Divider(),
+                        SizedBox(
+                          width: size.width * 0.9,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                color: Colors.green.shade700,
+                                size: 24,
+                              ),
+                              const CustomText(
+                                text: 'Unicorn待機拠点: HAL東京',
+                                fontSize: 14,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: size.width * 0.9,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                color: Colors.purpleAccent.shade700,
+                                size: 24,
+                              ),
+                              ValueListenableBuilder(
+                                valueListenable: controller.unicornSupport,
+                                builder: (context, value, _) {
+                                  if (value == null ||
+                                      value.robotLatitude == null ||
+                                      value.robotLongitude == null) {
+                                    return const SizedBox();
+                                  }
+                                  return FutureBuilder(
+                                    future: controller.getAddressFromLatLng(
+                                        LatLng(value.robotLatitude!,
+                                            value.robotLongitude!)),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Container();
+                                      }
+                                      return CustomText(
+                                        text: snapshot.data.toString(),
+                                        fontSize: 14,
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: size.width * 0.9,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.location_on,
+                                color: Colors.red.shade700,
+                                size: 24,
+                              ),
+                              FutureBuilder(
+                                future: controller.getAddressFromLatLng(
+                                  controller.userLocation!,
+                                ),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Container();
+                                  }
+                                  return CustomText(
+                                    text: snapshot.data.toString(),
+                                    fontSize: 14,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SpacerAndDivider(
+                          topHeight: 0,
+                          bottomHeight: 10,
+                        ),
+                        Container(
+                          height: size.height * 0.4,
+                          width: size.width * 0.95,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey,
+                              width: 1,
+                            ),
+                          ),
+                          child: (value.robotLatitude == null ||
+                                  value.robotLongitude == null)
+                              ? const SizedBox()
+                              : GoogleMapViewer(
+                                  point: controller.unicornStartLocation!,
+                                  destination: controller.userLocation,
+                                  current: LatLng(value.robotLatitude!,
+                                      value.robotLongitude!),
+                                ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              ValueListenableBuilder(
+                valueListenable: controller.supportLog,
+                builder: (context, value, _) {
+                  return SizedBox(
+                    width: size.width * 0.9,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const CustomText(
+                          text: 'サポートログ',
+                          fontSize: 16,
+                        ),
+                        const Divider(),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: value.length,
+                          itemBuilder: (context, index) {
+                            return CustomText(
+                              text: value[index],
+                              fontSize: 12,
+                            );
+                          },
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
             ],
           ),

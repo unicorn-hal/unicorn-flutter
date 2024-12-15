@@ -29,6 +29,22 @@ class HealthCheckupCache extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// 今日のデータを取得
+  HealthCheckup? getTodayData() {
+    try {
+      final DateTime now = DateTime.now();
+      return _data.firstWhere(
+        (element) =>
+            element.date.year == now.year &&
+            element.date.month == now.month &&
+            element.date.day == now.day,
+      );
+    } catch (e) {
+      Log.echo('Error: $e');
+      return null;
+    }
+  }
+
   /// リスト内のデータを更新する
   void updateData(HealthCheckup data) {
     try {
