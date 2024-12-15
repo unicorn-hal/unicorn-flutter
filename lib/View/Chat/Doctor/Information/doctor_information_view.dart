@@ -35,8 +35,8 @@ class _DoctorInformationViewState extends State<DoctorInformationView> {
         GestureDetector(
           onTap: () async {
             controller.primary
-                ? await controller.deletePrimaryDoctors()
-                : await controller.postPrimaryDoctors();
+                ? await controller.deletePrimaryDoctor()
+                : await controller.postPrimaryDoctor();
             setState(() {});
           },
           child: Padding(

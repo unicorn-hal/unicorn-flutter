@@ -52,7 +52,7 @@ class DoctorInformationController extends ControllerCore {
   }
 
   /// 主治医として登録
-  Future<void> postPrimaryDoctors() async {
+  Future<void> postPrimaryDoctor() async {
     // 主治医登録APIを実行
     ProtectorNotifier().enableProtector();
     PrimaryDoctorsRequest body = PrimaryDoctorsRequest(doctorId: _doctorId);
@@ -68,7 +68,7 @@ class DoctorInformationController extends ControllerCore {
   }
 
   /// 主治医登録を解除
-  Future<void> deletePrimaryDoctors() async {
+  Future<void> deletePrimaryDoctor() async {
     // 主治医登録解除APIを実行
     ProtectorNotifier().enableProtector();
     final int response =
