@@ -5,11 +5,11 @@ class HeaderTitle extends StatelessWidget {
   const HeaderTitle({
     super.key,
     required this.title,
-    this.fontSize = 16,
     this.padding = const EdgeInsets.symmetric(
       vertical: 8.0,
       horizontal: 16.0,
     ),
+    this.fontSize = 16,
     this.useBorder = true,
   });
 
