@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 
@@ -27,78 +29,71 @@ class UserInfoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return Stack(
-      children: [
-        GestureDetector(
-          onTap: () => onTap(),
-          child: Container(
-            width: size.width,
-            height: 70,
-            color: tileColor,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top: 4,
-                bottom: 4,
-                left: 10,
-                right: 4,
-              ),
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 50,
-                    height: 50,
-                    child: UserImageCircle(
-                      imageSize: 50,
-                      imageUrl: imageUrl,
-                      localImage: localImage,
+    return GestureDetector(
+      onTap: () => onTap(),
+      child: Container(
+        width: size.width,
+        height: 70,
+        color: tileColor,
+        child: Row(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 4,
+                  bottom: 4,
+                  left: 10,
+                  right: 4,
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: UserImageCircle(
+                        imageSize: 50,
+                        imageUrl: imageUrl,
+                        localImage: localImage,
+                      ),
                     ),
-                  ),
-
-                  /// ここものちに変更する
-                  const SizedBox(
-                    width: 4.0,
-                  ),
-
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: size.width * 0.5,
-                        height: 30,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: CustomText(text: userName),
-                        ),
-                      ),
-                      SizedBox(
-                        width: size.width * 0.8,
-                        height: 20,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: CustomText(
-                            text: description,
-                            color: Colors.grey,
-                            fontSize: 12,
-                            textOverflow: TextOverflow.ellipsis,
+                    const SizedBox(
+                      width: 4.0,
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 30,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: CustomText(text: userName),
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            height: 20,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: CustomText(
+                                text: description,
+                                color: Colors.grey,
+                                fontSize: 12,
+                                textOverflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ),
-        // バッジがある場合は右寄せに表示
-        if (badge != null)
-          Positioned(
-            top: 0,
-            bottom: 0,
-            right: 10,
-            child: Center(
-              child: Container(
+
+            // バッジがある場合は右寄せに表示
+            if (badge != null)
+              Container(
                 clipBehavior: Clip.antiAlias,
                 decoration: const BoxDecoration(
                   color: Colors.white,
@@ -110,9 +105,9 @@ class UserInfoTile extends StatelessWidget {
                 height: 30,
                 child: badge!,
               ),
-            ),
-          ),
-      ],
+          ],
+        ),
+      ),
     );
   }
 }
