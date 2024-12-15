@@ -184,8 +184,8 @@ class EmergencyController extends ControllerCore {
         _unicornSupport.value = UnicornSupport.fromJson(json);
         _updateSupportLog(status);
 
-        // 到着後、3秒後にProgressRouteへ遷移
-        await Future.delayed(const Duration(seconds: 3));
+        // 到着後、2秒後にProgressRouteへ遷移
+        await Future.delayed(const Duration(seconds: 2));
         const ProgressRoute(from: Routes.emergency).go(context);
         return;
       case EmergencyStatusEnum.complete:
