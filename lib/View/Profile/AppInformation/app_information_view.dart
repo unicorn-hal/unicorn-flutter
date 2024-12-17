@@ -3,6 +3,7 @@ import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/AppInformation/app_information_controller.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -74,6 +75,25 @@ class AppInformationView extends StatelessWidget {
                         color: ColorName.textGray,
                         fontSize: 14,
                       ),
+                    ),
+                    CommonItemTile(
+                      title: 'アプリを退会',
+                      titleColor: Colors.red,
+                      onTap: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CustomDialog(
+                                title: '退会',
+                                bodyText: '本当にアプリを退会しますか？',
+                                leftButtonText: 'いいえ',
+                                rightButtonText: 'はい',
+                                rightButtonOnTap: () async {
+                                  await controller.unsubscribe(context);
+                                },
+                              );
+                            });
+                      },
                     ),
                   ],
                 );
