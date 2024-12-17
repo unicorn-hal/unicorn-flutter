@@ -83,7 +83,7 @@ class _RegisterPhysicalInfoViewState extends State<RegisterPhysicalInfoView> {
                           children: [
                             CustomText(
                               text: 'Profile',
-                              color: ColorName.profileInputBackgroundColor,
+                              color: Colors.red,
                               fontSize: 24,
                             ),
                             CustomText(
