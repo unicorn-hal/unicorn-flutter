@@ -92,7 +92,7 @@ class ProfileTopView extends StatelessWidget {
                 itemCount: controller.cellData.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(8.0),
                     child: ProfileDetailCell(
                       iconImage: controller.cellData[index].iconImage,
                       title: controller.cellData[index].title,
