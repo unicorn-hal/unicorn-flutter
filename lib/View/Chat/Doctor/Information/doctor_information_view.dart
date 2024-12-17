@@ -9,11 +9,12 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
+import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 import '../../../Component/Parts/Chat/department_badges.dart';
 
-class DoctorInformationView extends StatelessWidget {
+class DoctorInformationView extends StatefulWidget {
   const DoctorInformationView({
     super.key,
     required this.doctorId,
@@ -22,15 +23,50 @@ class DoctorInformationView extends StatelessWidget {
   final String doctorId;
 
   @override
+  State<DoctorInformationView> createState() => _DoctorInformationViewState();
+}
+
+class _DoctorInformationViewState extends State<DoctorInformationView> {
+  @override
   Widget build(BuildContext context) {
     DoctorInformationController controller =
-        DoctorInformationController(doctorId);
+        DoctorInformationController(widget.doctorId);
     final Size size = MediaQuery.of(context).size;
     return CustomScaffold(
       appBar: CustomAppBar(
         title: '医師情報',
         foregroundColor: Colors.white,
         backgroundColor: ColorName.mainColor,
+        actions: [
+          GestureDetector(
+            onTap: () async {
+              controller.primary
+                  ? await controller.deletePrimaryDoctor()
+                  : await controller.postPrimaryDoctor();
+              setState(() {});
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10.0,
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    controller.primary
+                        ? Icons.verified_sharp
+                        : Icons.verified_outlined,
+                    color: controller.primary ? Colors.yellow : Colors.white,
+                  ),
+                  const SizedBox(width: 4),
+                  CustomText(
+                    text: controller.primary ? '主治医解除' : '主治医登録',
+                    color: Colors.white,
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
       isScrollable: true,
       body: FutureBuilder<Doctor?>(
@@ -57,6 +93,10 @@ class DoctorInformationView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                const SizedBox(
+                  height: 10,
+                ),
+
                 /// 医師画像表示部
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -79,55 +119,31 @@ class DoctorInformationView extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 40,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            CustomText(
-                              text: doctor.lastName + doctor.firstName,
-                              fontSize: 26,
-                            ),
-                            const CustomText(
-                              text: '先生',
-                              fontSize: 20,
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      /// 科目カード表示部
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Container(
-                          constraints: const BoxConstraints(
-                            minWidth: 10,
-                          ),
-                          height: 60,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              for (final department in doctor.departments)
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 4,
-                                  ),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      ChatDoctorSearchRoute(
-                                        departmentId: department.departmentId,
-                                      ).pushReplacement(context);
-                                    },
-                                    child: DepartmentBadge(
-                                      name: department.departmentName,
-                                    ),
-                                  ),
+                      controller.primary
+                          ? Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Container(
+                                clipBehavior: Clip.antiAlias,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                            ],
-                          ),
-                        ),
+                                width: 30,
+                                height: 30,
+                                child: Assets.images.icons.primaryDoctorIcon
+                                    .image(),
+                              ),
+                            )
+                          : const SizedBox(),
+                      CustomText(
+                        text: doctor.lastName + doctor.firstName,
+                        fontSize: 26,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      const CustomText(
+                        text: '先生',
+                        fontSize: 20,
                       ),
                     ],
                   ),
