@@ -6,6 +6,7 @@ class CommonItemTile extends StatelessWidget {
   const CommonItemTile({
     super.key,
     required this.title,
+    this.titleColor = Colors.black,
     this.action,
     this.onTap,
     this.verticalPadding = 0,
@@ -22,6 +23,7 @@ class CommonItemTile extends StatelessWidget {
     ),
   });
   final String title;
+  final Color titleColor;
   final Widget? action;
   final Function? onTap;
   // todo: viewが全部出来たタイミングでvoidCallbackに変える
@@ -52,6 +54,7 @@ class CommonItemTile extends StatelessWidget {
                   child: CustomText(
                     text: title,
                     fontSize: fontSize,
+                    color: titleColor,
                   ),
                 ),
               ),
