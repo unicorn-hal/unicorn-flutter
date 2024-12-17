@@ -58,7 +58,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
           isScrollable: true,
           appBar: _controller.useAppbar
               ? CustomAppBar(
-                  title: '住所情報',
+                  title: '住所設定',
                   foregroundColor: Colors.white,
                   backgroundColor: ColorName.mainColor,
                 )
