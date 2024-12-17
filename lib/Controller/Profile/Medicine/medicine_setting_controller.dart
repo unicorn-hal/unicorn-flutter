@@ -71,7 +71,7 @@ class MedicineSettingController extends ControllerCore {
       now.hour,
       minute,
     );
-    String reminderTime = DateFormat('HH:mm').format(formatTime);
+    String reminderTime = DateFormat('HH:mm:ss').format(formatTime);
     Reminder reminder = Reminder(
         reminderId: reminderId,
         reminderTime: reminderTime,
@@ -93,7 +93,7 @@ class MedicineSettingController extends ControllerCore {
       date.hour,
       date.minute - date.minute % 15,
     );
-    String reminderTime = DateFormat('HH:mm').format(formatTime);
+    String reminderTime = DateFormat('HH:mm:ss').format(formatTime);
     _reminders[index] = Reminder(
       reminderId: _reminders[index].reminderId,
       reminderTime: reminderTime,
@@ -229,5 +229,24 @@ class MedicineSettingController extends ControllerCore {
       return false;
     }
     return true;
+  }
+
+  bool checkDuplicate() {
+    Function isEqual = const ListEquality().equals;
+    List<Reminder> reminderList;
+    for (Reminder reminder in _reminders) {
+      reminderList =
+          _reminders.where((e) => e.reminderId != reminder.reminderId).toList();
+      for (int i = 0; i < reminderList.length; i++) {
+        if (reminder.reminderTime == reminderList[i].reminderTime) {
+          if (isEqual(
+              reminder.reminderDayOfWeek, reminderList[i].reminderDayOfWeek)) {
+            Fluttertoast.showToast(msg: Strings.MEDICINE_CHECK_DUPLICATE_TEXT);
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 }
