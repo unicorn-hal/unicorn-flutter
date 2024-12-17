@@ -91,6 +91,7 @@ flutter:
     - assets/images/bottom_nav_bar/
     - assets/images/banner/
     - assets/images/profile_detail/
+    - assets/images/launcher/
     - assets/sounds/
 
   fonts:
