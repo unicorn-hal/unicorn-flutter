@@ -1,6 +1,5 @@
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
-import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/Account/account_api.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_service.dart';
@@ -46,14 +45,13 @@ class AppInformationController extends ControllerCore {
     await _systemInfoService.openReview();
   }
 
-  Future<void> unsubscribe(context) async {
+  /// 退会処理
+  Future<void> unsubscribe() async {
     ProtectorNotifier().enableProtector();
     _userApi.deleteUser(userId: UserData().user!.userId);
     _accountApi.deleteAccount();
     _firebaseAuthenticationService.signOut();
     _sharedPreferencesService.clear();
-    print('発火してます');
     ProtectorNotifier().disableProtector();
-    TopLoadingRoute().go(context);
   }
 }

@@ -89,7 +89,10 @@ class AppInformationView extends StatelessWidget {
                                 leftButtonText: 'いいえ',
                                 rightButtonText: 'はい',
                                 rightButtonOnTap: () async {
-                                  await controller.unsubscribe(context);
+                                  await controller.unsubscribe();
+                                  if (context.mounted) {
+                                    TopLoadingRoute().pushReplacement(context);
+                                  }
                                 },
                               );
                             });
