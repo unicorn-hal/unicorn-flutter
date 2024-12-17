@@ -61,6 +61,8 @@ class _CustomTextfieldState extends State<CustomTextfield> {
             },
             textAlignVertical: TextAlignVertical.center,
             style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontFamily: 'Noto_Sans_JP',
               color: widget.textColor,
               fontSize: 16,
               height: 1.5,
@@ -143,7 +145,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
               // 行数が変動したタイミングとそのときの行数を持ってこれたら上の式に代入
               width: widget.width * 0.15,
               decoration: const BoxDecoration(
-                color: ColorName.mainColor,
+                color: ColorName.subColor,
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(30),
                   bottomRight: Radius.circular(30),

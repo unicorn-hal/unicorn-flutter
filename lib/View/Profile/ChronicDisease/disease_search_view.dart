@@ -3,11 +3,13 @@ import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/ChronicDisease/disease_search_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart';
 import 'package:unicorn_flutter/Model/Entity/Disease/disease.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class DiseaseSearchView extends StatefulWidget {
@@ -38,6 +40,11 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
     double topPaddingHeight = MediaQuery.of(context).padding.top;
 
     return CustomScaffold(
+      appBar: CustomAppBar(
+        title: 'お悩みを登録',
+        foregroundColor: Colors.white,
+        backgroundColor: ColorName.mainColor,
+      ),
       isScrollable: true,
       focusNode: focusNode,
       body: Container(
@@ -50,22 +57,17 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              width: deviceWidth * 0.9,
-              child: Column(
-                children: [
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        top: 20,
-                        bottom: 20,
-                        left: 5,
-                      ),
-                      child: CustomText(text: 'お悩みを追加する'),
-                    ),
+            Column(
+              children: [
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: HeaderTitle(
+                    title: 'お悩みを検索',
                   ),
-                  CustomTextfield(
+                ),
+                SizedBox(
+                  width: deviceWidth * 0.9,
+                  child: CustomTextfield(
                     hintText: '病名を入力してください',
                     controller: controller.diseaseTextController,
                     height: 50,
@@ -81,59 +83,62 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                       setState(() {});
                     },
                   ),
-                  controller.diseaseList == null
-                      // todo: エラー時の処理
-                      ? SizedBox(
-                          height: 180,
-                          child: Padding(
-                            padding: const EdgeInsets.all(5),
-                            child: Container(
-                              width: deviceWidth * 0.9,
-                              decoration: const BoxDecoration(
-                                color: ColorName.profileBackgroundColor,
-                              ),
-                              child: const Align(
-                                alignment: Alignment.center,
-                                child: CustomText(
-                                  text: '通信エラー',
-                                ),
+                ),
+                controller.diseaseList == null
+                    // todo: エラー時の処理
+                    ? SizedBox(
+                        height: 180,
+                        child: Padding(
+                          padding: const EdgeInsets.all(5),
+                          child: Container(
+                            width: deviceWidth * 0.9,
+                            decoration: const BoxDecoration(
+                              color: ColorName.profileBackgroundColor,
+                            ),
+                            child: const Align(
+                              alignment: Alignment.center,
+                              child: CustomText(
+                                text: '通信エラー',
                               ),
                             ),
                           ),
-                        )
-                      : controller.diseaseList!.isEmpty
-                          ? SizedBox(
-                              height: 180,
-                              child: Padding(
-                                padding: const EdgeInsets.all(5),
-                                child: Container(
-                                  width: deviceWidth * 0.9,
-                                  decoration: const BoxDecoration(
-                                    color: ColorName.profileBackgroundColor,
-                                  ),
-                                  child: !controller.isSearched
-                                      ? const Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.search,
-                                            ),
-                                            CustomText(
-                                              text: 'お悩みを探す',
-                                            )
-                                          ],
-                                        )
-                                      : const Align(
-                                          alignment: Alignment.center,
-                                          child: CustomText(
-                                            text: '検索結果がありません',
-                                          ),
-                                        ),
+                        ),
+                      )
+                    : controller.diseaseList!.isEmpty
+                        ? SizedBox(
+                            height: 180,
+                            child: Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Container(
+                                width: deviceWidth * 0.9,
+                                decoration: const BoxDecoration(
+                                  color: ColorName.profileBackgroundColor,
                                 ),
+                                child: !controller.isSearched
+                                    ? const Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.search,
+                                          ),
+                                          CustomText(
+                                            text: 'お悩みを探す',
+                                          )
+                                        ],
+                                      )
+                                    : const Align(
+                                        alignment: Alignment.center,
+                                        child: CustomText(
+                                          text: '検索結果がありません',
+                                        ),
+                                      ),
                               ),
-                            )
-                          : Column(
+                            ),
+                          )
+                        : SizedBox(
+                            width: deviceWidth * 0.9,
+                            child: Column(
                               children: [
                                 const Align(
                                   alignment: Alignment.centerLeft,
@@ -164,6 +169,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                             .diseaseList![index].diseaseName,
                                         tileHeight: 60,
                                         boxDecoration: BoxDecoration(
+                                          color: Colors.white,
                                           border: Border.all(
                                             width: 1,
                                             color: Colors.grey,
@@ -182,7 +188,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                           },
                                           icon: const Icon(
                                             Icons.add,
-                                            color: Colors.blue,
+                                            color: ColorName.subColor,
                                           ),
                                         ),
                                       ),
@@ -191,22 +197,17 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                 ),
                               ],
                             ),
-                ],
-              ),
+                          ),
+              ],
             ),
             Column(
               children: [
                 SizedBox(
-                  width: deviceWidth * 0.9,
+                  width: deviceWidth,
                   child: const Align(
                     alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        top: 20,
-                        bottom: 10,
-                        left: 5,
-                      ),
-                      child: CustomText(text: 'よくあるお悩み'),
+                    child: HeaderTitle(
+                      title: 'よくあるお悩み',
                     ),
                   ),
                 ),
@@ -277,7 +278,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                           )
                                         : const Icon(
                                             Icons.add,
-                                            color: Colors.blue,
+                                            color: ColorName.subColor,
                                           ),
                                   ),
                                 ),

@@ -52,7 +52,13 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
             // 他のウィジェット部分は省略
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+                ),
                 width: size.width * 0.9,
                 height: 150,
                 child: Center(
@@ -72,7 +78,13 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                 ),
               ),
             ),
-            SizedBox(
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
               width: size.width * 0.9,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -133,129 +145,137 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                       width: size.width * 0.9,
                       child: Column(
                         children: [
-                          TableCalendar(
-                            locale: 'ja_JP',
-                            firstDay: DateTime.now(),
-                            lastDay:
-                                DateTime.now().add(const Duration(days: 365)),
-                            focusedDay: controller.calendarDate,
-                            currentDay: controller.calendarDate,
-                            calendarFormat: CalendarFormat.month,
-                            headerStyle: const HeaderStyle(
-                              headerMargin: EdgeInsets.symmetric(
-                                horizontal: 20,
-                              ),
-                              titleTextStyle: TextStyle(
-                                color: ColorName.textBlack,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Noto_Sans_JP',
-                              ),
-                              formatButtonVisible: false,
-                              leftChevronVisible: false,
-                              rightChevronIcon: Icon(
-                                Icons.chevron_right,
-                                color: ColorName.mainColor,
+                          Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
                               ),
                             ),
-                            availableGestures:
-                                AvailableGestures.horizontalSwipe,
-                            onDaySelected:
-                                (DateTime selectedDay, DateTime focusedDay) {
-                              controller.setReserveDate();
-                              controller.changeCalendarDate(selectedDay);
-                              setState(() {});
-                            },
-                            selectedDayPredicate: (day) {
-                              return isSameDay(controller.calendarDate, day);
-                            },
-                            eventLoader: (day) {
-                              final DateTime targetDate = DateTime(
-                                day.year,
-                                day.month,
-                                day.day,
-                              );
-                              return events![targetDate] ?? [];
-                            },
-                            calendarStyle: const CalendarStyle(
-                              tablePadding: EdgeInsets.all(2.0),
-                              todayDecoration: BoxDecoration(
-                                color: ColorName.mainColor,
-                                shape: BoxShape.circle,
+                            child: TableCalendar(
+                              locale: 'ja_JP',
+                              firstDay: DateTime.now(),
+                              lastDay:
+                                  DateTime.now().add(const Duration(days: 365)),
+                              focusedDay: controller.calendarDate,
+                              currentDay: controller.calendarDate,
+                              calendarFormat: CalendarFormat.month,
+                              headerStyle: const HeaderStyle(
+                                headerMargin: EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                ),
+                                titleTextStyle: TextStyle(
+                                  color: ColorName.textBlack,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Noto_Sans_JP',
+                                ),
+                                formatButtonVisible: false,
+                                leftChevronVisible: false,
+                                rightChevronIcon: Icon(
+                                  Icons.chevron_right,
+                                  color: ColorName.mainColor,
+                                ),
                               ),
-                              selectedDecoration: BoxDecoration(
-                                color: ColorName.mainColor,
-                                shape: BoxShape.circle,
-                              ),
-                              todayTextStyle: TextStyle(
-                                color: Colors.white,
-                              ),
-                              selectedTextStyle: TextStyle(
-                                color: Colors.white,
-                              ),
-                            ),
-                            calendarBuilders: CalendarBuilders(
-                              // 曜日のヘッダーをカスタマイズ
-                              dowBuilder: (context, day) {
-                                TextStyle textStyle = const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold);
-
-                                if (day.weekday == DateTime.saturday) {
-                                  textStyle = const TextStyle(
-                                      color: Colors.blue,
-                                      fontWeight: FontWeight.bold);
-                                } else if (day.weekday == DateTime.sunday) {
-                                  textStyle = const TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold);
-                                }
-
-                                return Center(
-                                  child: Text(
-                                    DateFormat.E('ja_JP')
-                                        .format(day), // 日本語の曜日名
-                                    style: textStyle,
-                                  ),
-                                );
+                              availableGestures:
+                                  AvailableGestures.horizontalSwipe,
+                              onDaySelected:
+                                  (DateTime selectedDay, DateTime focusedDay) {
+                                controller.setReserveDate();
+                                controller.changeCalendarDate(selectedDay);
+                                setState(() {});
                               },
-                              // 日付セルをカスタマイズ
-                              defaultBuilder: (context, day, focusedDay) {
-                                TextStyle textStyle =
-                                    const TextStyle(color: Colors.black);
-
-                                if (day.weekday == DateTime.saturday) {
-                                  textStyle =
-                                      const TextStyle(color: Colors.blue);
-                                } else if (day.weekday == DateTime.sunday) {
-                                  textStyle =
-                                      const TextStyle(color: Colors.red);
-                                }
-
-                                return Center(
-                                  child: Text(
-                                    '${day.day}',
-                                    style: textStyle,
-                                  ),
-                                );
+                              selectedDayPredicate: (day) {
+                                return isSameDay(controller.calendarDate, day);
                               },
-                              selectedBuilder: (context, day, focusedDay) {
-                                TextStyle textStyle =
-                                    const TextStyle(color: Colors.white);
+                              eventLoader: (day) {
+                                final DateTime targetDate = DateTime(
+                                  day.year,
+                                  day.month,
+                                  day.day,
+                                );
+                                return events![targetDate] ?? [];
+                              },
+                              calendarStyle: const CalendarStyle(
+                                tablePadding: EdgeInsets.all(2.0),
+                                todayDecoration: BoxDecoration(
+                                  color: ColorName.mainColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                selectedDecoration: BoxDecoration(
+                                  color: ColorName.mainColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                todayTextStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                selectedTextStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              calendarBuilders: CalendarBuilders(
+                                // 曜日のヘッダーをカスタマイズ
+                                dowBuilder: (context, day) {
+                                  TextStyle textStyle = const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold);
 
-                                return Container(
-                                  decoration: const BoxDecoration(
-                                    color: ColorName.mainColor,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Center(
+                                  if (day.weekday == DateTime.saturday) {
+                                    textStyle = const TextStyle(
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.bold);
+                                  } else if (day.weekday == DateTime.sunday) {
+                                    textStyle = const TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold);
+                                  }
+
+                                  return Center(
+                                    child: Text(
+                                      DateFormat.E('ja_JP')
+                                          .format(day), // 日本語の曜日名
+                                      style: textStyle,
+                                    ),
+                                  );
+                                },
+                                // 日付セルをカスタマイズ
+                                defaultBuilder: (context, day, focusedDay) {
+                                  TextStyle textStyle =
+                                      const TextStyle(color: Colors.black);
+
+                                  if (day.weekday == DateTime.saturday) {
+                                    textStyle =
+                                        const TextStyle(color: Colors.blue);
+                                  } else if (day.weekday == DateTime.sunday) {
+                                    textStyle =
+                                        const TextStyle(color: Colors.red);
+                                  }
+
+                                  return Center(
                                     child: Text(
                                       '${day.day}',
                                       style: textStyle,
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                                selectedBuilder: (context, day, focusedDay) {
+                                  TextStyle textStyle =
+                                      const TextStyle(color: Colors.white);
+
+                                  return Container(
+                                    decoration: const BoxDecoration(
+                                      color: ColorName.mainColor,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        '${day.day}',
+                                        style: textStyle,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                           const SizedBox(
@@ -369,7 +389,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                     height: 80,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: ColorName.mainColor,
+                      color: ColorName.subColor,
                     ),
                     child: const Center(
                       child: CustomText(

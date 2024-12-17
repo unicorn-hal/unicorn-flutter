@@ -7,6 +7,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class LocalAuthView extends StatefulWidget {
@@ -80,7 +81,7 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                             children: [
                               CustomText(
                                 text: 'Biometric Auth',
-                                color: ColorName.profileInputBackgroundColor,
+                                color: Colors.red,
                                 fontSize: 22,
                               ),
                               CustomText(
@@ -95,14 +96,14 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                 ),
                 Visibility(
                   visible: _controller.useAppbar,
-                  child: Container(
-                    width: deviceWidth * 0.9,
-                    padding: const EdgeInsets.only(
-                      left: 5,
-                      top: 20,
-                      bottom: 10,
+                  child: SizedBox(
+                    width: deviceWidth,
+                    child: const Align(
+                      alignment: Alignment.centerLeft,
+                      child: HeaderTitle(
+                        title: 'セキュリティ',
+                      ),
                     ),
-                    child: const CustomText(text: 'セキュリティ'),
                   ),
                 ),
                 const SpacerAndDivider(
@@ -113,7 +114,7 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                   action: _controller.useLocalAuth
                       ? const Icon(
                           Icons.check,
-                          color: Colors.blue,
+                          color: ColorName.subColor,
                         )
                       : null,
                   onTap: () {
@@ -130,7 +131,7 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                   action: !_controller.useLocalAuth
                       ? const Icon(
                           Icons.check,
-                          color: Colors.blue,
+                          color: ColorName.subColor,
                         )
                       : null,
                   onTap: () {

@@ -5,12 +5,12 @@ import 'package:unicorn_flutter/gen/colors.gen.dart';
 class ProfileDetailCell extends StatelessWidget {
   const ProfileDetailCell({
     super.key,
-    required this.icon,
+    required this.iconImage,
     required this.title,
     required this.onTap,
   });
 
-  final Icon icon;
+  final Image iconImage;
   final String title;
   final Function onTap;
 
@@ -38,9 +38,9 @@ class ProfileDetailCell extends StatelessWidget {
             children: [
               Expanded(
                 flex: 3,
-                child: FittedBox(
-                  fit: BoxFit.fitHeight,
-                  child: icon,
+                child: Padding(
+                  padding: const EdgeInsets.all(2),
+                  child: iconImage,
                 ),
               ),
               Expanded(

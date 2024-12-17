@@ -43,50 +43,79 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
           body: Column(
             children: [
               /// 進捗バーの表示部
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: CustomText(text: '検診の進捗度'),
-              ),
-              CustomText(
-                text: controller.progressText,
-                fontSize: 36,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: SizedBox(
-                    width: size.width * 0.8,
-                    height: 24,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
-                      child: LinearProgressIndicator(
-                        borderRadius: BorderRadius.circular(90),
-                        backgroundColor: ColorName.shadowGray,
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                          ColorName.mainColor,
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: CustomText(text: '検診の進捗度'),
+                    ),
+                    CustomText(
+                      text: controller.progressText,
+                      fontSize: 36,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: SizedBox(
+                          width: size.width * 0.8,
+                          height: 24,
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(10),
+                              bottomRight: Radius.circular(10),
+                            ),
+                            child: LinearProgressIndicator(
+                              borderRadius: BorderRadius.circular(90),
+                              backgroundColor: ColorName.shadowGray,
+                              valueColor: const AlwaysStoppedAnimation<Color>(
+                                ColorName.mainColor,
+                              ),
+                              value: controller.progressValue,
+                            ),
+                          ),
                         ),
-                        value: controller.progressValue,
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
 
               Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child:
-                      CustomText(text: controller.checkupTitle, fontSize: 20),
+                alignment: Alignment.center,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child:
+                        CustomText(text: controller.checkupTitle, fontSize: 20),
+                  ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 16.0),
-                child: Center(
-                  child: CustomText(text: '当てはまるものを選択してください'),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                  width: size.width * 0.9,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 16.0),
+                    child: Center(
+                      child: CustomText(text: '当てはまるものを選択してください'),
+                    ),
+                  ),
                 ),
               ),
               SizedBox(

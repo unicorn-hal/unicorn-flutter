@@ -4,6 +4,9 @@
     <!-- メインカラー -->
     <color name="main_color">#3D5F92</color>
 
+    <!-- サブカラー -->
+    <color name="sub_color">#0AADFF</color>
+
     <!-- TopLoadingの背景色 -->
     <color name="top_loading_background">#FDFAF0</color>
 
@@ -30,11 +33,6 @@
 
     <!-- おくすりについての説明の背景に使用するカラー -->
     <color name="medicine_explanation_color">#B0DCFF</color>
-    <!-- プロフィール入力画面のタイトルの背景色に使用するカラー -->
-    <color name="profile_input_background_color">#CF4242</color>
-
-    <!-- プロフィール入力画面の決定ボタンに使用するカラー -->
-    <color name="profile_input_button_color">#3D5F92</color>
 
     <!-- 性別ボタンの背景に使用するカラー -->
     <color name="men_circlebutton_color">#5A82EB</color>

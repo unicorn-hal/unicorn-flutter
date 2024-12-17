@@ -39,21 +39,30 @@ class ProfileTopView extends StatelessWidget {
                   padding: const EdgeInsets.only(
                     bottom: 20,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CustomText(
-                        text: userData.user!.lastName,
-                        fontSize: 30,
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      CustomText(
-                        text: userData.user!.firstName,
-                        fontSize: 30,
-                      ),
-                    ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CustomText(
+                          text: userData.user!.lastName,
+                          fontSize: 30,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        CustomText(
+                          text: userData.user!.firstName,
+                          fontSize: 30,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -83,12 +92,9 @@ class ProfileTopView extends StatelessWidget {
                 itemCount: controller.cellData.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(8.0),
                     child: ProfileDetailCell(
-                      icon: Icon(
-                        controller.cellData[index].icon,
-                        color: ColorName.mainColor,
-                      ),
+                      iconImage: controller.cellData[index].iconImage,
                       title: controller.cellData[index].title,
                       onTap: () => controller.cellData[index].onTap.call(),
                     ),

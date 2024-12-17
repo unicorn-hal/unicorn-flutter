@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 // todo: Comment/Parts/ProfileからComment/Partsに引っ越し
 
 class CommonItemTile extends StatelessWidget {
   const CommonItemTile({
     super.key,
     required this.title,
+    this.titleColor = ColorName.textBlack,
     this.action,
     this.onTap,
     this.verticalPadding = 0,
     this.tileHeight = 50,
     this.fontSize = 14,
     this.boxDecoration = const BoxDecoration(
+      color: Colors.white,
       border: BorderDirectional(
         bottom: BorderSide(
           width: 1,
@@ -21,6 +24,7 @@ class CommonItemTile extends StatelessWidget {
     ),
   });
   final String title;
+  final Color titleColor;
   final Widget? action;
   final Function? onTap;
   // todo: viewが全部出来たタイミングでvoidCallbackに変える
@@ -51,6 +55,7 @@ class CommonItemTile extends StatelessWidget {
                   child: CustomText(
                     text: title,
                     fontSize: fontSize,
+                    color: titleColor,
                   ),
                 ),
               ),

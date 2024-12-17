@@ -15,6 +15,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
+import 'package:unicorn_flutter/View/Component/Parts/field_title.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -102,7 +103,9 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                             padding: EdgeInsets.only(
                               left: 5,
                             ),
-                            child: CustomText(text: 'おくすりの名称'),
+                            child: FieldTitle(
+                              title: 'おくすりの名称',
+                            ),
                           ),
                         ),
                       ),
@@ -128,11 +131,16 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                   top: 20,
                                   bottom: 20,
                                 ),
-                                child: const Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 5,
+                                child: const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 5,
+                                    ),
+                                    child: FieldTitle(
+                                      title: 'おくすりの量',
+                                    ),
                                   ),
-                                  child: CustomText(text: 'おくすりの量'),
                                 ),
                               ),
                               Padding(
@@ -169,11 +177,16 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                   top: 20,
                                   bottom: 20,
                                 ),
-                                child: const Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 5,
+                                child: const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 5,
+                                    ),
+                                    child: FieldTitle(
+                                      title: '1回の服用量',
+                                    ),
                                   ),
-                                  child: CustomText(text: '1回の服用量'),
                                 ),
                               ),
                               Padding(
@@ -188,7 +201,10 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                       for (int i = 0; i < 10; i++) ...{
                                         DropdownMenuItem(
                                           value: i,
-                                          child: CustomText(text: '${i + 1}'),
+                                          child: CustomText(
+                                            text: '${i + 1}',
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                         ),
                                       },
                                     ],
@@ -205,177 +221,187 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                           ),
                         ],
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(
-                              left: 5,
+                      Container(
+                        decoration: const BoxDecoration(color: Colors.white),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(
+                                left: 5,
+                              ),
+                              child: FieldTitle(
+                                title: 'リマインダーを設定',
+                                icon: Icons.calendar_today,
+                              ),
                             ),
-                            child: CustomText(text: 'リマインダーを設定'),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              if (controller.reminders.length < 5) {
-                                controller.addReminders();
-                                setState(() {});
-                              } else {
-                                Fluttertoast.showToast(
-                                    msg: 'リマインダーは5件以上登録できません');
-                              }
-                            },
-                            icon: const Icon(
-                              Icons.add,
-                              color: Colors.blue,
+                            IconButton(
+                              onPressed: () {
+                                if (controller.reminders.length < 5) {
+                                  controller.addReminders();
+                                  setState(() {});
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: 'リマインダーは5件以上登録できません');
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.add,
+                                color: ColorName.subColor,
+                              ),
                             ),
-                          ),
-                          ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: controller.reminders.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              if (controller.reminders.isEmpty) {
-                                return Container();
-                              }
-                              return Row(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      controller.deleteReminders(index: index);
-                                      setState(() {});
-                                    },
-                                    icon: const Icon(
-                                      Icons.remove_circle_outlined,
-                                      color: Colors.red,
+                            ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: controller.reminders.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                if (controller.reminders.isEmpty) {
+                                  return Container();
+                                }
+                                return Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        controller.deleteReminders(
+                                            index: index);
+                                        setState(() {});
+                                      },
+                                      icon: const Icon(
+                                        Icons.remove_circle_outlined,
+                                        color: Colors.red,
+                                      ),
                                     ),
-                                  ),
-                                  CustomDrumRoll(
-                                    drumRollType: DrumRollType.time,
-                                    splitMinute: 15,
-                                    onConfirm: (DateTime date) {
-                                      controller.updateReminderTime(
-                                          date: date, index: index);
-                                      Log.echo('date: $date');
-                                    },
-                                    initValue:
-                                        controller.changeDateTime(index: index),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      controller.copyReminderDayOfWeek(
-                                          index: index);
-                                      showModalBottomSheet(
-                                        backgroundColor: Colors.transparent,
-                                        isScrollControlled: true,
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return CustomModal(
-                                            title: '繰り返し',
-                                            leftButtonOnTap: () {
-                                              controller
-                                                  .resetReminderDayOfWeekList();
-                                            },
-                                            rightButtonOnTap: () {
-                                              controller
-                                                  .updateReminderDayOfWeek(
-                                                      index: index);
-                                              setState(() {});
-                                            },
-                                            content: StatefulBuilder(
-                                              builder: (context,
-                                                  StateSetter setState) {
-                                                return Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20),
-                                                        border: Border.all(
-                                                          color: Colors.grey,
-                                                        ),
-                                                      ),
-                                                      width: deviceWidth * 0.9,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                          horizontal: 15,
-                                                        ),
-                                                        child: ListView.builder(
-                                                          physics:
-                                                              const NeverScrollableScrollPhysics(),
-                                                          shrinkWrap: true,
-                                                          itemCount: 7,
-                                                          itemBuilder:
-                                                              (BuildContext
-                                                                      context,
-                                                                  int index) {
-                                                            return SizedBox(
-                                                              width:
-                                                                  deviceWidth *
-                                                                      0.9,
-                                                              child:
-                                                                  CommonItemTile(
-                                                                title:
-                                                                    '毎${controller.getDayAbbreviation(index: index)}曜日',
-                                                                action: controller
-                                                                        .checkReminderDayOfWeekList(
-                                                                            index:
-                                                                                index)
-                                                                    ? const Icon(
-                                                                        Icons
-                                                                            .check,
-                                                                        color: Colors
-                                                                            .blue,
-                                                                      )
-                                                                    : null,
-                                                                onTap: () {
-                                                                  controller
-                                                                      .changeReminderDayOfWeekList(
-                                                                          index:
-                                                                              index);
-                                                                  setState(
-                                                                      () {});
-                                                                },
-                                                              ),
-                                                            );
-                                                          },
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                );
+                                    CustomDrumRoll(
+                                      drumRollType: DrumRollType.time,
+                                      splitMinute: 15,
+                                      onConfirm: (DateTime date) {
+                                        controller.updateReminderTime(
+                                            date: date, index: index);
+                                        Log.echo('date: $date');
+                                      },
+                                      initValue: controller.changeDateTime(
+                                          index: index),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        controller.copyReminderDayOfWeek(
+                                            index: index);
+                                        showModalBottomSheet(
+                                          backgroundColor: Colors.transparent,
+                                          isScrollControlled: true,
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return CustomModal(
+                                              title: '繰り返し',
+                                              leftButtonOnTap: () {
+                                                controller
+                                                    .resetReminderDayOfWeekList();
                                               },
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: ColorName.drumRollButtonColor,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: CustomText(
-                                        text:
-                                            controller.moldingReminderDayOfWeek(
-                                                index: index),
-                                        color: Colors.blue,
+                                              rightButtonOnTap: () {
+                                                controller
+                                                    .updateReminderDayOfWeek(
+                                                        index: index);
+                                                setState(() {});
+                                              },
+                                              content: StatefulBuilder(
+                                                builder: (context,
+                                                    StateSetter setState) {
+                                                  return Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(20),
+                                                          border: Border.all(
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                        width:
+                                                            deviceWidth * 0.9,
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                            horizontal: 15,
+                                                          ),
+                                                          child:
+                                                              ListView.builder(
+                                                            physics:
+                                                                const NeverScrollableScrollPhysics(),
+                                                            shrinkWrap: true,
+                                                            itemCount: 7,
+                                                            itemBuilder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    int index) {
+                                                              return SizedBox(
+                                                                width:
+                                                                    deviceWidth *
+                                                                        0.9,
+                                                                child:
+                                                                    CommonItemTile(
+                                                                  title:
+                                                                      '毎${controller.getDayAbbreviation(index: index)}曜日',
+                                                                  action: controller.checkReminderDayOfWeekList(
+                                                                          index:
+                                                                              index)
+                                                                      ? const Icon(
+                                                                          Icons
+                                                                              .check,
+                                                                          color:
+                                                                              ColorName.subColor,
+                                                                        )
+                                                                      : null,
+                                                                  onTap: () {
+                                                                    controller.changeReminderDayOfWeekList(
+                                                                        index:
+                                                                            index);
+                                                                    setState(
+                                                                        () {});
+                                                                  },
+                                                                ),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: ColorName.drumRollButtonColor,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: CustomText(
+                                          text: controller
+                                              .moldingReminderDayOfWeek(
+                                                  index: index),
+                                          color: ColorName.subColor,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ],
+                                  ],
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(
                         height: 20,

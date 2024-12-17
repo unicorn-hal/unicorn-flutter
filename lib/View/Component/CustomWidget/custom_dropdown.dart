@@ -18,6 +18,8 @@ class CustomDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
       decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
         contentPadding: EdgeInsets.symmetric(
           horizontal: 20,
           vertical: (height - 20) / 2,

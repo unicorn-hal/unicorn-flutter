@@ -194,7 +194,7 @@ class _AiTextChatViewState extends State<AiTextChatView> {
                     padding: const EdgeInsets.all(16.0),
                     child: CircleButton(
                       buttonSize: 60,
-                      buttonColor: ColorName.mainColor,
+                      buttonColor: ColorName.subColor,
                       onTap: () async {
                         final action = await showDialog(
                             context: context,
@@ -318,7 +318,7 @@ class _AiTextChatViewState extends State<AiTextChatView> {
                           height: 44,
                           child: const Icon(
                             Icons.send,
-                            color: Colors.blue,
+                            color: ColorName.subColor,
                           ),
                         ),
                       )

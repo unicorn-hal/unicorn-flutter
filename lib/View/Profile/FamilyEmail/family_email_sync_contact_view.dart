@@ -7,6 +7,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_info_tile.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -47,12 +48,10 @@ class _FamilyEmailSyncContactViewState
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              width: deviceWidth * 0.9,
-              height: 48,
-              child: const Align(
-                alignment: Alignment.centerLeft,
-                child: CustomText(text: '未登録'),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: HeaderTitle(
+                title: '未登録の連絡先',
               ),
             ),
             FutureBuilder<List<FamilyEmailPostRequest>?>(
@@ -98,32 +97,27 @@ class _FamilyEmailSyncContactViewState
                           ),
                         ),
                       ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: UserInfoTile(
-                          onTap: () async {
-                            int res = await controller
-                                .postFamilyEmail(familyEmailRequestList[index]);
-                            if (res != 200) {
-                              return;
-                            }
-                            await controller.updateFamilyEmail();
-                            setState(() {});
-                          },
-                          localImage:
-                              familyEmailRequestList[index].avatar != null &&
-                                      familyEmailRequestList[index]
-                                          .avatar!
-                                          .isNotEmpty
-                                  ? controller.uint8ListToImage(
-                                      familyEmailRequestList[index].avatar!)
-                                  : null,
-                          userName:
-                              '${familyEmailRequestList[index].lastName} ${familyEmailRequestList[index].firstName}',
-                          description: familyEmailRequestList[index].email == ''
-                              ? 'メールアドレス未設定'
-                              : familyEmailRequestList[index].email,
-                        ),
+                      child: UserInfoTile(
+                        onTap: () async {
+                          int res = await controller
+                              .postFamilyEmail(familyEmailRequestList[index]);
+                          if (res != 200) {
+                            return;
+                          }
+                          await controller.updateFamilyEmail();
+                          setState(() {});
+                        },
+                        localImage: familyEmailRequestList[index].avatar !=
+                                    null &&
+                                familyEmailRequestList[index].avatar!.isNotEmpty
+                            ? controller.uint8ListToImage(
+                                familyEmailRequestList[index].avatar!)
+                            : null,
+                        userName:
+                            '${familyEmailRequestList[index].lastName} ${familyEmailRequestList[index].firstName}',
+                        description: familyEmailRequestList[index].email == ''
+                            ? 'メールアドレス未設定'
+                            : familyEmailRequestList[index].email,
                       ),
                     );
                   },

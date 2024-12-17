@@ -6,9 +6,9 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
-import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_textfield.dart';
 import 'package:unicorn_flutter/View/Component/Parts/circle_button.dart';
+import 'package:unicorn_flutter/View/Component/Parts/field_title.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -41,6 +41,7 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
       isScrollable: true,
       focusNode: focusNode,
       appBar: CustomAppBar(
+        title: '連絡先を登録',
         foregroundColor: Colors.white,
         backgroundColor: ColorName.mainColor,
         actions: widget.familyEmail != null
@@ -119,7 +120,7 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
                           bottom: 10,
                           left: 10,
                         ),
-                        child: CustomText(text: '姓'),
+                        child: FieldTitle(title: '姓'),
                       ),
                       SizedBox(
                         width: deviceWidth * 0.43,
@@ -143,7 +144,7 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
                           bottom: 10,
                           left: 10,
                         ),
-                        child: CustomText(text: '名'),
+                        child: FieldTitle(title: '名'),
                       ),
                       SizedBox(
                         width: deviceWidth * 0.43,
@@ -172,7 +173,7 @@ class _FamilyEmailRegisterViewState extends State<FamilyEmailRegisterView> {
                       bottom: 10,
                       left: 10,
                     ),
-                    child: CustomText(text: 'メールアドレス'),
+                    child: FieldTitle(title: 'メールアドレス'),
                   ),
                   SizedBox(
                     width: deviceWidth * 0.9,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class CustomModal extends StatefulWidget {
   const CustomModal({
@@ -11,8 +12,8 @@ class CustomModal extends StatefulWidget {
     this.rightButtonText = '決定',
     this.leftButtonOnTap,
     this.rightButtonOnTap,
-    this.leftButtonColor = Colors.blue,
-    this.rightButtonColor = Colors.blue,
+    this.leftButtonColor = ColorName.subColor,
+    this.rightButtonColor = ColorName.subColor,
     this.backgroundColor = Colors.white,
     this.isRightButton = true,
   });

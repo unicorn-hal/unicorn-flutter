@@ -6,6 +6,7 @@ import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 import '../../Component/CustomWidget/custom_scaffold.dart';
 
@@ -53,40 +54,48 @@ class HealthCheckupResultsView extends StatelessWidget {
                   ),
                   child: Container(
                     width: size.width,
-                    color: controller.healthColor.withOpacity(0.5),
+                    decoration: BoxDecoration(
+                      color: controller.healthColor.withOpacity(0.5),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(
-                          width: size.width,
-                          height: 50,
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                  child: CustomText(
-                                    text: controller.formattedDate,
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: SizedBox(
+                            width: size.width,
+                            height: 50,
+                            child: Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    child: CustomText(
+                                      text: controller.formattedDate,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  CustomText(
-                                    text: UserData().user!.lastName +
-                                        UserData().user!.firstName,
-                                  ),
-                                  const CustomText(
-                                    text: 'さんの検診結果',
-                                    fontSize: 14,
-                                  ),
-                                ],
-                              ),
-                            ],
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    CustomText(
+                                      text: UserData().user!.lastName +
+                                          UserData().user!.firstName,
+                                    ),
+                                    const CustomText(
+                                      text: 'さんの検診結果',
+                                      fontSize: 14,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -190,7 +199,10 @@ class HealthCheckupResultsView extends StatelessWidget {
                       horizontal: 16.0,
                       vertical: 8.0,
                     ),
-                    child: CustomText(text: '回答に関連する病気'),
+                    child: HeaderTitle(
+                      title: '回答に関連する病気',
+                      padding: EdgeInsets.zero,
+                    ),
                   ),
                 ),
                 Container(
@@ -235,6 +247,7 @@ class HealthCheckupResultsView extends StatelessWidget {
                                     width: size.width * 0.9,
                                     height: 60,
                                     decoration: BoxDecoration(
+                                      color: Colors.white,
                                       border: Border.all(
                                         color: ColorName.shadowGray,
                                       ),
@@ -257,7 +270,7 @@ class HealthCheckupResultsView extends StatelessWidget {
                                           padding: EdgeInsets.all(2.0),
                                           child: Icon(
                                             Icons.arrow_drop_down,
-                                            color: Colors.blue,
+                                            color: ColorName.subColor,
                                             size: 36,
                                           ),
                                         )
@@ -286,7 +299,7 @@ class HealthCheckupResultsView extends StatelessWidget {
                 const HealthCheckupRoute().go(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: ColorName.subColor,
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
               ),
               icon: const Icon(Icons.arrow_back, color: Colors.white),

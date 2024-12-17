@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
+import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class CustomScaffold extends StatelessWidget {
@@ -36,25 +37,34 @@ class CustomScaffold extends StatelessWidget {
       focusNode: focusNode,
       child: GestureDetector(
         onTap: focusNode?.requestFocus,
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: isAppbar
-              ? appBar ??
-                  CustomAppBar(
-                    title: title,
-                    actions: actions,
-                    backgroundColor: ColorName.mainColor,
+        child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: Assets.images.background.provider(),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Scaffold(
+            // backgroundColor: Colors.white,
+            backgroundColor: Colors.transparent,
+            appBar: isAppbar
+                ? appBar ??
+                    CustomAppBar(
+                      title: title,
+                      actions: actions,
+                      backgroundColor: ColorName.mainColor,
+                    )
+                : null,
+            body: isScrollable
+                ? SingleChildScrollView(
+                    controller: scrollController,
+                    child: body,
                   )
-              : null,
-          body: isScrollable
-              ? SingleChildScrollView(
-                  controller: scrollController,
-                  child: body,
-                )
-              : body,
-          drawer: drawer,
-          floatingActionButton: floatingActionButton,
-          bottomNavigationBar: bottomNavigationBar,
+                : body,
+            drawer: drawer,
+            floatingActionButton: floatingActionButton,
+            bottomNavigationBar: bottomNavigationBar,
+          ),
         ),
       ),
     );

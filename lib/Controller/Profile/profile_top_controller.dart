@@ -13,6 +13,8 @@ import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Package/LocalAuth/local_auth_service.dart';
 import 'package:unicorn_flutter/Service/Package/UrlLauncher/url_launcher_service.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
+import 'package:unicorn_flutter/gen/assets.gen.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class ProfileTopController extends ControllerCore {
   /// Serviceのインスタンス化
@@ -34,20 +36,60 @@ class ProfileTopController extends ControllerCore {
   void initialize() {
     _cellData = [
       ProfileDetail(
-          title: 'アプリ情報',
-          icon: Icons.info,
-          onTap: () => const ProfileAppInformationRoute().push(context)),
+          title: '通話予約',
+          iconImage: Assets.images.profileDetail.callReservationIcon
+              .image(color: ColorName.mainColor),
+          onTap: () => const ProfileCallReservationRoute().push(context)),
       ProfileDetail(
-          title: '持病設定',
-          icon: Icons.sick,
-          onTap: () => const ProfileChronicDiseaseRoute().push(context)),
+          title: 'おくすり',
+          iconImage: Assets.images.profileDetail.medicineIcon
+              .image(color: ColorName.mainColor),
+          onTap: () => const ProfileMedicineRoute().push(context)),
       ProfileDetail(
           title: '家族メール',
-          icon: Icons.mail,
+          iconImage: Assets.images.profileDetail.familyEmailIcon
+              .image(color: ColorName.mainColor),
           onTap: () => const ProfileFamilyEmailRoute().push(context)),
       ProfileDetail(
+          title: '体のお悩み',
+          iconImage: Assets.images.profileDetail.chronicDiseaseIcon
+              .image(color: ColorName.mainColor),
+          onTap: () => const ProfileChronicDiseaseRoute().push(context)),
+      ProfileDetail(
+        title: '身体情報',
+        iconImage: Assets.images.profileDetail.physicalInfoIcon
+            .image(color: ColorName.mainColor),
+        onTap: () {
+          final UserRequest userRequest = UserData().getUserWithRequest();
+          ProfileRegisterPhysicalInfoRoute(
+            $extra: userRequest,
+          ).push(context);
+        },
+      ),
+      ProfileDetail(
+          title: '住所設定',
+          iconImage: Assets.images.profileDetail.addressInfoIcon
+              .image(color: ColorName.mainColor),
+          onTap: () {
+            final UserRequest userRequest = UserData().getUserWithRequest();
+            ProfileRegisterAddressInfoRoute(
+              $extra: userRequest,
+            ).push(context);
+          }),
+      ProfileDetail(
+          title: 'ユーザー設定',
+          iconImage: Assets.images.bottomNavBar.profile
+              .image(color: ColorName.mainColor),
+          onTap: () {
+            final UserRequest userRequest = UserData().getUserWithRequest();
+            ProfileRegisterUserInfoRoute(
+              $extra: userRequest,
+            ).push(context);
+          }),
+      ProfileDetail(
         title: 'セキュリティ',
-        icon: Icons.lock,
+        iconImage: Assets.images.profileDetail.localAuthIcon
+            .image(color: ColorName.mainColor),
         onTap: () async {
           if (await _localAuthService.getLocalAuthStatus() ==
               LocalAuthStatus.failed) {
@@ -58,12 +100,9 @@ class ProfileTopController extends ControllerCore {
         },
       ),
       ProfileDetail(
-          title: 'おくすり',
-          icon: Icons.medical_services,
-          onTap: () => const ProfileMedicineRoute().push(context)),
-      ProfileDetail(
         title: '通知設定',
-        icon: Icons.notifications,
+        iconImage: Assets.images.profileDetail.notificationSettingIcon
+            .image(color: ColorName.mainColor),
         onTap: () async {
           ProtectorNotifier().enableProtector();
           UserNotification? userNotification = await getUserNotification();
@@ -76,45 +115,19 @@ class ProfileTopController extends ControllerCore {
         },
       ),
       ProfileDetail(
-        title: '身体情報',
-        icon: Icons.man,
-        onTap: () {
-          final UserRequest userRequest = UserData().getUserWithRequest();
-          ProfileRegisterPhysicalInfoRoute(
-            $extra: userRequest,
-          ).push(context);
-        },
-      ),
-      ProfileDetail(
-          title: '住所設定',
-          icon: Icons.home,
-          onTap: () {
-            final UserRequest userRequest = UserData().getUserWithRequest();
-            ProfileRegisterAddressInfoRoute(
-              $extra: userRequest,
-            ).push(context);
-          }),
-      ProfileDetail(
-          title: 'ユーザー設定',
-          icon: Icons.manage_accounts,
-          onTap: () {
-            final UserRequest userRequest = UserData().getUserWithRequest();
-            ProfileRegisterUserInfoRoute(
-              $extra: userRequest,
-            ).push(context);
-          }),
-      ProfileDetail(
         title: '問い合わせ',
-        icon: Icons.question_mark,
+        iconImage: Assets.images.profileDetail.inquiryIcon
+            .image(color: ColorName.mainColor),
         onTap: () async {
           await _urlLauncherService
               .launchUrl('https://forms.gle/YhZ2TMW3iXbAx4Vx5');
         },
       ),
       ProfileDetail(
-          title: '通話予約',
-          icon: Icons.call,
-          onTap: () => const ProfileCallReservationRoute().push(context)),
+          title: 'アプリ情報',
+          iconImage: Assets.images.profileDetail.informationIcon
+              .image(color: ColorName.mainColor),
+          onTap: () => const ProfileAppInformationRoute().push(context)),
     ];
   }
 

@@ -34,6 +34,8 @@ class CheckboxTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Checkbox(
+                checkColor: ColorName.subColor,
+                activeColor: ColorName.mainColor,
                 value: value,
                 onChanged: (value) {
                   onChanged.call();

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/Information/doctor_information_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/View/Component/Parts/user_image_circle.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
@@ -31,36 +33,41 @@ class _DoctorInformationViewState extends State<DoctorInformationView> {
         DoctorInformationController(widget.doctorId);
     final Size size = MediaQuery.of(context).size;
     return CustomScaffold(
-      actions: [
-        GestureDetector(
-          onTap: () async {
-            controller.primary
-                ? await controller.deletePrimaryDoctor()
-                : await controller.postPrimaryDoctor();
-            setState(() {});
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 10.0,
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  controller.primary
-                      ? Icons.verified_sharp
-                      : Icons.verified_outlined,
-                  color: controller.primary ? Colors.yellow : Colors.white,
-                ),
-                const SizedBox(width: 4),
-                CustomText(
-                  text: controller.primary ? '主治医解除' : '主治医登録',
-                  color: Colors.white,
-                )
-              ],
+      appBar: CustomAppBar(
+        title: '医師情報',
+        foregroundColor: Colors.white,
+        backgroundColor: ColorName.mainColor,
+        actions: [
+          GestureDetector(
+            onTap: () async {
+              controller.primary
+                  ? await controller.deletePrimaryDoctor()
+                  : await controller.postPrimaryDoctor();
+              setState(() {});
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10.0,
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    controller.primary
+                        ? Icons.verified_sharp
+                        : Icons.verified_outlined,
+                    color: controller.primary ? Colors.yellow : Colors.white,
+                  ),
+                  const SizedBox(width: 4),
+                  CustomText(
+                    text: controller.primary ? '主治医解除' : '主治医登録',
+                    color: Colors.white,
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
       isScrollable: true,
       body: FutureBuilder<Doctor?>(
         future: controller.exist
@@ -103,11 +110,14 @@ class _DoctorInformationViewState extends State<DoctorInformationView> {
                 ),
 
                 /// 医師名・科目表示部
-                SizedBox(
-                  height: 40,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  child: Column(
                     children: [
                       controller.primary
                           ? Padding(
@@ -136,39 +146,6 @@ class _DoctorInformationViewState extends State<DoctorInformationView> {
                         fontSize: 20,
                       ),
                     ],
-                  ),
-                ),
-
-                /// 科目カード表示部
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Container(
-                    constraints: const BoxConstraints(
-                      minWidth: 10,
-                    ),
-                    height: 60,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        for (final department in doctor.departments)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 4,
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                ChatDoctorSearchRoute(
-                                  departmentId: department.departmentId,
-                                ).pushReplacement(context);
-                              },
-                              child: DepartmentBadge(
-                                name: department.departmentName,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
                   ),
                 ),
 
@@ -270,9 +247,9 @@ class _DoctorInformationViewState extends State<DoctorInformationView> {
                       vertical: 8.0,
                       horizontal: 16.0,
                     ),
-                    child: CustomText(
-                      text: 'この医師について',
-                      fontSize: 20,
+                    child: HeaderTitle(
+                      title: 'この医師について',
+                      padding: EdgeInsets.zero,
                     ),
                   ),
                 ),
@@ -280,6 +257,7 @@ class _DoctorInformationViewState extends State<DoctorInformationView> {
                   width: size.width * 0.9,
                   height: 140,
                   decoration: BoxDecoration(
+                    color: Colors.white,
                     border: Border.all(
                       color: ColorName.shadowGray,
                       width: 2,

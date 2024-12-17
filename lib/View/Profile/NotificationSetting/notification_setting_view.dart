@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Profile/NotificationSetting/notification_setting_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/User/user_notification.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
-import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 class NotificationSettingView extends StatefulWidget {
   const NotificationSettingView({
@@ -43,20 +45,19 @@ class _NotificationSettingViewState extends State<NotificationSettingView> {
         Navigator.of(context).pop(true);
       },
       child: CustomScaffold(
+        appBar: CustomAppBar(
+          title: '通知設定',
+          foregroundColor: Colors.white,
+          backgroundColor: ColorName.mainColor,
+        ),
         body: SizedBox(
           width: deviceWidth,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                padding: const EdgeInsets.only(
-                  left: 5,
-                  top: 20,
-                  bottom: 20,
-                ),
-                width: deviceWidth * 0.9,
-                child: const CustomText(text: '通知設定'),
+              const SizedBox(
+                height: 10,
               ),
               CommonItemTile(
                 title: 'おくすり通知',

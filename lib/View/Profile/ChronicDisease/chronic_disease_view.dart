@@ -1,16 +1,18 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Profile/ChronicDisease/chronic_disease_controller.dart';
 import 'package:unicorn_flutter/Model/Entity/ChronicDisease/chronic_disease.dart';
 import 'package:unicorn_flutter/Route/router.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_loading_animation.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/View/Component/Parts/image_banner.dart';
+import 'package:unicorn_flutter/View/Component/Parts/register_content_tile.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/assets.gen.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
@@ -35,6 +37,11 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
     double deviceWidth = MediaQuery.of(context).size.width;
     double deviceHeight = MediaQuery.of(context).size.height;
     return CustomScaffold(
+      appBar: CustomAppBar(
+        title: '体のお悩み',
+        foregroundColor: Colors.white,
+        backgroundColor: ColorName.mainColor,
+      ),
       body: SizedBox(
         height: deviceHeight,
         child: Column(
@@ -61,17 +68,15 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                   builder:
                       (context, AsyncSnapshot<List<ChronicDisease>?> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Column(
+                      return const Column(
                         children: [
-                          SizedBox(
-                            width: deviceWidth * 0.9,
-                            height: 48,
-                            child: const Align(
-                              alignment: Alignment.centerLeft,
-                              child: CustomText(text: '体のお悩み'),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: HeaderTitle(
+                              title: '登録済みのお悩み',
                             ),
                           ),
-                          const Padding(
+                          Padding(
                             padding: EdgeInsets.only(top: 100),
                             child: CustomLoadingAnimation(
                               text: Strings.LOADING_TEXT,
@@ -90,51 +95,19 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                     if (chronicDiseaseList.isEmpty) {
                       return Column(
                         children: [
-                          SizedBox(
-                            width: deviceWidth * 0.9,
-                            height: 48,
-                            child: const Align(
-                              alignment: Alignment.centerLeft,
-                              child: CustomText(text: '体のお悩み'),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: HeaderTitle(
+                              title: '登録済みのお悩み',
                             ),
                           ),
-                          SizedBox(
-                            width: deviceWidth * 0.9,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 20),
-                              child: GestureDetector(
-                                onTap: () {
-                                  const ProfileChronicDiseaseSearchRoute()
-                                      .push(context)
-                                      .then((value) => setState(() {}));
-                                },
-                                child: DottedBorder(
-                                  dashPattern: const [15, 10],
-                                  borderType: BorderType.RRect,
-                                  radius: const Radius.circular(20),
-                                  child: SizedBox(
-                                    width: deviceWidth * 0.9,
-                                    height: 200,
-                                    child: const Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.add,
-                                          color: Colors.grey,
-                                          size: 22,
-                                        ),
-                                        CustomText(
-                                          text: 'お悩みを登録する',
-                                          color: ColorName.textGray,
-                                          fontSize: 14,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                          RegisterContentTile(
+                            tileText: 'お悩みを登録する',
+                            onTap: () {
+                              const ProfileChronicDiseaseSearchRoute()
+                                  .push(context)
+                                  .then((value) => setState(() {}));
+                            },
                           ),
                         ],
                       );
@@ -142,28 +115,42 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                     return Column(
                       children: [
                         SizedBox(
-                          width: deviceWidth * 0.9,
-                          height: 48,
+                          width: deviceWidth,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const CustomText(text: '体のお悩み'),
-                              IconButton(
-                                onPressed: () {
-                                  ProfileChronicDiseaseSearchRoute(
-                                    $extra: chronicDiseaseList,
-                                  )
-                                      .push(context)
-                                      .then((value) => setState(() {}));
-                                },
-                                icon: const Icon(
-                                  Icons.add,
-                                  color: Colors.blue,
+                              const Expanded(
+                                flex: 3,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: HeaderTitle(
+                                    title: '登録済みのお悩み',
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    ProfileChronicDiseaseSearchRoute(
+                                      $extra: chronicDiseaseList,
+                                    )
+                                        .push(context)
+                                        .then((value) => setState(() {}));
+                                  },
+                                  child: const Icon(
+                                    Icons.add,
+                                    color: ColorName.subColor,
+                                    size: 30,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
+                        ),
+                        const SizedBox(
+                          height: 10,
                         ),
                         Expanded(
                           child: SizedBox(
@@ -181,6 +168,7 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                                         chronicDiseaseList[index].diseaseName,
                                     tileHeight: 60,
                                     boxDecoration: BoxDecoration(
+                                      color: Colors.white,
                                       border: Border.all(
                                         width: 1,
                                         color: Colors.grey,

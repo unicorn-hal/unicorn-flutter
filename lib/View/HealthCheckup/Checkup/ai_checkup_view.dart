@@ -1,6 +1,7 @@
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/HealthCheckup/Checkup/ai_checkup_controller.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -27,6 +28,11 @@ class _AiCheckupViewState extends State<AiCheckupView> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return CustomScaffold(
+      appBar: CustomAppBar(
+        title: 'AI検診',
+        foregroundColor: Colors.white,
+        backgroundColor: ColorName.mainColor,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -48,9 +54,17 @@ class _AiCheckupViewState extends State<AiCheckupView> {
                       backgroundColor: Colors.white,
                       child: Assets.images.icons.uniIcon.image(),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: CustomText(text: '体のことについて教えてください'),
+                    Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CustomText(text: '体のことについて教えてください'),
+                      ),
                     )
                   ],
                 ),

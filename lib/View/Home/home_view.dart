@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -20,7 +19,9 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.d
 import 'package:unicorn_flutter/View/Component/Parts/Home/board_tile.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Home/medicine_limit_card.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Home/receive_call_cell.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/View/Component/Parts/health_check_button.dart';
+import 'package:unicorn_flutter/View/Component/Parts/register_content_tile.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -48,8 +49,6 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    final double deviceWidth = MediaQuery.of(context).size.width;
-
     return CustomScaffold(
       isScrollable: true,
       appBar: CustomAppBar(
@@ -70,11 +69,17 @@ class _HomeViewState extends State<HomeView> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20, top: 10),
-                    child: CustomText(text: _controller.today),
+                Container(
+                  decoration: const BoxDecoration(color: Colors.white),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20, top: 10),
+                      child: CustomText(
+                        text: _controller.today,
+                        fontSize: 20,
+                      ),
+                    ),
                   ),
                 ),
                 const SpacerAndDivider(
@@ -104,29 +109,11 @@ class _HomeViewState extends State<HomeView> {
 
                   if (medicineCacheRef.data.isEmpty) {
                     // todo: おくすりが登録されていない場合のView
-                    return DottedBorder(
-                      dashPattern: const [15, 10],
-                      borderType: BorderType.RRect,
-                      radius: const Radius.circular(20),
-                      child: SizedBox(
-                        width: deviceWidth * 0.9,
-                        height: 200,
-                        child: const Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.add,
-                              color: Colors.grey,
-                              size: 22,
-                            ),
-                            CustomText(
-                              text: 'おくすりを登録する',
-                              color: ColorName.textGray,
-                              fontSize: 14,
-                            )
-                          ],
-                        ),
-                      ),
+                    return RegisterContentTile(
+                      tileText: 'おくすりを登録する',
+                      onTap: () {
+                        const HomeMedicineSettingRoute().push(context);
+                      },
                     );
                   }
                   return Column(
@@ -229,18 +216,19 @@ class _HomeViewState extends State<HomeView> {
               ],
             ),
           ),
-          const SpacerAndDivider(
-            topHeight: 10,
-            bottomHeight: 0,
+          const SizedBox(
+            height: 20,
           ),
           Align(
             alignment: Alignment.centerLeft,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, top: 10, bottom: 20),
+            child: Container(
+              decoration: const BoxDecoration(color: Colors.white),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const CustomText(text: 'お知らせ・掲示板'),
+                  const HeaderTitle(
+                    title: 'お知らせ・掲示板',
+                  ),
                   IconButton(
                     onPressed: () async {
                       await _controller.getHospitalNews(reload: true);
