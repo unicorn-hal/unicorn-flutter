@@ -22,21 +22,21 @@ class MessageReportService {
         'title': '⚠ Unicorn Report ⚠',
         'color': 5814783,
         'fields': [
-          {'name': 'ChatID', 'value': message.chatId, 'inline': false},
-          {'name': 'MessageID', 'value': message.messageId, 'inline': false},
+          {'name': '🔷ChatID', 'value': message.chatId, 'inline': false},
+          {'name': '🔶MessageID', 'value': message.messageId, 'inline': false},
           {
-            'name': '通報したユーザー',
+            'name': '👤通報したユーザー',
             'value':
                 '${UserData().user!.lastName + UserData().user!.firstName}[${UserData().user!.userId}]',
             'inline': false
           },
           {
-            'name': '通報された医者',
+            'name': '🥼通報された医者',
             'value':
                 '${doctor.lastName + doctor.firstName}[${doctor.doctorId}]',
             'inline': false
           },
-          {'name': '内容', 'value': message.content, 'inline': false}
+          {'name': '📝内容', 'value': message.content, 'inline': false}
         ],
         'footer': {
           'text': 'Unicorn Report System',
