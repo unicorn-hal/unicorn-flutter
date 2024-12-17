@@ -19,6 +19,7 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.d
 import 'package:unicorn_flutter/View/Component/Parts/Home/board_tile.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Home/medicine_limit_card.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Home/receive_call_cell.dart';
+import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/View/Component/Parts/health_check_button.dart';
 import 'package:unicorn_flutter/View/Component/Parts/register_content_tile.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
@@ -215,32 +216,27 @@ class _HomeViewState extends State<HomeView> {
               ],
             ),
           ),
-          const SpacerAndDivider(
-            topHeight: 10,
-            bottomHeight: 0,
+          const SizedBox(
+            height: 20,
           ),
           Align(
             alignment: Alignment.centerLeft,
             child: Container(
               decoration: const BoxDecoration(color: Colors.white),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20, top: 10, bottom: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const CustomText(
-                      text: 'お知らせ・掲示板',
-                      fontSize: 20,
-                    ),
-                    IconButton(
-                      onPressed: () async {
-                        await _controller.getHospitalNews(reload: true);
-                        setState(() {});
-                      },
-                      icon: const Icon(Icons.refresh_rounded),
-                    ),
-                  ],
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const HeaderTitle(
+                    title: 'お知らせ・掲示板',
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      await _controller.getHospitalNews(reload: true);
+                      setState(() {});
+                    },
+                    icon: const Icon(Icons.refresh_rounded),
+                  ),
+                ],
               ),
             ),
           ),
