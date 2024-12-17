@@ -3,6 +3,7 @@ import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Service/Api/Account/account_api.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
 import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_service.dart';
+import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/Service/Package/SharedPreferences/shared_preferences_service.dart';
 import 'package:unicorn_flutter/Service/Package/SystemInfo/system_info_service.dart';
 import 'package:unicorn_flutter/Service/Package/UrlLauncher/url_launcher_service.dart';
@@ -47,11 +48,16 @@ class AppInformationController extends ControllerCore {
 
   /// 退会処理
   Future<void> unsubscribe() async {
-    ProtectorNotifier().enableProtector();
-    _userApi.deleteUser(userId: UserData().user!.userId);
-    _accountApi.deleteAccount();
-    _firebaseAuthenticationService.signOut();
-    _sharedPreferencesService.clear();
-    ProtectorNotifier().disableProtector();
+    try {
+      ProtectorNotifier().enableProtector();
+      _userApi.deleteUser(userId: UserData().user!.userId);
+      _accountApi.deleteAccount();
+      _firebaseAuthenticationService.signOut();
+      _sharedPreferencesService.clear();
+    } catch (e) {
+      Log.echo('unsubscribe error: $e');
+    } finally {
+      ProtectorNotifier().disableProtector();
+    }
   }
 }
