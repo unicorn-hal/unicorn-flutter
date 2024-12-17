@@ -51,7 +51,7 @@ class ProfileTopController extends ControllerCore {
               .image(color: ColorName.mainColor),
           onTap: () => const ProfileFamilyEmailRoute().push(context)),
       ProfileDetail(
-          title: '持病設定',
+          title: '体のお悩み',
           iconImage: Assets.images.profileDetail.chronicDiseaseIcon
               .image(color: ColorName.mainColor),
           onTap: () => const ProfileChronicDiseaseRoute().push(context)),
