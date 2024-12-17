@@ -80,10 +80,12 @@ class _CallReservationViewState extends State<CallReservationView> {
                         child: CallReservationTile(
                           doctorName:
                               '${callReservationList[index].doctor.lastName}${callReservationList[index].doctor.firstName}',
-                          callDate: DateFormat('yyyy年MM月dd日')
-                              .format(callReservationList[index].callStartTime),
+                          callDate: DateFormat('yyyy年MM月dd日').format(
+                              callReservationList[index]
+                                  .callStartTime
+                                  .toLocal()),
                           callTime:
-                              '${DateFormat('HH:mm').format(callReservationList[index].callStartTime)} ~ ${DateFormat('HH:mm').format(callReservationList[index].callEndTime)}',
+                              '${DateFormat('HH:mm').format(callReservationList[index].callStartTime.toLocal())} ~ ${DateFormat('HH:mm').format(callReservationList[index].callEndTime.subtract(const Duration(minutes: 1)).toLocal())}',
                           doctorIconUrl:
                               callReservationList[index].doctor.doctorIconUrl,
                           chatButtonOnTap: () {

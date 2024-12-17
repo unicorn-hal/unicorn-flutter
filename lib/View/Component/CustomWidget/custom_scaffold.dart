@@ -41,7 +41,7 @@ class CustomScaffold extends StatelessWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: Assets.images.background.provider(),
-              fit: BoxFit.cover,
+              fit: BoxFit.fitWidth,
             ),
           ),
           child: Scaffold(
