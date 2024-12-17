@@ -88,7 +88,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                               children: [
                                 CustomText(
                                   text: 'Address',
-                                  color: ColorName.profileInputBackgroundColor,
+                                  color: Colors.red,
                                   fontSize: 24,
                                 ),
                                 CustomText(
@@ -115,7 +115,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                             width: deviceWidth * 0.8,
                             height: 60,
                             decoration: BoxDecoration(
-                                color: ColorName.profileInputButtonColor,
+                                color: ColorName.subColor,
                                 borderRadius: BorderRadius.circular(20)),
                             child: const Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -172,7 +172,7 @@ class _RegisterAddressInfoViewState extends State<RegisterAddressInfoView> {
                               width: deviceWidth * 0.3,
                               height: 48,
                               decoration: BoxDecoration(
-                                  color: ColorName.profileInputButtonColor,
+                                  color: ColorName.subColor,
                                   borderRadius: BorderRadius.circular(20)),
                               child: const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

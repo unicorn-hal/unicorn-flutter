@@ -140,7 +140,7 @@ class ChatTopView extends StatelessWidget {
                     offset: Offset(0, 3),
                   ),
                 ],
-                color: ColorName.mainColor,
+                color: ColorName.subColor,
               ),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,

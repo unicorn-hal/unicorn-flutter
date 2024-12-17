@@ -86,8 +86,7 @@ class _RegisterUserInfoViewState extends State<RegisterUserInfoView> {
                                 children: [
                                   CustomText(
                                     text: 'User',
-                                    color:
-                                        ColorName.profileInputBackgroundColor,
+                                    color: Colors.red,
                                     fontSize: 22,
                                   ),
                                   CustomText(

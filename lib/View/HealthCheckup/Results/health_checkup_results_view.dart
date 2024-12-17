@@ -270,7 +270,7 @@ class HealthCheckupResultsView extends StatelessWidget {
                                           padding: EdgeInsets.all(2.0),
                                           child: Icon(
                                             Icons.arrow_drop_down,
-                                            color: Colors.blue,
+                                            color: ColorName.subColor,
                                             size: 36,
                                           ),
                                         )
@@ -299,7 +299,7 @@ class HealthCheckupResultsView extends StatelessWidget {
                 const HealthCheckupRoute().go(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: ColorName.subColor,
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
               ),
               icon: const Icon(Icons.arrow_back, color: Colors.white),

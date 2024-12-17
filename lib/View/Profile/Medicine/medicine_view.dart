@@ -100,7 +100,7 @@ class _MedicineViewState extends State<MedicineView> {
                                   },
                                   child: const Icon(
                                     Icons.add,
-                                    color: Colors.blue,
+                                    color: ColorName.subColor,
                                     size: 30,
                                   ),
                                 ),
@@ -125,7 +125,7 @@ class _MedicineViewState extends State<MedicineView> {
                                 action: medicineList[index].reminders.isNotEmpty
                                     ? const Icon(
                                         Icons.notifications,
-                                        color: Colors.blue,
+                                        color: ColorName.subColor,
                                       )
                                     : const Icon(
                                         Icons.notifications_off_outlined,

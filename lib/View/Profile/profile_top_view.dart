@@ -23,32 +23,32 @@ class ProfileTopView extends StatelessWidget {
         children: [
           Consumer(builder: (context, ref, _) {
             UserData userData = ref.watch(userDataProvider);
-            return Container(
-              width: 150,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(50),
-                ),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 15,
-                    ),
-                    child: UserImageCircle(
-                      imageUrl: userData.user!.iconImageUrl,
-                      imageSize: 120,
-                    ),
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 15,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      bottom: 20,
+                  child: UserImageCircle(
+                    imageUrl: userData.user!.iconImageUrl,
+                    imageSize: 120,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 20,
+                  ),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         CustomText(
                           text: userData.user!.lastName,
@@ -64,8 +64,8 @@ class ProfileTopView extends StatelessWidget {
                       ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             );
           }),
           Container(

@@ -141,7 +141,7 @@ class _ChronicDiseaseViewState extends State<ChronicDiseaseView> {
                                   },
                                   child: const Icon(
                                     Icons.add,
-                                    color: Colors.blue,
+                                    color: ColorName.subColor,
                                     size: 30,
                                   ),
                                 ),

@@ -389,7 +389,7 @@ class _VoiceCallReserveViewState extends State<VoiceCallReserveView> {
                     height: 80,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: ColorName.mainColor,
+                      color: ColorName.subColor,
                     ),
                     child: const Center(
                       child: CustomText(

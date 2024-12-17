@@ -252,7 +252,7 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
                       height: 44,
                       child: const Icon(
                         Icons.send,
-                        color: Colors.blue,
+                        color: ColorName.subColor,
                       ),
                     ),
                   )

@@ -188,7 +188,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                           },
                                           icon: const Icon(
                                             Icons.add,
-                                            color: Colors.blue,
+                                            color: ColorName.subColor,
                                           ),
                                         ),
                                       ),
@@ -278,7 +278,7 @@ class _DiseaseSearchViewState extends State<DiseaseSearchView> {
                                           )
                                         : const Icon(
                                             Icons.add,
-                                            color: Colors.blue,
+                                            color: ColorName.subColor,
                                           ),
                                   ),
                                 ),

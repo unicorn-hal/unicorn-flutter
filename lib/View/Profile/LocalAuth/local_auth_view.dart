@@ -81,7 +81,7 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                             children: [
                               CustomText(
                                 text: 'Biometric Auth',
-                                color: ColorName.profileInputBackgroundColor,
+                                color: Colors.red,
                                 fontSize: 22,
                               ),
                               CustomText(
@@ -114,7 +114,7 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                   action: _controller.useLocalAuth
                       ? const Icon(
                           Icons.check,
-                          color: Colors.blue,
+                          color: ColorName.subColor,
                         )
                       : null,
                   onTap: () {
@@ -131,7 +131,7 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                   action: !_controller.useLocalAuth
                       ? const Icon(
                           Icons.check,
-                          color: Colors.blue,
+                          color: ColorName.subColor,
                         )
                       : null,
                   onTap: () {

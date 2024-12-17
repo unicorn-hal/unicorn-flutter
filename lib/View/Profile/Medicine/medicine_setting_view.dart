@@ -247,7 +247,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                               },
                               icon: const Icon(
                                 Icons.add,
-                                color: Colors.blue,
+                                color: ColorName.subColor,
                               ),
                             ),
                             ListView.builder(
@@ -357,7 +357,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                                                           Icons
                                                                               .check,
                                                                           color:
-                                                                              Colors.blue,
+                                                                              ColorName.subColor,
                                                                         )
                                                                       : null,
                                                                   onTap: () {
@@ -392,7 +392,7 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                                           text: controller
                                               .moldingReminderDayOfWeek(
                                                   index: index),
-                                          color: Colors.blue,
+                                          color: ColorName.subColor,
                                         ),
                                       ),
                                     ),
