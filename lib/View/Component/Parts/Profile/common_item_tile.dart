@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
+import 'package:unicorn_flutter/gen/colors.gen.dart';
 // todo: Comment/Parts/ProfileからComment/Partsに引っ越し
 
 class CommonItemTile extends StatelessWidget {
   const CommonItemTile({
     super.key,
     required this.title,
-    this.titleColor = Colors.black,
+    this.titleColor = ColorName.textBlack,
     this.action,
     this.onTap,
     this.verticalPadding = 0,
