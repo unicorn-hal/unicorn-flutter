@@ -4,6 +4,9 @@
     <!-- メインカラー -->
     <color name="main_color">#3D5F92</color>
 
+    <!-- サブカラー -->
+    <color name="sub_color">#0AADFF</color>
+
     <!-- TopLoadingの背景色 -->
     <color name="top_loading_background">#FDFAF0</color>
 
