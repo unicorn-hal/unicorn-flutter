@@ -5,15 +5,18 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
+import 'package:unicorn_flutter/gen/assets.gen.dart';
 
 class GoogleMapViewer extends StatefulWidget {
   const GoogleMapViewer({
     super.key,
     required this.point,
     this.destination,
+    this.current,
   });
   final LatLng point;
   final LatLng? destination;
+  final LatLng? current;
 
   @override
   State<GoogleMapViewer> createState() => _GoogleMapViewerState();
@@ -24,14 +27,18 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
 
   late LatLng _point;
   late LatLng? _destination;
+  late LatLng? _current;
 
   final Set<Polyline> _polylines = {};
+
+  BitmapDescriptor? _unicornPin;
 
   @override
   void initState() {
     super.initState();
     _point = widget.point;
     _destination = widget.destination;
+    _current = widget.current;
 
     if (_destination != null) {
       _fetchRoute();
@@ -42,18 +49,18 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
   void didUpdateWidget(GoogleMapViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.point != oldWidget.point ||
-        widget.destination != oldWidget.destination) {
+        widget.destination != oldWidget.destination ||
+        widget.current != oldWidget.current) {
       setState(() {
         _point = widget.point;
         _destination = widget.destination;
-        _polylines.clear();
+        _current = widget.current;
       });
       if (_destination != null) {
-        _fetchRoute();
         _animateCameraToBounds();
       } else {
         try {
-          mapController!.animateCamera(
+          mapController?.animateCamera(
             CameraUpdate.newLatLng(_point),
           );
         } catch (e) {
@@ -64,6 +71,9 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
   }
 
   Future<void> _fetchRoute() async {
+    _unicornPin = await BitmapDescriptor.asset(
+        const ImageConfiguration(size: Size(48, 48)),
+        Assets.images.icons.unicornPin.path);
     String apiKey = dotenv.env['GOOGLE_MAP_API_KEY']!;
     final response = await http.get(Uri.parse(
         'https://maps.googleapis.com/maps/api/directions/json?origin=${_point.latitude},${_point.longitude}&destination=${_destination!.latitude},${_destination!.longitude}&key=$apiKey'));
@@ -131,24 +141,32 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
   void _animateCameraToBounds() {
     LatLngBounds bounds = LatLngBounds(
       southwest: LatLng(
-        _point.latitude < _destination!.latitude
-            ? _point.latitude
-            : _destination!.latitude,
-        _point.longitude < _destination!.longitude
-            ? _point.longitude
-            : _destination!.longitude,
+        [
+          _point.latitude,
+          _destination!.latitude,
+          _current?.latitude ?? _point.latitude
+        ].reduce((a, b) => a < b ? a : b),
+        [
+          _point.longitude,
+          _destination!.longitude,
+          _current?.longitude ?? _point.longitude
+        ].reduce((a, b) => a < b ? a : b),
       ),
       northeast: LatLng(
-        _point.latitude > _destination!.latitude
-            ? _point.latitude
-            : _destination!.latitude,
-        _point.longitude > _destination!.longitude
-            ? _point.longitude
-            : _destination!.longitude,
+        [
+          _point.latitude,
+          _destination!.latitude,
+          _current?.latitude ?? _point.latitude
+        ].reduce((a, b) => a > b ? a : b),
+        [
+          _point.longitude,
+          _destination!.longitude,
+          _current?.longitude ?? _point.longitude
+        ].reduce((a, b) => a > b ? a : b),
       ),
     );
     try {
-      mapController!.animateCamera(
+      mapController?.animateCamera(
         CameraUpdate.newLatLngBounds(bounds, 50),
       );
     } catch (e) {
@@ -170,6 +188,15 @@ class _GoogleMapViewerState extends State<GoogleMapViewer> {
         ),
         polylines: _polylines,
         markers: {
+          if (_current != null)
+            Marker(
+              markerId: const MarkerId('current'),
+              position: _current!,
+              infoWindow: const InfoWindow(title: 'Current Location'),
+              icon: _unicornPin ??
+                  BitmapDescriptor.defaultMarkerWithHue(
+                      BitmapDescriptor.hueYellow),
+            ),
           Marker(
             markerId: const MarkerId('point'),
             position: _point,

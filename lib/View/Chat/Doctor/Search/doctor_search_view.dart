@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/Search/doctor_search_controller.dart';
+import 'package:unicorn_flutter/Model/Cache/Doctor/PrimaryDoctors/primary_doctors_cache.dart';
 import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
@@ -15,6 +16,7 @@ import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
 import '../../../../Route/router.dart';
+import '../../../../gen/assets.gen.dart';
 import '../../../Component/Parts/user_info_tile.dart';
 
 class DoctorSearchView extends StatefulWidget {
@@ -321,6 +323,12 @@ class _DoctorSearchViewState extends State<DoctorSearchView> {
                               description:
                                   '病院: ${doctor.hospital.hospitalName} 診療科: ${doctor.departments.map((e) => e.departmentName).join(',')}',
                               imageUrl: doctor.doctorIconUrl,
+                              badge: PrimaryDoctorsCache()
+                                      .isPrimaryDoctor(doctor.doctorId)
+                                  ? Assets.images.icons.primaryDoctorIcon.image(
+                                      fit: BoxFit.cover,
+                                    )
+                                  : null,
                             ),
                           );
                         });

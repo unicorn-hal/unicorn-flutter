@@ -157,7 +157,6 @@ class _DoctorTextChatViewState extends State<DoctorTextChatView> {
                                                       ),
                                                       onPressed: () async {
                                                         // 相手のメッセージを通報する
-                                                        // todo: 通報機能は後々実装する
                                                         Navigator.pop(context);
                                                         await controller
                                                             .reportMessage(

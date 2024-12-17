@@ -17,6 +17,7 @@ import 'package:unicorn_flutter/Model/Entity/Chat/message_request.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/Service/Api/Chat/chat_api.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
+import 'package:unicorn_flutter/Service/Webhook/Report/message_report_service.dart';
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 
 import '../../../../Model/Entity/Chat/message_response.dart';
@@ -24,6 +25,7 @@ import '../../../Core/controller_core.dart';
 
 class DoctorTextChatController extends ControllerCore {
   ChatApi get _chatApi => ChatApi();
+  MessageReportService get _messageReportService => MessageReportService();
 
   DoctorTextChatController(
     this._doctor,
@@ -213,10 +215,20 @@ class DoctorTextChatController extends ControllerCore {
     return;
   }
 
-  /// todo: 後で実装する
   /// 通報する処理
   Future<void> reportMessage(Message message) async {
-    Log.echo('通報するメッセージ: ${message.content}');
+    final int response = await _messageReportService.reportMessage(
+      doctor: _doctor,
+      message: message,
+    );
+
+    if (response != 204) {
+      Fluttertoast.showToast(msg: Strings.ERROR_RESPONSE_TEXT);
+      return;
+    }
+
+    // 通報成功時のメッセージを表示
+    Fluttertoast.showToast(msg: Strings.REPORT_SUCCESS_TEXT);
   }
 
   /// 予約メッセージを送信
