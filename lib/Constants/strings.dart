@@ -116,4 +116,7 @@ class Strings {
   // 対応できるUnicornがいない際に表示するテキスト
   static const String UNICORN_NOT_FOUND_TEXT =
       '対応できるUnicornが不在のため、緊急要請を取り消しました';
+
+  // メッセージの通報成功時に表示するテキスト
+  static const String REPORT_SUCCESS_TEXT = '通報が完了しました';
 }
