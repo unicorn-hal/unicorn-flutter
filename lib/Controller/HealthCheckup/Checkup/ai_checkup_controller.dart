@@ -54,15 +54,6 @@ class AiCheckupController extends ControllerCore {
 
   /// 音声認識を開始
   Future<void> startListening() async {
-    bool available = await _permissionHandlerService
-        .requestPermission(Permission.microphone);
-
-    if (!available) {
-      Fluttertoast.showToast(msg: 'マイクの使用が許可されていません');
-
-      return;
-    }
-
     if (_isListening) return;
     HapticFeedback.heavyImpact();
     // 音声開始効果音を再生

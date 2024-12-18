@@ -117,7 +117,9 @@ class _DoctorInformationViewState extends State<DoctorInformationView> {
                       Radius.circular(15),
                     ),
                   ),
-                  child: Column(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       controller.primary
                           ? Padding(
@@ -146,6 +148,39 @@ class _DoctorInformationViewState extends State<DoctorInformationView> {
                         fontSize: 20,
                       ),
                     ],
+                  ),
+                ),
+
+                /// 科目カード表示部
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Container(
+                    constraints: const BoxConstraints(
+                      minWidth: 10,
+                    ),
+                    height: 60,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        for (final department in doctor.departments)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 4,
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                ChatDoctorSearchRoute(
+                                  departmentId: department.departmentId,
+                                ).pushReplacement(context);
+                              },
+                              child: DepartmentBadge(
+                                name: department.departmentName,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
 
