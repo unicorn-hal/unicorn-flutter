@@ -117,7 +117,9 @@ class _DoctorInformationViewState extends State<DoctorInformationView> {
                       Radius.circular(15),
                     ),
                   ),
-                  child: Column(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       controller.primary
                           ? Padding(
