@@ -421,6 +421,11 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                     if (!controller.validateField()) {
                       return;
                     }
+                    if (controller.checkDuplicate()) {
+                      Fluttertoast.showToast(
+                          msg: Strings.MEDICINE_CHECK_DUPLICATE_TEXT);
+                      return;
+                    }
                     ProtectorNotifier().enableProtector();
                     int res = widget.medicine != null
                         ? await controller.putMedicine()

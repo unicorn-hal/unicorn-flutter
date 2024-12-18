@@ -55,6 +55,7 @@ class Strings {
       'おくすりの量には100以下の数値を入力してください';
   static const String MEDICINE_VALIDATE_DOSAGE_TEXT =
       '1回の服用量がおくすりの量よりも多く設定されています';
+  static const String MEDICINE_CHECK_DUPLICATE_TEXT = 'リマインダーが重複して設定されています';
 
   // 通信エラー発生時に使うテキスト
   static const String ERROR_RESPONSE_TEXT = '通信エラーが発生しました';

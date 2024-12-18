@@ -230,4 +230,14 @@ class MedicineSettingController extends ControllerCore {
     }
     return true;
   }
+
+  /// リマインダー重複登録をチェックする関数
+  bool checkDuplicate() {
+    Function isEqual = const ListEquality().equals;
+    return _reminders.any((a) =>
+        (_reminders.where((e) => e.reminderId != a.reminderId).toList()).any(
+            (b) =>
+                (b.reminderTime == a.reminderTime) &&
+                (isEqual(b.reminderDayOfWeek, a.reminderDayOfWeek))));
+  }
 }
