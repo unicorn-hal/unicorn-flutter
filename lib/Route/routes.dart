@@ -9,6 +9,7 @@ mixin Routes {
   static const String registerUserInfo = '/register/user_info';
   static const String registerLocalAuth = '/register/local_auth';
   static const String videoCall = '/video_call';
+  static const String signOut = '/sign_out';
 
   // home
   static const String home = '/home';
