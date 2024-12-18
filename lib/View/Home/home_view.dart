@@ -53,14 +53,14 @@ class _HomeViewState extends State<HomeView> {
       isScrollable: true,
       appBar: CustomAppBar(
         backgroundColor: ColorName.mainColor,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_none, color: Colors.white),
-            onPressed: () {
-              // todo: 新規通知がある場合の処理
-            },
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.notifications_none, color: Colors.white),
+        //     onPressed: () {
+        //       // todo: 新規通知がある場合の処理
+        //     },
+        //   ),
+        // ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
