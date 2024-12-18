@@ -61,7 +61,10 @@ class TopLoadingController extends ControllerCore {
 
   @override
   void initialize() async {
-    /// todo: 初回起動時の処理を記述
+    /// AppConfig: アプリ設定情報を取得
+    AppConfig? appConfig = await _appConfigApi.getAppConfig();
+    Completer availableCompleter = Completer<void>();
+    await _checkAppAvailable(appConfig?.available, availableCompleter);
 
     /// SharedPreferences: 起動フラグを確認
     bool? appInitialized = await _sharedPreferencesService
@@ -85,28 +88,8 @@ class TopLoadingController extends ControllerCore {
     /// ユーザー情報を取得
     firebase_auth.User? authUser = _authService.getUser();
     if (authUser == null) {
-      /// Firebase: 匿名ログイン
-      firebase_auth.User? credential = await _authService.signInAnonymously();
-      if (credential == null) {
-        throw Exception('Firebase authentication failed');
-      }
-      uid = credential.uid;
-
-      /// Firebase: FCMトークンを取得
-      await _cloudMessagingInitialize();
-
-      /// API: アカウント情報を送信
-      account = Account.fromJson({
-        'uid': uid,
-        'role': 'user',
-        'fcmTokenId': fcmTokenId,
-      });
-      final int statusCode = await _accountApi.postAccount(
-        body: AccountRequest.fromJson(account!.toJson()),
-      );
-      if (statusCode != 200) {
-        throw Exception('Account API failed');
-      }
+      /// 新規登録
+      await _register();
     } else {
       uid = authUser.uid;
 
@@ -126,18 +109,17 @@ class TopLoadingController extends ControllerCore {
 
       /// API: アカウント・ユーザー情報を取得
       account = await _accountApi.getAccount();
+      if (account == null) {
+        await _register();
+      }
       user = await _userApi.getUser(userId: uid);
     }
     Log.toast(
       'FirebaseAuth: ${authUser == null ? '新規' : '登録済み'} ($uid)',
     );
+    Log.echo('FirebaseAuth: ${authUser == null ? '新規' : '登録済み'} ($uid)');
     Log.echo('Account: ${account?.toJson() ?? 'null'}');
     Log.echo('User: ${user?.toJson() ?? 'null'}');
-
-    /// AppConfig: アプリ設定情報を取得
-    AppConfig appConfig = await _getAppConfig();
-    Completer availableCompleter = Completer<void>();
-    await _checkAppAvailable(appConfig.available, availableCompleter);
 
     /// シングルトンにアカウント情報を保存
     AccountData().setAccount(account!);
@@ -189,6 +171,32 @@ class TopLoadingController extends ControllerCore {
     final version = await _systemInfoService.appVersion;
     final buildNumber = await _systemInfoService.appBuildNumber;
     return '$version ($buildNumber)';
+  }
+
+  /// 新規登録
+  Future<void> _register() async {
+    /// Firebase: 匿名ログイン
+    firebase_auth.User? credential = await _authService.signInAnonymously();
+    if (credential == null) {
+      throw Exception('Firebase authentication failed');
+    }
+    uid = credential.uid;
+
+    /// Firebase: FCMトークンを取得
+    await _cloudMessagingInitialize();
+
+    /// API: アカウント情報を送信
+    account = Account.fromJson({
+      'uid': uid,
+      'role': 'user',
+      'fcmTokenId': fcmTokenId,
+    });
+    final int statusCode = await _accountApi.postAccount(
+      body: AccountRequest.fromJson(account!.toJson()),
+    );
+    if (statusCode != 200) {
+      throw Exception('Account API failed');
+    }
   }
 
   /// Firebase Cloud Messagingの初期化
@@ -252,20 +260,12 @@ class TopLoadingController extends ControllerCore {
     }
   }
 
-  /// AppConfigの取得と検証
-  Future<AppConfig> _getAppConfig() async {
-    final AppConfig? appConfig = await _appConfigApi.getAppConfig();
-    if (appConfig == null) {
-      throw Exception('AppConfig API failed');
-    }
-    return appConfig;
-  }
-
   /// アプリ有効フラグの検証
   /// [isAvailable] アプリが有効かどうか
   /// [completer] 検証完了時に呼び出すCompleter
-  Future<void> _checkAppAvailable(bool isAvailable, Completer completer) async {
-    if (!isAvailable) {
+  Future<void> _checkAppAvailable(
+      bool? isAvailable, Completer completer) async {
+    if (isAvailable == null || !isAvailable) {
       if (!context.mounted) {
         return;
       }
