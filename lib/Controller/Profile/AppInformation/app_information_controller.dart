@@ -21,8 +21,8 @@ class AppInformationController extends ControllerCore {
       SharedPreferencesService();
 
   /// 変数の定義
-  // todo: url決まったら入れる
-  final String _privacyPolicyUrl = '';
+  final String _privacyPolicyUrl =
+      'https://unicorn-hal.github.io/unicorn-privacy-policy/';
 
   /// initialize()
   @override
@@ -30,11 +30,6 @@ class AppInformationController extends ControllerCore {
 
   /// 各関数の実装
   String get privacyPolicyUrl => _privacyPolicyUrl;
-
-  /// urlをたたく関数
-  Future<void> launchUrl(String url) async {
-    await _urlLauncherService.launchUrl(url);
-  }
 
   /// アプリのバージョンを取得する関数
   Future<String> getAppVersion() async {
@@ -44,6 +39,11 @@ class AppInformationController extends ControllerCore {
   /// アプリのレビューページに飛ばす関数
   Future<void> openReview() async {
     await _systemInfoService.openReview();
+  }
+
+  /// プライバシーポリシー
+  Future<void> openPrivacyPolicy() async {
+    await _urlLauncherService.launchUrl(_privacyPolicyUrl);
   }
 
   /// 退会処理

@@ -65,7 +65,7 @@ class AppInformationView extends StatelessWidget {
                     CommonItemTile(
                       title: 'プライバシーポリシー',
                       onTap: () async {
-                        await controller.launchUrl(controller.privacyPolicyUrl);
+                        await controller.openPrivacyPolicy();
                       },
                     ),
                     CommonItemTile(
