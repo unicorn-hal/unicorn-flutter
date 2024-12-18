@@ -50,10 +50,10 @@ class AppInformationController extends ControllerCore {
   Future<void> unsubscribe() async {
     try {
       ProtectorNotifier().enableProtector();
-      _userApi.deleteUser(userId: UserData().user!.userId);
-      _accountApi.deleteAccount();
-      _firebaseAuthenticationService.signOut();
-      _sharedPreferencesService.clear();
+      await _userApi.deleteUser(userId: UserData().user!.userId);
+      await _accountApi.deleteAccount();
+      await _firebaseAuthenticationService.signOut();
+      await _sharedPreferencesService.clear();
     } catch (e) {
       Log.echo('unsubscribe error: $e');
     } finally {
