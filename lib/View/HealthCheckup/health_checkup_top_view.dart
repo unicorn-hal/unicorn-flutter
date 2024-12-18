@@ -93,12 +93,13 @@ class HealthCheckupTopView extends StatelessWidget {
                                         SizedBox(
                                           width: size.width * 0.15,
                                           height: 90,
-                                          child: const FittedBox(
+                                          child: FittedBox(
                                             fit: BoxFit.fitWidth,
-                                            child: Icon(
-                                              Icons.thermostat,
-                                              color: Colors.black,
-                                            ),
+                                            child: Icon(Icons.thermostat,
+                                                color: HealthCheckupResultType
+                                                    .color(
+                                                        controller.resultToEnum(
+                                                            todayHealthCheckup))),
                                           ),
                                         ),
                                         SizedBox(
@@ -135,11 +136,14 @@ class HealthCheckupTopView extends StatelessWidget {
                                         SizedBox(
                                           width: size.width * 0.15,
                                           height: 90,
-                                          child: const FittedBox(
+                                          child: FittedBox(
                                             fit: BoxFit.fitWidth,
                                             child: Icon(
                                               Icons.bloodtype,
-                                              color: Colors.black,
+                                              color:
+                                                  HealthCheckupResultType.color(
+                                                      controller.resultToEnum(
+                                                          todayHealthCheckup)),
                                             ),
                                           ),
                                         ),
@@ -186,19 +190,13 @@ class HealthCheckupTopView extends StatelessWidget {
                                   text: '検診結果',
                                   fontSize: 12,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 4.0,
-                                  ),
-                                  child: CustomText(
-                                    text: HealthCheckupResultType.title(
-                                        controller
-                                            .resultToEnum(todayHealthCheckup)),
-                                    fontSize: 26,
-                                    color: HealthCheckupResultType.color(
-                                        controller
-                                            .resultToEnum(todayHealthCheckup)),
-                                  ),
+                                CustomText(
+                                  text: HealthCheckupResultType.title(controller
+                                      .resultToEnum(todayHealthCheckup)),
+                                  fontSize: 26,
+                                  color: HealthCheckupResultType.color(
+                                      controller
+                                          .resultToEnum(todayHealthCheckup)),
                                 ),
                                 CustomText(
                                   text: HealthCheckupResultType.description(
