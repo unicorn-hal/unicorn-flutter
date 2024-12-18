@@ -15,7 +15,7 @@ class AppInformationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppInformationController controller = AppInformationController();
+    AppInformationController controller = AppInformationController(context);
     double deviceWidth = MediaQuery.of(context).size.width;
     return CustomScaffold(
       appBar: CustomAppBar(
@@ -81,21 +81,19 @@ class AppInformationView extends StatelessWidget {
                       titleColor: Colors.red,
                       onTap: () {
                         showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return CustomDialog(
-                                title: '退会',
-                                bodyText: '本当にアプリを退会しますか？',
-                                leftButtonText: 'いいえ',
-                                rightButtonText: 'はい',
-                                rightButtonOnTap: () async {
-                                  await controller.unsubscribe();
-                                  if (context.mounted) {
-                                    TopLoadingRoute().pushReplacement(context);
-                                  }
-                                },
-                              );
-                            });
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CustomDialog(
+                              title: '退会',
+                              bodyText: '本当にアプリを退会しますか？',
+                              leftButtonText: 'いいえ',
+                              rightButtonText: 'はい',
+                              rightButtonOnTap: () async {
+                                await controller.unsubscribe();
+                              },
+                            );
+                          },
+                        );
                       },
                     ),
                   ],
