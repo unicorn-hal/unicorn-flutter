@@ -170,8 +170,8 @@ class _MedicineViewState extends State<MedicineView> {
                           vertical: 5,
                         ),
                         child: CustomText(
-                          text: '・おくすり登録をして使える機能の説明①',
-                          fontSize: 14,
+                          text: '・登録できるおくすりの名称は最大20字です',
+                          fontSize: 13,
                         ),
                       ),
                       Padding(
@@ -179,8 +179,8 @@ class _MedicineViewState extends State<MedicineView> {
                           vertical: 5,
                         ),
                         child: CustomText(
-                          text: '・おくすり登録をして使える機能の説明②',
-                          fontSize: 14,
+                          text: '・登録できるおくすりの残量は最大100錠です',
+                          fontSize: 13,
                         ),
                       ),
                       Padding(
@@ -188,8 +188,8 @@ class _MedicineViewState extends State<MedicineView> {
                           vertical: 5,
                         ),
                         child: CustomText(
-                          text: '・おくすり登録をして使える機能の説明③',
-                          fontSize: 14,
+                          text: '・登録できるリマインダーは最大5件です',
+                          fontSize: 13,
                         ),
                       ),
                       Padding(
@@ -197,8 +197,8 @@ class _MedicineViewState extends State<MedicineView> {
                           vertical: 5,
                         ),
                         child: CustomText(
-                          text: '・おくすり登録をして使える機能の説明④',
-                          fontSize: 14,
+                          text: '・登録されたおくすりはホーム画面に表示されます',
+                          fontSize: 13,
                         ),
                       ),
                     ],
