@@ -422,6 +422,8 @@ class _MedicineSettingViewState extends State<MedicineSettingView> {
                       return;
                     }
                     if (controller.checkDuplicate()) {
+                      Fluttertoast.showToast(
+                          msg: Strings.MEDICINE_CHECK_DUPLICATE_TEXT);
                       return;
                     }
                     ProtectorNotifier().enableProtector();
