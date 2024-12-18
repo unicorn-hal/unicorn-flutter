@@ -33,6 +33,7 @@ class HealthCheckupResultType {
       case HealthCheckupResultEnum.safety:
         return "正常";
       case HealthCheckupResultEnum.bodyTemperatureHazard:
+        return "要注意";
       case HealthCheckupResultEnum.bloodPressureHazard:
         return "要注意";
       case HealthCheckupResultEnum.danger:
@@ -64,6 +65,7 @@ class HealthCheckupResultType {
       case HealthCheckupResultEnum.safety:
         return Colors.green;
       case HealthCheckupResultEnum.bodyTemperatureHazard:
+        return Colors.orange;
       case HealthCheckupResultEnum.bloodPressureHazard:
         return Colors.orange;
       case HealthCheckupResultEnum.danger:
