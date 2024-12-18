@@ -47,6 +47,7 @@ import 'package:unicorn_flutter/View/Component/Pages/Register/register_user_info
 import 'package:unicorn_flutter/View/bottom_navigation_bar_view.dart';
 import 'package:unicorn_flutter/View/emergency_result_view.dart';
 import 'package:unicorn_flutter/View/emergency_view.dart';
+import 'package:unicorn_flutter/View/sign_out_view.dart';
 import 'package:unicorn_flutter/View/top_loading_view.dart';
 import 'routes.dart';
 
@@ -378,6 +379,17 @@ class VideoCallRoute extends GoRouteData {
   Widget build(BuildContext context, GoRouterState state) => VoiceCallView(
         callStandby: $extra,
       );
+}
+
+@TypedGoRoute<SignOutRoute>(
+  path: Routes.signOut,
+)
+class SignOutRoute extends GoRouteData {
+  const SignOutRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      const SignOutView();
 }
 
 /////////////////////////////////  Root  //////////////////////////////

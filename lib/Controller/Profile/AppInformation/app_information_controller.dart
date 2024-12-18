@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
+import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/Service/Api/Account/account_api.dart';
 import 'package:unicorn_flutter/Service/Api/User/user_api.dart';
-import 'package:unicorn_flutter/Service/Firebase/Authentication/authentication_service.dart';
 import 'package:unicorn_flutter/Service/Log/log_service.dart';
 import 'package:unicorn_flutter/Service/Package/SharedPreferences/shared_preferences_service.dart';
 import 'package:unicorn_flutter/Service/Package/SystemInfo/system_info_service.dart';
@@ -15,14 +16,16 @@ class AppInformationController extends ControllerCore {
   SystemInfoService get _systemInfoService => SystemInfoService();
   UserApi get _userApi => UserApi();
   AccountApi get _accountApi => AccountApi();
-  FirebaseAuthenticationService get _firebaseAuthenticationService =>
-      FirebaseAuthenticationService();
+
   SharedPreferencesService get _sharedPreferencesService =>
       SharedPreferencesService();
 
   /// 変数の定義
   final String _privacyPolicyUrl =
       'https://unicorn-hal.github.io/unicorn-privacy-policy/';
+
+  BuildContext context;
+  AppInformationController(this.context);
 
   /// initialize()
   @override
@@ -52,8 +55,9 @@ class AppInformationController extends ControllerCore {
       ProtectorNotifier().enableProtector();
       await _userApi.deleteUser(userId: UserData().user!.userId);
       await _accountApi.deleteAccount();
-      await _firebaseAuthenticationService.signOut();
       await _sharedPreferencesService.clear();
+      // ignore: use_build_context_synchronously
+      const SignOutRoute().go(context);
     } catch (e) {
       Log.echo('unsubscribe error: $e');
     } finally {
