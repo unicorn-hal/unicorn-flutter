@@ -127,4 +127,11 @@ class Strings {
     '医療行為を目的とした利用はできません。',
     'また、実際の医療機関・団体とは一切関係ありません。'
   ];
+
+  // ダイアログでのデモンストレーション表示用のテキスト
+  static const String DEMONSTRATION_DIALOG_TITLE = '注意';
+  static const String DEMONSTRATION_DIALOG_BODY =
+      '※ このアプリは医療シミュレーション用デモアプリです。\n'
+      '検診はすべて架空のものであり、実際の医療機関での診断結果とは異なります。\n'
+      'また、取得するデータは医療行為としての利用は一切行われません。';
 }
