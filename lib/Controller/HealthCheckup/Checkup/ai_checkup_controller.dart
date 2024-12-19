@@ -4,9 +4,10 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:unicorn_flutter/Constants/Enum/chatgpt_role.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
+import 'package:unicorn_flutter/Model/Data/AppConfig/app_config_data.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_message.dart';
 import 'package:unicorn_flutter/Model/Entity/ChatGPT/chatgpt_response.dart';
 import 'package:unicorn_flutter/Route/router.dart';
@@ -35,7 +36,7 @@ class AiCheckupController extends ControllerCore {
   final int _baseHealthPoint = 3;
   bool _isListening = false;
   bool _isDone = false;
-  late bool _isAvailable;
+  bool? _isAvailable;
 
   // オーディオを初期化
   final _audioPlayer = AudioPlayer();
@@ -43,13 +44,27 @@ class AiCheckupController extends ControllerCore {
   @override
   void initialize() async {
     _aiText = ValueNotifier<String>(_aiTextDefault);
-    // 音声認識の初期化
-    _isAvailable = await _speechToTextService.initialize();
-    if (!_isAvailable) {
-      await _showErrorDialog();
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context);
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (AppConfigData().demoMode) {
+        await showDialog(
+          context: context,
+          builder: (_) => const CustomDialog(
+            title: Strings.DEMONSTRATION_DIALOG_TITLE,
+            bodyText: Strings.DEMONSTRATION_DIALOG_BODY,
+            leftButtonText: '確認',
+            customButtonCount: 1,
+          ),
+        );
+      }
+
+      // 音声認識の初期化
+      _isAvailable = await _speechToTextService.initialize();
+      if (!_isAvailable!) {
+        await _showErrorDialog();
+        // ignore: use_build_context_synchronously
+        Navigator.pop(context);
+      }
+    });
   }
 
   /// 音声認識を開始
