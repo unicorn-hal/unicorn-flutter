@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:unicorn_flutter/Controller/bottom_navigation_bar_controller.dart';
+import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
 
@@ -74,6 +77,34 @@ class _BottomNavigationBarViewState extends State<BottomNavigationBarView>
       ),
     );
 
+    Widget userImageCircle(double imageSize) {
+      String? imageUrl = UserData().user?.iconImageUrl;
+      return SizedBox(
+        width: imageSize,
+        height: imageSize,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(imageSize / 2),
+          child: FittedBox(
+            fit: BoxFit.cover,
+            clipBehavior: Clip.antiAlias,
+            child: imageUrl != null
+                ? CachedNetworkImage(
+                    imageUrl: imageUrl,
+                    placeholder: (context, url) => const CustomIndicator(),
+                    errorWidget: (context, url, error) =>
+                        Assets.images.icons.defaultUserIcon.image(
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                // imageUrlがnullの場合はデフォルトの画像を表示
+                : Assets.images.icons.defaultUserIcon.image(
+                    fit: BoxFit.cover,
+                  ),
+          ),
+        ),
+      );
+    }
+
     return Consumer(builder: (context, ref, _) {
       final protectorNotifier = ref.watch(protectorProvider);
       return Stack(
@@ -124,13 +155,8 @@ class _BottomNavigationBarViewState extends State<BottomNavigationBarView>
                       label: 'チャット',
                     ),
                     NavigationDestination(
-                      icon: Assets.images.bottomNavBar.profile.image(
-                        scale: 20.0,
-                      ),
-                      selectedIcon: Assets.images.bottomNavBar.profile.image(
-                        scale: 16.0,
-                        color: ColorName.mainColor,
-                      ),
+                      icon: userImageCircle(28.0),
+                      selectedIcon: userImageCircle(36.0),
                       label: 'プロフィール',
                     ),
                   ],
