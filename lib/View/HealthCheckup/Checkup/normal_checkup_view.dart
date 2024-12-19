@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/HealthCheckup/normal_checkup_controller.dart';
+import 'package:unicorn_flutter/Model/Data/AppConfig/app_config_data.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
 import 'package:unicorn_flutter/View/Component/Parts/checkbox_tile.dart';
@@ -20,11 +23,31 @@ class _NormalCheckupViewState extends State<NormalCheckupView> {
 
   late int selectedIndex;
   bool isSelected = false;
+  bool _isDialogShown = false;
 
   @override
   void initState() {
-    controller = NormalCheckupController(context);
     super.initState();
+    controller = NormalCheckupController(context);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isDialogShown && AppConfigData().demoMode) {
+      _isDialogShown = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (_) => const CustomDialog(
+            title: Strings.DEMONSTRATION_DIALOG_TITLE,
+            bodyText: Strings.DEMONSTRATION_DIALOG_BODY,
+            leftButtonText: '確認',
+            customButtonCount: 1,
+          ),
+        );
+      });
+    }
   }
 
   @override

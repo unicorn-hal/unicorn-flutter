@@ -1,4 +1,6 @@
-// ignore_for_file: constant_identifier_names
+// ignore_for_file: constant_identifier_names, non_constant_identifier_names
+
+import 'package:unicorn_flutter/Model/Data/AppConfig/app_config_data.dart';
 
 class Strings {
   /// Stringsファイルにおける変数名は全て大文字で記述する
@@ -13,10 +15,14 @@ class Strings {
       '持病の種類やおくすりの詳細情報がわからないときはAIに聞いて自動追加してもらおう。';
 
   // CustomLoadingAnimationに表示するテキスト
-  static const String LOADING_TEXT_INSPECTION = '検査中です';
-  static const String LOADING_TEXT_TREATMENT = '治療中です';
-  static const String LOADING_TEXT_BODY_TEMPERATURE = '体温を測定中です';
-  static const String LOADING_TEXT_BLOOD_PRESSURE = '血圧を測定中です';
+  static String LOADING_TEXT_INSPECTION =
+      AppConfigData().demoMode ? '処理中です' : '検査中です';
+  static String LOADING_TEXT_TREATMENT =
+      AppConfigData().demoMode ? 'お待ち下さい' : '治療中です';
+  static String LOADING_TEXT_BODY_TEMPERATURE =
+      AppConfigData().demoMode ? '処理中です' : '体温を測定中です';
+  static String LOADING_TEXT_BLOOD_PRESSURE =
+      AppConfigData().demoMode ? 'お待ち下さい' : '血圧を測定中です';
 
   // 検診ボタンに使用するテキスト
   static const String HEALTH_CHECK_BUTTON_TEXT = '通常検診を開始する';
@@ -127,4 +133,11 @@ class Strings {
     '医療行為を目的とした利用はできません。',
     'また、実際の医療機関・団体とは一切関係ありません。'
   ];
+
+  // ダイアログでのデモンストレーション表示用のテキスト
+  static const String DEMONSTRATION_DIALOG_TITLE = '注意';
+  static const String DEMONSTRATION_DIALOG_BODY =
+      '※ このアプリは医療シミュレーション用デモアプリです。\n'
+      '検診結果はすべて架空のものであり、実際の医療機関は一切関係ありません。\n'
+      'また、取得するデータは医療行為としての利用は一切行われません。';
 }
