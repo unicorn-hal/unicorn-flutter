@@ -5,9 +5,10 @@ class AppConfigData {
   factory AppConfigData() => _instance;
   AppConfigData._internal();
 
-  AppConfig? _data;
+  AppConfig _data = AppConfig();
 
-  AppConfig? get data => _data;
+  AppConfig get data => _data;
+  bool get demoMode => _data.demoMode;
 
   void setAppConfig(AppConfig data) {
     _data = data;
