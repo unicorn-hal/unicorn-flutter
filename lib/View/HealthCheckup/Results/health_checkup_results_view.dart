@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/health_checkup_disease_enum.dart';
 import 'package:unicorn_flutter/Controller/HealthCheckup/Results/health_checkup_results_controller.dart';
+import 'package:unicorn_flutter/Model/Data/AppConfig/app_config_data.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
@@ -121,6 +122,12 @@ class HealthCheckupResultsView extends StatelessWidget {
                             ],
                           ),
                         ),
+                        if (AppConfigData().demoMode)
+                          const CustomText(
+                            text: '※シミュレーションのため、体温と血圧はランダムです',
+                            fontSize: 12,
+                            color: Colors.red,
+                          ),
                         SizedBox(
                           width: size.width * 0.9,
                           height: 100,
