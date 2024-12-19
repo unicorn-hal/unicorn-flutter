@@ -62,9 +62,12 @@ class TopLoadingController extends ControllerCore {
   @override
   void initialize() async {
     /// AppConfig: アプリ設定情報を取得
-    AppConfig? appConfig = await _appConfigApi.getAppConfig();
+    AppConfig appConfig = await _appConfigApi.getAppConfig();
+    Log.toast(
+        'AppConfig: available ${appConfig.available}, demoMode ${appConfig.demoMode}');
+
     Completer availableCompleter = Completer<void>();
-    await _checkAppAvailable(appConfig?.available, availableCompleter);
+    await _checkAppAvailable(appConfig.available, availableCompleter);
 
     /// SharedPreferences: 起動フラグを確認
     bool? appInitialized = await _sharedPreferencesService
@@ -289,8 +292,7 @@ class TopLoadingController extends ControllerCore {
 
   /// リリースビルドバージョンの検証
   Future<bool> checkReleaseBuild() async {
-    final int releaseBuild =
-        (await _appConfigApi.getAppConfig())?.releaseBuild ?? 0;
+    final int releaseBuild = (await _appConfigApi.getAppConfig()).releaseBuild;
     final int currentBuildNumber =
         int.parse(await _systemInfoService.appBuildNumber);
     Log.echo('ReleaseBuild: $releaseBuild, CurrentBuild: $currentBuildNumber');
