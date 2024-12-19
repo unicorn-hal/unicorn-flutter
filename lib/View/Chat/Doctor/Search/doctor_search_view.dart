@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:unicorn_flutter/Constants/strings.dart';
 import 'package:unicorn_flutter/Controller/Chat/Doctor/Search/doctor_search_controller.dart';
 import 'package:unicorn_flutter/Model/Cache/Doctor/PrimaryDoctors/primary_doctors_cache.dart';
+import 'package:unicorn_flutter/Model/Data/AppConfig/app_config_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Department/department.dart';
 import 'package:unicorn_flutter/Model/Entity/Doctor/doctor.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
+import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dialog.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_dropdown.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_indicator.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
@@ -30,11 +33,31 @@ class DoctorSearchView extends StatefulWidget {
 
 class _DoctorSearchViewState extends State<DoctorSearchView> {
   late DoctorSearchController controller;
+  bool _isDialogShown = false;
 
   @override
   void initState() {
     super.initState();
     controller = DoctorSearchController(departmentId: widget.departmentId);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isDialogShown && AppConfigData().demoMode) {
+      _isDialogShown = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (_) => const CustomDialog(
+            title: Strings.DEMONSTRATION_DIALOG_TITLE,
+            bodyText: Strings.DEMONSTRATION_DIALOG_BODY,
+            leftButtonText: '確認',
+            customButtonCount: 1,
+          ),
+        );
+      });
+    }
   }
 
   @override
