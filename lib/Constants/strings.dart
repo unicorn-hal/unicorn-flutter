@@ -120,4 +120,11 @@ class Strings {
 
   // メッセージの通報成功時に表示するテキスト
   static const String REPORT_SUCCESS_TEXT = '通報が完了しました';
+
+  // TopLoadingに表示する注意書き
+  static const List<String> TOP_LOADING_CAUTION_TEXT_LIST = [
+    'このアプリは未来の可能性を探るためのデモアプリです。',
+    '医療行為を目的とした利用はできません。',
+    'また、実際の医療機関・団体とは一切関係ありません。'
+  ];
 }

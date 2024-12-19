@@ -252,17 +252,17 @@ class _HomeViewState extends State<HomeView> {
                 );
               }
               if (snapshot.hasError) {
-                return const Center(
-                  child: SizedBox(
-                    height: 200,
-                    child: CustomText(text: 'お知らせの取得に失敗しました'),
+                return const SizedBox(
+                  height: 200,
+                  child: Center(
+                    child: CustomText(text: 'エラーが発生しました'),
                   ),
                 );
               }
-              if (snapshot.data == null) {
-                return const Center(
-                  child: SizedBox(
-                    height: 200,
+              if (snapshot.data?.isEmpty ?? true) {
+                return const SizedBox(
+                  height: 200,
+                  child: Center(
                     child: CustomText(text: 'お知らせはありません'),
                   ),
                 );
