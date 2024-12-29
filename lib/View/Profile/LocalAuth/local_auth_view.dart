@@ -106,9 +106,6 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                     ),
                   ),
                 ),
-                const SpacerAndDivider(
-                  topHeight: 0,
-                ),
                 CommonItemTile(
                   title: '生体認証を使う',
                   action: _controller.useLocalAuth
@@ -124,8 +121,22 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                       });
                     });
                   },
+                  tileHeight: 70,
+                  boxDecoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      width: 1,
+                      color:
+                          _controller.useLocalAuth ? Colors.blue : Colors.grey,
+                    ),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
                 ),
-                const SpacerAndDivider(),
+                const SizedBox(
+                  height: 8,
+                ),
                 CommonItemTile(
                   title: '設定しない',
                   action: !_controller.useLocalAuth
@@ -141,8 +152,19 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                       });
                     });
                   },
+                  tileHeight: 70,
+                  boxDecoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      width: 1,
+                      color:
+                          !_controller.useLocalAuth ? Colors.blue : Colors.grey,
+                    ),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
                 ),
-                const SpacerAndDivider(),
                 Visibility(
                   visible: !_controller.useAppbar,
                   child: Align(
