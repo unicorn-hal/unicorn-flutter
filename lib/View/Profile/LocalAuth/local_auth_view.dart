@@ -5,7 +5,6 @@ import 'package:unicorn_flutter/View/Component/CustomWidget/custom_appbar.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_button.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
-import 'package:unicorn_flutter/View/Component/CustomWidget/spacer_and_divider.dart';
 import 'package:unicorn_flutter/View/Component/Parts/Profile/common_item_tile.dart';
 import 'package:unicorn_flutter/View/Component/Parts/header_title.dart';
 import 'package:unicorn_flutter/gen/colors.gen.dart';
@@ -106,9 +105,6 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                     ),
                   ),
                 ),
-                const SpacerAndDivider(
-                  topHeight: 0,
-                ),
                 CommonItemTile(
                   title: '生体認証を使う',
                   action: _controller.useLocalAuth
@@ -124,8 +120,22 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                       });
                     });
                   },
+                  tileHeight: 70,
+                  boxDecoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      width: 1,
+                      color:
+                          _controller.useLocalAuth ? Colors.blue : Colors.grey,
+                    ),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
                 ),
-                const SpacerAndDivider(),
+                const SizedBox(
+                  height: 8,
+                ),
                 CommonItemTile(
                   title: '設定しない',
                   action: !_controller.useLocalAuth
@@ -141,8 +151,19 @@ class _LocalAuthViewState extends State<LocalAuthView> {
                       });
                     });
                   },
+                  tileHeight: 70,
+                  boxDecoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(
+                      width: 1,
+                      color:
+                          !_controller.useLocalAuth ? Colors.blue : Colors.grey,
+                    ),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                  ),
                 ),
-                const SpacerAndDivider(),
                 Visibility(
                   visible: !_controller.useAppbar,
                   child: Align(
