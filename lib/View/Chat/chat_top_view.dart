@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:unicorn_flutter/Controller/Chat/chat_top_controller.dart';
 import 'package:unicorn_flutter/Model/Cache/Doctor/PrimaryDoctors/primary_doctors_cache.dart';
-import 'package:unicorn_flutter/Model/Chat/chat_data.dart';
+import 'package:unicorn_flutter/Model/Data/Chat/chat_data.dart';
 import 'package:unicorn_flutter/Route/router.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_scaffold.dart';
 import 'package:unicorn_flutter/View/Component/CustomWidget/custom_text.dart';
@@ -86,26 +86,29 @@ class ChatTopView extends StatelessWidget {
                               shrinkWrap: true,
                               itemCount: chatData.data.length,
                               itemBuilder: (context, index) {
-                                      final Chat data = chatData.data[index];
+                                final Chat data = chatData.data[index];
                                 return Column(
                                   children: [
-                                   UserInfoTile(
-                          onTap: () {
-                            ChatDoctorInformationRoute(
-                              data.doctor.doctorId,
-                            ).push(context);
-                          },
-                          userName:
-                              data.doctor.lastName + data.doctor.firstName,
-                          description: '${data.latestMessageText}',
-                          imageUrl: data.doctor.doctorIconUrl,
-                          badge: PrimaryDoctorsCache()
-                                  .isPrimaryDoctor(data.doctor.doctorId)
-                              ? Assets.images.icons.primaryDoctorIcon.image(
-                                  fit: BoxFit.cover,
-                                )
-                              : null,
-                        ),
+                                    UserInfoTile(
+                                      onTap: () {
+                                        ChatDoctorInformationRoute(
+                                          data.doctor.doctorId,
+                                        ).push(context);
+                                      },
+                                      userName: data.doctor.lastName +
+                                          data.doctor.firstName,
+                                      description: '${data.latestMessageText}',
+                                      imageUrl: data.doctor.doctorIconUrl,
+                                      badge: PrimaryDoctorsCache()
+                                              .isPrimaryDoctor(
+                                                  data.doctor.doctorId)
+                                          ? Assets
+                                              .images.icons.primaryDoctorIcon
+                                              .image(
+                                              fit: BoxFit.cover,
+                                            )
+                                          : null,
+                                    ),
                                     if (index == chatData.data.length - 1)
                                       const SizedBox(
                                         height: 60,

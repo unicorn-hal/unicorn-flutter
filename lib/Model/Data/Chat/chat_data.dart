@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../Entity/Chat/chat.dart';
+import '../../Entity/Chat/chat.dart';
 
 /// ChatDataを監視するProvider
 final chatDataProvider = ChangeNotifierProvider((ref) => ChatData());

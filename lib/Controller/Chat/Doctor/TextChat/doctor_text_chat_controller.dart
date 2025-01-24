@@ -6,7 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:stomp_dart_client/stomp_dart_client.dart';
 import 'package:unicorn_flutter/Constants/strings.dart';
-import 'package:unicorn_flutter/Model/Chat/chat_data.dart';
+import 'package:unicorn_flutter/Model/Data/Chat/chat_data.dart';
 
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
 import 'package:unicorn_flutter/Model/Entity/Chat/chat.dart';

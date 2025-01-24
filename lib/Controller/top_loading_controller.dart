@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:unicorn_flutter/Constants/Enum/fcm_topic_enum.dart';
 import 'package:unicorn_flutter/Constants/Enum/shared_preferences_keys_enum.dart';
 import 'package:unicorn_flutter/Controller/Core/controller_core.dart';
-import 'package:unicorn_flutter/Model/Chat/chat_data.dart';
+import 'package:unicorn_flutter/Model/Data/Chat/chat_data.dart';
 import 'package:unicorn_flutter/Model/Data/Account/account_data.dart';
 import 'package:unicorn_flutter/Model/Data/Department/department_data.dart';
 import 'package:unicorn_flutter/Model/Data/User/user_data.dart';
