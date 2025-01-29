@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- アプリ内で使用するカラーを管理するファイルです -->
+<resources>
+    <!-- メインカラー -->
+    <color name="main_color">#3D5F92</color>
+
+    <!-- サブカラー -->
+    <color name="sub_color">#0AADFF</color>
+
+    <!-- TopLoadingの背景色 -->
+    <color name="top_loading_background">#FDFAF0</color>
+
+    <!-- テキスト系のカラー -->
+    <color name="text_black">#202124</color>
+    <color name="text_gray">#6C6C6C</color>
+
+    <!-- 影に使うグレー -->
+    <color name="shadow_gray">#DEDEDE</color>
+
+    <!-- メッセージタイルに使用するカラー -->
+    <color name="message_color_own">#80D784</color>
+    <color name="message_color_other">#F5F5F5</color>
+
+    <!-- 検診ボタンに使用するカラー -->
+    <color name="health_check_button_start">#96DBF9</color>
+    <color name="health_check_button_end">#4AA9F7</color>
+
+    <!-- ドラムロールボタンに使用するカラー -->
+    <color name="drum_roll_button_color">#EEEEEE</color>
+
+    <!-- プロフィールタブの背景に使用するカラー -->
+    <color name="profile_background_color">#DFDFDF</color>
+
+    <!-- おくすりについての説明の背景に使用するカラー -->
+    <color name="medicine_explanation_color">#B0DCFF</color>
+
+    <!-- 性別ボタンの背景に使用するカラー -->
+    <color name="men_circlebutton_color">#5A82EB</color>
+    <color name="women_circlebutton_color">#FF5555</color>
+    <color name="nochecked_circlebutton_color">#CACACA</color>
+
+    <!-- 画像選択実行ボタンの外枠に使用するカラー -->
+    <color name="image_select_circlebutton_color">#D9D9D9</color>
+
+    <!-- ユーザーインフォタイルに使用するカラー -->
+    <color name="user_info_tile_background">#F3F3F3</color>
+
+</resources>

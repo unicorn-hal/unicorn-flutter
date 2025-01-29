@@ -151,7 +151,9 @@ app.*.map.json
 doc/api/
 
 # dotenv environment variables file
-.env*
+.env
+.env.develop
+.env.release
 
 # Avoid committing generated Javascript files:
 *.dart.js
@@ -845,6 +847,8 @@ Temporary Items
 macos/
 linux/
 windows/
+web/
+test/
 linux/flutter/generated_plugin_registrant.cc
 linux/flutter/generated_plugins.cmake
 windows/flutter/generated_plugin_registrant.cc
@@ -860,3 +864,7 @@ lib/Route/router.g.dart
 # lock files
 pubspec.lock
 ios/Podfile.lock
+
+# secret files
+secret.properties
+Environment.swift

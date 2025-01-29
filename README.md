@@ -1,16 +1,86 @@
-# unicorn_flutter
+# Unicorn - 毎日の健康管理をお助け
 
-A new Flutter project.
+ITで医療を革新する Unicorn
 
-## Getting Started
+最先端の技術で医療の未来を切り拓き、健康管理をより簡単にするアプリです。
 
-This project is a starting point for a Flutter application.
+![Image](https://github.com/user-attachments/assets/9b83c186-14c3-4726-847e-639dab5fffde)
 
-A few resources to get you started if this is your first Flutter project:
+> **注意**  
+> このアプリは医療シミュレーション用デモアプリです。医療行為を目的とした利用はできません。また、実際の医療機関・団体とは一切関係ありません。
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+[ランディング](https://unicorn-hal.github.io/unicorn-landing-page/)も合わせてご覧ください。
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 主要機能
+
+1. スケジュールリマインダー
+    
+    定期的な予定を忘れずに管理できるリマインダー機能を搭載。重要なタスクやスケジュールを効率よく管理できます。
+    
+2. スムーズなコンディションチェック
+    
+    AIによるデータ分析を活用し、日々のコンディションを簡単に確認可能。健康管理を手軽にサポートします。
+    
+
+### 特徴
+
+- 直感的で使いやすいデザイン
+    
+    初めての方でも迷うことなく操作できる、シンプルで整理された画面設計。必要な情報へ即座にアクセスできます。
+    
+- AIを活用したスマートサポート
+    
+    日々の記録を手軽に行えるため、無理なく習慣化が可能。健康やスケジュール管理を効率的にサポートします。
+    
+
+### 利用シーン
+
+- 忙しい方や生活習慣を見直したい方に
+    
+    忙しい日々の中で、自分のコンディションを簡単に振り返りたい方に最適。短時間で手軽に記録ができ、安心感をプラスします。
+    
+- 大切な予定を忘れたくない方に
+    
+    リマインダー機能で、重要な予定や週間タスクをしっかりフォローします。
+
+## 開発
+
+> **ヒント**  
+> Flutterを使用して開発する際は[公式ドキュメント](https://docs.flutter.dev/)を参照することで効率を上げられます。
+
+- Firebase連携
+- RiverpodやProviderを利用
+- 位置情報などのネイティブ機能を活用
+
+### FVM について
+Flutter Version **3.19.6** を利用してください
+> **ヒント**  
+> Flutter Versionをプロジェクト単位で管理するために使用します。  
+
+### インストール
+```bash
+dart pub global activate fvm
+```
+```bash
+fvm install 3.19.6
+fvm use 3.19.6
+```
+
+## アーキテクチャ
+> **ヒント**  
+> このプロジェクトでは画面ごと、機能ごとに Controller / Service / Model などを分割し、責務を明確化しています。  
+> データの管理には Riverpod / Provider を利用し、依存関係や状態をより簡潔に扱えるように工夫しています。
+
+### コンポーネント化
+- Controller: ビジネスロジックや状態管理を行うクラス群  
+- Service: API 呼び出しや外部サービスとの連携を担うクラス群  
+- Model: データを保持・変換するためのクラス群  
+- View: UI レイヤーを担当し、Controller からの状態を描画する
+
+> **注意**  
+> それぞれのレイヤーを分離することでスケーラブルでメンテナブルな構造を保ちます。
+
+## お問い合わせ
+> **問い合わせフォーム**  
+> ご意見・ご要望・不具合報告などはこちらのフォームをご利用ください。  
+> [問い合わせフォーム](https://forms.gle/YhZ2TMW3iXbAx4Vx5)
